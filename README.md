@@ -163,6 +163,23 @@ and with the optional attributes it will look like this
 
 Next are images where again borrow from HTML for the name of attribute names and their functionality. We start with `genericPropertiesGroup` to define `class` and `id`.
 
+
+Then we require a `src` attribute to tell where the image is located. We need to be careful because we haven't told the schema the different types of images. We have at least three different locations for the image files. All three of these are valid locations for our image.png file.
+
+```xml
+image.png
+directory/image.png
+http://mysite.org/images/image.png
+```
+
+We could create branches of our schema to deal with the different locations but I've chosen to let the XSLT style sheets deal with this particular situation
+
+`width` and `height` are expressed as integer and are left as optional to account for the possibility that the CSS or XSLT stylesheets modify the image dimensions. Making these dimensions mandatory may affect how the element interact with the styles later on. 
+
+The `alt` attribute indicates alternative text for the image. It is not meant as a full description so we've constrained it to 255 characters. 
+
+`align` uses our align enumeration to indicae the image's alignment. It is not essential to the XML but will be useful to the XSLT stylesheets we'll create later as part of the process.
+
 ```xml
 <xs:element name="image">
   <xs:annotation>

@@ -82,14 +82,14 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="height" type="xs:integer" use="optional">
+            <xs:attribute name="height" type="xs:float" use="optional">
                 <xs:annotation>
                     <xs:documentation>
                         Height for the image expressed as an integer
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="width" type="xs:integer" use="optional">
+            <xs:attribute name="width" type="xs:float" use="optional">
                 <xs:annotation>
                     <xs:documentation>
                         Width for the image expressed as an integer
