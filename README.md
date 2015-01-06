@@ -49,7 +49,207 @@ There are additional elements and attributes defined inside the XML Schema for o
 
 ### XML Schema
 
-The root element is `book` the book has exactly 1 `metadata` section and 1 or more (at least 1 with no upper limit) `section`. I thought about including the metadata at the section level but it would add too much repetitive markup in places where it may not be necessary. 
+The schema is defined from most general to most specific elements. We'll follow the same process to explain what the schema does and how we arrived to the choices we made. 
+
+At the beginning of the schema we define some custom types that will be used throughout the document. 
+
+The first one, `string255` is a string that is limited to 255 characters in length. We do this to prevent overtly long strings.
+
+The second one, `isbn` is a regular expression to match 10 digits ISBN numbers. We'll have to modify it to handle ISBN-13 as well as 10.
+
+The third custom type is an enumeration of all possible values for the `align` attribute acording to CSS and HTML. Rather than manually type each of these we will reference this enumeration and include all its values for "free".
+
+We also allow the optional use of `class` and `id` attributes for the book by assigning `genericPropertiesGroup` attribute group as attributes to the group. We'll see this assigned to other elements so I decided to make it reusable rather than have to duplicate the attributes in every element I want to use them in.
+
+
+```xml
+  <xs:simpleType name="string255">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a string of no more than 255 characters
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="255" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="isbn">
+    <xs:annotation>
+      <xs:documentation>
+        Defines a regular expression to match an ISBN number. Regex needs to be refined
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:unsignedLong">
+      <xs:totalDigits value="10" />
+      <xs:pattern value="\d{10}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="align">
+    <xs:annotation>
+      <xs:documentation>
+        Attribute ennumeration for elements that can be aligned
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="left" />
+      <xs:enumeration value="center" />
+      <xs:enumeration value="right" />
+      <xs:enumeration value="justify" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:attributeGroup name="genericPropertiesGroup">
+    <xs:attribute name="id" type="xs:ID" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          ID for the paragraph if any
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="class" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Class for the paragraph if any
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+```
+
+We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters. 
+
+We'll look at links first as it is the simplest of our content structures. We borrow the `href` attribute from HTML to indicate the destination for the link and make it required. 
+
+We also incoporate a `label` so we can later build the link and for accessibility purposes. It also uses our `genericPropertiesGroup` attribute set to add class and ID as attributes for our links.
+
+```xml 
+<!-- Elements inside section -->
+<xs:element name="link">
+  <xs:annotation>
+    <xs:documentation>links...</xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:attributeGroup ref="genericPropertiesGroup" />
+    <xs:attribute name="href" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Link destination
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="label" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Text provided for accessibility
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:element>
+```
+The link in our resulting book will look like this:
+
+```xml
+<link href="http://google.com" label="link to google"></link>
+```
+
+and with the optional attributes it will look like this
+
+```xml
+<link class="external" id="ex01" href="http://google.com" label="link to google"></link>
+```
+
+Next are images where again borrow from HTML for the name of attribute names and their functionality. We start with `genericPropertiesGroup` to define `class` and `id`.
+
+```xml
+<xs:element name="image">
+  <xs:annotation>
+    <xs:documentation>image and image-related attributes</xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:attributeGroup ref="genericPropertiesGroup" />
+    <xs:attribute name="src" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Source for the image. We may want to create a 
+          restriction to account for both local and remote 
+          addresses
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="height" type="xs:integer" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Height for the image expressed as an integer
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="width" type="xs:integer" use="optional">
+      <xs:annotation>
+        <xs:documentation>
+          Width for the image expressed as an integer
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="alt" type="string255" use="required">
+      <xs:annotation>
+        <xs:documentation>
+          Alternate text contstained to 255 characters
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="align" type="align" use="optional" default="left">
+      <xs:annotation>
+        <xs:documentation>
+          Optional alignment
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+
+  </xs:complexType>
+</xs:element>
+```
+
+```xml
+<xs:element name="para">
+  <xs:annotation>
+    <xs:documentation>
+      Para is the essential text content element. It'll get
+      hairy because we have a lot of possible attributes we
+      can use on it
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:sequence>
+      <!-- 
+        Style Elements. 
+
+        We use strong and emphasis rather than bold and italics
+        to try and stay in synch with HTML and HTML5. We may
+        add additional tags later in the process.
+      -->
+      <xs:element name="strong" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="emphasis" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="underline" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="strike" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+      <!-- 
+        Organization Elements 
+      -->
+      <xs:element name="span" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element ref="link" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            Links should happen inside paragraphs and it's an optional element.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="genericPropertiesGroup" />
+  </xs:complexType>
+</xs:element>
+```
 
 ```xml
   <xs:element name="book">
@@ -71,7 +271,18 @@ The root element is `book` the book has exactly 1 `metadata` section and 1 or mo
       <xs:attributeGroup ref="genericPropertiesGroup" />
     </xs:complexType>
   </xs:element>
-  ```
+```
+
+The root element is `book` the book has exactly 1 `metadata` section and 1 or more (at least 1 with no upper limit) `section`. I thought about including the metadata at the section level but it would add too much repetitive markup in places where it may not be necessary. 
+
+Why the name section? I thought about using specific names for preface, introduction, chapter, glossary and the like. I decided against it because it would mean too much code duplication without much return of investment. 
+
+I may reconsider this option when developing glossary and index-specific elements. 
+
+
+
+The complete schema document looks like this:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema 
@@ -82,7 +293,9 @@ The root element is `book` the book has exactly 1 `metadata` section and 1 or mo
   <!-- Simple types to use in the content -->
   <xs:simpleType name="string255">
     <xs:annotation>
-      <xs:documentation>Defines a string of no more than 255 characters</xs:documentation>
+      <xs:documentation>
+        Defines a string of no more than 255 characters
+      </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:token">
       <xs:maxLength value="255" />
@@ -91,7 +304,9 @@ The root element is `book` the book has exactly 1 `metadata` section and 1 or mo
 
   <xs:simpleType name="isbn">
     <xs:annotation>
-      <xs:documentation>Defines a regular expression to match an ISBN number. Regex needs to be refined</xs:documentation>
+      <xs:documentation>
+        Defines a regular expression to match an ISBN number. Regex needs to be refined
+      </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:unsignedLong">
       <xs:totalDigits value="10" />
@@ -101,7 +316,9 @@ The root element is `book` the book has exactly 1 `metadata` section and 1 or mo
 
   <xs:simpleType name="align">
     <xs:annotation>
-      <xs:documentation>Attribute ennumeration for elements that can be aligned</xs:documentation>
+      <xs:documentation>
+        Attribute ennumeration for elements that can be aligned
+      </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:enumeration value="left" />
@@ -114,7 +331,9 @@ The root element is `book` the book has exactly 1 `metadata` section and 1 or mo
   <xs:attributeGroup name="genericPropertiesGroup">
     <xs:attribute name="id" type="xs:ID" use="optional">
       <xs:annotation>
-        <xs:documentation>ID for the paragraph if any</xs:documentation>
+        <xs:documentation>
+          ID for the paragraph if any
+        </xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="class" type="xs:string" use="optional">
@@ -223,7 +442,8 @@ The root element is `book` the book has exactly 1 `metadata` section and 1 or mo
       <xs:attributeGroup ref="genericPropertiesGroup" />
     </xs:complexType>
   </xs:element>
-  <!-- Metadata element -->
+
+<!-- Metadata element -->
   <xs:element name="metadata">
     <xs:annotation>
       <xs:documentation>
