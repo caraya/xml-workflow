@@ -566,9 +566,32 @@ The complete schema document looks like this:
 ```
 
 
-## Converting our content into HTML
+## Converting our content into other formats
 
-One of the biggest advantages of working with XML 
+One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then we'll convert it to [XSL Formating Objects](http://www.xml.com/pub/a/2002/03/20/xsl-fo.html) and then using tools like [Apache FOP](http://xmlgraphics.apache.org/fop/) or [RenderX](http://www.renderx.com/tools/xep.html) we'll conver the XSL-FO into PDF
 
-## Is HTML the only option?
+### Why HTML
 
+### Why PDF
+
+
+## Creating our conversion stylesheets
+
+```xml
+<?xml version="1.0"?>
+<xsl:stylesheet 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:template match="/hello-world">
+    <html>
+      <head>
+        <title><xsl:value-of select="metadata/title"/></title>
+        <link rel="stylesheet" href="css/style.css"/>
+        <script src="js/script.js"></script>
+      </head>
+      <body>
+        <xsl:apply-templates/>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>
+```
