@@ -229,6 +229,12 @@ The `alt` attribute indicates alternative text for the image. It is not meant as
 </xs:element>
 ```
 
+Paragraphs (`para` in our documents) are the essential unit of content for our books. The paragraph is where most content will happen, text, styles and additional elements that we may add as we go along (inline code comes to mind). 
+
+We include 3 different groups of properties in the paragraph declaration: Styles (`strong`, `emphasis`, `underline` and `strike` to do bold, italics, underline (outside links) and strikethrough text); Organization (`span` and `link`) and our `genericPropertiesGroup` (class and id). 
+
+This model barely begins to scratch the surface of what we can do with our paragraph model. I decided to go for simplicity rather than completeness. This will definitely change in future versions of the schema. 
+
 ```xml
 <xs:element name="para">
   <xs:annotation>
@@ -268,6 +274,86 @@ The `alt` attribute indicates alternative text for the image. It is not meant as
 </xs:element>
 ```
 
+The metadata section tells us more about the book itself and can be used to build a `package.opf` manifest using XSLT as part of our transformation process. We include basic information such as `isbn` (validated as an ISBN type defined earlier in the schema), an `edition` (integer indicating what edition of the book it is) and `title`.
+
+
+The required `author` and the optional `editor` and `otherRole` elements are similar enough that we may be tempted to create one base element and derive from it. I chose not to do it so I can create specific attributes without writing mountains of additional code. 
+
+At least one `author` is required and additional authors can be added to reflect the number of authors in the document. Thy have a `first-name`, `surname` (both strings) and an id (of type id). We may also add amore attributes such as affiliation or contact information. 
+
+`editor` elements  are pretty self explainatory. The only thing to call your attention to is the `typeOfEditor` attribute that identifies the role this specific editor plays.  We could create an ennumeration with different types of editors but I'd rather leave it open as I can't really guess what all the roles will be. 
+
+`otherRole` defines functions in the publishing process other than editor and author. Examples of this role are illustrator, indexer, etc. 
+
+```xml
+<!-- Metadata element -->
+  <xs:element name="metadata">
+    <xs:annotation>
+      <xs:documentation>
+        Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:annotation>
+          <xs:documentation>First three elements in the metadata sequence: isbn, edition and title</xs:documentation>
+        </xs:annotation>
+        <xs:element name="isbn" type="isbn" />
+        <xs:element name="edition" type="xs:integer" />
+        <xs:element name="title" type="string255" />
+
+        <xs:element name="author" minOccurs="1" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Authors create the content. Element is required and you should have at least one author to valdate the doc.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="first-name" type="xs:string" />
+              <xs:element name="surname" type="xs:string" />
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:ID" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="editor" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Editors can have several responsabilities. We define them using the typeOfEditor child element. The element is optional. If it's used we can have as many editors as we need</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="first-name" type="xs:string" />
+              <xs:element name="surname" type="xs:string" />
+              <xs:element name="typeOfEditor" type="xs:string" />
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:ID" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="otherRole" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+            We define otherRole to indicate roles in the publishing process that are not editors or authors. These can be reviewers, illustrators
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="first-name" type="xs:string" />
+              <xs:element name="last-name" type="xs:string" />
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:ID" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+```
+
+The root element is `book` the book has exactly 1 `metadata` section and 1 or more (at least 1 with no upper limit) `section`. I thought about including the metadata at the section level but it would add too much repetitive markup in places where it may not be necessary. 
+
+Why the name section? I thought about using specific names for preface, introduction, chapter, glossary and the like. I decided against it because it would mean too much code duplication without much return of investment. 
+
+I may reconsider this option when developing glossary and index-specific elements. 
+
 ```xml
   <xs:element name="book">
     <xs:annotation>
@@ -278,7 +364,7 @@ The `alt` attribute indicates alternative text for the image. It is not meant as
     <xs:complexType mixed="true">
       <xs:annotation>
         <xs:documentation>
-          A sequence of one metadat section followed by 1 or more sections
+          A sequence of one metadata section followed by 1 or more sections
         </xs:documentation>
       </xs:annotation>
       <xs:sequence>
@@ -290,11 +376,6 @@ The `alt` attribute indicates alternative text for the image. It is not meant as
   </xs:element>
 ```
 
-The root element is `book` the book has exactly 1 `metadata` section and 1 or more (at least 1 with no upper limit) `section`. I thought about including the metadata at the section level but it would add too much repetitive markup in places where it may not be necessary. 
-
-Why the name section? I thought about using specific names for preface, introduction, chapter, glossary and the like. I decided against it because it would mean too much code duplication without much return of investment. 
-
-I may reconsider this option when developing glossary and index-specific elements. 
 
 
 
