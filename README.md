@@ -658,6 +658,16 @@ One of the biggest advantages of working with XML is that we can convert the abs
 
 ## Creating our conversion stylesheets
 
+To convert our XML into other formats we will use XSL Transformations (also known as XSLT) [version 2](http://www.w3.org/TR/xslt) (a W3C standard) and [version 3](http://www.w3.org/TR/xslt-30/) (a W3C last call draft recommendation) where appropriate.
+
+XSLT is a functional language designer to transform XML into other markup vocabularies. It defines template rules that match elements in your source document and processing them to convert them to the target vocabulary. 
+
+In the XSLT example below, we do the following:
+
+1. match the root element to create the skeleton for our HTML content
+2. In the title we insert the content of the title source element inside the metadata
+3. In the body we 'apply' the templates that match the content inside our document (more on this later)
+
 ```xml
 <?xml version="1.0"?>
 <xsl:stylesheet 
