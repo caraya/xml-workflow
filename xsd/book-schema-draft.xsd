@@ -48,7 +48,55 @@
             </xs:annotation>
         </xs:attribute>
     </xs:attributeGroup> 
+
+    <!-- complex types to create groups of similar person items -->
     
+    <xs:complexType name="person">
+        <xs:annotation>
+            <xs:documentation>Generic element to denote an individual involved in creating the book</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="first-name" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:ID"/>
+    </xs:complexType>
+    
+    <xs:complexType name="authors">
+        <xs:annotation>
+            <xs:documentation>Wrapper to get more than one author</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="author" type="person"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="editors">
+        <xs:annotation>
+            <xs:documentation>extension to person to indicate editor and his/her role</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="person">
+                <xs:sequence>
+                    <xs:element name="type" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="otherRoles">
+        <xs:annotation>
+            <xs:documentation>extension to person to accomodate roles other than author and editor</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="person">
+                <xs:sequence>
+                    <xs:element name="role" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
     <!-- Elements inside section -->
     <xs:element name="link">
         <xs:annotation>
@@ -147,66 +195,23 @@
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
+
     <!-- Metadata element -->
     <xs:element name="metadata">
         <xs:annotation>
-            <xs:documentation> Metadata section of the content. Still debating whether to move it
-                inside section or leave it as a separate part. </xs:documentation>
+            <xs:documentation>Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.</xs:documentation>
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
                 <xs:annotation>
-                    <xs:documentation> First three elements in the metadata sequence: isbn, edition
-                        and title </xs:documentation>
+                    <xs:documentation>Metadata sequence using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier</xs:documentation>
                 </xs:annotation>
                 <xs:element name="isbn" type="isbn"/>
                 <xs:element name="edition" type="xs:integer"/>
                 <xs:element name="title" type="string255"/>
-                
-                <xs:element name="author" minOccurs="1" maxOccurs="unbounded">
-                    <xs:annotation>
-                        <xs:documentation> Authors create the content. Element is required and you
-                            should have at least one author to valdate the doc. </xs:documentation>
-                    </xs:annotation>
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="first-name" type="xs:string"/>
-                            <xs:element name="surname" type="xs:string"/>
-                        </xs:sequence>
-                        <xs:attribute name="id" type="xs:ID"/>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="editor" minOccurs="0" maxOccurs="unbounded">
-                    <xs:annotation>
-                        <xs:documentation> Editors can have several responsabilities. We define them
-                            using the typeOfEditor child element. The element is optional. If it's
-                            used we can have as many editors as we need </xs:documentation>
-                    </xs:annotation>
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="first-name" type="xs:string"/>
-                            <xs:element name="surname" type="xs:string"/>
-                            <xs:element name="typeOfEditor" type="xs:string"/>
-                        </xs:sequence>
-                        <xs:attribute name="id" type="xs:ID"/>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="otherRole" minOccurs="0" maxOccurs="unbounded">
-                    <xs:annotation>
-                        <xs:documentation> We define otherRole to indicate roles in the publishing
-                            process that are not editors or authors. These can be reviewers,
-                            illustrators </xs:documentation>
-                    </xs:annotation>
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="first-name" type="xs:string"/>
-                            <xs:element name="last-name" type="xs:string"/>
-                        </xs:sequence>
-                        <xs:attribute name="id" type="xs:ID"/>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>

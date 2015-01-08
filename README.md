@@ -665,14 +665,15 @@ XSLT is a functional language designer to transform XML into other markup vocabu
 In the XSLT example below, we do the following:
 
 1. match the root element to create the skeleton for our HTML content
-2. In the title we insert the content of the title source element inside the metadata
+2. In the title we insert the content of the `metadata/title` element
 3. In the body we 'apply' the templates that match the content inside our document (more on this later)
 
 ```xml
 <?xml version="1.0"?>
 <xsl:stylesheet 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-  <xsl:template match="/hello-world">
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+  version="2.0">
+  <xsl:template match="/">
     <html>
       <head>
         <title><xsl:value-of select="metadata/title"/></title>
@@ -686,3 +687,5 @@ In the XSLT example below, we do the following:
   </xsl:template>
 </xsl:stylesheet>
 ```
+
+Once we have defined the structure of the document structure we can start building the rendering of our content. 
