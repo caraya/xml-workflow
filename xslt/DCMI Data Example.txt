@@ -1,0 +1,12 @@
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="book-id" prefix="rendition: http://www.idpf.org/vocab/rendition/#" version="3.0" xml:lang="en">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<!--  TITLE  -->
+<dc:title>WDS2014 -- What I've Learned</dc:title>
+<!--  AUTHOR, PUBLISHER AND PUBLICATION DATES -->
+<dc:creator>Carlos Araya</dc:creator>
+<dc:publisher>Carlos Araya</dc:publisher>
+<dc:date>2014</dc:date>
+<meta property="dcterms:modified">2014-01-01T12:00:00Z</meta>
+<!--  MISC INFORMATION  -->
+<dc:language>en</dc:language>
+<dc:identifier id="book-id">f79cca4b-6346-464b-99d2-08bb1cc017ad</dc:identifier>

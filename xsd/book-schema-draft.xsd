@@ -4,10 +4,11 @@
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
+
     <!-- Simple types to use in the content -->
-    <xs:simpleType name="string255">
+    <xs:simpleType name="token255">
         <xs:annotation>
-            <xs:documentation>Defines a string of no more than 255 characters</xs:documentation>
+            <xs:documentation>Defines a token of no more than 255 characters</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:token">
             <xs:maxLength value="255"/>
@@ -16,7 +17,7 @@
 
     <xs:simpleType name="isbn">
         <xs:annotation>
-            <xs:documentation>Defines a regular expression to match an ISBN number. Regex needs to be refined</xs:documentation>
+            <xs:documentation>Defines a regular expression to match an ISBN number. Regex needs to be refined and we need to figure out a way to account for ISBN10 and ISBN13 numbers, maybe by creating a compound element</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:unsignedLong">
             <xs:totalDigits value="10"/>
@@ -28,7 +29,7 @@
         <xs:annotation>
             <xs:documentation>Attribute ennumeration for elements that can be aligned</xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:string">
+        <xs:restriction base="xs:token">
             <xs:enumeration value="left"/>
             <xs:enumeration value="center"/>
             <xs:enumeration value="right"/>
@@ -42,7 +43,7 @@
                 <xs:documentation>ID for the paragraph if any</xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="class" type="xs:string" use="optional">
+        <xs:attribute name="class" type="xs:token" use="optional">
             <xs:annotation>
                 <xs:documentation>Class for the paragraph if any</xs:documentation>
             </xs:annotation>
@@ -56,10 +57,10 @@
             <xs:documentation>Generic element to denote an individual involved in creating the book</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="first-name" type="xs:string"/>
-            <xs:element name="surname" type="xs:string"/>
+            <xs:element name="first-name" type="xs:token"/>
+            <xs:element name="surname" type="xs:token"/>
         </xs:sequence>
-        <xs:attribute name="id" type="xs:ID"/>
+        <xs:attribute name="id" type="xs:ID" use="optional"/>
     </xs:complexType>
     
     <xs:complexType name="authors">
@@ -78,7 +79,7 @@
         <xs:complexContent>
             <xs:extension base="person">
                 <xs:sequence>
-                    <xs:element name="type" type="xs:string"/>
+                    <xs:element name="type" type="xs:token"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -91,7 +92,7 @@
         <xs:complexContent>
             <xs:extension base="person">
                 <xs:sequence>
-                    <xs:element name="role" type="xs:string"/>
+                    <xs:element name="role" type="xs:token"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -104,12 +105,14 @@
         </xs:annotation>
         <xs:complexType>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
-            <xs:attribute name="href" type="xs:string" use="required">
+            <xs:attribute name="href" type="xs:anyURI" use="required">
                 <xs:annotation>
-                    <xs:documentation>Link destination</xs:documentation>
+                    <xs:documentation>
+                        Link destination. Attribute is required
+                    </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="label" type="xs:string" use="required">
+            <xs:attribute name="label" type="xs:token" use="required">
                 <xs:annotation>
                     <xs:documentation>Text provided for accessibility</xs:documentation>
                 </xs:annotation>
@@ -123,28 +126,28 @@
         </xs:annotation>
         <xs:complexType>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
-            <xs:attribute name="src" type="xs:string" use="required">
+            <xs:attribute name="src" type="xs:token" use="required">
                 <xs:annotation>
                     <xs:documentation>
                         Source for the image. We may want to create a restriction to account for both local and remote addresses
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="height" type="xs:integer" use="optional">
+            <xs:attribute name="height" type="xs:nonNegativeInteger" use="optional">
                 <xs:annotation>
                     <xs:documentation>
-                        Height for the image expressed as an integer
+                        Height for the image expressed as a positive integer
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="width" type="xs:integer" use="optional">
+            <xs:attribute name="width" type="xs:nonNegativeInteger" use="optional">
                 <xs:annotation>
                     <xs:documentation>
-                        Width for the image expressed as an integer
+                        Width for the image expressed as a positive integer
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>            
-            <xs:attribute name="alt" type="string255" use="required">
+            <xs:attribute name="alt" type="token255" use="required">
                 <xs:annotation>
                     <xs:documentation>
                         Alternate text contstained to 255 characters
@@ -162,36 +165,72 @@
         </xs:complexType>
     </xs:element>
     
+    <xs:element name="list">
+        <xs:annotation>
+            <xs:documentation>
+                Ordered and unordered list
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="item">
+                    <xs:complexType>
+                        <xs:attributeGroup ref="genericPropertiesGroup"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="listType" type="xs:token" default="unordered"/>
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="code">
+        <xs:annotation>
+            <xs:documentation>
+                Code is used to generate fenced code blocks (see Github rendered markdown code 
+                for an idea of how I want this to look). 
+                
+                When using CSS we'll generate a <code><pre></pre></code> block with a language attribute
+                that will be formated with either Google Code Prettify or Highlight.js (the chosen
+                package will be a part of the tool chain)
+                
+                Because of the intended use, the language attribute is required. 
+                
+                Class and ID (from genericPropertiesGroup) are optional
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="language" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="para">
         <xs:annotation>
             <xs:documentation>Para is the essential text content element. It'll get hairy because we
                 have a lot of possible attributes we can use on it</xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
-            <xs:sequence>
-                <!-- 
-                    Style Elements. 
-                    
-                    We use strong and emphasis rather than bold and italics
-                    to try and stay in synch with HTML and HTML5. We may add additional tags
-                    later in the process.
-                -->
-                <xs:element name="strong" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="emphasis" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="underline" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="strike" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <!-- 
-                    Organization Elements 
-                -->
-                <xs:element name="span" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="link" minOccurs="0" maxOccurs="unbounded">
-                    <xs:annotation>
-                        <xs:documentation>
-                            Links should happen inside paragraphs and it's an optional element inside.
-                        </xs:documentation>
-                    </xs:annotation>
-                </xs:element>
-            </xs:sequence>
+            <xs:choice  minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        Style, Link and Span Elements. 
+                        
+                        We use strong and emphasis rather than bold and italics
+                        to try and stay in synch with HTML and HTML5. We may add additional tags
+                        later in the process.
+                        
+                        We can use any of these elements inside paragraph in no particular order 
+                        0 or more times (no maximum)
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:element name="strong" type="xs:token"/>
+                <xs:element name="emphasis" type="xs:token"/>
+                <xs:element name="underline" type="xs:token"/>
+                <xs:element name="strike" type="xs:token"/>
+                <xs:element name="span" type="xs:token"/>
+                <xs:element ref="link"/>
+            </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
@@ -208,7 +247,7 @@
                 </xs:annotation>
                 <xs:element name="isbn" type="isbn"/>
                 <xs:element name="edition" type="xs:integer"/>
-                <xs:element name="title" type="string255"/>
+                <xs:element name="title" type="token255"/>
                 <xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
                 <xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
@@ -223,15 +262,23 @@
         <xs:complexType mixed="true">
             <xs:sequence>
                 <xs:annotation>
-                    <xs:documentation>At least one paragraph </xs:documentation>
+                    <xs:documentation>A title and at least one paragraph </xs:documentation>
                 </xs:annotation>
-                <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
+                <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>                
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element ref="code" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="list" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:choice>
             </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
-            <xs:attribute name="type" type="xs:string" use="optional" default="chapter">
+            <xs:attribute name="type" type="xs:token" use="optional" default="chapter">
                 <xs:annotation>
                     <xs:documentation>
-                        The type or role for the paragraph asn in data-role or epub:type
+                        The type or role for the paragraph asn in data-role or epub:type. 
+                        
+                        We make it optional but provide a default of chapter to make it 
+                        easier to add.
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>

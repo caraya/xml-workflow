@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/Users/carlos/code/xml-workflow/xsd/book-schema-draft.xsd">
+    <metadata>
+        <isbn>5012097465</isbn>
+        <edition>0</edition>
+        <title>title0</title>
+        <authors>
+            <author>
+                <first-name>first-name0</first-name>
+                <surname>surname0</surname>
+            </author>
+        </authors>
+        <authors>
+            <author>
+                <first-name>first-name1</first-name>
+                <surname>surname1</surname>
+            </author>
+        </authors>
+    </metadata>
+    <section>
+        <title>title1</title>
+        <para/>
+        <para/>
+    </section>
+    <section>
+        <title>title2</title>
+        <para/>
+        <para/>
+    </section>
+</book>

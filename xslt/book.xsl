@@ -2,7 +2,11 @@
 <xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
   <!-- Define the output for this and all document children -->
-  <xsl:output  name="xhtmlOutput" method="xhtml" indent="yes" encoding="UTF-8"/>
+  <xsl:output
+    name="xhtmlOutput"
+    method="xhtml"
+    indent="yes"
+    encoding="UTF-8"/>
   <!-- Root template, matching / -->
   <xsl:template match="/">
     <html>
@@ -21,8 +25,18 @@
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="section">
-    <xsl:value-of select="."/>
+  <xsl:template match="metadata" mode="content">
+    <!--
+      We don't care how the templates are applied. There is
+      no special processing needs for the content in this mode.
+    -->
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="section" mode="content">
+    <!--
+      Special processing to account for the chapter split and section
+      attributes in this mode
     <xsl:if
       test="section/@class">class="<value-of select="/book/section/@class"/>
     </xsl:if>
@@ -32,9 +46,10 @@
       test="section/@id">class="<value-of select="/book/section/@id"/>
     </xsl:if>
     <xsl:if
-      test="not(section/@id)"></xsl:if>
-    <xsl:apply-templates/>
-  </xsl:template>
+      test="not(section/@id)">
+    </xsl:if>
+    -->
+  <xsl:apply-templates/>
 
   <xsl:template match="metadata/title">
     <h1> <xsl:value-of select="."/> </h1>
