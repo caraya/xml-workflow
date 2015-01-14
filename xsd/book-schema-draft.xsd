@@ -51,10 +51,11 @@
     </xs:attributeGroup> 
 
     <!-- complex types to create groups of similar person items -->
-    
     <xs:complexType name="person">
         <xs:annotation>
-            <xs:documentation>Generic element to denote an individual involved in creating the book</xs:documentation>
+            <xs:documentation>
+                Generic element to denote an individual involved in creating the book
+            </xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="first-name" type="xs:token"/>

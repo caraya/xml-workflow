@@ -1,6 +1,6 @@
 ---
 title: XML workflows: From XML to PDF and how to get there
-date: 2014-10-22
+date: 2015-01-13
 category: Technology
 status: draft
 ---
@@ -32,15 +32,15 @@ For the rest of this post, we'll use a ***book-like*** structure. It'll look som
   <metadata>
     <isbn>0123456789</isbn>
     <edition>1</edition>
-    <title>title0</title>
+    <title>The adventures of SHerlock Holmes</title>
     <author>
-      <first-name>first-name0</first-name>
-      <surname>surname0</surname>
+      <first-name>Arthur</first-name>
+      <surname>Connan Doyle</surname>
     </author>
     </metadata>
   <section type="chapter">
-    <para></para>
-    <para></para>
+    <para>Lorem Ipsum</para>
+    <para>Lorem Ipsum</para>
   </section>
 </book>
 ```
@@ -63,60 +63,138 @@ We also allow the optional use of `class` and `id` attributes for the book by as
 
 
 ```xml
-  <xs:simpleType name="string255">
+<!-- Simple types to use in the content -->
+<xs:simpleType name="token255">
     <xs:annotation>
-      <xs:documentation>
-        Defines a string of no more than 255 characters
-      </xs:documentation>
+        <xs:documentation>
+          Defines a token of no more than 255 characters
+        </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:token">
-      <xs:maxLength value="255" />
+        <xs:maxLength value="255"/>
     </xs:restriction>
-  </xs:simpleType>
+</xs:simpleType>
 
-  <xs:simpleType name="isbn">
+<xs:simpleType name="isbn">
     <xs:annotation>
-      <xs:documentation>
-        Defines a regular expression to match an ISBN number. Regex needs to be refined
-      </xs:documentation>
+        <xs:documentation>
+          Defines a regular expression to match an ISBN number. Regex needs to be refined and we need to figure out a way to account for ISBN10 and ISBN13 numbers, maybe by creating a compound element
+        </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:unsignedLong">
-      <xs:totalDigits value="10" />
-      <xs:pattern value="\d{10}" />
+        <xs:totalDigits value="10"/>
+        <xs:pattern value="\d{10}"/>
     </xs:restriction>
-  </xs:simpleType>
+</xs:simpleType>
 
-  <xs:simpleType name="align">
+<xs:simpleType name="align">
     <xs:annotation>
-      <xs:documentation>
-        Attribute ennumeration for elements that can be aligned
-      </xs:documentation>
+        <xs:documentation>Attribute ennumeration for elements that can be aligned</xs:documentation>
     </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="left" />
-      <xs:enumeration value="center" />
-      <xs:enumeration value="right" />
-      <xs:enumeration value="justify" />
+    <xs:restriction base="xs:token">
+        <xs:enumeration value="left"/>
+        <xs:enumeration value="center"/>
+        <xs:enumeration value="right"/>
+        <xs:enumeration value="justify"/>
     </xs:restriction>
-  </xs:simpleType>
+</xs:simpleType>
 
-  <xs:attributeGroup name="genericPropertiesGroup">
+<xs:attributeGroup name="genericPropertiesGroup">
     <xs:attribute name="id" type="xs:ID" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          ID for the paragraph if any
-        </xs:documentation>
-      </xs:annotation>
+        <xs:annotation>
+            <xs:documentation>ID for the paragraph if any</xs:documentation>
+        </xs:annotation>
     </xs:attribute>
-    <xs:attribute name="class" type="xs:string" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          Class for the paragraph if any
-        </xs:documentation>
-      </xs:annotation>
+    <xs:attribute name="class" type="xs:token" use="optional">
+        <xs:annotation>
+            <xs:documentation>Class for the paragraph if any</xs:documentation>
+        </xs:annotation>
     </xs:attribute>
-  </xs:attributeGroup>
+</xs:attributeGroup> 
 ```
+
+The next stage is to define elements to create our 'people' types.  We create a base person element and then create three role elements based on person. 
+
+```xml
+<!-- complex types to create groups of similar person items -->
+<xs:complexType name="person">
+    <xs:annotation>
+        <xs:documentation>
+            Generic element to denote an individual involved in creating the book
+        </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+        <xs:element name="first-name" type="xs:token"/>
+        <xs:element name="surname" type="xs:token"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="optional"/>
+</xs:complexType>
+
+<xs:complexType name="authors">
+    <xs:annotation>
+        <xs:documentation>Wrapper to get more than one author</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+        <xs:element name="author" type="person"/>
+    </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="editors">
+    <xs:annotation>
+        <xs:documentation>
+          extension to person to indicate editor and his/her role
+        </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+        <xs:extension base="person">
+            <xs:sequence>
+                <xs:element name="type" type="xs:token"/>
+            </xs:sequence>
+        </xs:extension>
+    </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="otherRoles">
+    <xs:annotation>
+        <xs:documentation>
+          extension to person to accomodate roles other than author and editor
+        </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+        <xs:extension base="person">
+            <xs:sequence>
+                <xs:element name="role" type="xs:token"/>
+            </xs:sequence>
+        </xs:extension>
+    </xs:complexContent>
+</xs:complexType>
+```
+Two of the derived types add attributes or elements to the base person element to make the generic person more appropriate to their role rather than repeat the content of person each time that an author, editor or other role appear. 
+
+Author is the most straight forward and only wraps person in the author element. 
+
+
+Editor takes the base person element and adds a `type` child to indicate the type of editor (some that come to mind are acquisition, production and managing.) The editor elements looks like this:
+
+```xml
+<editor>
+  <first-name>Carlos</first-name>
+  <surname>Araya</surname>
+  <type>Managing</type>
+</editor>
+```
+
+OtherRoles takes all other roles that are not author or editor and adds a role element to specify what role they play, for example: Illustrator, Indexer, Research Assistant, among others. The element looks like this:
+
+```xml
+<otherRole>
+  <first-name>Sherlock</first-name>
+  <surname>Holmes</surname>
+  <role>Researcher</role>
+</otherRole>
+```
+
+
 
 We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters. 
 
@@ -229,6 +307,45 @@ The `alt` attribute indicates alternative text for the image. It is not meant as
 </xs:element>
 ```
 
+The `code` element wraps code and works as higlighted, fenced code blocks (think Github Flavored Markdown.)
+
+When using CSS we'll generate a &lt;code>&lt;pre>&lt;/pre>&lt;/code> block with a language attribute that will be formated with either Google Code Prettify or Highlight.js (the chosen package will be a part of the project tool chain)
+
+Because of the intended use, the `language` attribute is required. 
+
+Class and ID (from `genericPropertiesGroup`) are optional
+
+```xml
+<xs:element name="code">
+    <xs:complexType mixed="true">
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+        <xs:attribute name="language" use="required"/>
+    </xs:complexType>
+</xs:element>
+```
+
+Lists provide bulleted and numbered lists as a block element inside a section. Rather than create elements (like `<ol>` and `<ul>` in HTML) we create a single list type and we add a `listType` attribute to indicate the type of list. 
+
+It also requires at least 1 `item` child. If it's going to be left empty why bother having the list to begin with. 
+
+It inherits class and ID from `genreicPropertiesGroup`.
+
+```xml
+<xs:element name="list">
+    <xs:complexType mixed="true">
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:element name="item">
+                <xs:complexType>
+                    <xs:attributeGroup ref="genericPropertiesGroup"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="listType" type="xs:token" default="unordered"/>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+    </xs:complexType>
+</xs:element>
+```
+
 Paragraphs (`para` in our documents) are the essential unit of content for our books. The paragraph is where most content will happen, text, styles and additional elements that we may add as we go along (inline code comes to mind). 
 
 We include 3 different groups of properties in the paragraph declaration: Styles (`strong`, `emphasis`, `underline` and `strike` to do bold, italics, underline (outside links) and strikethrough text); Organization (`span` and `link`) and our `genericPropertiesGroup` (class and id). 
@@ -276,416 +393,102 @@ This model barely begins to scratch the surface of what we can do with our parag
 
 The metadata section tells us more about the book itself and can be used to build a `package.opf` manifest using XSLT as part of our transformation process. We include basic information such as `isbn` (validated as an ISBN type defined earlier in the schema), an `edition` (integer indicating what edition of the book it is) and `title`.
 
-
-The required `author` and the optional `editor` and `otherRole` elements are similar enough that we may be tempted to create one base element and derive from it. I chose not to do it so I can create specific attributes without writing mountains of additional code. 
-
-At least one `author` is required and additional authors can be added to reflect the number of authors in the document. Thy have a `first-name`, `surname` (both strings) and an id (of type id). We may also add amore attributes such as affiliation or contact information. 
-
-`editor` elements  are pretty self explainatory. The only thing to call your attention to is the `typeOfEditor` attribute that identifies the role this specific editor plays.  We could create an ennumeration with different types of editors but I'd rather leave it open as I can't really guess what all the roles will be. 
-
-`otherRole` defines functions in the publishing process other than editor and author. Examples of this role are illustrator, indexer, etc. 
-
 ```xml
 <!-- Metadata element -->
-  <xs:element name="metadata">
+<xs:element name="metadata">
     <xs:annotation>
-      <xs:documentation>
-        Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.
-      </xs:documentation>
+        <xs:documentation>
+          Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.
+        </xs:documentation>
     </xs:annotation>
     <xs:complexType>
-      <xs:sequence>
-        <xs:annotation>
-          <xs:documentation>First three elements in the metadata sequence: isbn, edition and title</xs:documentation>
-        </xs:annotation>
-        <xs:element name="isbn" type="isbn" />
-        <xs:element name="edition" type="xs:integer" />
-        <xs:element name="title" type="string255" />
-
-        <xs:element name="author" minOccurs="1" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>Authors create the content. Element is required and you should have at least one author to valdate the doc.</xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="first-name" type="xs:string" />
-              <xs:element name="surname" type="xs:string" />
-            </xs:sequence>
-            <xs:attribute name="id" type="xs:ID" />
-          </xs:complexType>
-        </xs:element>
-
-        <xs:element name="editor" minOccurs="0" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>Editors can have several responsabilities. We define them using the typeOfEditor child element. The element is optional. If it's used we can have as many editors as we need</xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="first-name" type="xs:string" />
-              <xs:element name="surname" type="xs:string" />
-              <xs:element name="typeOfEditor" type="xs:string" />
-            </xs:sequence>
-            <xs:attribute name="id" type="xs:ID" />
-          </xs:complexType>
-        </xs:element>
-
-        <xs:element name="otherRole" minOccurs="0" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>
-            We define otherRole to indicate roles in the publishing process that are not editors or authors. These can be reviewers, illustrators
-            </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="first-name" type="xs:string" />
-              <xs:element name="last-name" type="xs:string" />
-            </xs:sequence>
-            <xs:attribute name="id" type="xs:ID" />
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
+        <xs:sequence>
+            <xs:annotation>
+                <xs:documentation>
+                Metadata sequence using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier
+                </xs:documentation>
+            </xs:annotation>
+            <xs:element name="isbn" type="isbn"/>
+            <xs:element name="edition" type="xs:integer"/>
+            <xs:element name="title" type="token255"/>
+            <xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
     </xs:complexType>
-  </xs:element>
+</xs:element>
 ```
 
-The root element is `book` the book has exactly 1 `metadata` section and 1 or more (at least 1 with no upper limit) `section`. I thought about including the metadata at the section level but it would add too much repetitive markup in places where it may not be necessary. 
+Section is our primary container for paragraphs and associated content. Some of the items exclusive to sections are:
 
-Why the name section? I thought about using specific names for preface, introduction, chapter, glossary and the like. I decided against it because it would mean too much code duplication without much return of investment. 
+The `title` element is required to appear exactly one time. 
 
-I may reconsider this option when developing glossary and index-specific elements. 
+We can have 1 or more `para` elements. 
+
+We can use 0 or more `code` or `list` elements. 
+
+The element inherits `class` and `ID` from genericPropertiesGroup.
+
+Finally we add the `type`, make it optional and default it to chapter. We do this to make it easier for authors to create content; where possible. I'd rather have the wrong value than no value at all.
 
 ```xml
-  <xs:element name="book">
+<xs:element name="section">
     <xs:annotation>
-      <xs:documentation>
-        The main book element and its children
-      </xs:documentation>
+        <xs:documentation>section structure</xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
-      <xs:annotation>
-        <xs:documentation>
-          A sequence of one metadata section followed by 1 or more sections
-        </xs:documentation>
-      </xs:annotation>
-      <xs:sequence>
-        <xs:element ref="metadata" minOccurs="1" maxOccurs="1" />
-        <xs:element ref="section" minOccurs="1" maxOccurs="unbounded" />
-      </xs:sequence>
-      <xs:attributeGroup ref="genericPropertiesGroup" />
+        <xs:sequence>
+            <xs:annotation>
+                <xs:documentation>A title and at least one paragraph </xs:documentation>
+            </xs:annotation>
+            <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
+            <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>                
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="code" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="list" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+        <xs:attribute name="type" type="xs:token" use="optional" default="chapter">
+            <xs:annotation>
+                <xs:documentation>
+                    The type or role for the paragraph as in data-role or epub:type. 
+
+                    We make it optional but provide a default of chapter to make it 
+                    easier to add.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
     </xs:complexType>
-  </xs:element>
+</xs:element>
 ```
+Now that we have defined our elements, we'll define the core structure of the document by defining the structure of the `book` element. 
 
+After all the work we've done defininf the content the definition of book is almost anticlimatic. We define the `book` element as the sequence of exactly 1 `metadata` element and 1 or more `section` elements.
 
+As with all our elements we add `class` and `ID` from our genericPropertiesGroup. 
 
-
-The complete schema document looks like this:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<xs:schema 
-           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-           elementFormDefault="qualified" 
-           attributeFormDefault="unqualified">
-
-  <!-- Simple types to use in the content -->
-  <xs:simpleType name="string255">
+<xs:element name="book">
     <xs:annotation>
-      <xs:documentation>
-        Defines a string of no more than 255 characters
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:token">
-      <xs:maxLength value="255" />
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="isbn">
-    <xs:annotation>
-      <xs:documentation>
-        Defines a regular expression to match an ISBN number. Regex needs to be refined
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:unsignedLong">
-      <xs:totalDigits value="10" />
-      <xs:pattern value="\d{10}" />
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="align">
-    <xs:annotation>
-      <xs:documentation>
-        Attribute ennumeration for elements that can be aligned
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="left" />
-      <xs:enumeration value="center" />
-      <xs:enumeration value="right" />
-      <xs:enumeration value="justify" />
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:attributeGroup name="genericPropertiesGroup">
-    <xs:attribute name="id" type="xs:ID" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          ID for the paragraph if any
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="class" type="xs:string" use="optional">
-      <xs:annotation>
-        <xs:documentation>
-          Class for the paragraph if any
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:attributeGroup>
-
-  <!-- Elements inside section -->
-  <xs:element name="link">
-    <xs:annotation>
-      <xs:documentation>links...</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:attributeGroup ref="genericPropertiesGroup" />
-      <xs:attribute name="href" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>Link destination</xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="label" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>Text provided for accessibility</xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="image">
-    <xs:annotation>
-      <xs:documentation>image and image-related attributes</xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:attributeGroup ref="genericPropertiesGroup" />
-      <xs:attribute name="src" type="xs:string" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            Source for the image. We may want to create a restriction to account for both local and remote addresses
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="height" type="xs:integer" use="optional">
-        <xs:annotation>
-          <xs:documentation>
-            Height for the image expressed as an integer
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="width" type="xs:integer" use="optional">
-        <xs:annotation>
-          <xs:documentation>
-            Width for the image expressed as an integer
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="alt" type="string255" use="required">
-        <xs:annotation>
-          <xs:documentation>
-            Alternate text contstained to 255 characters
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-      <xs:attribute name="align" type="align" use="optional" default="left">
-        <xs:annotation>
-          <xs:documentation>
-            Optional alignment
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="para">
-    <xs:annotation>
-      <xs:documentation>Para is the essential text content element. It'll get hairy because we have a lot of possible attributes we can use on it</xs:documentation>
+        <xs:documentation>The main book element and it's children</xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
-      <xs:sequence>
-        <!-- 
-          Style Elements. 
-
-          We use strong and emphasis rather than bold and italics
-          to try and stay in synch with HTML and HTML5. We may add additional tags
-          later in the process.
-        -->
-        <xs:element name="strong" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element name="emphasis" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element name="underline" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element name="strike" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-        <!-- 
-          Organization Elements 
-        -->
-        <xs:element name="span" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-        <xs:element ref="link" minOccurs="0" maxOccurs="unbounded">
-          <xs:annotation>
+        <xs:annotation>
             <xs:documentation>
-              Links should happen inside paragraphs and it's an optional element.
+              A sequence of one metadata element followed by 1 or more sections
             </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-      </xs:sequence>
-      <xs:attributeGroup ref="genericPropertiesGroup" />
-    </xs:complexType>
-  </xs:element>
-
-<!-- Metadata element -->
-  <xs:element name="metadata">
-    <xs:annotation>
-      <xs:documentation>
-        Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-      <xs:sequence>
-        <xs:annotation>
-          <xs:documentation>First three elements in the metadata sequence: isbn, edition and title</xs:documentation>
         </xs:annotation>
-        <xs:element name="isbn" type="isbn" />
-        <xs:element name="edition" type="xs:integer" />
-        <xs:element name="title" type="string255" />
-
-        <xs:element name="author" minOccurs="1" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>Authors create the content. Element is required and you should have at least one author to valdate the doc.</xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="first-name" type="xs:string" />
-              <xs:element name="surname" type="xs:string" />
-            </xs:sequence>
-            <xs:attribute name="id" type="xs:ID" />
-          </xs:complexType>
-        </xs:element>
-
-        <xs:element name="editor" minOccurs="0" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>Editors can have several responsabilities. We define them using the typeOfEditor child element. The element is optional. If it's used we can have as many editors as we need</xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="first-name" type="xs:string" />
-              <xs:element name="surname" type="xs:string" />
-              <xs:element name="typeOfEditor" type="xs:string" />
-            </xs:sequence>
-            <xs:attribute name="id" type="xs:ID" />
-          </xs:complexType>
-        </xs:element>
-
-        <xs:element name="otherRole" minOccurs="0" maxOccurs="unbounded">
-          <xs:annotation>
-            <xs:documentation>
-            We define otherRole to indicate roles in the publishing process that are not editors or authors. These can be reviewers, illustrators
-            </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="first-name" type="xs:string" />
-              <xs:element name="last-name" type="xs:string" />
-            </xs:sequence>
-            <xs:attribute name="id" type="xs:ID" />
-          </xs:complexType>
-        </xs:element>
-      </xs:sequence>
+        <xs:sequence>
+            <xs:element ref="metadata" minOccurs="1" maxOccurs="1"/>
+            <xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
     </xs:complexType>
-  </xs:element>
-
-  <xs:element name="section">
-    <xs:annotation>
-      <xs:documentation>section structure</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:annotation>
-          <xs:documentation>At least one paragraph</xs:documentation>
-        </xs:annotation>
-        <xs:element ref="para" minOccurs="1" maxOccurs="unbounded" />
-      </xs:sequence>
-      <xs:attributeGroup ref="genericPropertiesGroup" />
-      <xs:attribute name="type" type="xs:string" use="optional" default="chapter">
-        <xs:annotation>
-          <xs:documentation>
-            The type or role for the paragraph as in data-role or epub:type
-          </xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
-    </xs:complexType>
-  </xs:element>
-
-  <xs:element name="book">
-    <xs:annotation>
-      <xs:documentation>
-        The main book element and its children
-      </xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-      <xs:annotation>
-        <xs:documentation>
-          A sequence of one metadat section followed by 1 or more sections
-        </xs:documentation>
-      </xs:annotation>
-      <xs:sequence>
-        <xs:element ref="metadata" minOccurs="1" maxOccurs="1" />
-        <xs:element ref="section" minOccurs="1" maxOccurs="unbounded" />
-      </xs:sequence>
-      <xs:attributeGroup ref="genericPropertiesGroup" />
-    </xs:complexType>
-  </xs:element>
-</xs:schema>
+</xs:element>
 ```
 
+This covers the schema for our document type. It is not completed by any stretch of the imagination. It can be further customized to suit individual needs. The current version represents a very basic text heavy document type. 
 
-## Converting our content into other formats
-
-One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then we'll convert it to [XSL Formating Objects](http://www.xml.com/pub/a/2002/03/20/xsl-fo.html) and then using tools like [Apache FOP](http://xmlgraphics.apache.org/fop/) or [RenderX](http://www.renderx.com/tools/xep.html) we'll conver the XSL-FO into PDF
-
-### Why HTML
-
-### Why PDF
-
-
-## Creating our conversion stylesheets
-
-To convert our XML into other formats we will use XSL Transformations (also known as XSLT) [version 2](http://www.w3.org/TR/xslt) (a W3C standard) and [version 3](http://www.w3.org/TR/xslt-30/) (a W3C last call draft recommendation) where appropriate.
-
-XSLT is a functional language designer to transform XML into other markup vocabularies. It defines template rules that match elements in your source document and processing them to convert them to the target vocabulary. 
-
-In the XSLT example below, we do the following:
-
-1. match the root element to create the skeleton for our HTML content
-2. In the title we insert the content of the `metadata/title` element
-3. In the body we 'apply' the templates that match the content inside our document (more on this later)
-
-```xml
-<?xml version="1.0"?>
-<xsl:stylesheet 
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  version="2.0">
-  <xsl:template match="/">
-    <html>
-      <head>
-        <title><xsl:value-of select="metadata/title"/></title>
-        <link rel="stylesheet" href="css/style.css"/>
-        <script src="js/script.js"></script>
-      </head>
-      <body>
-        <xsl:apply-templates/>
-      </body>
-    </html>
-  </xsl:template>
-</xsl:stylesheet>
-```
-
-Once we have defined the structure of the document structure we can start building the rendering of our content. 
+There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs 
