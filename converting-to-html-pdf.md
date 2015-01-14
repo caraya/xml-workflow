@@ -1,8 +1,10 @@
 # Converting our content into other formats
 
-One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then we'll convert it to [XSL Formating Objects](http://www.xml.com/pub/a/2002/03/20/xsl-fo.html) and then using tools like [Apache FOP](http://xmlgraphics.apache.org/fop/) or [RenderX](http://www.renderx.com/tools/xep.html) we'll conver the XSL-FO into PDF
+One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then use tools like [PrinceXML](http://www.princexml.com) or [AntenaHouse](http://www.antennahouse.com) we'll convert the HTML/CSS files to PDF
 
 ## Why HTML
+
+HTML is the default format for the web and for most web/html based content such as 
 
 ## Why PDF
 
@@ -11,7 +13,7 @@ One of the biggest advantages of working with XML is that we can convert the abs
 
 To convert our XML into other formats we will use XSL Transformations (also known as XSLT) [version 2](http://www.w3.org/TR/xslt) (a W3C standard) and [version 3](http://www.w3.org/TR/xslt-30/) (a W3C last call draft recommendation) where appropriate.
 
-XSLT is a functional language designer to transform XML into other markup vocabularies. It defines template rules that match elements in your source document and processing them to convert them to the target vocabulary. 
+XSLT is a functional language designed to transform XML into other markup vocabularies. It defines template rules that match elements in your source document and processing them to convert them to the target vocabulary. 
 
 In the XSLT example below, we do the following:
 
@@ -39,4 +41,15 @@ In the XSLT example below, we do the following:
 </xsl:stylesheet>
 ```
 
+We could build the stylesheet as part of our root element. 
+
+Working with the stylesheet as part of the XSLT stylesheet allows the XSLT stylesheet designer to embed the style and parameterize the stylesheet, thus making the stylesheet customizable from the command line. 
+
+For all advantages, this method ties the styles for the project to the XSLT stylesheet and requires the XSLT stylesheet designer to be involved in all CSS updates.
+
 Once we have defined the structure of the document structure we can start building the rendering of our content. 
+
+## Working on content 
+
+
+
