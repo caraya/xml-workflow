@@ -1,55 +1,36 @@
-<?xml version="1.0"?>
-<xsl:stylesheet
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
+<?xml version="1.0" ?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
   <!-- Define the output for this and all document children -->
-  <xsl:output
-    name="xhtmlOutput"
-    method="xhtml"
-    indent="yes"
-    encoding="UTF-8"/>
+  <xsl:output name="xhtmlOutput" method="xhtml" indent="yes" encoding="UTF-8" />
   <!-- Root template, matching / -->
   <xsl:template match="/">
     <html>
-      <head>
-        <title><xsl:value-of select="metadata/title"/></title>
-        <link rel="stylesheet" href="css/style.css"/>
-        <script src="js/script.js"></script>
-      </head>
-      <body>
-        <xsl:apply-templates/>
-      </body>
+    <head>
+      <title>
+        <xsl:value-of select="metadata/title" />
+      </title>
+      <link rel="stylesheet" href="css/style.css" />
+      <script src="js/script.js"></script>
+    </head>
+
+    <body>
+      <xsl:apply-templates/>
+    </body>
+
     </html>
   </xsl:template>
 
   <xsl:template match="metadata">
-    <xsl:apply-templates/>
+    <div class="metadata">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
 
-  <xsl:template match="metadata" mode="content">
-    <!--
-      We don't care how the templates are applied. There is
-      no special processing needs for the content in this mode.
-    -->
-    <xsl:apply-templates/>
+  <xsl:template match="section">
+    <section>
+      <xsl:apply-templates/>
+    </section>
   </xsl:template>
-
-  <xsl:template match="section" mode="content">
-    <!--
-      Special processing to account for the chapter split and section
-      attributes in this mode
-    <xsl:if
-      test="section/@class">class="<value-of select="/book/section/@class"/>
-    </xsl:if>
-    <xsl:if
-      test="not(section/@class)"></xsl:if>
-    <xsl:if
-      test="section/@id">class="<value-of select="/book/section/@id"/>
-    </xsl:if>
-    <xsl:if
-      test="not(section/@id)">
-    </xsl:if>
-    -->
-  <xsl:apply-templates/>
 
   <xsl:template match="metadata/title">
     <h1> <xsl:value-of select="."/> </h1>
@@ -57,30 +38,56 @@
 
   <xsl:template match="metadata/authors">
     <xsl:for-each select="metadata/authors/author">
-      <xsl:value-of select="first_name"/>
-      <xsl:value-of select="surname"/>
-      <xsl:if test="position()!=last()">, </xsl:if>
-      <xsl:if test="position()-1">and </xsl:if>
+      <xsl:value-of select="first_name" />
+      <xsl:value-of select="surname" />
+      <xsl:if test="position()!=last()">,</xsl:if>
+      <xsl:if test="position()-1">and</xsl:if>
     </xsl:for-each>
   </xsl:template>
 
   <xsl:template match="metadata/editors">
-    <xsl:for-each select="metadata/editors/editor">
-      <xsl:value-of select="first_name"/>
-      <xsl:value-of select="surname"/> <xsl:text> - </xsl:text>
-      <xsl:value-of select="typeOfEditor"/>
+    <h2>Editorial Team</h2>
+    <ul class="no-bullet">
+      <xsl:for-each select="metadata/editors/editor">
+        <p>
+          <xsl:value-of select="first_name" />
+          <xsl:value-of select="surname" />
+          <xsl:text>-</xsl:text>
+          <xsl:value-of select="typeOfEditor" />
+        </p>
+      </xsl:for-each>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="metadata/otherRolea">
+    <xsl:for-each select="metadata/otherRoles/otherRoles">
+      <xsl:value-of select="first_name" />
+      <xsl:value-of select="surname" />
+      <xsl:text>-</xsl:text>
+      <xsl:value-of select="role" />
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="metadata/editors">
-    <xsl:for-each select="metadata/editors/editor">
-      <xsl:value-of select="first_name"/>
-      <xsl:value-of select="surname"/> <xsl:text> - </xsl:text>
-      <xsl:value-of select="typeOfEditor"/>
-    </xsl:for-each>
+  <xsl:template match="strong">
+    <strong></strong>
+  </xsl:template>
+
+  <xsl:template match="emphasis">
+    <emphasis></emphasis>
+  </xsl:template>
+
+  <xsl:template match="strike">
+    <strike></strike>
+  </xsl:template>
+
+  <xsl:template match="underline">
+    <u></u>
   </xsl:template>
 
   <xsl:template match="para">
-    <p> <xsl:apply-templates/> </p>
+    <p>
+      <xsl:apply-templates/>
+    </p>
   </xsl:template>
+
 </xsl:stylesheet>
