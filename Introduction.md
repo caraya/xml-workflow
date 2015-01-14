@@ -194,8 +194,6 @@ OtherRoles takes all other roles that are not author or editor and adds a role e
 </otherRole>
 ```
 
-
-
 We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters. 
 
 We'll look at links first as it is the simplest of our content structures. We borrow the `href` attribute from HTML to indicate the destination for the link and make it required. 
