@@ -68,26 +68,27 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="strong">
-    <strong></strong>
-  </xsl:template>
-
-  <xsl:template match="emphasis">
-    <emphasis></emphasis>
-  </xsl:template>
-
-  <xsl:template match="strike">
-    <strike></strike>
-  </xsl:template>
-
-  <xsl:template match="underline">
-    <u></u>
-  </xsl:template>
-
   <xsl:template match="para">
     <p>
       <xsl:apply-templates/>
     </p>
   </xsl:template>
+
+  <xsl:template match="strong">
+    <strong><xsl:apply-templates/></strong>
+  </xsl:template>
+
+  <xsl:template match="emphasis">
+    <emphasis><xsl:apply-templates/></emphasis>
+  </xsl:template>
+
+  <xsl:template match="strike">
+    <strike><xsl:apply-templates/></strike>
+  </xsl:template>
+
+  <xsl:template match="underline">
+    <u> <xsl:apply-templates/></u>
+  </xsl:template>
+
 
 </xsl:stylesheet>

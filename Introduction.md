@@ -5,9 +5,7 @@ category: Technology
 status: draft
 ---
 
-# XML workflows: From XML to PDF and how to get there
-
-One of the biggest limitations of markup languages, in my opinion, is how limiting they are. Even large vocabularies like [Docbook](http://docbook.org) are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)
+One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like [Docbook](http://docbook.org) are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)
 
 By creating our own markup vocabulary we can be as expressive as we need to be without adding additional complexity for writers and users and without adding unecessary complexity for the developers building the tools to interact with the markup.
 
@@ -83,7 +81,7 @@ We also allow the optional use of `class` and `id` attributes for the book by as
     </xs:annotation>
     <xs:restriction base="xs:unsignedLong">
         <xs:totalDigits value="10"/>
-        <xs:pattern value="\d{10}"/>
+        <xs:pattern value="d{10}"/>
     </xs:restriction>
 </xs:simpleType>
 
@@ -112,6 +110,39 @@ We also allow the optional use of `class` and `id` attributes for the book by as
     </xs:attribute>
 </xs:attributeGroup> 
 ```
+
+After I had finished my first version of the schema I discovered a problem. I was not able to nest style elements that are childre of paragraph. The following markup was not allowed in my book document:
+
+```xml
+<para>This is an example of <strong><emphasis>bold and italics together</emphasis></strong>.</para>
+```
+
+In order to acommodate nesting of the four basic styles available to our documents: `strong`, `emphasis`, `strike` and `underline` we had to do some juryriging of the elements to tell the schema what children are allowed for each element.  The schema look like this:
+
+```xml
+<xs:element name="strong">
+    <xs:complexType mixed="true">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="emphasis"/>
+            <xs:element ref="underline"/>
+            <xs:element ref="strike"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:element>
+    
+<xs:element name="emphasis">
+  <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="strong"/>
+          <xs:element ref="emphasis"/>
+          <xs:element ref="underline"/>
+          <xs:element ref="strike"/>
+      </xs:choice>
+  </xs:complexType>
+</xs:element>
+```
+
+The `emphasis` element is the only one that allows the same element to be nested. When nesting emphasis elements they cancel each other 
 
 The next stage is to define elements to create our 'people' types.  We create a base person element and then create three role elements based on person. 
 
@@ -193,6 +224,8 @@ OtherRoles takes all other roles that are not author or editor and adds a role e
   <role>Researcher</role>
 </otherRole>
 ```
+
+
 
 We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters. 
 
@@ -489,4 +522,4 @@ As with all our elements we add `class` and `ID` from our genericPropertiesGroup
 
 This covers the schema for our document type. It is not completed by any stretch of the imagination. It can be further customized to suit individual needs. The current version represents a very basic text heavy document type. 
 
-There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs 
+There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs </ul></ol>

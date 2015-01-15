@@ -162,10 +162,80 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            
         </xs:complexType>
     </xs:element>
     
+    <xs:element name="strong">
+        <xs:annotation>
+            <xs:documentation>
+                The strong element can have 0 or more children chosen form: emphasis, underline and span
+                
+                Nested strong elements are not allowed
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="emphasis"/>
+                <xs:element ref="underline"/>
+                <xs:element ref="strike"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="emphasis">
+        <xs:annotation>
+            <xs:documentation>
+                The emphasis element can have 0 or more children chosen form: strong, emphasis, underline and span
+                
+                Nested emphasis elements ARE allowed. Emphasis inside emphasis cancels out and displays as normal text
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="strong"/>
+                <xs:element ref="emphasis"/>
+                <xs:element ref="underline"/>
+                <xs:element ref="strike"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    
+    
+    <xs:element name="underline">
+        <xs:annotation>
+            <xs:documentation>
+                The emphasis element can have 0 or more children chosen form: strong, emphasis, underline and span
+                
+                Nested underline elements are not allowed
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="strong"/>
+                <xs:element ref="emphasis"/>
+                <xs:element ref="strike"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="strike">
+        <xs:annotation>
+            <xs:documentation>
+                The emphasis element can have 0 or more children chosen form: strong, emphasis, underline and span
+                
+                Nested strike elements are not allowed.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="strong"/>
+                <xs:element ref="emphasis"/>
+                <xs:element ref="underline"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="list">
         <xs:annotation>
             <xs:documentation>
@@ -223,13 +293,15 @@
                         
                         We can use any of these elements inside paragraph in no particular order 
                         0 or more times (no maximum)
+                        
+                        Researching how to handle nested styles and whether the model below 
+                        would handle nested children
                     </xs:documentation>
                 </xs:annotation>
-                <xs:element name="strong" type="xs:token"/>
-                <xs:element name="emphasis" type="xs:token"/>
-                <xs:element name="underline" type="xs:token"/>
-                <xs:element name="strike" type="xs:token"/>
-                <xs:element name="span" type="xs:token"/>
+                <xs:element ref="strong"/>
+                <xs:element ref="emphasis"/>
+                <xs:element ref="underline"/>
+                <xs:element ref="strike"/>
                 <xs:element ref="link"/>
             </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
@@ -268,8 +340,9 @@
                 <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
                 <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>                
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
-                    <xs:element ref="code" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element ref="list" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="image"/>
+                    <xs:element ref="code"/>
+                    <xs:element ref="list"/>
                 </xs:choice>
             </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
