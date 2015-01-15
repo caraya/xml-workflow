@@ -29,7 +29,7 @@
 
         <image src="images/xml.png" alt="xml document"/>
 
-        <code language="html" class="code-sample" id="js1">
+        <code language="javascript" class="code-sample" id="js1">
             'use strict';
 
             /* globals module */
@@ -42,9 +42,9 @@
             pkg: grunt.file.readJSON('package.json'),
 
             csslint: {
-            options: {
-            csslintrc: 'samples/web/.csslintrc'
-            },
+                options: {
+                    csslintrc: 'samples/web/.csslintrc'
+                },
             strict: {
             options: {
             import: 2
@@ -141,7 +141,6 @@
             // also possible to call JavaScript directly in registerTask()
             // or to call external tasks with grunt.loadTasks()
             };
-
         </code>
     </section>
     <section>

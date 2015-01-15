@@ -1,13 +1,18 @@
-# Converting our content into other formats
+# Converting our content to HTML
 
 One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then use tools like [PrinceXML](http://www.princexml.com) or [AntenaHouse](http://www.antennahouse.com) we'll convert the HTML/CSS files to PDF
 
 ## Why HTML
 
-HTML is the default format for the web and for most web/html based content such as 
+HTML is the default format for the web and for most web/html based content such as ePub and Kindle. As such it makes a perfect candidate to explore how to generate it programatically from a single source file. 
+
+HTML will also act as our source for using CSS paged media to create PDF cotnent.
 
 ## Why PDF
 
+Rather than having to deal with [XSL-FO](http://www.w3.org/TR/2006/REC-xsl11-20061205/), another XML based vocabulary to create PDF content, we'll use XSLT to create another HTML file and process it with [CSS Paged Media](http://dev.w3.org/csswg/css-page-3/) and the companion [Generated Content for Paged Media](http://www.w3.org/TR/css-gcpm-3/) specifications to create PDF content. 
+
+In this document we'll concentrated on the XSLT to HTML conversion and will defer the conversion from HTML to PDF to a different document.
 
 # Creating our conversion stylesheets
 
@@ -45,11 +50,13 @@ We could build the stylesheet as part of our root element.
 
 Working with the stylesheet as part of the XSLT stylesheet allows the XSLT stylesheet designer to embed the style and parameterize the stylesheet, thus making the stylesheet customizable from the command line. 
 
-For all advantages, this method ties the styles for the project to the XSLT stylesheet and requires the XSLT stylesheet designer to be involved in all CSS updates.
+For all advantages, this method ties the styles for the project to the XSLT stylesheet and requires the XSLT stylesheet designer to be involved in all CSS updates. 
+
+By linking to external CSS and Javascript files we can leverage expertise independent of the Schema and XSLT stylesheets. Book designers can work on the CSS, UX and experience designers can work on Javascript and additional CSS areas, book designers can work on the Paged Media stylesheets and authors can just write.
 
 Once we have defined the structure of the document structure we can start building the rendering of our content. 
 
-## Working on content 
+## Working on content with XSLT
 
 
 
