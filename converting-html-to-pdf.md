@@ -1,3 +1,9 @@
+---
+title: Converting HTML to PDF
+date: 2015-01-13
+category: Technology
+status: draft
+---
 # Concerting HTML to PDF
 
 Rather than having to deal with [XSL-FO](http://www.w3.org/TR/2006/REC-xsl11-20061205/), another XML based vocabulary to create PDF content, we'll use XSLT to create another HTML file and process it with [CSS Paged Media](http://dev.w3.org/csswg/css-page-3/) and the companion [Generated Content for Paged Media](http://www.w3.org/TR/css-gcpm-3/) specifications to create PDF content. 

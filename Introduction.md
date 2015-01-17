@@ -1,6 +1,5 @@
 ---
-title: XML workflows: From XML to PDF and how to get there
-date: 2015-01-13
+title: XML workflows: The Schema
 category: Technology
 status: draft
 ---
@@ -86,15 +85,15 @@ We also allow the optional use of `class` and `id` attributes for the book by as
 </xs:simpleType>
 
 <xs:simpleType name="align">
-    <xs:annotation>
-        <xs:documentation>Attribute ennumeration for elements that can be aligned</xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:token">
-        <xs:enumeration value="left"/>
-        <xs:enumeration value="center"/>
-        <xs:enumeration value="right"/>
-        <xs:enumeration value="justify"/>
-    </xs:restriction>
+  <xs:annotation>
+    <xs:documentation>Attribute ennumeration for elements that can be aligned</xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token">
+    <xs:enumeration value="left"/>
+    <xs:enumeration value="center"/>
+    <xs:enumeration value="right"/>
+    <xs:enumeration value="justify"/>
+  </xs:restriction>
 </xs:simpleType>
 
 <xs:attributeGroup name="genericPropertiesGroup">
@@ -144,7 +143,7 @@ In order to acommodate nesting of the four basic styles available to our documen
 
 The `emphasis` element is the only one that allows the same element to be nested. When nesting emphasis elements they cancel each other 
 
-The next stage is to define elements to create our 'people' types.  We create a base person element and then create three role elements based on person. 
+The next stage is to define elements to create our 'people' types.  We create a base person element and then create three role elements based on person. We will use this next to define groups for each role.
 
 ```xml
 <!-- complex types to create groups of similar person items -->
@@ -161,6 +160,45 @@ The next stage is to define elements to create our 'people' types.  We create a 
     <xs:attribute name="id" type="xs:ID" use="optional"/>
 </xs:complexType>
 
+<xs:complexType name="author">
+  <xs:annotation>
+    <xs:documentation>Wrapper to get more than one author</xs:documentation>
+  </xs:annotation>
+  <xs:choice minOccurs="1" maxOccurs="unbounded">
+    <xs:element name="author" type="person"/>
+  </xs:choice>
+</xs:complexType>
+
+<xs:complexType name="editor">
+  <xs:annotation>
+    <xs:documentation>extension to person to indicate editor and his/her role</xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+    <xs:extension base="person">
+      <xs:sequence>
+        <xs:element name="type" type="xs:token"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="otherRole">
+  <xs:annotation>
+    <xs:documentation>extension to person to accomodate roles other than author and editor</xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+    <xs:extension base="person">
+      <xs:sequence minOccurs="1" maxOccurs="1">
+        <xs:element name="role" type="xs:token"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+```
+
+Next we create wrappers for each group as `authors`, `editors` and `otherRoles` so we can provide easier styling with XSLT and CSS later on.
+
+```xml
 <xs:complexType name="authors">
     <xs:annotation>
         <xs:documentation>Wrapper to get more than one author</xs:documentation>
@@ -224,8 +262,6 @@ OtherRoles takes all other roles that are not author or editor and adds a role e
   <role>Researcher</role>
 </otherRole>
 ```
-
-
 
 We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters. 
 
@@ -522,4 +558,4 @@ As with all our elements we add `class` and `ID` from our genericPropertiesGroup
 
 This covers the schema for our document type. It is not completed by any stretch of the imagination. It can be further customized to suit individual needs. The current version represents a very basic text heavy document type. 
 
-There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs </ul></ol>
+There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs.

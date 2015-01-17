@@ -1,0 +1,3588 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:annotation>
+        <xsd:documentation>
+           <![CDATA[
+             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+             X                                                       X
+             X     XML Schema simpleType Definition of an ISBN       X
+             X                                                       X
+             X         Authors: Roger Costello                       X
+             X                  Roger Sperberg                       X
+             X                                                       X
+             XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+             The format of an ISBN is:
+             1 -- it is always 10 characters long
+             2 -- it's broken into 4 parts, and these four parts   
+                  always appear separated with hyphens or spaces.
+             3 -- the four parts are:
+                    - group/country identifier
+                    - publisher identifier
+                    - number assigned to a specific title in one format 
+                      (formally called the title identifier)
+                    - a check digit
+             4 -- parts 1, 2 and 3 are variable-length and digits only 
+                  and comprise 9 characters
+             5 -- the check digit is a digit or X (which represents 10)
+             6 -- the check digit is calculated in this fashion:
+                  multiply the first digit in the ISBN by 10, the second 
+                  by 9, the third by 8 and so on, to the 9th digit, which 
+                  you multiply by 2. Add these numbers together. This sum 
+                  plus the check digit must equal the next greatest multiple 
+                  of 11. If the sum is 10 less than that next greatest multiple, 
+                  use X (which thus stands for the "digit" 10).
+             7 -- As noted, 3 hyphens (or spaces; hyphens are recommended) 
+                  should separate the four parts of the ISBN. Since the last 
+                  hyphen precedes the check digit, it always goes between 
+                  the 9th and 10th characters. 
+
+                  The following table indicates the group/country identifier
+                  for each country. 
+ 
+                  0/1 English - (UK, US, Australia, NZ, Canada,South Africa, Zimbabwe) [Ireland, Puerto Rico, Swaziland]
+                  2 French    (France, Belgium, Canada, Switzerland)[and Luxembourg]
+                  3 German    (Germany, Austria, Switzerland)
+                  4 Japan
+                  5 USSR [Now identified as Russian Federation, including these 
+                    countries, many of which also have other codes: Azerbaijan, 
+                    Tajikistan, Turkmenistan, Uzbekistan, Armenia (9930), 
+                    Belarus (985), Estonia (9985), Georgia (99928), 
+                    Kazakhstan (9965), Kyrgyzstan (9967), Latvia (9984), 
+                    Lithuania (9986), Moldova (9975), Ukraine (966)]
+                  7 China
+                  80 Czechoslovakia [Czech Republic and Slovakia]
+                  81 India (see also 93)
+                  82 Norway
+                  83 Poland
+                  84 Spain
+                  85 Brazil
+                  86 Yugoslavia [Yugoslavia and Bosnia and Herzegovina (9958), 
+                     Croatia (953), Macedonia (9989),Slovenia (961)]
+                  87 Denmark
+                  88 Italian   (Italy, Switzerland)
+                  89 South Korea
+                  90 Dutch/Flemish
+                  91 Sweden
+                  92 International (UNESCO)
+                  93 India (see also 81)
+                  950 Argentina
+                  951 Finland
+                  952 Finland
+                  953 Croatia
+                  954 Bulgaria
+                  955 Sri Lanka
+                  956 Chile
+                  957 Taiwan [see also 986]
+                  958 Colombia
+                  959 Cuba
+                  960 Greece
+                  961 Slovenia
+                  962 Hong Kong
+                  963 Hungary
+                  964 Iran 
+                  965 Israel 
+                  966 Ukraine 
+                  967 Malaysia (see also 983)
+                  968 Mexico (see also 970)
+                  969 Pakistan
+                  970 Mexico (see also 968)
+                  971 Philippines
+                  972 Portugal
+                  973 Romania
+                  974 Thailand
+                  975 Turkey
+                  976 Caribbean: AG,BS,BB,BZ,DM,GD,GY,JM,MS,KN,LC,VC,TT
+                  977 Egypt
+                  978 Nigeria
+                  979 Indonesia
+                  980 Venezuela
+                  981 Singapore (see also 9971)
+                  982 Pacific: CK,FJ,KI,NR,NU,SB,TK,TO,TV,VU,WS
+                  983 Malaysia (see also 967)
+                  984 Bangladesh
+                  985 Belarus986 Taiwan [see also 957; new]
+                  987 Argentina
+                  9952 Azerbaijan 
+                  9953 Lebanon 
+                  9954 Morocco (see also 9981)) 
+                  9955 Lithuania (See also 9986) 
+                  9956 Cameroon 
+                  9957 Jordan
+                  9958 Bosnia and Herzegovina 
+                  9959 Libya 
+                  9960 Saudi Arabia
+                  9961 Algeria 
+                  9962 Panama 
+                  9963 Cyprus
+                  9964 Ghana
+                  9965 Kazakhstan 
+                  9966 Kenya
+                  9967 Kyrgyzstan 
+                  9968 Costa Rica (see also 9977)
+                  9970 Uganda
+                  9971 Singapore (see also 981)
+                  9972 Syria
+                  9973 Tunisia
+                  9974 Uruguay
+                  9975 Moldova 
+                  9976 Tanzania (see also 9987)
+                  9977 Costa Rica (see also 9968)
+                  9978 Ecuador
+                  9979 Iceland
+                  9980 Papua New Guinea
+                  9981 Morocco [see also 9954]
+                  9982 Zambia
+                  9983 Gambia
+                  9984 Latvia
+                  9985 Estonia
+                  9986 Lithuania [see also 9955]
+                  9987 Tanzania (see also 9976)
+                  9988 Ghana
+                  9989 Macedonia
+                  99901 Bahrain 
+                  99903 Mauritius
+                  99904 Netherlands Antilles [Aruba, Neth. Antilles]
+                  99908 Malawi
+                  99909 Malta [see also 99932]
+                  99910 Sierra Leone 
+                  99911 Lesotho
+                  99912 Botswana
+                  99913 Andorra (see also 99920)
+                  99914 Suriname
+                  99915 Maldives
+                  99916 Namibia
+                  99917 Brunei [Brunei Darussalam]
+                  99918 Faroe Islands 
+                  99919 Benin 
+                  99920 Andorra (see also 99913)
+                  99921 Qatar
+                  99922 Guatemala
+                  99923 El Salvador
+                  99924 Nicaragua
+                  99925 Paraguay
+                  99926 Honduras
+                  99927 Albania
+                  99928 Georgia
+                  99929 Mongolia
+                  99930 Armenia 
+                  99931 Seychelles
+                  99932 Malta (see also 99909)
+                  99933 Nepal
+                  99935 Dominican Republic
+                  99936 Bhutan
+                  99937 Macau
+ 
+                  Position of the first digit (or space) -- if the first 
+                  digit is 0-7, the first separator goes between the 1st 
+                  and 2nd characters. If it's an 8, it goes between the 2nd 
+                  and 3rd characters.
+ 
+                  If the first two characters are 90-93 the separator goes 
+                  between the 2nd and 3rd characters. If it's 95, it goes 
+                  between the 3rd and 4th characters (that is, if the first 
+                  three characters are 950-959). If the first two characters 
+                  are 94, we don't know where it goes. But actually we know 
+                  then that it's an invalid ISBN, because that identifier 
+                  hasn't been assigned. 
+ 
+             8 -- Blocks of ISBNs are assigned to publishers in groups of 
+                  10, 100, 1000, 10,000, 100,000 or 1,000,000. These carve up 
+                  the possible ISBNs in an interesting fashion.
+ 
+                  For instance, for the largest publishers you could make 
+                  this calculation -- going from the back, one character for 
+                  the check digit, 6 for one million titles, and in 
+                  English-speaking countries, 0 or 1 for the group/country 
+                  identifier. That leaves 2 digits for the publisher code.
+ 
+                  So you might imagine that there are 100 possible publisher 
+                  codes that could be assigned one million title codes. However, 
+                  only the first 20 (00-19) have been reserved for such large 
+                  publishers.
+ 
+                  Thus if the first three characters are 015, you know that in 
+                  fact the first two hyphens should appear as 0-15- ...  There 
+                  are no smaller publishers whose publisher code begins with a 1, 
+                  and no largest ones that begin with a 2 or greater.
+ 
+                  Thus in English we know that: 
+ 
+                  Country     Publisher ID  If number ranges   Insert hyphen  Block Size
+                                             are between:     after the: 
+                  ----------------------------------------------------------------------    
+                  0           00.......19         00-19        3rd digit      1,000,000 
+                  0           200......699        20-69        4th digit      100,000 
+                  0           7000.....8499       70-84        5th digit      10,000 
+                  0           85000....89999      85-89        6th digit      1,000 
+                  0           900000...949999     90-94        7th digit      100 
+                  0           9500000..9999999    95-99        8th digit      10 
+                  1           55000....86979      5500-8697    6th digit      1,000 
+                  1           869800...998999     8698-9989    7th digit      100 
+                  1           9990000..9999999    9990-9999    8th digit      10 
+
+ 
+                  That is, for English-speaking countries, we know where the 
+                  middle hyphen goes because we can tell how long the publisher 
+                  identifier is by its makeup.  The second hyphen goes between 
+                  the 3rd and 4th characters if the ISBN begins 000-019; between 
+                  the 4th and 5th characters if it begins 020-069 [which is to say, 
+                  begins 0200-0699]; and so on.
+               ]]>
+ 
+       </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleType name="ISBN-type">
+        <xsd:annotation>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X     ISBN definition for English-speaking Countries    X
+                 X     (see below for non-English-speaking countries)    X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+        </xsd:annotation>
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="0-[0-1][0-9]-\d{6}-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 00...19 (hyphen after the 3rd digit)
+                        Block size = 1,000,000 (requires 6 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0\s[0-1][0-9]\s\d{6}\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 00...19 (space after the 3rd digit)
+                        Block size = 1,000,000 (requires 6 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0-[2-6][0-9]{2}-\d{5}-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 200...699 (hyphen after the 4th digit)
+                        Block size = 100,000 (requires 5 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0\s[2-6][0-9]{2}\s\d{5}\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 200...699 (space after the 4th digit)
+                        Block size = 100,000 (requires 5 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0-(7[0-9]{3}|8[0-4][0-9]{2})-\d{4}-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 7000...8499 (hyphen after the 5th digit)
+                        Block size = 10,000 (requires 4 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0\s(7[0-9]{3}|8[0-4][0-9]{2})\s\d{4}\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 7000...8499 (space after the 5th digit)
+                        Block size = 10,000 (requires 4 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0-8[5-9][0-9]{3}-\d{3}-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 85000...89999 (hyphen after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0\s8[5-9][0-9]{3}\s\d{3}\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 85000...89999 (space after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0-9[0-4][0-9]{4}-\d{2}-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 900000...949999 (hyphen after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0\s9[0-4][0-9]{4}\s\d{2}\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 900000...949999 (space after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0-9[5-9][0-9]{5}-\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 9500000...9999999 (hyphen after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="0\s9[5-9][0-9]{5}\s\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 9500000...9999999 (space after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="1-(55[0-9]{3}|[6-7][0-9]{4}|8[0-6][0-8][0-9]{2}|869[0-7][0-9])-\d{3}-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 1 (hyphen after the 1st digit)
+                        Publisher ID = 55000...86979 (hyphen after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="1\s(55[0-9]{3}|[6-7][0-9]{4}|8[0-6][0-8][0-9]{2}|869[0-7][0-9])\s\d{3}\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 1 (space after the 1st digit)
+                        Publisher ID = 55000...86979 (space after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="1-(8698[0-9]{2}|8[7-9][0-9]{4}|9[0-8][0-9]{4}|99[0-8][0-9]{3})-\d{2}-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 1 (hyphen after the 1st digit)
+                        Publisher ID = 869800...998999 (hyphen after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="1\s(8698[0-9]{2}|8[7-9][0-9]{4}|9[0-8][0-9]{4}|99[0-8][0-9]{3})\s\d{2}\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 1 (space after the 1st digit)
+                        Publisher ID = 869800...998999 (space after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="1-999[0-9]{4}-\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 1 (hyphen after the 1st digit)
+                        Publisher ID = 9990000...9999999 (hyphen after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="1\s999[0-9]{4}\s\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 1 (space after the 1st digit)
+                        Publisher ID = 9990000...9999999 (space after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X  ISBN definition for non-English-speaking Countries   X
+                 X                                                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       French                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="2-\d([0-9]|-){7}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 2 (hyphen after the 1st digit)
+                        Country = France, Belgium, Canada, Switzerland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="2\s\d([0-9]|\s){7}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 2 (space after the 1st digit)
+                        Country = France, Belgium, Canada, Switzerland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       German                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="3-\d([0-9]|-){7}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 3 (hyphen after the 1st digit)
+                        Country = Germany, Austria, Switzerland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="3\s\d([0-9]|\s){7}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 3 (space after the 1st digit)
+                        Country = Germany, Austria, Switzerland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Japanese                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="4-\d([0-9]|-){7}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 4 (hyphen after the 1st digit)
+                        Country = Japan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="4\s\d([0-9]|\s){7}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 4 (space after the 1st digit)
+                        Country = Japan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       USSR                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="5-\d([0-9]|-){7}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 5 (hyphen after the 1st digit)
+                        Country = Russian Federation countries
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="5\s\d([0-9]|\s){7}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 5 (space after the 1st digit)
+                        Country = Russian Federation countries
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       China                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="7-\d([0-9]|-){7}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 7 (hyphen after the 1st digit)
+                        Country = China
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="7\s\d([0-9]|\s){7}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 7 (space after the 1st digit)
+                        Country = China
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Czechoslovakia                  X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="80-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 80 (hyphen after the 2nd digit)
+                        Country = Czech Republic and Slovakia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="80\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 80 (space after the 2nd digit)
+                        Country = Czech Republic and Slovakia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       India                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="81-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 81 (hyphen after the 2nd digit)
+                        Country = India
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="81\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 81 (space after the 2nd digit)
+                        Country = India
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Norway                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="82-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 82 (hyphen after the 2nd digit)
+                        Country = Norway
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="82\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 82 (space after the 2nd digit)
+                        Country = Norway
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Poland                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="83-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 83 (hyphen after the 2nd digit)
+                        Country = Norway
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="83\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 83 (space after the 2nd digit)
+                        Country = Norway
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Spain                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="84-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 84 (hyphen after the 2nd digit)
+                        Country = Spain
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="84\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 84 (space after the 2nd digit)
+                        Country = Spain
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Brazil                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="85-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 85 (hyphen after the 2nd digit)
+                        Country = Brazil
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="85\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 85 (space after the 2nd digit)
+                        Country = Brazil
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Yugoslavia                      X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="86-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 86 (hyphen after the 2nd digit)
+                        Country = Yugoslavia, Bosnia, Herzegovina, Croatia, Macedonia, Slovenia  
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="86\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 86 (space after the 2nd digit)
+                        Country = Yugoslavia, Bosnia, Herzegovina, Croatia, Macedonia, Slovenia 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Denmark                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="87-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 87 (hyphen after the 2nd digit)
+                        Country = Denmark  
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="87\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 87 (space after the 2nd digit)
+                        Country = Denmark
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Italian                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="88-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 88 (hyphen after the 2nd digit)
+                        Country = Italy, Switzerland  
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="88\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 88 (space after the 2nd digit)
+                        Country = Italy, Switzerland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       South Korea                     X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="89-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 89 (hyphen after the 2nd digit)
+                        Country = South Korea  
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="89\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 89 (space after the 2nd digit)
+                        Country = South Korea
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Dutch/Flemish                   X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="90-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 90 (hyphen after the 2nd digit)
+                        Country =  
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="90\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 90 (space after the 2nd digit)
+                        Country = 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Sweden                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="91-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 91 (hyphen after the 2nd digit)
+                        Country = Sweden
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="91\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 91 (space after the 2nd digit)
+                        Country = Sweden
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                 International (UNESCO)                X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="92-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 92 (hyphen after the 2nd digit)
+                        Country = 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="92\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 92 (space after the 2nd digit)
+                        Country = 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       India                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="93-\d([0-9]|-){6}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 93 (hyphen after the 2nd digit)
+                        Country = India
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="93\s\d([0-9]|\s){6}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 93 (space after the 2nd digit)
+                        Country = India
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Argentina                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="950-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 950 (hyphen after the 3rd digit)
+                        Country = Argentina
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="950\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 950 (space after the 3rd digit)
+                        Country = Argentina
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Finland                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="951-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 951 (hyphen after the 3rd digit)
+                        Country = Finland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="951\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 951 (space after the 3rd digit)
+                        Country = Finland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Finland                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="952-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 952 (hyphen after the 3rd digit)
+                        Country = Finland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="952\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 952 (space after the 3rd digit)
+                        Country = Finland
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Croatia                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="953-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 953 (hyphen after the 3rd digit)
+                        Country = Croatia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="953\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 953 (space after the 3rd digit)
+                        Country = Croatia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Bulgaria                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="954-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 954 (hyphen after the 3rd digit)
+                        Country = Bulgaria
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="954\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 954 (space after the 3rd digit)
+                        Country = Bulgaria
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Sri Lanka                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="955-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 955 (hyphen after the 3rd digit)
+                        Country = Sri Lanka
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="955\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 955 (space after the 3rd digit)
+                        Country = Sri Lanka
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Chile                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="956-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 956 (hyphen after the 3rd digit)
+                        Country = Chile
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="956\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 956 (space after the 3rd digit)
+                        Country = Chile
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Taiwan                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="957-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 957 (hyphen after the 3rd digit)
+                        Country = Taiwan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="957\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 957 (space after the 3rd digit)
+                        Country = Taiwan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Colombia                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="958-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 958 (hyphen after the 3rd digit)
+                        Country = Colombia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="958\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 958 (space after the 3rd digit)
+                        Country = Colombia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Cuba                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="959-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 959 (hyphen after the 3rd digit)
+                        Country = Cuba
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="959\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 959 (space after the 3rd digit)
+                        Country = Cuba
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Greece                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="960-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 960 (hyphen after the 3rd digit)
+                        Country = Greece
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="960\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 960 (space after the 3rd digit)
+                        Country = Greece
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Slovenia                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="961-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 961 (hyphen after the 3rd digit)
+                        Country = Slovenia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="961\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 961 (space after the 3rd digit)
+                        Country = Slovenia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Hong Kong                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="962-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 962 (hyphen after the 3rd digit)
+                        Country = Hong Kong
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="962\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 962 (space after the 3rd digit)
+                        Country = Hong Kong
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Hungary                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="963-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 963 (hyphen after the 3rd digit)
+                        Country = Hong Kong
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="963\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 963 (space after the 3rd digit)
+                        Country = Hong Kong
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Iran                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="964-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 964 (hyphen after the 3rd digit)
+                        Country = Iran
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="964\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 964 (space after the 3rd digit)
+                        Country = Iran
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Israel                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="965-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 965 (hyphen after the 3rd digit)
+                        Country = Israel
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="965\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 965 (space after the 3rd digit)
+                        Country = Israel
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Ukraine                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="966-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 966 (hyphen after the 3rd digit)
+                        Country = Ukraine
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="966\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 966 (space after the 3rd digit)
+                        Country = Ukraine
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Malaysia                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="967-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 967 (hyphen after the 3rd digit)
+                        Country = Malaysia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="967\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 967 (space after the 3rd digit)
+                        Country = Malaysia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Mexico                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="968-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 968 (hyphen after the 3rd digit)
+                        Country = Mexico
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="968\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 968 (space after the 3rd digit)
+                        Country = Mexico
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Pakistan                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="969-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 969 (hyphen after the 3rd digit)
+                        Country = Pakistan 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="969\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 969 (space after the 3rd digit)
+                        Country = Pakistan 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Mexico                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="970-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 970 (hyphen after the 3rd digit)
+                        Country = Mexico 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="970\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 970 (space after the 3rd digit)
+                        Country = Mexico 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Philippines                     X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="971-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 971 (hyphen after the 3rd digit)
+                        Country = Philippines 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="971\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 971 (space after the 3rd digit)
+                        Country = Philippines 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Portugal                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="972-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 972 (hyphen after the 3rd digit)
+                        Country = Portugal 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="972\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 972 (space after the 3rd digit)
+                        Country = Portugal 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Romania                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="973-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 973 (hyphen after the 3rd digit)
+                        Country = Romania 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="973\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 973 (space after the 3rd digit)
+                        Country = Romania 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Thailand                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="974-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 974 (hyphen after the 3rd digit)
+                        Country = Thailand 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="974\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 974 (space after the 3rd digit)
+                        Country = Thailand 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Turkey                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="975-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 975 (hyphen after the 3rd digit)
+                        Country = Turkey 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="975\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 975 (space after the 3rd digit)
+                        Country = Turkey 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Caribbean                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="976-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 976 (hyphen after the 3rd digit)
+                        Country = AG,BS,BB,BZ,DM,GD,GY,JM,MS,KN,LC,VC,TT 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="976\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 976 (space after the 3rd digit)
+                        Country = AG,BS,BB,BZ,DM,GD,GY,JM,MS,KN,LC,VC,TT
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Egypt                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="977-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 977 (hyphen after the 3rd digit)
+                        Country = Egypt 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="977\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 977 (space after the 3rd digit)
+                        Country = Egypt
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Nigeria                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="978-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 978 (hyphen after the 3rd digit)
+                        Country = Nigeria 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="978\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 978 (space after the 3rd digit)
+                        Country = Nigeria
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Indonesia                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="979-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 979 (hyphen after the 3rd digit)
+                        Country = Indonesia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="979\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 979 (space after the 3rd digit)
+                        Country = Indonesia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Venezuela                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="980-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 980 (hyphen after the 3rd digit)
+                        Country = Venezuela
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="980\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 980 (space after the 3rd digit)
+                        Country = Venezuela
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Singapore                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="981-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 981 (hyphen after the 3rd digit)
+                        Country = Singapore
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="981\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 981 (space after the 3rd digit)
+                        Country = Singapore
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Pacific                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="982-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 982 (hyphen after the 3rd digit)
+                        Country = CK,FJ,KI,NR,NU,SB,TK,TO,TV,VU,WS
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="982\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 982 (space after the 3rd digit)
+                        Country = CK,FJ,KI,NR,NU,SB,TK,TO,TV,VU,WS
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Malaysia                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="983-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 983 (hyphen after the 3rd digit)
+                        Country = Malaysia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="983\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 983 (space after the 3rd digit)
+                        Country = Malaysia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Bangladesh                      X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="984-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 984 (hyphen after the 3rd digit)
+                        Country = Bangladesh
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="984\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 984 (space after the 3rd digit)
+                        Country = Bangladesh
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Belarus                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="985-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 985 (hyphen after the 3rd digit)
+                        Country = Belarus
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="985\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 985 (space after the 3rd digit)
+                        Country = Belarus
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Taiwan                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="986-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 986 (hyphen after the 3rd digit)
+                        Country = Taiwan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="986\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 986 (space after the 3rd digit)
+                        Country = Taiwan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Argentina                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="987-\d([0-9]|-){5}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 987 (hyphen after the 3rd digit)
+                        Country = Argentina
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="987\s\d([0-9]|\s){5}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 987 (space after the 3rd digit)
+                        Country = Argentina
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Azerbaijan                      X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9952-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9952 (hyphen after the 4th digit)
+                        Country = Azerbaijan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9952\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9952 (space after the 4th digit)
+                        Country = Azerbaijan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Lebanon                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9953-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9953 (hyphen after the 4th digit)
+                        Country = Lebanon
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9953\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9953 (space after the 4th digit)
+                        Country = Lebanon
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Morocco                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9954-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9954 (hyphen after the 4th digit)
+                        Country = Morocco
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9954\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9954 (space after the 4th digit)
+                        Country = Morocco
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Lithuania                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9955-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9955 (hyphen after the 4th digit)
+                        Country = Lithuania
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9955\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9955 (space after the 4th digit)
+                        Country = Lithuania
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Cameroon                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9956-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9956 (hyphen after the 4th digit)
+                        Country = Cameroon
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9956\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9956 (space after the 4th digit)
+                        Country = Cameroon
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                       Jordan                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9957-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9957 (hyphen after the 4th digit)
+                        Country = Jordan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9957\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9957 (space after the 4th digit)
+                        Country = Jordan
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                Bosnia and Herzegovina                 X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9958-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9958 (hyphen after the 4th digit)
+                        Country = Bosnia and Herzegovina
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9958\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9958 (space after the 4th digit)
+                        Country = Bosnia and Herzegovina
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                        Libya                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9959-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9959 (hyphen after the 4th digit)
+                        Country = Libya
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9959\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9959 (space after the 4th digit)
+                        Country = Libya
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                    Saudi Arabia                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9960-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9960 (hyphen after the 4th digit)
+                        Country = Saudi Arabia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9960\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9960 (space after the 4th digit)
+                        Country = Saudi Arabia
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Algeria                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9961-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9961 (hyphen after the 4th digit)
+                        Country = Algeria
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9961\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9961 (space after the 4th digit)
+                        Country = Algeria
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Panama                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9962-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9962 (hyphen after the 4th digit)
+                        Country = Panama
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9962\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9962 (space after the 4th digit)
+                        Country = Panama
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Cyprus                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9963-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9963 (hyphen after the 4th digit)
+                        Country = Cyprus
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9963\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9963 (space after the 4th digit)
+                        Country = Cyprus
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Ghana                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9964-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9964 (hyphen after the 4th digit)
+                        Country = Ghana 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9964\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9964 (space after the 4th digit)
+                        Country = Ghana 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Kazakhstan                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9965-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9965 (hyphen after the 4th digit)
+                        Country = Kazakhstan 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9965\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9965 (space after the 4th digit)
+                        Country = Kazakhstan 
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Kenya                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9966-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9966 (hyphen after the 4th digit)
+                        Country = Kenya      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9966\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9966 (space after the 4th digit)
+                        Country = Kenya      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Kyrgyzstan                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9967-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9967 (hyphen after the 4th digit)
+                        Country = Kyrgyzstan      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9967\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9967 (space after the 4th digit)
+                        Country = Kyrgyzstan      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Costa Rica                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9968-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9968 (hyphen after the 4th digit)
+                        Country = Costa Rica      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9968\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9968 (space after the 4th digit)
+                        Country = Costa Rica      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Uganda                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9970-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9970 (hyphen after the 4th digit)
+                        Country = Uganda      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9970\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9970 (space after the 4th digit)
+                        Country = Uganda      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Singapore                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9971-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9971 (hyphen after the 4th digit)
+                        Country = Singapore      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9971\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9971 (space after the 4th digit)
+                        Country = Singapore      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Syria                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9972-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9972 (hyphen after the 4th digit)
+                        Country = Syria      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9972\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9972 (space after the 4th digit)
+                        Country = Syria      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Tunisia                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9973-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9973 (hyphen after the 4th digit)
+                        Country = Tunisia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9973\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9973 (space after the 4th digit)
+                        Country = Tunisia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Uruguay                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9974-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9974 (hyphen after the 4th digit)
+                        Country = Uruguay      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9974\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9974 (space after the 4th digit)
+                        Country = Uruguay      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Moldova                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9975-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9975 (hyphen after the 4th digit)
+                        Country = Moldova      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9975\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9975 (space after the 4th digit)
+                        Country = Moldova      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Tanzania                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9976-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9976 (hyphen after the 4th digit)
+                        Country = Tanzania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9976\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9976 (space after the 4th digit)
+                        Country = Tanzania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Costa Rica                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9977-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9977 (hyphen after the 4th digit)
+                        Country = Costa Rica      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9977\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9977 (space after the 4th digit)
+                        Country = Costa Rica      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Equador                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9978-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9978 (hyphen after the 4th digit)
+                        Country = Equador      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9978\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9978 (space after the 4th digit)
+                        Country = Equador      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Iceland                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9979-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9979 (hyphen after the 4th digit)
+                        Country = Iceland      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9979\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9979 (space after the 4th digit)
+                        Country = Iceland      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Papua New Guinea                 X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9980-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9980 (hyphen after the 4th digit)
+                        Country = Papua New Guinea      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9980\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9980 (space after the 4th digit)
+                        Country = Papua New Guinea      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Morocco                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9981-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9981 (hyphen after the 4th digit)
+                        Country = Morocco      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9981\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9981 (space after the 4th digit)
+                        Country = Morocco      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Zambia                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9982-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9982 (hyphen after the 4th digit)
+                        Country = Zambia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9982\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9982 (space after the 4th digit)
+                        Country = Zambia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Gambia                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9983-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9983 (hyphen after the 4th digit)
+                        Country = Gambia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9983\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9983 (space after the 4th digit)
+                        Country = Gambia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Latvia                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9984-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9984 (hyphen after the 4th digit)
+                        Country = Latvia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9984\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9984 (space after the 4th digit)
+                        Country = Latvia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Estonia                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9985-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9985 (hyphen after the 4th digit)
+                        Country = Estonia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9985\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9985 (space after the 4th digit)
+                        Country = Estonia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Lithuania                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9986-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9986 (hyphen after the 4th digit)
+                        Country =  Lithuania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9986\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9986 (space after the 4th digit)
+                        Country =  Lithuania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Tanzania                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9987-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9987 (hyphen after the 4th digit)
+                        Country =  Tanzania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9987\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9987 (space after the 4th digit)
+                        Country =  Tanzania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Ghana                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9988-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9988 (hyphen after the 4th digit)
+                        Country =  Ghana      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9988\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9988 (space after the 4th digit)
+                        Country =  Ghana      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Macedonia                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="9989-\d([0-9]|-){4}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9989 (hyphen after the 4th digit)
+                        Country =  Macedonia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="9989\s\d([0-9]|\s){4}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 9989 (space after the 4th digit)
+                        Country =  Macedonia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Bahrain                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99901-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99901 (hyphen after the 54th digit)
+                        Country =  Bahrain      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99901\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99901 (space after the 5th digit)
+                        Country =  Bahrain      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Mauritius                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99903-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99903 (hyphen after the 5th digit)
+                        Country =  Mauritius      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99903\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99903 (space after the 5th digit)
+                        Country =  Mauritius      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Netherlands Antilles             X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99904-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99904 (hyphen after the 5th digit)
+                        Country =  Netherlands Antilles      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99904\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99904 (space after the 5th digit)
+                        Country =  Netherlands Antilles      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Malawi                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99908-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99908 (hyphen after the 5th digit)
+                        Country =  Malawi      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99908\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99908 (space after the 5th digit)
+                        Country =  Malawi      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Malta                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99909-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99909 (hyphen after the 5th digit)
+                        Country =  Malta      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99909\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99909 (space after the 5th digit)
+                        Country =  Malta      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Sierra Leone                     X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99910-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99910 (hyphen after the 5th digit)
+                        Country =  Sierra Leone      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99910\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99910 (space after the 5th digit)
+                        Country =  Sierra Leone      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Lesotho                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99911-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99911 (hyphen after the 5th digit)
+                        Country =  Lesotho      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99911\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99911 (space after the 5th digit)
+                        Country =  Lesotho      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Botswana                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99912-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99912 (hyphen after the 5th digit)
+                        Country =  Botswana      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99912\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99912 (space after the 5th digit)
+                        Country =  Botswana      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Andorra                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99913-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99913 (hyphen after the 5th digit)
+                        Country =  Andorra      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99913\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99913 (space after the 5th digit)
+                        Country =  Andorra      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Suriname                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99914-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99914 (hyphen after the 5th digit)
+                        Country =  Suriname      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99914\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99914 (space after the 5th digit)
+                        Country =  Suriname      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Maldives                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99915-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99915 (hyphen after the 5th digit)
+                        Country =  Maldives      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99915\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99915 (space after the 5th digit)
+                        Country =  Maldives      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Namibia                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99916-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99916 (hyphen after the 5th digit)
+                        Country =  Namibia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99916\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99916 (space after the 5th digit)
+                        Country =  Namibia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Brunei                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99917-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99917 (hyphen after the 5th digit)
+                        Country =  Brunei      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99917\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99917 (space after the 5th digit)
+                        Country =  Brunei      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Faroe Islands                    X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99918-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99918 (hyphen after the 5th digit)
+                        Country =  Faroe Islands      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99918\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99918 (space after the 5th digit)
+                        Country =  Faroe Islands      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Benin                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99919-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99919 (hyphen after the 5th digit)
+                        Country =  Benin      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99919\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99919 (space after the 5th digit)
+                        Country =  Benin      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Andorra                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99920-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99920 (hyphen after the 5th digit)
+                        Country =  Andorra      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99920\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99920 (space after the 5th digit)
+                        Country =  Andorra      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Qatar                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99921-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99921 (hyphen after the 5th digit)
+                        Country =  Qatar      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99921\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99921 (space after the 5th digit)
+                        Country =  Qatar      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Guatemala                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99922-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99922 (hyphen after the 5th digit)
+                        Country =  Guatemala      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99922\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99922 (space after the 5th digit)
+                        Country =  Guatemala      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      El Salvador                      X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99923-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99923 (hyphen after the 5th digit)
+                        Country =  El Salvador      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99923\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99923 (space after the 5th digit)
+                        Country =  El Salvador      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Nicaragua                        X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99924-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99924 (hyphen after the 5th digit)
+                        Country =  Nicaragua      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99924\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99924 (space after the 5th digit)
+                        Country =  Nicaragua      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Paraguay                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99925-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99925 (hyphen after the 5th digit)
+                        Country =  Paraguay      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99925\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99925 (space after the 5th digit)
+                        Country =  Paraguay      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Honduras                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99926-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99926 (hyphen after the 5th digit)
+                        Country =  Honduras      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99926\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99926 (space after the 5th digit)
+                        Country =  Honduras      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Albania                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99927-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99927 (hyphen after the 5th digit)
+                        Country =  Albania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99927\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99927 (space after the 5th digit)
+                        Country =  Albania      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Georgia                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99928-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99928 (hyphen after the 5th digit)
+                        Country =  Georgia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99928\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99928 (space after the 5th digit)
+                        Country =  Georgia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Mongolia                         X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99929-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99929 (hyphen after the 5th digit)
+                        Country =  Mongolia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99929\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99929 (space after the 5th digit)
+                        Country =  Mongolia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Armenia                          X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99930-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99930 (hyphen after the 5th digit)
+                        Country =  Armenia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99930\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99930 (space after the 5th digit)
+                        Country =  Armenia      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Seychelles                       X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99931-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99931 (hyphen after the 5th digit)
+                        Country =  Seychelles      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99931\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99931 (space after the 5th digit)
+                        Country =  Seychelles      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Malta                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99932-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99932 (hyphen after the 5th digit)
+                        Country =  Malta      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99932\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99932 (space after the 5th digit)
+                        Country =  Malta      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Nepal                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99933-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99933 (hyphen after the 5th digit)
+                        Country =  Nepal      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99933\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99933 (space after the 5th digit)
+                        Country =  Nepal      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Dominican Republic               X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99935-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99935 (hyphen after the 5th digit)
+                        Country =  Dominican Republic      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99935\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99935 (space after the 5th digit)
+                        Country =  Dominican Republic      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Bhutan                           X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99936-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99936 (hyphen after the 5th digit)
+                        Country =  Bhutan      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99936\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99936 (space after the 5th digit)
+                        Country =  Bhutan      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <!--
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                 X                                                       X
+                 X                      Macau                            X  
+                 X                                                       X
+                 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            -->
+            <xsd:pattern value="99937-\d([0-9]|-){3}\d-[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99937 (hyphen after the 5th digit)
+                        Country =  Macau      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+            <xsd:pattern value="99937\s\d([0-9]|\s){3}\d\s[0-9x]">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        group/country ID = 99937 (space after the 5th digit)
+                        Country =  Macau      
+                        check digit is 0-9 or 'x'
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:pattern>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>
+

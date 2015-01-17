@@ -15,13 +15,195 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="isbn">
+    <xs:simpleType name="ISBN-type10">
         <xs:annotation>
-            <xs:documentation>Defines a regular expression to match an ISBN number. Regex needs to be refined and we need to figure out a way to account for ISBN10 and ISBN13 numbers, maybe by creating a compound element</xs:documentation>
+            <xs:documentation>
+                A much longer and tedious type definition available at http://xfront.com/isbn.html
+                
+                It includes country specific ISBN derivations
+            </xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:unsignedLong">
-            <xs:totalDigits value="10"/>
-            <xs:pattern value="\d{10}"/>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="0-[0-1][0-9]-\d{6}-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 00...19 (hyphen after the 3rd digit)
+                        Block size = 1,000,000 (requires 6 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0\s[0-1][0-9]\s\d{6}\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 00...19 (space after the 3rd digit)
+                        Block size = 1,000,000 (requires 6 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0-[2-6][0-9]{2}-\d{5}-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 200...699 (hyphen after the 4th digit)
+                        Block size = 100,000 (requires 5 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0\s[2-6][0-9]{2}\s\d{5}\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 200...699 (space after the 4th digit)
+                        Block size = 100,000 (requires 5 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0-(7[0-9]{3}|8[0-4][0-9]{2})-\d{4}-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 7000...8499 (hyphen after the 5th digit)
+                        Block size = 10,000 (requires 4 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0\s(7[0-9]{3}|8[0-4][0-9]{2})\s\d{4}\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 7000...8499 (space after the 5th digit)
+                        Block size = 10,000 (requires 4 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0-8[5-9][0-9]{3}-\d{3}-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 85000...89999 (hyphen after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0\s8[5-9][0-9]{3}\s\d{3}\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 85000...89999 (space after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0-9[0-4][0-9]{4}-\d{2}-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 900000...949999 (hyphen after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0\s9[0-4][0-9]{4}\s\d{2}\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 900000...949999 (space after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0-9[5-9][0-9]{5}-\d-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (hyphen after the 1st digit)
+                        Publisher ID = 9500000...9999999 (hyphen after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0\s9[5-9][0-9]{5}\s\d\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 0 (space after the 1st digit)
+                        Publisher ID = 9500000...9999999 (space after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="1-(55[0-9]{3}|[6-7][0-9]{4}|8[0-6][0-8][0-9]{2}|869[0-7][0-9])-\d{3}-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 1 (hyphen after the 1st digit)
+                        Publisher ID = 55000...86979 (hyphen after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="1\s(55[0-9]{3}|[6-7][0-9]{4}|8[0-6][0-8][0-9]{2}|869[0-7][0-9])\s\d{3}\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 1 (space after the 1st digit)
+                        Publisher ID = 55000...86979 (space after the 6th digit)
+                        Block size = 1,000 (requires 3 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="1-(8698[0-9]{2}|8[7-9][0-9]{4}|9[0-8][0-9]{4}|99[0-8][0-9]{3})-\d{2}-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 1 (hyphen after the 1st digit)
+                        Publisher ID = 869800...998999 (hyphen after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="1\s(8698[0-9]{2}|8[7-9][0-9]{4}|9[0-8][0-9]{4}|99[0-8][0-9]{3})\s\d{2}\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 1 (space after the 1st digit)
+                        Publisher ID = 869800...998999 (space after the 7th digit)
+                        Block size = 100 (requires 2 digits)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="1-999[0-9]{4}-\d-[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 1 (hyphen after the 1st digit)
+                        Publisher ID = 9990000...9999999 (hyphen after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="1\s999[0-9]{4}\s\d\s[0-9x]">
+                <xs:annotation>
+                    <xs:documentation>
+                        group/country ID = 1 (space after the 1st digit)
+                        Publisher ID = 9990000...9999999 (space after the 8th digit)
+                        Block size = 10 (requires 1 digit)
+                        check digit is 0-9 or 'x'
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
         </xs:restriction>
     </xs:simpleType>
 
@@ -64,16 +246,16 @@
         <xs:attribute name="id" type="xs:ID" use="optional"/>
     </xs:complexType>
     
-    <xs:complexType name="authors">
+    <xs:complexType name="author">
         <xs:annotation>
             <xs:documentation>Wrapper to get more than one author</xs:documentation>
         </xs:annotation>
-        <xs:sequence>
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
             <xs:element name="author" type="person"/>
-        </xs:sequence>
+        </xs:choice>
     </xs:complexType>
     
-    <xs:complexType name="editors">
+    <xs:complexType name="editor">
         <xs:annotation>
             <xs:documentation>extension to person to indicate editor and his/her role</xs:documentation>
         </xs:annotation>
@@ -86,19 +268,59 @@
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:complexType name="otherRoles">
+    <xs:complexType name="otherRole">
         <xs:annotation>
             <xs:documentation>extension to person to accomodate roles other than author and editor</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="person">
-                <xs:sequence>
+                <xs:sequence minOccurs="1" maxOccurs="1">
                     <xs:element name="role" type="xs:token"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
+    <!-- Creating wrappers around complext types -->
+    
+    <xs:element name="authors">
+        <xs:annotation>
+            <xs:documentation>
+                One or more authors
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="author" type="author"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="editors">
+        <xs:annotation>
+            <xs:documentation>
+                One or more editors
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="editor" type="editor"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="otherRoles">
+        <xs:annotation>
+            <xs:documentation>
+                One or more people in other roles
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="otherRole" type="otherRole"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     <!-- Elements inside section -->
     <xs:element name="link">
         <xs:annotation>
@@ -200,12 +422,11 @@
             </xs:choice>
         </xs:complexType>
     </xs:element>
-    
-    
+     
     <xs:element name="underline">
         <xs:annotation>
             <xs:documentation>
-                The emphasis element can have 0 or more children chosen form: strong, emphasis, underline and span
+                The underline element can have 0 or more children chosen form: strong, emphasis, underline and span
                 
                 Nested underline elements are not allowed
             </xs:documentation>
@@ -222,7 +443,7 @@
     <xs:element name="strike">
         <xs:annotation>
             <xs:documentation>
-                The emphasis element can have 0 or more children chosen form: strong, emphasis, underline and span
+                The strike element can have 0 or more children chosen form: strong, emphasis, underline and span
                 
                 Nested strike elements are not allowed.
             </xs:documentation>
@@ -236,10 +457,10 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="list">
+    <xs:element name="ulist">
         <xs:annotation>
             <xs:documentation>
-                Ordered and unordered list
+                Unordered list
             </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
@@ -250,7 +471,24 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute name="listType" type="xs:token" default="unordered"/>
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="olist">
+        <xs:annotation>
+            <xs:documentation>
+                Ordered list
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="item">
+                    <xs:complexType>
+                        <xs:attributeGroup ref="genericPropertiesGroup"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
@@ -314,17 +552,17 @@
             <xs:documentation>Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.</xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
-                    <xs:documentation>Metadata sequence using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier</xs:documentation>
+                    <xs:documentation>Metadata choice using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier</xs:documentation>
                 </xs:annotation>
-                <xs:element name="isbn" type="isbn"/>
+                <xs:element name="isbn" type="ISBN-type10"/>
                 <xs:element name="edition" type="xs:integer"/>
                 <xs:element name="title" type="token255"/>
-                <xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
-                <xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:sequence>
+                <xs:element ref="authors"/>
+                <xs:element ref="editors"/>
+                <xs:element ref="otherRoles"/>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
 
@@ -342,7 +580,8 @@
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element ref="image"/>
                     <xs:element ref="code"/>
-                    <xs:element ref="list"/>
+                    <xs:element ref="ulist"/>
+                    <xs:element ref="olist"/>
                 </xs:choice>
             </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
@@ -365,7 +604,7 @@
         </xs:annotation>
         <xs:complexType mixed="true">
             <xs:annotation>
-                <xs:documentation>A sequence of one metadat section followed by 1 or more sections</xs:documentation>
+                <xs:documentation>A sequence of one metadata section followed by 1 or more sections</xs:documentation>
             </xs:annotation>
             <xs:sequence>
                 <xs:element ref="metadata" minOccurs="1" maxOccurs="1"/>

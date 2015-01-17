@@ -2,150 +2,94 @@
 <book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="file:/Users/carlos/code/xml-workflow/xsd/book-schema-draft.xsd">
     <metadata>
-        <isbn>2049238234</isbn>
-        <edition>1</edition>
         <title>The new Adventures of Sherlock Holmes</title>
+        <isbn>0-9882625-7-6</isbn>
+        <edition>1</edition>
+
         <authors>
+            <author>
+                <first-name>Captain</first-name>
+                <surname>Nemo</surname>
+            </author>
             <author>
                 <first-name>Arthur</first-name>
                 <surname>Connan Doyle</surname>
             </author>
         </authors>
         <editors>
-            <first-name>John</first-name>
-            <surname>Watson</surname>
-            <type>Managing</type>
+            <editor>
+                <first-name>John</first-name>
+                <surname>Watson</surname>
+                <type>Managing</type>
+            </editor>
         </editors>
         <otherRoles>
-            <first-name>Aldo</first-name>
-            <surname>Lestrade</surname>
-            <role>Illustrator</role>
+            <otherRole>
+                <first-name>Aldo</first-name>
+                <surname>Lestrade</surname>
+                <role>Illustrator</role>
+            </otherRole>
         </otherRoles>
     </metadata>
     <section type="Introduction">
         <title>What this is about</title>
-        <para>This project seeks to answer the question: <emphasis>What does an XML workflow looks like?</emphasis></para>
+        <para>This project seeks to answer the question: <strong><emphasis>What does an XML workflow looks like?</emphasis></strong></para>
         <para/>
 
         <image src="images/xml.png" alt="xml document"/>
 
         <code language="javascript" class="code-sample" id="js1">
-            'use strict';
-
-            /* globals module */
-
-            module.exports = function(grunt) {
-
-            // configure project
-            grunt.initConfig({
-            // make node configurations available
-            pkg: grunt.file.readJSON('package.json'),
-
-            csslint: {
-                options: {
-                    csslintrc: 'samples/web/.csslintrc'
-                },
-            strict: {
-            options: {
-            import: 2
-            },
-            src: ['samples/web/content/**/*.css',
-            '!samples/web/content/**/*_nolint.css',
-            '!samples/web/content/testrtc/bower_components/**/*.css'
-            ]
-            },
-            lax: {
-            options: {
-            import: false
-            },
-            src: ['samples/web/content/**/*.css',
-            '!samples/web/content/**/*_nolint.css',
-            '!samples/web/content/testrtc/bower_components/**/*.css'
-            ]
-            }
-            },
-
-            htmlhint: {
-            html1: {
-            src: [
-            'samples/web/content/apprtc/index.html',
-            'samples/web/content/apprtc/appwindow.html',
-            'samples/web/content/datachannel/index.html',
-            'samples/web/content/getusermedia/**/index.html',
-            'samples/web/content/peerconnection/**/index.html'
-            ]
-            }
-            },
-
-            jscs: {
-            src: 'samples/web/content/**/*.js',
-            options: {
-            config: 'google', // as per Google style guide – could use '.jscsrc' instead
-            'excludeFiles': [
-            'samples/web/content/manual-test/**/*',
-            'samples/web/content/apprtc/js/vr.js',
-            'samples/web/content/apprtc/js/stereoscopic.js',
-            'samples/web/content/getusermedia/desktopcapture/extension/content-script.js',
-            'samples/web/content/testrtc/bower_components/**'
-            ],
-            requireCurlyBraces: ['if']
-            }
-            },
-
-            jshint: {
-            options: {
-            ignores: [
-            'samples/web/content/manual-test/**/*',
-            'samples/web/content/getusermedia/desktopcapture/**',
-            'samples/web/content/apprtc/js/stereoscopic.js',
-            'samples/web/content/apprtc/js/ga.js',
-            'samples/web/content/apprtc/js/vr.js',
-            'samples/web/content/testrtc/bower_components/**'
-            ],
-            // use default .jshintrc files
-            jshintrc: true
-            },
-            // files to validate
-            // can choose more than one name + array of paths
-            // usage with this name: grunt jshint:files
-            files: ['samples/web/content/**/*.js']
-            },
-
-            shell: {
-            runPythonTests: {
-            command: './run_python_tests.sh'
-            },
-            },
-
-            jstdPhantom: {
-            options: {
-            useLatest : true,
-            port: 9876,
-            },
-            files: [
-            "samples/web/content/apprtc/js_test_driver.conf",
-            ]},
-            });
-
-            // enable plugins
-            grunt.loadNpmTasks('grunt-contrib-csslint');
-            grunt.loadNpmTasks('grunt-htmlhint');
-            grunt.loadNpmTasks('grunt-jscs');
-            grunt.loadNpmTasks('grunt-contrib-jshint');
-            grunt.loadNpmTasks('grunt-shell');
-            grunt.loadNpmTasks('grunt-jstestdriver-phantomjs');
-
-            // set default tasks to run when grunt is called without parameters
-            grunt.registerTask('default', ['csslint', 'htmlhint', 'jscs', 'jshint',
-            'shell:runPythonTests', 'jstdPhantom']);
-            // also possible to call JavaScript directly in registerTask()
-            // or to call external tasks with grunt.loadTasks()
-            };
+{
+  "name": "pageable-text",
+  "version": "1.0.5",
+  "authors": [
+    "Someone"
+  ],
+  "description": "A Polymer element that simplifies paging through text, e.g. in an eReader.",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer"
+  ],
+  "main": "pageable-text.html",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/jeffposnick/pageable-text/",
+  "ignore": [
+    "/.*",
+    "/tests/"
+  ],
+  "dependencies": {
+    "core-ajax": "Polymer/core-ajax#^0.5.1",
+    "core-animation": "Polymer/core-animation#^0.5.1",
+    "core-icon-button": "Polymer/core-icon-button#^0.5.1",
+    "core-icons": "Polymer/core-icons#^0.5.1",
+    "core-localstorage": "jeffposnick/core-localstorage#master",
+    "core-media-query": "Polymer/core-media-query#^0.5.1",
+    "mark-down": "robdodson/mark-down#^0.6.1",
+    "paper-button": "Polymer/paper-button#^0.5.1",
+    "paper-dialog": "Polymer/paper-dialog#^0.5.1",
+    "polymer": "Polymer/polymer#^0.5.1",
+    "webcomponentsjs": "~0.5.2"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^0.7.3"
+  }
+}
         </code>
     </section>
-    <section>
-        <title>title2</title>
-        <para/>
-        <para/>
+    <section type="chapter">
+        <title>Chapter 2</title>
+        <para>More Lorem Ipsum</para>
+        <para>sjdsadkas</para>
+    </section>
+    <section type="chapter">
+        <title>Chapter 2</title>
+        <para>More Lorem Ipsum</para>
+        <para>sjdsadkas</para>
+    </section>
+    <section type="chapter">
+        <title>Chapter 2</title>
+        <para>More Lorem Ipsum</para>
+        <para>sjdsadkas</para>
     </section>
 </book>
