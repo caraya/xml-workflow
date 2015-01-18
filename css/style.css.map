@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "style.css",
+  "sources": [
+    "style.scss"
+  ],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;AAiBA,2FACA,gEACA;AAEA;EACE,kBAAkB;EAClB,aAAa;EACb,aAAa;EACb,aAAa;EACb,OAAO;;;;;EAKP,cAAc;EACd,cAAc;;;;;;;AAOhB,IAAI,IAAI,IAAI;EACV,QAAQ;EACR,aAAa;EACb,aAAa;EACb,aAAa;;;AAGf;EACE,YAAY;EACZ,WAAW;;;AAGb;EACE,WAAW;;;AAGb;EACE,WAAW;;;AAGb;EACE,WAAW;;;;;;AAcb,QAAQ,CAAC,KAAK;EACV,aAAa;;;AAEjB;EAAG,eAAe;;;AAGlB,OAAO;EAAa,WAAW",
+  "sourceRoot": ""
+}

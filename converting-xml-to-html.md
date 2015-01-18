@@ -101,7 +101,7 @@ The `section` element is hardest to wrap your head around
     We create the file name by concatenating the type attribute for the section, the count of how many sections of that type there are and the .xhtml extension
   -->
     <xsl:variable name="fileName"
-      select="concat(section/@type, count(section/@type),'.xhtml')"/>
+      select="concat(section/@type, count(section),'.xhtml')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
     <xsl:apply-templates/>
     <xsl:if test="(@class)">

@@ -248,11 +248,14 @@
     
     <xs:complexType name="author">
         <xs:annotation>
-            <xs:documentation>Wrapper to get more than one author</xs:documentation>
+            <xs:documentation>
+                Author person
+            </xs:documentation>
         </xs:annotation>
-        <xs:choice minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="author" type="person"/>
-        </xs:choice>
+        <xs:complexContent>
+            <xs:extension base="person">
+            </xs:extension>
+        </xs:complexContent>
     </xs:complexType>
     
     <xs:complexType name="editor">
@@ -261,9 +264,9 @@
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="person">
-                <xs:sequence>
+                <xs:choice>
                     <xs:element name="type" type="xs:token"/>
-                </xs:sequence>
+                </xs:choice>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -281,8 +284,7 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <!-- Creating wrappers around complext types -->
-    
+    <!-- Creating wrappers around complext types --> 
     <xs:element name="authors">
         <xs:annotation>
             <xs:documentation>
@@ -290,9 +292,9 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
-            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
                 <xs:element name="author" type="author"/>
-            </xs:sequence>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
 
@@ -321,6 +323,7 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
     <!-- Elements inside section -->
     <xs:element name="link">
         <xs:annotation>
@@ -546,6 +549,115 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Headings -->
+    <xs:element name="h1">
+        <xs:annotation>
+            <xs:documentation>
+                Level 1 heading. Name taken form html
+                
+                The element has the following attributes:
+                
+                * Class
+                * ID
+                * Align (center, left, right)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="align" type="align" use="optional" default="left"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="h2">
+        <xs:annotation>
+            <xs:documentation>
+                Level 3 heading. Name taken form html
+                
+                The element has the following attributes:
+                
+                * Class
+                * ID
+                * Align (center, left, right)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="align" type="align" use="optional" default="left"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="h3">
+        <xs:annotation>
+            <xs:documentation>
+                Level 3 heading. Name taken form html
+                
+                The element has the following attributes:
+                
+                * Class
+                * ID
+                * Align (center, left, right)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="align" type="align" use="optional" default="left"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="h4">
+        <xs:annotation>
+            <xs:documentation>
+                Level 4 heading. Name taken form html
+                
+                The element has the following attributes:
+                
+                * Class
+                * ID
+                * Align (center, left, right)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="align" type="align" use="optional" default="left"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="h5">
+        <xs:annotation>
+            <xs:documentation>
+                Level 5 heading. Name taken form html
+                
+                The element has the following attributes:
+                
+                * Class
+                * ID
+                * Align (center, left, right)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="align" type="align" use="optional" default="left"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="h6">
+        <xs:annotation>
+            <xs:documentation>
+                Level 6 heading. Name taken form html                
+                
+                The element has the following attributes:
+                
+                * Class
+                * ID
+                * Align (center, left, right)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="align" type="align" use="optional" default="left"/>
+        </xs:complexType>
+    </xs:element>
+    
     <!-- Metadata element -->
     <xs:element name="metadata">
         <xs:annotation>
@@ -566,6 +678,7 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Section element -->
     <xs:element name="section">
         <xs:annotation>
             <xs:documentation>section structure</xs:documentation>
@@ -598,6 +711,7 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Base book element -->
     <xs:element name="book">
         <xs:annotation>
             <xs:documentation>The main book element and it's children</xs:documentation>

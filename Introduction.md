@@ -196,6 +196,31 @@ The next stage is to define elements to create our 'people' types.  We create a 
 </xs:complexType>
 ```
 
+Two of the derived types add attributes or elements to the base person element to make the generic person more appropriate to their role rather than repeat the content of person each time that an author, editor or other role appear. 
+
+Author is the most straight forward and only wraps person in the author element. 
+
+
+Editor takes the base person element and adds a `type` child to indicate the type of editor (some that come to mind are acquisition, production and managing.) The editor elements looks like this:
+
+```xml
+<editor>
+  <first-name>Carlos</first-name>
+  <surname>Araya</surname>
+  <type>Managing</type>
+</editor>
+```
+
+OtherRoles takes all other roles that are not author or editor and adds a role element to specify what role they play, for example: Illustrator, Indexer, Research Assistant, among others. The element looks like this:
+
+```xml
+<otherRole>
+  <first-name>Sherlock</first-name>
+  <surname>Holmes</surname>
+  <role>Researcher</role>
+</otherRole>
+```
+
 Next we create wrappers for each group as `authors`, `editors` and `otherRoles` so we can provide easier styling with XSLT and CSS later on.
 
 ```xml
@@ -237,30 +262,6 @@ Next we create wrappers for each group as `authors`, `editors` and `otherRoles` 
         </xs:extension>
     </xs:complexContent>
 </xs:complexType>
-```
-Two of the derived types add attributes or elements to the base person element to make the generic person more appropriate to their role rather than repeat the content of person each time that an author, editor or other role appear. 
-
-Author is the most straight forward and only wraps person in the author element. 
-
-
-Editor takes the base person element and adds a `type` child to indicate the type of editor (some that come to mind are acquisition, production and managing.) The editor elements looks like this:
-
-```xml
-<editor>
-  <first-name>Carlos</first-name>
-  <surname>Araya</surname>
-  <type>Managing</type>
-</editor>
-```
-
-OtherRoles takes all other roles that are not author or editor and adds a role element to specify what role they play, for example: Illustrator, Indexer, Research Assistant, among others. The element looks like this:
-
-```xml
-<otherRole>
-  <first-name>Sherlock</first-name>
-  <surname>Holmes</surname>
-  <role>Researcher</role>
-</otherRole>
 ```
 
 We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters. 

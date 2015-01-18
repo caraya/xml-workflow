@@ -1,10 +1,7 @@
 <?xml version="1.0" ?>
 <!-- Define stylesheet root and namespaces we'll work with -->
 <xsl:stylesheet
-  xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:epub="http://www.idpf.org/2007/opf"
   xml:lang="en-US"
   version="2.0">
   <!-- Define the output for this and all document children -->
@@ -16,13 +13,22 @@
       <xsl:element name="title">
         <xsl:value-of select="book/metadata/title"/>
       </xsl:element>
-      <link rel="stylesheet" href="css/style.css" />
-      <!-- Still not sure if we need the scripts fro highlightjs here -->
+      <link rel="stylesheet" href="../css/style.css" />
+      <xsl:if test="(code)">
+        <!--
+              Use highlight.js and github style
+            -->
+        <link rel="stylesheet" href="../css/styles/railscasts.css" />
+        <!-- Load highlight.js -->
+        <script src="../js/highlight.pack.js"></script>
+        <script>
+          hljs.initHighlightingOnLoad();
+        </script>
+      </xsl:if>
       <!--
-      <script src="http://yastatic.net/highlightjs/8.0/highlight.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script>
+        Comment this out for now. It'll become relevant when we add video
+        <script src="../js/script.js"></script>
       -->
-      <script src="js/script.js"></script>
     </head>
 
     <body>
@@ -32,12 +38,12 @@
     </html>
   </xsl:template>
 
+  <!-- Metadata element and children -->
   <xsl:template match="metadata">
     <div class="metadata">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-
 
   <xsl:template match="isbn">
     <p>ISBN: <xsl:value-of select="."/></p>
@@ -47,6 +53,150 @@
     <p>Edition: <xsl:value-of select="."/></p>
   </xsl:template>
 
+  <!-- Headings -->
+  <!--
+    Note that the headings use mostly the same code.
+
+    We could have coded them with just one template but that would have made it
+    harder to style with CSS.
+
+    Our goal is to create as simple a markup as we can so we can better leverage
+    CSS to style and make our content display as intended
+  -->
+
+  <xsl:template match="h1 | title | section/title">
+    <!--
+      We want to treat the title of the book and each section's title the
+      same as our h1 headings. We do this by matching both on the same template.
+
+      If we need to style the titles differently we can create a separate
+      template to match it to
+    -->
+    <xsl:element name="h1">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="h2">
+    <xsl:element name="h2">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="h3">
+    <xsl:element name="h3">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="h4">
+    <xsl:element name="h4">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="h5">
+    <xsl:element name="h5">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="h6">
+    <xsl:element name="h6">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+  <!-- Section and children -->
   <xsl:template match="section">
   <!--
     Each section element will generate its own file
@@ -54,34 +204,32 @@
     We create the file name by concatenating the type attribute for the section, the count of how many sections of that type there are and the .xhtml extension
   -->
     <xsl:variable name="fileName"
-      select="concat(@type, position(),'.xhtml')"/>
+      select="concat(@type, position(),'.html')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
     <xsl:result-document href='{$fileName}' format="xhtml-out">
       <html>
         <head>
-          <link rel="stylesheet" href="css/style.css" />
+          <link rel="stylesheet" href="../css/style.css" />
           <xsl:if test="(code)">
             <!--
-              We use the github style by default
-
-              Other styles are available in the css/style directory
+              Use highlight.js and github style
             -->
-            <style src="css/github.css"/>
+            <link rel="stylesheet" href="../css/styles/railscasts.css" />
             <!-- Load highlight.js -->
             <script src="../js/highlight.pack.js"></script>
-            <!-- Initialize highlighter -->
-            <script>hljs.initHighlightingOnLoad();</script>
-          </xsl:if>
-          <!-- Load local script -->
-          <script src="js/script.js"></script>
+            <script>
+              hljs.initHighlightingOnLoad();
+            </script>
+            </xsl:if>
+          <!--
+            Comment this out for now. It'll become relevant when we add video
+            <script src="../js/script.js"></script>
+          -->
         </head>
         <body>
           <section>
             <xsl:if test="@type">
               <xsl:attribute name="data-type">
-                <xsl:value-of select="@type"/>
-              </xsl:attribute>
-              <xsl:attribute name="epub:type">
                 <xsl:value-of select="@type"/>
               </xsl:attribute>
             </xsl:if>
@@ -127,6 +275,8 @@
           <xsl:value-of select="first-name"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="surname"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="concat('- ', type, ' ', 'editor')"></xsl:value-of>
         </li>
       </xsl:for-each>
     </ul>
@@ -135,7 +285,7 @@
   <xsl:template match="metadata/otherRoles">
     <h2>Production team</h2>
     <ul class="no-bullet">
-      <xsl:for-each select="otherRoles">
+      <xsl:for-each select="otherRole">
         <li>
           <xsl:value-of select="first-name" />
           <xsl:text>-</xsl:text>
