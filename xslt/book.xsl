@@ -4,15 +4,21 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xml:lang="en-US"
   version="2.0">
+  <!-- Strip whitespace from the listed elements -->
+  <xsl:preserve-space elements="code"/>
+  <xsl:strip-space elements="*"/>
   <!-- Define the output for this and all document children -->
   <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
   <!-- Root template, matching / -->
-  <xsl:template match="/">
+  <xsl:template match="/" priority="1">
     <html>
     <head>
       <xsl:element name="title">
         <xsl:value-of select="book/metadata/title"/>
       </xsl:element>
+      <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,700italic' rel='stylesheet' type='text/css'/>
+      <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'/>
+      <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'/>
       <link rel="stylesheet" href="../css/style.css" />
       <xsl:if test="(code)">
         <!--
@@ -33,11 +39,28 @@
 
     <body>
       <xsl:apply-templates/>
+      <xsl:apply-templates mode="toc"/>
     </body>
-
     </html>
   </xsl:template>
 
+  <xsl:template match="book" mode="toc">
+    <div class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <xsl:for-each select="section">
+          <xsl:element name="li">
+            <xsl:element name="a">
+              <xsl:attribute name="href">
+                <xsl:value-of select="concat((@type), position(),'.html')"/>
+              </xsl:attribute>
+              <xsl:value-of select="title"/>
+            </xsl:element>
+          </xsl:element>
+        </xsl:for-each>
+      </ol>
+    </div>
+  </xsl:template>
   <!-- Metadata element and children -->
   <xsl:template match="metadata">
     <div class="metadata">
@@ -50,7 +73,7 @@
   </xsl:template>
 
   <xsl:template match="edition">
-    <p>Edition: <xsl:value-of select="."/></p>
+    <p class="no-margin-left">Edition: <xsl:value-of select="."/></p>
   </xsl:template>
 
   <!-- Headings -->
@@ -63,11 +86,10 @@
     Our goal is to create as simple a markup as we can so we can better leverage
     CSS to style and make our content display as intended
   -->
-
   <xsl:template match="h1 | title | section/title">
     <!--
       We want to treat the title of the book and each section's title the
-      same as our h1 headings. We do this by matching both on the same template.
+      same as our h1 headings. We do this by matching all on the same template.
 
       If we need to style the titles differently we can create a separate
       template to match it to
@@ -196,19 +218,18 @@
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
-  <!-- Section and children -->
-  <xsl:template match="section">
-  <!--
-    Each section element will generate its own file
 
-    We create the file name by concatenating the type attribute for the section, the count of how many sections of that type there are and the .xhtml extension
-  -->
-    <xsl:variable name="fileName"
-      select="concat(@type, position(),'.html')"/>
+  <!-- Section and children -->
+  <xsl:template match="book/section">
+    <!-- Variable to create section file names -->
+    <xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
     <xsl:result-document href='{$fileName}' format="xhtml-out">
       <html>
         <head>
+          <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,700italic' rel='stylesheet' type='text/css'/>
+          <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'/>
+          <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'/>
           <link rel="stylesheet" href="../css/style.css" />
           <xsl:if test="(code)">
             <!--
@@ -288,7 +309,7 @@
       <xsl:for-each select="otherRole">
         <li>
           <xsl:value-of select="first-name" />
-          <xsl:text>-</xsl:text>
+          <xsl:text> </xsl:text>
           <xsl:value-of select="surname" />
           <xsl:text> - </xsl:text>
           <xsl:value-of select="role" />
@@ -446,4 +467,7 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="figure">
+    <xsl:number level="any"/>
+  </xsl:template>
 </xsl:stylesheet>

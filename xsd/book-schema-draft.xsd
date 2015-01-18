@@ -689,10 +689,10 @@
                     <xs:documentation>A title and at least one paragraph </xs:documentation>
                 </xs:annotation>
                 <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
-                <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>                
-                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:choice maxOccurs="unbounded">
                     <xs:element ref="image"/>
                     <xs:element ref="code"/>
+                    <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
                     <xs:element ref="ulist"/>
                     <xs:element ref="olist"/>
                 </xs:choice>

@@ -11,21 +11,27 @@
  *
  * Feel free to play with these and use them as starting point for your own work :)
  *
- * CSS Lint whines about this. The explanation is at
+ * The project currently uses these fonts:
+ *
+ * Roboto Slab for headings
+ * Roboto (set at weight 300) for body copy
+ * Source Code Pro for codeblock and preformated text
+ *
+ * CSS Lint whines about CSS @import statements. The explanation is at
  * https://github.com/CSSLint/csslint/wiki/Disallow-@import
  *
  * We'll keep it for development and replace it with local fonts
  * when we're ready to release.
  *
 */
-/* line 22, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 28, /Users/carlos/code/xml-workflow/css/style.scss */
 body {
   background-color: white;
   color: #333;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 300;
-  line-height: 1.45;
+  line-height: 1.25;
   /*
    * Unless otherwise noted we pad the left and right margin
    * to prevent the text from being too close to the browser's borders.
@@ -39,45 +45,46 @@ body {
  * Al fonts share family and weight. The htings unique to each
  * will be listed below
 */
-/* line 43, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 49, /Users/carlos/code/xml-workflow/css/style.scss */
 h1, h2, h3, h4 {
   margin: 1.414em 0 0.5em;
   font-family: 'Roboto Slab', sans-serif;
   font-weight: 700;
   line-height: 1.2; }
 
-/* line 50, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 56, /Users/carlos/code/xml-workflow/css/style.scss */
 h1 {
   margin-top: 0;
   font-size: 3.157em; }
 
-/* line 55, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 61, /Users/carlos/code/xml-workflow/css/style.scss */
 h2 {
   font-size: 2.369em; }
 
-/* line 59, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 65, /Users/carlos/code/xml-workflow/css/style.scss */
 h3 {
   font-size: 1.777em; }
 
-/* line 63, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 69, /Users/carlos/code/xml-workflow/css/style.scss */
 h4 {
   font-size: 1.333em;
   text-transform: uppercase; }
 
-/* line 68, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 74, /Users/carlos/code/xml-workflow/css/style.scss */
 pre code {
   font-family: "Source Code Pro", monospace;
   font-size: 1em;
-  width: 80%; }
+  margin: 0 auto;
+  width: 60%; }
 
-/* line 74, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 81, /Users/carlos/code/xml-workflow/css/style.scss */
 p {
   margin-bottom: 1.3em; }
-  /* line 77, /Users/carlos/code/xml-workflow/css/style.scss */
-  p :not(:first-child) {
+  /* line 84, /Users/carlos/code/xml-workflow/css/style.scss */
+  p + p {
     text-indent: 2em; }
 
-/* line 83, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 90, /Users/carlos/code/xml-workflow/css/style.scss */
 small, .font_small {
   font-size: 0.75em; }
 
