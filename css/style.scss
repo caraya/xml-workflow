@@ -19,15 +19,18 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab);
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
 
-html {
+body {
   background-color: white;
+  color: #333;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.45;
-  color: #666;
   /*
-   * Unless otherwise noted we padd the left and right margin
-   * to prevent the text from being too close to the browser's borders
+   * Unless otherwise noted we pad the left and right margin
+   * to prevent the text from being too close to the browser's borders.
+   * The builtin stylesheet margin/padding combo is never enough for my
+   * liking
   */
   padding-left: 2em;
   padding-left: 2em;
@@ -59,23 +62,24 @@ h3 {
 
 h4 {
   font-size: 1.333em;
+  text-transform: uppercase;
 }
 
-/*
- * Using placeholder selectors for pre and pre code
-*/
-%pre {
+pre code{
+  font-family: "Source Code Pro", monospace;
+  font-size: 1em;
   width: 80%;
-  code {
-    @extend %pre;
-    font-family: "Source Code Pro", monospace;
+}
+
+p {
+  margin-bottom: 1.3em;
+
+  :not(:first-child) {
+  text-indent: 2em;
   }
 }
 
-section p:not(:first-child) {
-    text-indent: 2em;
+small,
+.font_small {
+  font-size: 0.75em;
 }
-p {margin-bottom: 1.3em;}
-
-
-small, .font_small {font-size: 0.75em;}

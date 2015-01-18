@@ -19,15 +19,18 @@
  *
 */
 /* line 22, /Users/carlos/code/xml-workflow/css/style.scss */
-html {
+body {
   background-color: white;
+  color: #333;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.45;
-  color: #666;
   /*
-   * Unless otherwise noted we padd the left and right margin
-   * to prevent the text from being too close to the browser's borders
+   * Unless otherwise noted we pad the left and right margin
+   * to prevent the text from being too close to the browser's borders.
+   * The builtin stylesheet margin/padding combo is never enough for my
+   * liking
   */
   padding-left: 2em;
   padding-left: 2em; }
@@ -36,42 +39,45 @@ html {
  * Al fonts share family and weight. The htings unique to each
  * will be listed below
 */
-/* line 40, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 43, /Users/carlos/code/xml-workflow/css/style.scss */
 h1, h2, h3, h4 {
   margin: 1.414em 0 0.5em;
   font-family: 'Roboto Slab', sans-serif;
   font-weight: 700;
   line-height: 1.2; }
 
-/* line 47, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 50, /Users/carlos/code/xml-workflow/css/style.scss */
 h1 {
   margin-top: 0;
   font-size: 3.157em; }
 
-/* line 52, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 55, /Users/carlos/code/xml-workflow/css/style.scss */
 h2 {
   font-size: 2.369em; }
 
-/* line 56, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 59, /Users/carlos/code/xml-workflow/css/style.scss */
 h3 {
   font-size: 1.777em; }
 
-/* line 60, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 63, /Users/carlos/code/xml-workflow/css/style.scss */
 h4 {
-  font-size: 1.333em; }
+  font-size: 1.333em;
+  text-transform: uppercase; }
 
-/*
- * Using placeholder selectors for pre and pre code
-*/
-/* line 75, /Users/carlos/code/xml-workflow/css/style.scss */
-section p:not(:first-child) {
-  text-indent: 2em; }
+/* line 68, /Users/carlos/code/xml-workflow/css/style.scss */
+pre code {
+  font-family: "Source Code Pro", monospace;
+  font-size: 1em;
+  width: 80%; }
 
-/* line 78, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 74, /Users/carlos/code/xml-workflow/css/style.scss */
 p {
   margin-bottom: 1.3em; }
+  /* line 77, /Users/carlos/code/xml-workflow/css/style.scss */
+  p :not(:first-child) {
+    text-indent: 2em; }
 
-/* line 81, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 83, /Users/carlos/code/xml-workflow/css/style.scss */
 small, .font_small {
   font-size: 0.75em; }
 
