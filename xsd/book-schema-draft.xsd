@@ -346,6 +346,19 @@
         </xs:complexType>
     </xs:element>
     
+    <xs:element name="span">
+        <xs:annotation>
+            <xs:documentation>
+                Allows for content using span
+                
+                class and id attributes from genericPropertiesGroup
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+        </xs:complexType>
+    </xs:element>
+    
     <xs:element name="image">
         <xs:annotation>
             <xs:documentation>image and image-related attributes</xs:documentation>
@@ -544,6 +557,7 @@
                 <xs:element ref="underline"/>
                 <xs:element ref="strike"/>
                 <xs:element ref="link"/>
+                <xs:element ref="span"/>
             </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
