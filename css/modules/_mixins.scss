@@ -1,0 +1,53 @@
+// MIXINS AND UTILITY FUNCTIONS
+
+// THIS MIXIN ELIMINATES FONT LIGATURES AND KERNING
+// USED FOR SMALLER FORM FACTORS
+@mixin phone-rendering () {
+  @media screen and (max-device-width: 480px) {
+  body {
+    text-rendering: optimizeSpeed;
+    }
+  }
+}
+// CREATES A SOLID THIN BACKROUND
+@mixin solid-thin() {
+  border-width: thin;
+  border-style: solid;
+}
+
+
+// The following mixins are from
+// http://web-design-weekly.com/2013/05/12/handy-sass-mixins/
+
+// CLEARFIX
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+// BORDER RADUYS
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+          border-radius: $radius;
+  /* stops bg color from leaking outside the border: */
+  background-clip: padding-box;
+}
+
+// CENTER A BLOCK ELEMENT
+@mixin center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
