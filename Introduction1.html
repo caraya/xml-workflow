@@ -1,13 +1,23 @@
 <html>
    <head>
-      <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,700italic" rel="stylesheet" type="text/css"></link>
-      <link href="http://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" type="text/css"></link>
-      <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css"></link>
-      <link rel="stylesheet" href="../css/style.css"></link>
+      <link rel="stylesheet" href="css/style.css"></link>
+      <link rel="stylesheet" href="css/styles/railscasts.css"></link>
+      <script src="js/highlight.pack.js"></script>
+      <script>
+         hljs.initHighlightingOnLoad();
+
+      </script>
    </head>
    <body>
-      <section data-type="chapter">
-         <h1>Chapter 3</h1>
+      <section data-type="Introduction">
+         <h1>What this is about</h1>
+         <p>This project seeks to answer the question:
+            <strong>
+               <emphasis>What does an XML workflow looks like?</emphasis>
+            </strong>
+         </p>
+         <p></p>
+         <img src="images/xml.png" alt="xml document" width="50" height="50"></img>
          <p>Bacon ipsum dolor amet jerky bacon ribeye boudin. Capicola drumstick pancetta corned
             beef, filet mignon turducken picanha swine chuck fatback chicken bacon ball tip frankfurter
             pastrami. Tongue pork chop ball tip, tenderloin corned beef venison bacon. Tri-tip
@@ -36,6 +46,98 @@
             landjaeger filet mignon flank frankfurter short loin kevin sausage venison. Meatball
             pancetta picanha pig cow flank.
          </p>
+         <pre>
+            <code class="scss">
+               /*
+               File:                   carlos-new.css
+               Description:            Custom styles for docbook
+               Author:                 Carlos Araya
+               */
+
+
+               /* @fontface declarations to locally stored fonts */
+               @font-face {
+               font-family: GraublauWeb;
+               src: url('type/GraublauWeb.otf') format('truetype');
+               }
+
+               @font-face {
+               font-family: GraublauWebBold;
+               font-weight: bold;
+               src: url('type/GraublauWebBold.otf') format('truetype');
+               }
+
+               @font-face {
+               font-family: DejaVuSansMono;
+               font-weight: normal;
+               src: url('type/DejaVuSansMono.ttf') format('truetype');
+               }
+
+               html {
+               font-family:GraublauWeb, sans-serif;
+               font-size: 100%;
+               line-height: 1.5;
+               }
+
+               h1, h2, h3, h4, h5, h6 {
+               color: $header-color;
+               }
+
+               div.sidebar {
+               border: solid #afafaf 1px;
+               margin-left: 35px;
+               margin-right: 70px;
+               margin-bottom: 1em;
+               background-color: #ddd;
+               float: left;
+
+               div.title {
+               background-color: #ddd;
+               padding: 3px;
+               }
+
+               div.sidebar-content {
+               padding: 10px;
+               }
+               }
+
+               .informalexample,
+               .programlisting {
+               padding: 10px;
+               font-family: DejaVuSansMono, sans-serif;
+               font-size: 75%;
+               background-color: #FFFF99 ;
+               border: 1px solid #006600 ;
+               }
+
+               span.remark {
+               color: #f00;
+               font-weight: bold;
+               text-align: center;
+               display: block;
+               }
+
+               table.blockquote {
+               border: 0;
+               width: 100%;
+               padding: 0;
+               tr td.bq-small{
+               width: 10%;
+               vertical-align: $bq-valign;
+               }
+
+               tr td.bq-large {
+               width: 80%;
+               vertical-align: $bq-valign;
+               }
+
+               tr td.bq-attribution {
+               vertical-align: top;
+               text-align: right;
+               }
+               }
+            </code>
+         </pre>
          <p>Boudin venison pork chop pork belly, bresaola shoulder leberkas sausage kielbasa porchetta
             ham bacon jerky. Pork andouille strip steak, swine beef kevin turducken pig ball tip
             hamburger ham turkey. Tri-tip ham strip steak beef shoulder. Tri-tip kevin shank,

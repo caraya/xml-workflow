@@ -7,13 +7,15 @@ aside {
   color: #666;
   line-height: 1.4em;
   font-size: 1.8em;
+
+  .pull {
+    margin-left: -20%;
+    margin-top: .2em;
+    margin-bottom: .5em;
+  }
+
 }
 
-aside.pull {
-  margin-left: -20%;
-  margin-top: .2em;
-  margin-bottom: .5em;
-}
 
 blockquote {
   margin-left: 1em;
@@ -62,20 +64,4 @@ blockquote {
 .content-right ul,
 .content-left ul {
   list-style: none;
-}
-
-/*
-  asides stuff
-*/
-aside.lowlight {
-  opacity: .3;
-}
-
-aside.lowlight:hover {
-  opacity: 1;
-}
-
-aside h3 {
-  text-align: center;
-  padding-left: 20px;
 }

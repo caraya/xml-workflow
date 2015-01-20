@@ -307,7 +307,45 @@ and with the optional attributes it will look like this
 <link class="external" id="ex01" href="http://google.com" label="link to google"></link>
 ```
 
-Next are images where again borrow from HTML for the name of attribute names and their functionality. We start with `genericPropertiesGroup` to define `class` and `id`.
+As I was working on further ideas for the project I realized that we forgot to create inline and block level inner containers for the content, important if you're going to style smaller portions of content within a paragraph or witin a section. Taking the names from HTML we define section (inline) and div (block) elements. They are both lightweight with three attributes: `class`, `id` and `type`
+
+Type is used in these two elements and in our sections to create data-type and epub:type attributes. These are used in the Paged Media stylesheet to decide how will the content be formated.
+
+```xml
+<xs:element name="div">
+  <xs:annotation>
+    <xs:documentation>
+      Allows for inline content using span
+
+      class and id attributes from genericPropertiesGroup
+
+      type is use to create data-type and/or epub:type annotations
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="span">
+  <xs:annotation>
+    <xs:documentation>
+        Allows for inline content using span
+
+        class and id attributes from genericPropertiesGroup
+
+        type is use to create data-type and/or epub:type annotations
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
+  </xs:complexType>
+</xs:element>
+```
+
+Next are images where we borrow from HTML, again, for the name of attribute names and their functionality. We start with `genericPropertiesGroup` to define `class` and `id`.
 
 
 Then we require a `src` attribute to tell where the image is located. We need to be careful because we haven't told the schema the different types of images. We have at least three different locations for the image files. All three of these are valid locations for our image.png file.

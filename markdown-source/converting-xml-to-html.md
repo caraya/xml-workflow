@@ -83,43 +83,44 @@ The first thing we'll do is to define the output for our master document and all
 We will being with the major areas of the document, `metadata` and `section`. The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the content inside the metadata element.
 
 ```xml
-
-  <xsl:template match="metadata" mode="content">
-    <div class="metadata">
-      <xsl:apply-templates/>
-    </div>
-  </xsl:template>
+<xsl:template match="metadata" mode="content">
+  <div class="metadata">
+    <xsl:apply-templates/>
+  </div>
+</xsl:template>
 ```
 
 The `section` element is hardest to wrap your head around
 
 ```xml
-  <xsl:template match="section" mode="content">
-  <!--
-    Each section element will generate its own file
+<xsl:template match="section" mode="content">
+<!--
+  Each section element will generate its own file
 
-    We create the file name by concatenating the type attribute for the section, the count of how many sections of that type there are and the .xhtml extension
-  -->
-    <xsl:variable name="fileName"
-      select="concat(section/@type, count(section),'.xhtml')"/>
-    <!-- An example result of the variable above would be introduction1.xhtml -->
-    <xsl:apply-templates/>
-    <xsl:if test="(@class)">
-      <xsl:attribute name="class">
-        <xsl:value-of select="@class"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:if test="(@id)">
-      <xsl:attribute name="id">
-        <xsl:value-of select="@id"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:result-document href='${fileName}' format="xhtml-out">
-        <section>
-          <xsl:apply-templates/>
-        </section>
-      </xsl:result-document>
-  </xsl:template>
+  We create the file name by concatenating the type attribute
+  for the section, the count of how many sections of that type
+  there are and the .xhtml extension
+-->
+  <xsl:variable name="fileName"
+    select="concat(section/@type, count(section),'.xhtml')"/>
+  <!-- An example result of the variable above would be introduction1.xhtml -->
+  <xsl:apply-templates/>
+  <xsl:if test="(@class)">
+    <xsl:attribute name="class">
+      <xsl:value-of select="@class"/>
+    </xsl:attribute>
+  </xsl:if>
+  <xsl:if test="(@id)">
+    <xsl:attribute name="id">
+      <xsl:value-of select="@id"/>
+    </xsl:attribute>
+  </xsl:if>
+  <xsl:result-document href='${fileName}' format="xhtml-out">
+      <section>
+        <xsl:apply-templates/>
+      </section>
+    </xsl:result-document>
+</xsl:template>
 ```
 
 ```xml

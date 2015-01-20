@@ -346,16 +346,35 @@
         </xs:complexType>
     </xs:element>
     
-    <xs:element name="span">
+    <xs:element name="div">
         <xs:annotation>
             <xs:documentation>
-                Allows for content using span
+                Allows for inline content using span
                 
                 class and id attributes from genericPropertiesGroup
+                
+                type is use to create data-type and/or epub:type annotations
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="span">
+        <xs:annotation>
+            <xs:documentation>
+                Allows for inline content using span
+                
+                class and id attributes from genericPropertiesGroup
+                
+                type is use to create data-type and/or epub:type annotations
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
         </xs:complexType>
     </xs:element>
     

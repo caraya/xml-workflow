@@ -16,24 +16,21 @@
       <xsl:element name="title">
         <xsl:value-of select="book/metadata/title"/>
       </xsl:element>
-      <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,700italic' rel='stylesheet' type='text/css'/>
-      <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'/>
-      <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'/>
-      <link rel="stylesheet" href="../css/style.css" />
+      <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="(code)">
         <!--
               Use highlight.js and github style
             -->
-        <link rel="stylesheet" href="../css/styles/railscasts.css" />
+        <link rel="stylesheet" href="css/styles/railscasts.css" />
         <!-- Load highlight.js -->
-        <script src="../js/highlight.pack.js"></script>
+        <script src="js/highlight.pack.js"></script>
         <script>
           hljs.initHighlightingOnLoad();
         </script>
       </xsl:if>
       <!--
         Comment this out for now. It'll become relevant when we add video
-        <script src="../js/script.js"></script>
+        <script src="js/script.js"></script>
       -->
     </head>
 
@@ -227,24 +224,21 @@
     <xsl:result-document href='{$fileName}' format="xhtml-out">
       <html>
         <head>
-          <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,700,700italic' rel='stylesheet' type='text/css'/>
-          <link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'/>
-          <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'/>
-          <link rel="stylesheet" href="../css/style.css" />
+          <link rel="stylesheet" href="css/style.css" />
           <xsl:if test="(code)">
             <!--
               Use highlight.js and github style
             -->
-            <link rel="stylesheet" href="../css/styles/railscasts.css" />
+            <link rel="stylesheet" href="css/styles/railscasts.css" />
             <!-- Load highlight.js -->
-            <script src="../js/highlight.pack.js"></script>
+            <script src="js/highlight.pack.js"></script>
             <script>
               hljs.initHighlightingOnLoad();
             </script>
             </xsl:if>
           <!--
             Comment this out for now. It'll become relevant when we add video
-            <script src="../js/script.js"></script>
+            <script src="js/script.js"></script>
           -->
         </head>
         <body>
@@ -271,13 +265,15 @@
     </xsl:result-document>
   </xsl:template>
 
+<!--
   <xsl:template match="metadata/title">
     <h1> <xsl:value-of select="."/> </h1>
   </xsl:template>
+-->
 
   <xsl:template match="metadata/authors">
     <h2>Authors</h2>
-    <ul class="no-bullet">
+    <ul>
       <xsl:for-each select="author">
         <li>
           <xsl:value-of select="first-name"/>
@@ -296,8 +292,7 @@
           <xsl:value-of select="first-name"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="surname"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="concat('- ', type, ' ', 'editor')"></xsl:value-of>
+          <xsl:value-of select="concat(' - ', type, ' ', 'editor')"></xsl:value-of>
         </li>
       </xsl:for-each>
     </ul>
