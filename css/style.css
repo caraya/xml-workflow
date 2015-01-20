@@ -214,7 +214,7 @@ table {
 
 /* line 39, /Users/carlos/code/xml-workflow/css/style.scss */
 html {
-  font-size: 100%;
+  font-size: 16px;
   overflow-y: scroll;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%; }
@@ -227,13 +227,14 @@ body {
   font-size: 1em;
   font-weight: 300;
   line-height: 1.25;
-  padding-left: 2em;
-  padding-right: 2em; }
+  padding-left: 5rem;
+  padding-right: 5rem; }
 
-/* line 62, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 63, /Users/carlos/code/xml-workflow/css/style.scss */
 pre code {
   font-family: "Source Code Pro", monospace;
-  font-size: 1rem;
+  font-size: 1em;
+  line-height: 1.25em;
   page-break-inside: avoid;
   white-space: pre;
   white-space: pre-wrap;
@@ -250,51 +251,6 @@ aside.lowlight {
 aside h3 {
   text-align: center;
   padding-left: 20px; }
-
-/* line 40, /Users/carlos/code/xml-workflow/css/partials/_columns */
-.columns2 {
-  width: 100%;
-  /* How many columns? */
-  -moz-column-count: 2;
-  -webkit-column-count: 2;
-  column-count: 2;
-  /* Space between columns */
-  -moz-column-gap: 20px;
-  -webkit-column-gap: 20px;
-  column-gap: 20px;
-  /* How do we fill the content of our columns, default is to balance */
-  -moz-column-fill: balance;
-  -webkit-column-fill: balance;
-  column-fill: balance;
-  /* Column span, defaul is not to span columns */
-  -moz-column-span: none;
-  -webkit-column-span: none;
-  column-span: none; }
-
-/* line 45, /Users/carlos/code/xml-workflow/css/partials/_columns */
-.columns3 {
-  width: 100%;
-  /* How many columns? */
-  -moz-column-count: 3;
-  -webkit-column-count: 3;
-  column-count: 3;
-  /* Space between columns */
-  -moz-column-gap: 10px;
-  -webkit-column-gap: 10px;
-  column-gap: 10px;
-  /* How do we fill the content of our columns, default is to balance */
-  -moz-column-fill: balance;
-  -webkit-column-fill: balance;
-  column-fill: balance;
-  /* Column span, defaul is not to span columns */
-  -moz-column-span: none;
-  -webkit-column-span: none;
-  column-span: none; }
-  /* line 49, /Users/carlos/code/xml-workflow/css/partials/_columns */
-  .columns3 .listed {
-    list-style: none;
-    margin-top: 20px;
-    margin-bottom: 20px; }
 
 /*
  * Al fonts share family and weight. The htings unique to each
@@ -388,37 +344,78 @@ blockquote {
   list-style: none; }
 
 /* line 1, /Users/carlos/code/xml-workflow/css/partials/_metadata */
-.no-bullet li {
+.metadata {
+  padding-left: 2rem;
+  padding-right: 2rem; }
+
+/* line 6, /Users/carlos/code/xml-workflow/css/partials/_metadata */
+.metadata li {
   list-style-type: none; }
 
-/* line 5, /Users/carlos/code/xml-workflow/css/partials/_metadata */
+/* line 10, /Users/carlos/code/xml-workflow/css/partials/_metadata */
 .no-margin-left {
   margin-left: -2em; }
 
 /* line 2, /Users/carlos/code/xml-workflow/css/partials/_paragraphs */
 p {
-  font-size: 1rem;
+  font-size: 1.2em;
   margin-bottom: 1.3em; }
   /* line 6, /Users/carlos/code/xml-workflow/css/partials/_paragraphs */
   p + p {
     text-indent: 2em; }
 
-/* line 11, /Users/carlos/code/xml-workflow/css/partials/_paragraphs */
-h1 + p::first-line {
+/* line 16, /Users/carlos/code/xml-workflow/css/partials/_paragraphs */
+.first-line {
   text-transform: uppercase;
-  font-size: 1.25em;
+  font-size: 1.1em;
   text-indent: 0; }
 
-/*
- * Dropcap the first letter of the first paragraph. Do it in a class to make
- * it a choice rather than do it automatically
-*/
-/* line 21, /Users/carlos/code/xml-workflow/css/partials/_paragraphs */
+/* line 27, /Users/carlos/code/xml-workflow/css/partials/_paragraphs */
 .first-letter {
   float: left;
   font-size: 7em;
   line-height: 0.8em;
   margin-bottom: -0.1em;
   padding-right: 0.1em; }
+
+/* line 85, /Users/carlos/code/xml-workflow/css/style.scss */
+.columns2 {
+  width: 100%;
+  /* How many columns? */
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+  /* Space between columns */
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+  /* How do we fill the content of our columns, default is to balance */
+  -moz-column-fill: balance;
+  -webkit-column-fill: balance;
+  column-fill: balance;
+  /* Column span, defaul is not to span columns */
+  -moz-column-span: none;
+  -webkit-column-span: none;
+  column-span: none; }
+
+/* line 90, /Users/carlos/code/xml-workflow/css/style.scss */
+.columns3 {
+  width: 100%;
+  /* How many columns? */
+  -moz-column-count: 3;
+  -webkit-column-count: 3;
+  column-count: 3;
+  /* Space between columns */
+  -moz-column-gap: 10px;
+  -webkit-column-gap: 10px;
+  column-gap: 10px;
+  /* How do we fill the content of our columns, default is to balance */
+  -moz-column-fill: balance;
+  -webkit-column-fill: balance;
+  column-fill: balance;
+  /* Column span, defaul is not to span columns */
+  -moz-column-span: none;
+  -webkit-column-span: none;
+  column-span: none; }
 
 /*# sourceMappingURL=style.css.map */

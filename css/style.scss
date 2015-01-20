@@ -37,7 +37,7 @@
 @import "modules/_normalize";
 
 html {
-  font-size: 100%;
+  font-size: 16px;
   overflow-y: scroll;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -51,17 +51,19 @@ body {
   font-weight: 300;
   line-height: 1.25;
   // Unless otherwise noted we pad the left and right margin
-  // to prevent the text from being too close to the browser's borders.
+  // to prevent the text from being too close to the browser's borders
+  // and to give plent of whitespace to the reader.
+  //
   // The builtin stylesheet margin/padding combo is never enough for my
   // liking
-  padding-left: 2em;
-  padding-right: 2em;
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
-
 
 pre code{
   font-family: "Source Code Pro", monospace;
-  font-size: 1rem;
+  font-size: 1em;
+  line-height: 1.25em;
   page-break-inside: avoid;
   white-space: pre;
   white-space: pre-wrap;
@@ -75,3 +77,18 @@ pre code{
 @import "partials/_metadata";
 @import "partials/_paragraphs";
 //@import "partials/_images";
+
+// The classes below use the column-attribs mixin (defined in _columns.scss)
+// to create 2 and 3-column layouts. These classes are meant as starting points,
+// there's definitely more you can do with them like playing with line-height
+// and word/letter spacing
+.columns2 {
+  width: 100%;
+	@include column-attribs (2, 20px);
+}
+
+.columns3 {
+  width: 100%;
+  @include column-attribs (3, 10px);
+}
+

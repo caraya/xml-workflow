@@ -24,7 +24,7 @@ The same way we build the table of content should allow us to build navigation w
 
 ## Create a better way to generate filenames
 
-The current way to create filenames doesn't take into account that different `section/@type` elements have different starting values. Can we make it start from 1 for every @type in the document?
+The current way to create filenames doesn't take into account that different `section/@type` elements have different starting values. Can I make it start from 1 for every @type in the document?
 
 ## Expand the use cases for this project
 
