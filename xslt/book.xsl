@@ -265,12 +265,6 @@
     </xsl:result-document>
   </xsl:template>
 
-<!--
-  <xsl:template match="metadata/title">
-    <h1> <xsl:value-of select="."/> </h1>
-  </xsl:template>
--->
-
   <xsl:template match="metadata/authors">
     <h2>Authors</h2>
     <ul>
