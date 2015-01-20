@@ -213,6 +213,13 @@ table {
   border-spacing: 0; }
 
 /* line 39, /Users/carlos/code/xml-workflow/css/style.scss */
+html {
+  font-size: 100%;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; }
+
+/* line 46, /Users/carlos/code/xml-workflow/css/style.scss */
 body {
   background-color: white;
   color: #333;
@@ -223,10 +230,11 @@ body {
   padding-left: 2em;
   padding-right: 2em; }
 
-/* line 55, /Users/carlos/code/xml-workflow/css/style.scss */
+/* line 62, /Users/carlos/code/xml-workflow/css/style.scss */
 pre code {
   font-family: "Source Code Pro", monospace;
   font-size: 1rem;
+  page-break-inside: avoid;
   white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word; }

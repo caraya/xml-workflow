@@ -22,6 +22,10 @@ Media Queries are the best solution (or are they?)
 
 The same way we build the table of content should allow us to build navigation within the pages of a publication using preceeding-sibling and following-sibling logic
 
+## Create a better way to generate filenames
+
+The current way to create filenames doesn't take into account that different `section/@type` elements have different starting values. Can we make it start from 1 for every @type in the document?
+
 ## Expand the use cases for this project
 
 The original idea was for text and code-heavy content. Is there a case to be made for a more expressive vocabulary? I'm thinking of additional elements for navigation and content display such as asides and blockquotes

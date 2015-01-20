@@ -36,6 +36,13 @@
 
 @import "modules/_normalize";
 
+html {
+  font-size: 100%;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
 body {
   background-color: white;
   color: #333;
@@ -55,10 +62,10 @@ body {
 pre code{
   font-family: "Source Code Pro", monospace;
   font-size: 1rem;
+  page-break-inside: avoid;
   white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word;
-
 }
 
 @import "partials/_asides";
@@ -67,4 +74,4 @@ pre code{
 @import "partials/_marginalia";
 @import "partials/_metadata";
 @import "partials/_paragraphs";
-
+//@import "partials/_images";
