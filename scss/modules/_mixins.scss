@@ -31,9 +31,11 @@
     }
 }
 
-// BORDER RADUYS
+// BORDER RADIUS
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
           border-radius: $radius;
   /* stops bg color from leaking outside the border: */
   background-clip: padding-box;
@@ -51,3 +53,28 @@
   height: $height;
 }
 
+
+// Mixins copied from Bourbon
+@mixin word-wrap($wrap: break-word) {
+  word-wrap: $wrap;
+
+  @if $wrap == break-word {
+    overflow-wrap: break-word;
+    word-break: break-all;
+  }
+}
+
+/* Order of the includes matters, and it is: normal, bold, italic, bold+italic. */
+@mixin font-face($font-family, $file-path, $weight: normal, $style: normal) {
+  @font-face {
+    font-family: $font-family;
+    font-weight: $weight;
+    font-style: $style;
+
+      src: url('#{$file-path}.eot');
+      src: url('#{$file-path}.eot?#iefix')               format('embedded-opentype'),
+           url('#{$file-path}.woff')                     format('woff'),
+           url('#{$file-path}.ttf')                      format('truetype'),
+           url('#{$file-path}.svg##{$font-family}')      format('svg');
+  }
+}
