@@ -5,10 +5,21 @@
   xml:lang="en-US"
   version="2.0">
   <!-- Strip whitespace from the listed elements -->
-  <xsl:preserve-space elements="code"/>
   <xsl:strip-space elements="*"/>
+  <xsl:preserve-space elements="code"/>
   <!-- Define the output for this and all document children -->
   <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
+
+  <!--
+    Default template taken from http://bit.ly/1sXqIL8
+  -->
+  <xsl:template match="*">
+    <xsl:message terminate="no">
+      WARNING: Unmatched element: <xsl:value-of select="name()"/>
+    </xsl:message>
+
+    <xsl:apply-templates/>
+  </xsl:template>
   <!-- Root template, matching / -->
   <xsl:template match="/" priority="1">
     <html>
@@ -265,7 +276,31 @@
     </xsl:result-document>
   </xsl:template>
 
-  <xsl:template match="metadata/authors">
+  <!-- Div element -->
+  <xsl:template match="div">
+    <xsl:element name="div">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Span element -->
+
+   <xsl:template match="metadata/authors">
     <h2>Authors</h2>
     <ul>
       <xsl:for-each select="author">
@@ -456,7 +491,39 @@
     </xsl:element>
   </xsl:template>
 
+  <xsl:template match="figcaption">
+    <xsl:apply-templates/>
+  </xsl:template>
+
   <xsl:template match="figure">
-    <xsl:number level="any"/>
+    <xsl:element name="figure">
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(image/@width)">
+        <xsl:attribute name="width">
+          <xsl:value-of select="image/@width"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(image/@height)">
+        <xsl:attribute name="height">
+          <xsl:value-of select="image/@height"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(image/@align)">
+        <xsl:attribute name="align">
+          <xsl:value-of select="image/@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates select="image"/>
+      <xsl:apply-templates select="figcaption"/>
+    </xsl:element>
   </xsl:template>
 </xsl:stylesheet>

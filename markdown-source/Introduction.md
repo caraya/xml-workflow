@@ -345,8 +345,49 @@ Type is used in these two elements and in our sections to create data-type and e
 </xs:element>
 ```
 
-Next are images where we borrow from HTML, again, for the name of attribute names and their functionality. We start with `genericPropertiesGroup` to define `class` and `id`.
+Next are images and figures where we borrow from HTML, again, for the name of attribute names and their functionality. We define 3 elements for the image-related tags: `figure`, `figcaption` and the image itself. 
 
+`Figure` is the wrapper around a `figcaption` caption and the `image` element itself. The `figcaption` is a text-only element that will contain the caption for the associated image
+
+```xml
+!-- Figure and related elements -->
+<!-- 
+    Note that the schema accepts both images and figures as 
+    children of section to accomodate images with and without 
+    captions
+-->
+<xs:element name="figure">
+  <xs:annotation>
+    <xs:documentation>
+      Figure is a wrapper for an image and a caption. Because we 
+      accept either figure or image as part of our content model  
+      keep most of the attributes on the image 
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:all>
+      <xs:element ref="image"/>
+      <xs:element ref="figcaption"/>
+    </xs:all>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
+</xs:element>
+```
+
+The caption child only uses text and, because it's only used as a child of figure, we don't need to assign attributes to it. It will inherit from the image or the surrounding figure.
+      
+```xml
+<xs:element name="figcaption">
+  <xs:annotation>
+    <xs:documentation>
+      caption for the image in the figure. Because it's only used
+      as a child of figure, we don't need to assign attributes to
+      it
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+```
+When working with the start with `genericPropertiesGroup` to define `class` and `id`.
 
 Then we require a `src` attribute to tell where the image is located. We need to be careful because we haven't told the schema the different types of images. We have at least three different locations for the image files. All three of these are valid locations for our image.png file.
 
@@ -512,6 +553,8 @@ The metadata section tells us more about the book itself and can be used to buil
             <xs:annotation>
                 <xs:documentation>
                 Metadata sequence using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier
+                
+                We also support paragraphs to add content that is not one of the items listed above
                 </xs:documentation>
             </xs:annotation>
             <xs:element name="isbn" type="isbn"/>
@@ -520,6 +563,12 @@ The metadata section tells us more about the book itself and can be used to buil
             <xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
             <xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- 
+                We allow para here to make sure  we can write 
+                text as for the metadata
+            -->
+            <xs:element ref="para"/>
+
         </xs:sequence>
     </xs:complexType>
 </xs:element>
@@ -531,41 +580,57 @@ The `title` element is required to appear exactly one time.
 
 We can have 1 or more `para` elements. 
 
-We can use 0 or more `code` or `list` elements. 
+We can use 0 or more of the following elements:
+
+* `code` fenced code blocks elements
+* `ulist` unordered list
+* `olist` ordered (numbered) lists
+* `figure` for captioned images
+* `image` without captions
+* `div` block level containers
+* `span` inline level container
 
 The element inherits `class` and `ID` from genericPropertiesGroup.
 
-Finally we add the `type`, make it optional and default it to chapter. We do this to make it easier for authors to create content; where possible. I'd rather have the wrong value than no value at all.
+Finally we add the `type` to create data-type and/or epub:type attributes. I chose to make it option and default it to chapter. We want to make it easier for authors to create content; where possible. I'd rather have the wrong value than no value at all.
 
 ```xml
+<!-- Section element -->
 <xs:element name="section">
-    <xs:annotation>
-        <xs:documentation>section structure</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-        <xs:sequence>
-            <xs:annotation>
-                <xs:documentation>A title and at least one paragraph </xs:documentation>
-            </xs:annotation>
-            <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
-            <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>                
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element ref="code" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element ref="list" minOccurs="0" maxOccurs="unbounded"/>
-            </xs:choice>
-        </xs:sequence>
-        <xs:attributeGroup ref="genericPropertiesGroup"/>
-        <xs:attribute name="type" type="xs:token" use="optional" default="chapter">
-            <xs:annotation>
-                <xs:documentation>
-                    The type or role for the paragraph as in data-role or epub:type. 
-
-                    We make it optional but provide a default of chapter to make it 
-                    easier to add.
-                </xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-    </xs:complexType>
+  <xs:annotation>
+    <xs:documentation>section structure</xs:documentation>
+  </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:sequence>
+      <xs:annotation>
+        <xs:documentation>
+          A title and at least one paragraph
+        </xs:documentation>
+      </xs:annotation>
+      <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="code"/>
+        <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="ulist"/>
+        <xs:element ref="olist"/>
+        <xs:element ref="figure"/>
+        <xs:element ref="image"/>
+        <xs:element ref="div"/>
+        <xs:element ref="span"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="type" type="xs:token" use="optional" default="chapter">
+      <xs:annotation>
+        <xs:documentation>
+          The type or role for the paragraph asn in data-role or epub:type. 
+          
+          We make it optional but provide a default of chapter to make it 
+          easier to add.
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
 </xs:element>
 ```
 Now that we have defined our elements, we'll define the core structure of the document by defining the structure of the `book` element. 

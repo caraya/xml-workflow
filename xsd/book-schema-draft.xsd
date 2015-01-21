@@ -346,10 +346,11 @@
         </xs:complexType>
     </xs:element>
     
+    <!-- Div and Span elementa -->
     <xs:element name="div">
         <xs:annotation>
             <xs:documentation>
-                Allows for inline content using span
+                Allows for block level content using div
                 
                 class and id attributes from genericPropertiesGroup
                 
@@ -378,6 +379,37 @@
         </xs:complexType>
     </xs:element>
     
+    <!-- Figure and related elements -->
+    <!-- 
+        Note that the schema accepts both images and figures as children of section
+        to accomodate images with and without captions
+    -->
+    <xs:element name="figure">
+        <xs:annotation>
+            <xs:documentation>
+                Figure is a wrapper for an image and a caption. Because we accept either 
+                figure or image as part of our content model we keep most of the attributes 
+                on the image and 
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:all>
+                <xs:element ref="image"/>
+                <xs:element ref="figcaption"/>
+            </xs:all>
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="figcaption">
+        <xs:annotation>
+            <xs:documentation>
+                caption for the image in the figure. Because it's only used as
+                a child of figure, we don't need to assign attributes to it
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
     <xs:element name="image">
         <xs:annotation>
             <xs:documentation>image and image-related attributes</xs:documentation>
@@ -387,18 +419,19 @@
             <xs:attribute name="src" type="xs:token" use="required">
                 <xs:annotation>
                     <xs:documentation>
-                        Source for the image. We may want to create a restriction to account for both local and remote addresses
+                        Source for the image. We may want to create a restriction 
+                        to account for both local and remote addresses
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="height" type="xs:nonNegativeInteger" use="optional">
+            <xs:attribute name="height" type="xs:nonNegativeInteger" use="required">
                 <xs:annotation>
                     <xs:documentation>
                         Height for the image expressed as a positive integer
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="width" type="xs:nonNegativeInteger" use="optional">
+            <xs:attribute name="width" type="xs:nonNegativeInteger" use="required">
                 <xs:annotation>
                     <xs:documentation>
                         Width for the image expressed as a positive integer
@@ -707,6 +740,11 @@
                 <xs:element ref="authors"/>
                 <xs:element ref="editors"/>
                 <xs:element ref="otherRoles"/>
+                <!-- 
+                    We allow para here to make sure  we can write 
+                    text as for the metadata
+                -->
+                <xs:element ref="para"/>
             </xs:choice>
         </xs:complexType>
     </xs:element>
@@ -723,11 +761,14 @@
                 </xs:annotation>
                 <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
                 <xs:choice maxOccurs="unbounded">
-                    <xs:element ref="image"/>
                     <xs:element ref="code"/>
                     <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
                     <xs:element ref="ulist"/>
                     <xs:element ref="olist"/>
+                    <xs:element ref="figure"/>
+                    <xs:element ref="image"/>
+                    <xs:element ref="div"/>
+                    <xs:element ref="span"/>
                 </xs:choice>
             </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
