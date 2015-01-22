@@ -284,7 +284,7 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <!-- Creating wrappers around complext types --> 
+    <!-- Wrappers around complext types --> 
     <xs:element name="authors">
         <xs:annotation>
             <xs:documentation>
@@ -324,7 +324,7 @@
         </xs:complexType>
     </xs:element>
 
-    <!-- Elements inside section -->
+    <!-- Links -->
     <xs:element name="link">
         <xs:annotation>
             <xs:documentation>
@@ -378,13 +378,26 @@
         </xs:annotation>
       
       <xs:complexType mixed="true">
-        <xs:sequence minOccurs="0" maxOccurs="unbounded">
-          <xs:element ref="para"/>
-        </xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="code"/>
+            <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element ref="ulist"/>
+            <xs:element ref="olist"/>
+            <xs:element ref="figure"/>
+            <xs:element ref="image"/>
+            <xs:element ref="div"/>
+            <xs:element ref="span"/>
+            <xs:element ref="blockquote"/>
+            <xs:element ref="h1"/>
+            <xs:element ref="h2"/>
+            <xs:element ref="h3"/>
+            <xs:element ref="h4"/>
+            <xs:element ref="h5"/>
+            <xs:element ref="h6"/>
+          </xs:choice>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
-        <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
-      </xs:complexType>
-    </xs:element>
+        <xs:attribute name="type" type="xs:token" use="optional"></xs:attribute>
+      </xs:complexType>    </xs:element>
     
     <xs:element name="span">
         <xs:annotation>
@@ -406,6 +419,9 @@
     <!-- 
         Note that the schema accepts both images and figures as children of section
         to accomodate images with and without captions
+        
+        Not sure if this is the way to go or whether we should make figcaption 
+        (or a caption attribute) part of image and whether it should be mandatory or not
     -->
     <xs:element name="figure">
         <xs:annotation>
@@ -478,6 +494,7 @@
         </xs:complexType>
     </xs:element>
     
+    <!-- Style elements -->
     <xs:element name="strong">
         <xs:annotation>
             <xs:documentation>
@@ -548,6 +565,7 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Lists -->
     <xs:element name="ulist">
         <xs:annotation>
             <xs:documentation>
@@ -633,12 +651,21 @@
                 <xs:element ref="strike"/>
                 <xs:element ref="link"/>
                 <xs:element ref="span"/>
+                <xs:element ref="quote"/>
             </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
   
     <!-- Blockquotes, asides and marginalia -->
+    <xs:element name="attribution" type="xs:string">
+      <xs:annotation>
+        <xs:documentation>
+          Who said what
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
+ 
     <xs:element name="blockquote">
       <xs:annotation>
         <xs:documentation>
@@ -646,15 +673,25 @@
         </xs:documentation>
       </xs:annotation>
       <xs:complexType mixed="true">
-        <xs:all>
-          <xs:element name="attribution"/>
-        </xs:all>
+        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+          <xs:element ref="attribution"/>
+          <xs:element ref="para"/>
+        </xs:sequence>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
         <xs:attribute name="align" type="align" use="optional" default="left"/>
       </xs:complexType>
     </xs:element>
     
-    
+    <xs:element name="quote">
+      <xs:annotation>
+        <xs:documentation>
+          Shorter, inline, quotations
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+      </xs:complexType>
+    </xs:element>
     <!-- Headings -->
     <xs:element name="h1">
         <xs:annotation>

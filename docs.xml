@@ -94,44 +94,44 @@
         <para>We will being with the major areas of the document, `metadata` and `section`. The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the content inside the metadata element.</para>
 
         <code language="xml">
-        &lt;xsl:template match="metadata" mode="content">
-            &lt;div class="metadata">
-                &lt;xsl:apply-templates/>
-            &lt;/div>
-        &lt;/xsl:template>
+&lt;xsl:template match="metadata" mode="content">
+    &lt;div class="metadata">
+        &lt;xsl:apply-templates/>
+    &lt;/div>
+&lt;/xsl:template>
        </code>
 
        <para>The <emphasis>section</emphasis> element is hardest to wrap your head around</para>
 
        <code language="xml">
-         &lt;xsl:template match="section" mode="content">
-            <!--
-              Each section element will generate its own file
+ &lt;xsl:template match="section" mode="content">
+    <!--
+      Each section element will generate its own file
 
-              We create the file name by concatenating the type attribute
-              for the section, the count of how many sections of that type
-              there are and the .xhtml extension
-            -->
-            &lt;xsl:variable name="fileName"
-                select="concat(section/@type, count(section),'.xhtml')"/>
-            &lt;!-- An example result of the variable above would be introduction1.xhtml -->
-            &lt;xsl:apply-templates/>
-            &lt;xsl:if test="(@class)">
-              &lt;xsl:attribute name="class">
-                &lt;xsl:value-of select="@class"/>
-              &lt;/xsl:attribute>
-            &lt;/xsl:if>
-            &lt;xsl:if test="(@id)">
-              &lt;xsl:attribute name="id">
-                &lt;xsl:value-of select="@id"/>
-              &lt;/xsl:attribute>
-            &lt;/xsl:if>
-            &lt;xsl:result-document href='${fileName}' format="xhtml-out">
-              &lt;section>
-                &lt;xsl:apply-templates/>
-              &lt;/section>
-            &lt;/xsl:result-document>
-         &lt;/xsl:template>
+      We create the file name by concatenating the type attribute
+      for the section, the count of how many sections of that type
+      there are and the .xhtml extension
+    -->
+    &lt;xsl:variable name="fileName"
+      select="concat(section/@type, count(section),'.xhtml')"/>
+    &lt;!-- An example result of the variable above would be introduction1.xhtml -->
+    &lt;xsl:apply-templates/>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:result-document href='${fileName}' format="xhtml-out">
+      &lt;section>
+        &lt;xsl:apply-templates/>
+      &lt;/section>
+    &lt;/xsl:result-document>
+ &lt;/xsl:template>
       </code>
     </section>
 
@@ -169,7 +169,7 @@
         <item>Block. This object roughly corresponds to &lt;div>` in HTML, and normally includes a paragraph of text. I need it here, because text cannot be placed directly into a flow.</item>
       </olist>
 
-      <para>Rather than define a flo of content and then the content CSS Paged Media uses a combination of new and existing CSS elements to format the content. For example, to define default page size and then add elements to chapter pages looks like this:</para>
+      <para>Rather than define a flow of content and then the content, CSS Paged Media uses a combination of new and existing CSS elements to format the content. For example, to define default page size and then add elements to chapter pages looks like this:</para>
 
     <code language="css">
       @page {
@@ -193,6 +193,8 @@
         }
       }
     </code>
+
+    <para>Just to make sure I cover all the basis, I've provided a basic XSL-FO converter. It is not complete and it's unlikely to be, I'm putting all my energy in the CSS Paged Media solution.</para>
   </section>
 
   <section type="chapter">

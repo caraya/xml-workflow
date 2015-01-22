@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html SYSTEM
+ "/home/david/xml/fop_article/xhtml1-transitional.dtd" >
+<html>
+<head>
+<title>Spanish Review Handbook</title>
+</head>
+
+<body bgcolor="#ffffff">
+<h3>Introduction</h3>
+<p>
+This handbook covers the major topics in Spanish, but is by
+no means complete.
+</p>
+<h3>Accents</h3>
+<p>
+When we pronounce English words, one syllable is usually
+emphasized (<b>stressed</b>, in linguistic terms).
+The stressed syllable is underlined in the following
+words: com<u>pu</u>ter, <u>lan</u>guage, de<u>vel</u>opment,
+suc<u>ceeds</u>. Spanish
+words also have a stressed syllable, and there are rules for
+determining which syllable carries the emphasis.
+</p>
+<ol>
+<li>If a syllable has an accent mark, that syllable
+always gets the stress: <i>acci<u>&oacute;n</u></i> (action),
+<i>te<u>l&eacute;</u>fono</i>.</li>
+<li>If the word ends with a vowel, <b>n</b>, or <b>s</b>,
+the next-to-last syllable gets the stress: <i>a<u>mi</u>go</i>,
+<i><u>ha</u>blan</i> (they talk), <i>ani<u>mal</u>es</i>.</li>
+<li>All other words are accented on the last syllable:
+<i>ho<u>tel</u></i>, <i>simi<u>lar</u></i>,
+<i>espa<u>&ntilde;ol</u></i>.</li>
+</ol>
+
+</body>
+</html>

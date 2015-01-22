@@ -65,15 +65,6 @@ body {
   // text-align: justify;
 }
 
-pre code{
-  font-family: "Source Code Pro", monospace;
-  font-size: 1em;
-  line-height: 1.25em;
-  page-break-inside: avoid;
-  white-space: pre;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
 
 @import "partials/_asides";
 @import "partials/_columns";

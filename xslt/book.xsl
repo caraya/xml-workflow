@@ -37,9 +37,9 @@
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="(code)">
         <!--
-              Use highlight.js and github style
+              Use highlight.js and docco style
             -->
-        <link rel="stylesheet" href="css/styles/railscasts.css" />
+        <link rel="stylesheet" href="css/styles/docco.css" />
         <!-- Load highlight.js -->
         <script src="js/highlight.pack.js"></script>
         <script>
@@ -249,7 +249,7 @@
             <!--
               Use highlight.js and github style
             -->
-            <link rel="stylesheet" href="css/styles/railscasts.css" />
+            <link rel="stylesheet" href="css/styles/docco.css" />
             <!-- Load highlight.js -->
             <script src="js/highlight.pack.js"></script>
             <script>
@@ -285,7 +285,7 @@
     </xsl:result-document>
   </xsl:template>
 
-  <!-- Div element -->
+  <!-- DIV ELEMENT -->
   <xsl:template match="div">
     <xsl:element name="div">
       <xsl:if test="@align">
@@ -307,9 +307,30 @@
     </xsl:element>
   </xsl:template>
 
-  <!-- Span element -->
+  <!-- SPAN ELEMENT-->
+  <xsl:template match="span">
+    <xsl:element name="span">
+      <xsl:if test="@type">
+        <xsl:attribute name="data-type">
+          <xsl:value-of select="@type"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
 
-   <xsl:template match="metadata/authors">
+  <!-- PEOPLE GROUPS -->
+  <xsl:template match="metadata/authors">
     <h2>Authors</h2>
     <ul>
       <xsl:for-each select="author">
@@ -351,6 +372,7 @@
     </ul>
   </xsl:template>
 
+  <!-- PARAGRAPHS -->
   <xsl:template match="para">
     <xsl:element name="p">
       <xsl:if test="(@class)">

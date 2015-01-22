@@ -232,16 +232,6 @@ body {
   padding-left: 10rem;
   padding-right: 10rem; }
 
-/* line 68, /Users/carlos/code/xml-workflow/scss/style.scss */
-pre code {
-  font-family: "Source Code Pro", monospace;
-  font-size: 1em;
-  line-height: 1.25em;
-  page-break-inside: avoid;
-  white-space: pre;
-  white-space: pre-wrap;
-  word-wrap: break-word; }
-
 /* line 3, /Users/carlos/code/xml-workflow/scss/partials/_asides */
 aside.lowlight {
   opacity: 0.3; }
@@ -382,13 +372,13 @@ p {
 
 /* line 1, /Users/carlos/code/xml-workflow/scss/partials/_lists */
 ul li {
-  background-image: url('/list-square-bullet.png');
-  background-repeat: no-repeat;
-  background-position: 0px 7px;
-  background-size: 7px 7px;
-  font-size: 1.1em; }
+  list-style: square; }
 
-/* line 91, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 5, /Users/carlos/code/xml-workflow/scss/partials/_lists */
+ol li {
+  list-style: decimal; }
+
+/* line 82, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns2 {
   width: 100%;
   /* How many columns? */
@@ -408,7 +398,7 @@ ul li {
   -webkit-column-span: none;
   column-span: none; }
 
-/* line 96, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 87, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns3 {
   width: 100%;
   /* How many columns? */

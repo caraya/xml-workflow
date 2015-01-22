@@ -1,7 +1,7 @@
 <html xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:epub="http://www.idpf.org/2007/opf">
    <head>
       <link rel="stylesheet" href="css/style.css"></link>
-      <link rel="stylesheet" href="css/styles/railscasts.css"></link>
+      <link rel="stylesheet" href="css/styles/docco.css"></link>
       <script src="js/highlight.pack.js"></script>
       <script>
          hljs.initHighlightingOnLoad();
@@ -64,9 +64,9 @@
                paragraph of text. I need it here, because text cannot be placed directly into a flow.
             </li>
          </ol>
-         <p>Rather than define a flo of content and then the content CSS Paged Media uses a combination
-            of new and existing CSS elements to format the content. For example, to define default
-            page size and then add elements to chapter pages looks like this:
+         <p>Rather than define a flow of content and then the content, CSS Paged Media uses a
+            combination of new and existing CSS elements to format the content. For example, to
+            define default page size and then add elements to chapter pages looks like this:
          </p>
          <pre>
             <code class="css">
@@ -93,6 +93,10 @@
 
             </code>
          </pre>
+         <p>Just to make sure I cover all the basis, I've provided a basic XSL-FO converter. It
+            is not complete and it's unlikely to be, I'm putting all my energy in the CSS Paged
+            Media solution.
+         </p>
       </section>
    </body>
 </html>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<fo:layout-master-set>
+<fo:simple-page-master margin-right="0.5cm" margin-left="1cm" margin-bottom="0.5cm" margin-top="0.5cm" page-width="12cm" page-height="12cm" master-name="cover">
+<fo:region-body margin-top="3cm"/>
+</fo:simple-page-master>
+<fo:simple-page-master margin-bottom="0.5cm" margin-top="0.5cm" margin-right="1cm" margin-left="0.5cm" page-width="12cm" page-height="12cm" master-name="leftPage">
+<fo:region-before extent="1cm"/>
+<fo:region-after extent="1cm"/>
+<fo:region-body margin-bottom="1.1cm" margin-top="1.1cm"/>
+</fo:simple-page-master>
+<fo:simple-page-master margin-bottom="0.5cm" margin-top="0.5cm" margin-right="0.5cm" margin-left="1cm" page-width="12cm" page-height="12cm" master-name="rightPage">
+<fo:region-before extent="1cm"/>
+<fo:region-after extent="1cm"/>
+<fo:region-body margin-bottom="1.1cm" margin-top="1.1cm"/>
+</fo:simple-page-master>
+<fo:page-sequence-master master-name="contents">
+<fo:repeatable-page-master-alternatives>
+<fo:conditional-page-master-reference odd-or-even="even" master-name="leftPage"/>
+<fo:conditional-page-master-reference odd-or-even="odd" master-name="rightPage"/>
+</fo:repeatable-page-master-alternatives>
+</fo:page-sequence-master>
+</fo:layout-master-set>
+
+<fo:page-sequence master-name="cover">
+<fo:flow flow-name="xsl-region-body">
+<fo:block text-align="end" font-size="18pt" font-family="Helvetica">Spanish Review Handbook</fo:block>
+<fo:block space-after="36pt" text-align="end" font-size="12pt" font-family="Helvetica">
+			Copyright © 2001 J. David Eisenberg
+		</fo:block>
+<fo:block text-align="end">
+<fo:external-graphic height="109px" width="99px" src="file:images/catcode_logo.jpg"/>
+</fo:block>
+<fo:block text-align="end">
+			A Catcode Production
+		</fo:block>
+</fo:flow>
+</fo:page-sequence>
+
+
+<fo:page-sequence initial-page-number="2" master-name="contents">
+<fo:static-content flow-name="xsl-region-before">
+<fo:block text-align="center" font-size="10pt" font-family="Helvetica">Spanish Review Handbook</fo:block>
+</fo:static-content>
+<fo:static-content flow-name="xsl-region-after">
+<fo:block text-align="center" font-size="10pt" font-family="Helvetica">
+			Página <fo:page-number/>
+</fo:block>
+</fo:static-content>
+<fo:flow flow-name="xsl-region-body">
+<fo:block space-after="6pt" space-before="6pt" color="green" font-weight="bold" font-family="sans-serif" font-size="14pt">Introduction</fo:block>
+<fo:block space-after.optimum="4pt" space-after.maximum="6pt" space-after.minimum="2pt" space-before.optimum="4pt" space-before.maximum="6pt" space-before.minimum="2pt" font-size="12pt" font-family="sans-serif" text-indent="1em">
+This handbook covers the major topics in Spanish, but is by
+no means complete. 
+</fo:block>
+<fo:block space-after="6pt" space-before="6pt" color="green" font-weight="bold" font-family="sans-serif" font-size="14pt">Accents</fo:block>
+<fo:block space-after.optimum="4pt" space-after.maximum="6pt" space-after.minimum="2pt" space-before.optimum="4pt" space-before.maximum="6pt" space-before.minimum="2pt" font-size="12pt" font-family="sans-serif" text-indent="1em">
+When we pronounce English words, one syllable is usually
+emphasized (<fo:inline font-weight="bold">stressed</fo:inline>, in linguistic terms).
+The stressed syllable is underlined in the following
+words: com<fo:inline text-decoration="underline">pu</fo:inline>ter, <fo:inline text-decoration="underline">lan</fo:inline>guage, de<fo:inline text-decoration="underline">vel</fo:inline>opment,
+suc<fo:inline text-decoration="underline">ceeds</fo:inline>. Spanish
+words also have a stressed syllable, and there are rules for
+determining which syllable carries the emphasis.
+</fo:block>
+<fo:list-block space-after="0.25em" space-before="0.25em">
+<fo:list-item>
+<fo:list-item-label start-indent="1em">
+<fo:block>1.
+			</fo:block>
+</fo:list-item-label>
+<fo:list-item-body>
+<fo:block>If a syllable has an accent mark, that syllable
+always gets the stress: <fo:inline font-style="italic">acci<fo:inline text-decoration="underline">ón</fo:inline>
+</fo:inline> (action),
+<fo:inline font-style="italic">te<fo:inline text-decoration="underline">lé</fo:inline>fono</fo:inline>.</fo:block>
+</fo:list-item-body>
+</fo:list-item>
+<fo:list-item>
+<fo:list-item-label start-indent="1em">
+<fo:block>2.
+			</fo:block>
+</fo:list-item-label>
+<fo:list-item-body>
+<fo:block>If the word ends with a vowel, <fo:inline font-weight="bold">n</fo:inline>, or <fo:inline font-weight="bold">s</fo:inline>,
+the next-to-last syllable gets the stress: <fo:inline font-style="italic">a<fo:inline text-decoration="underline">mi</fo:inline>go</fo:inline>,
+<fo:inline font-style="italic">
+<fo:inline text-decoration="underline">ha</fo:inline>blan</fo:inline> (they talk), <fo:inline font-style="italic">ani<fo:inline text-decoration="underline">mal</fo:inline>es</fo:inline>.</fo:block>
+</fo:list-item-body>
+</fo:list-item>
+<fo:list-item>
+<fo:list-item-label start-indent="1em">
+<fo:block>3.
+			</fo:block>
+</fo:list-item-label>
+<fo:list-item-body>
+<fo:block>All other words are accented on the last syllable:
+<fo:inline font-style="italic">ho<fo:inline text-decoration="underline">tel</fo:inline>
+</fo:inline>, <fo:inline font-style="italic">simi<fo:inline text-decoration="underline">lar</fo:inline>
+</fo:inline>, 
+<fo:inline font-style="italic">espa<fo:inline text-decoration="underline">ñol</fo:inline>
+</fo:inline>.</fo:block>
+</fo:list-item-body>
+</fo:list-item>
+</fo:list-block>
+<fo:block space-after="6pt" space-before="6pt" color="green" font-weight="bold" font-family="sans-serif" font-size="14pt">Parts of Speech</fo:block>
+<fo:block space-after.optimum="4pt" space-after.maximum="6pt" space-after.minimum="2pt" space-before.optimum="4pt" space-before.maximum="6pt" space-before.minimum="2pt" font-size="12pt" font-family="sans-serif" text-indent="1em">
+Words fall into one of seven classes, known as
+parts of speech. We will deal with
+only four of them.
+</fo:block>
+<fo:block space-after="0.25em" space-before="0.25em">
+<fo:block>Nouns</fo:block>
+	<fo:block start-indent="2em">A person, place, or thing. (<fo:inline font-style="italic">Juan</fo:inline>, <fo:inline font-style="italic">telephone</fo:inline>)</fo:block>
+<fo:block>Verbs</fo:block>
+	<fo:block start-indent="2em">An action or state of being. (<fo:inline font-style="italic">run</fo:inline>, <fo:inline font-style="italic">become</fo:inline>)</fo:block>
+<fo:block>Adjectives</fo:block>
+	<fo:block start-indent="2em">A word that describes a noun. (<fo:inline font-style="italic">red</fo:inline>, <fo:inline font-style="italic">big</fo:inline>)</fo:block>
+<fo:block>Adverbs</fo:block>
+	<fo:block start-indent="2em">A word that tells when, where, or to what
+	extent a verb performs its action (<fo:inline font-style="italic">quickly</fo:inline>, <fo:inline font-style="italic">directly</fo:inline>)
+	</fo:block>
+</fo:block>
+<fo:block space-after="6pt" space-before="6pt" color="green" font-weight="bold" font-family="sans-serif" font-size="14pt">Verbs</fo:block>
+<fo:block space-after.optimum="4pt" space-after.maximum="6pt" space-after.minimum="2pt" space-before.optimum="4pt" space-before.maximum="6pt" space-before.minimum="2pt" font-size="12pt" font-family="sans-serif" text-indent="1em">
+Regular Spanish verbs come in three groups:
+</fo:block>
+<fo:list-block space-after="0.25em" space-before="0.25em">
+<fo:list-item>
+<fo:list-item-label start-indent="1em">
+<fo:block>
+				•
+			</fo:block>
+</fo:list-item-label>
+<fo:list-item-body>
+<fo:block>Verbs ending in <fo:inline font-weight="bold">-ar</fo:inline>, like cant<fo:inline font-weight="bold">ar</fo:inline> (to sing).</fo:block>
+</fo:list-item-body>
+</fo:list-item>
+<fo:list-item>
+<fo:list-item-label start-indent="1em">
+<fo:block>
+				•
+			</fo:block>
+</fo:list-item-label>
+<fo:list-item-body>
+<fo:block>Verbs ending in <fo:inline font-weight="bold">-er</fo:inline>, like com<fo:inline font-weight="bold">er</fo:inline> (to eat).</fo:block>
+</fo:list-item-body>
+</fo:list-item>
+<fo:list-item>
+<fo:list-item-label start-indent="1em">
+<fo:block>
+				•
+			</fo:block>
+</fo:list-item-label>
+<fo:list-item-body>
+<fo:block>Verbs ending in <fo:inline font-weight="bold">-ir</fo:inline>, like viv<fo:inline font-weight="bold">ir</fo:inline> (to live).</fo:block>
+</fo:list-item-body>
+</fo:list-item>
+</fo:list-block>
+<fo:block space-after.optimum="4pt" space-after.maximum="6pt" space-after.minimum="2pt" space-before.optimum="4pt" space-before.maximum="6pt" space-before.minimum="2pt" font-size="12pt" font-family="sans-serif" text-indent="1em">
+Here is the pattern for conjugating <fo:inline font-weight="bold">cantar</fo:inline> in the
+present tense.
+</fo:block>
+
+<fo:table>
+<fo:table-column column-width="2in"/>
+<fo:table-column column-width="2in"/>
+<fo:table-body>
+<fo:table-row>
+<fo:table-cell text-align="center" font-weight="bold" border-style="solid" border-width="1pt">
+<fo:block>Singular</fo:block>
+</fo:table-cell>
+<fo:table-cell text-align="center" font-weight="bold" border-style="solid" border-width="1pt">
+<fo:block>Plural</fo:block>
+</fo:table-cell>
+</fo:table-row>
+<fo:table-row>
+	<fo:table-cell border-style="solid" border-width="1pt">
+<fo:block>yo canto</fo:block>
+</fo:table-cell> <fo:table-cell border-style="solid" border-width="1pt">
+<fo:block>nosotros cantamos</fo:block>
+</fo:table-cell>
+</fo:table-row>
+<fo:table-row>
+	<fo:table-cell border-style="solid" border-width="1pt">
+<fo:block>tú cantas</fo:block>
+</fo:table-cell>
+<fo:table-cell border-style="solid" border-width="1pt">
+<fo:block>vosotros cantáis</fo:block>
+</fo:table-cell>
+</fo:table-row>
+<fo:table-row>
+	<fo:table-cell border-style="solid" border-width="1pt">
+<fo:block>él canta <fo:block/> ella canta </fo:block>
+</fo:table-cell>
+	<fo:table-cell border-style="solid" border-width="1pt">
+<fo:block>ellos cantan <fo:block/> ellas cantan </fo:block>
+</fo:table-cell>
+</fo:table-row>
+</fo:table-body>
+</fo:table>
+
+</fo:flow>
+</fo:page-sequence>
+</fo:root>

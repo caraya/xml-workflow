@@ -1,7 +1,7 @@
 ul li {
-  background-image: url('/list-square-bullet.png');
-  background-repeat: no-repeat;
-  background-position: 0px 7px;
-  background-size: 7px 7px;
-  font-size: 1.1em;
+  list-style: square;
+}
+
+ol li {
+  list-style: decimal;
 }

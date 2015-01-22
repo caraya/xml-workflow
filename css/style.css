@@ -265,16 +265,6 @@ body {
   padding-right: 10rem;
 }
 
-pre code {
-  font-family: "Source Code Pro", monospace;
-  font-size: 1em;
-  line-height: 1.25em;
-  page-break-inside: avoid;
-  white-space: pre;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
 aside.lowlight {
   opacity: .3;
 }
@@ -417,11 +407,11 @@ p + p {
 }
 
 ul li {
-  background-image: url("/list-square-bullet.png");
-  background-repeat: no-repeat;
-  background-position: 0px 7px;
-  background-size: 7px 7px;
-  font-size: 1.1em;
+  list-style: square;
+}
+
+ol li {
+  list-style: decimal;
 }
 
 .columns2 {
