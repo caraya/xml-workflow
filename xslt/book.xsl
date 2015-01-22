@@ -2,16 +2,22 @@
 <!-- Define stylesheet root and namespaces we'll work with -->
 <xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:epub="http://www.idpf.org/2007/opf"
   xml:lang="en-US"
   version="2.0">
   <!-- Strip whitespace from the listed elements -->
   <xsl:strip-space elements="*"/>
+  <!-- And preserve it from the elements below -->
   <xsl:preserve-space elements="code"/>
   <!-- Define the output for this and all document children -->
   <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
 
   <!--
     Default template taken from http://bit.ly/1sXqIL8
+
+    This will tell us of any unmatched elements rather than
+    failing silently
   -->
   <xsl:template match="*">
     <xsl:message terminate="no">
@@ -20,12 +26,13 @@
 
     <xsl:apply-templates/>
   </xsl:template>
+
   <!-- Root template, matching / -->
-  <xsl:template match="/" priority="1">
+  <xsl:template match="book" priority="1">
     <html>
     <head>
       <xsl:element name="title">
-        <xsl:value-of select="book/metadata/title"/>
+        <xsl:value-of select="metadata/title"/>
       </xsl:element>
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="(code)">
@@ -47,16 +54,16 @@
 
     <body>
       <xsl:apply-templates/>
-      <xsl:apply-templates mode="toc"/>
+      <xsl:apply-templates select="/" mode="toc"/>
     </body>
     </html>
   </xsl:template>
 
-  <xsl:template match="book" mode="toc">
+  <xsl:template match="/" mode="toc">
     <div class="toc">
       <h2>Table of Contents</h2>
       <ol>
-        <xsl:for-each select="section">
+        <xsl:for-each select="book/section">
           <xsl:element name="li">
             <xsl:element name="a">
               <xsl:attribute name="href">
@@ -69,11 +76,14 @@
       </ol>
     </div>
   </xsl:template>
-  <!-- Metadata element and children -->
+
   <xsl:template match="metadata">
-    <div class="metadata">
+    <xsl:element name="div">
+      <xsl:attribute name="class">
+        <xsl:value-of select="name(.)"/>
+      </xsl:attribute>
       <xsl:apply-templates/>
-    </div>
+    </xsl:element>
   </xsl:template>
 
   <xsl:template match="isbn">
@@ -94,10 +104,9 @@
     Our goal is to create as simple a markup as we can so we can better leverage
     CSS to style and make our content display as intended
   -->
-  <xsl:template match="h1 | title | section/title">
+  <xsl:template match="h1 | title ">
     <!--
-      We want to treat the title of the book and each section's title the
-      same as our h1 headings. We do this by matching all on the same template.
+      We want to treat the title of each section the same as our h1 headings. We do this by matching all on the same template.
 
       If we need to style the titles differently we can create a separate
       template to match it to
@@ -358,8 +367,12 @@
     </xsl:element>
   </xsl:template>
 
+  <!-- STYLES -->
+  <!--
+    TODO: INVESTIGATE WHY STYLES ARE NOT NESTING PROPERLY
+  -->
   <xsl:template match="strong">
-    <strong><xsl:apply-templates/></strong>
+    <strong><xsl:apply-templates /></strong>
   </xsl:template>
 
   <xsl:template match="emphasis">
@@ -371,9 +384,10 @@
   </xsl:template>
 
   <xsl:template match="underline">
-    <u> <xsl:apply-templates/></u>
+    <u><xsl:apply-templates/></u>
   </xsl:template>
 
+  <!-- LINKS AND ANCHORS -->
   <xsl:template match="link">
       <xsl:element name="a">
         <xsl:if test="(@class)">
@@ -391,47 +405,27 @@
         </xsl:attribute>
         <xsl:attribute name="label">
           <xsl:value-of select="@label"/>
-        </xsl:attribute>/
+        </xsl:attribute>
         <xsl:value-of select="@label"/>
       </xsl:element>
   </xsl:template>
 
-  <xsl:template match="image">
-    <xsl:element name="img">
-      <xsl:attribute name="src">
-        <xsl:value-of select="@src"/>
+  <xsl:template match="anchor">
+    <!--
+    Not sure if I want to make this an empty element or not
+
+    Empty element <anchor name="home"/> appeals to my ease
+    of use paradigm but it may not be as easy to understand
+    for peope who are not familiar with XML empty elements
+  -->
+    <xsl:element name="a">
+      <xsl:attribute name="name">
+        <xsl:apply-templates/>
       </xsl:attribute>
-      <xsl:attribute name="alt">
-        <xsl:value-of select="@alt"/>
-      </xsl:attribute>
-    <xsl:if test="(@width)">
-      <xsl:attribute name="width">
-        <xsl:value-of select="@width"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:if test="(@height)">
-      <xsl:attribute name="height">
-        <xsl:value-of select="@height"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:if test="(@align)">
-      <xsl:attribute name="align">
-        <xsl:value-of select="@align"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:if test="(@class)">
-      <xsl:attribute name="class">
-        <xsl:value-of select="@class"/>
-      </xsl:attribute>
-    </xsl:if>
-    <xsl:if test="(@id)">
-      <xsl:attribute name="id">
-        <xsl:value-of select="@id"/>
-      </xsl:attribute>
-    </xsl:if>
     </xsl:element>
   </xsl:template>
 
+  <!-- FENCED CODE FRAGMENTS -->
   <xsl:template match="code">
     <xsl:element name="pre">
       <xsl:element name="code">
@@ -443,22 +437,7 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="item">
-    <xsl:element name="li">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
-
+  <!-- LIST AND LIST ITEMS -->
   <xsl:template match="ulist">
     <xsl:element name="ul">
       <xsl:if test="(@class)">
@@ -491,10 +470,23 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="figcaption">
-    <xsl:apply-templates/>
+  <xsl:template match="item">
+    <xsl:element name="li">
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
   </xsl:template>
 
+  <!-- FIGURES -->
   <xsl:template match="figure">
     <xsl:element name="figure">
       <xsl:if test="(@class)">
@@ -526,4 +518,45 @@
       <xsl:apply-templates select="figcaption"/>
     </xsl:element>
   </xsl:template>
+
+  <xsl:template match="figcaption">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="image">
+    <xsl:element name="img">
+      <xsl:attribute name="src">
+        <xsl:value-of select="@src"/>
+      </xsl:attribute>
+      <xsl:attribute name="alt">
+        <xsl:value-of select="@alt"/>
+      </xsl:attribute>
+      <xsl:if test="(@width)">
+        <xsl:attribute name="width">
+          <xsl:value-of select="@width"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@height)">
+        <xsl:attribute name="height">
+          <xsl:value-of select="@height"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@align)">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+    </xsl:element>
+  </xsl:template>
+
 </xsl:stylesheet>

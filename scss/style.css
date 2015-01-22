@@ -1,0 +1,431 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+/* Order of the includes matters, and it is: normal, bold, italic, bold+italic. */
+/*
+ * Normalize.scss based on Nicolas Gallagher and Jonathan Neal's
+ * normalize.css v2.1.3 | MIT License | git.io/normalize
+*/
+/* line 19, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
+  display: block; }
+
+/* line 26, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+audio, canvas, video {
+  display: inline-block; }
+
+/* line 36, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
+
+/* line 43, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+[hidden], template {
+  display: none; }
+
+/* line 53, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+html {
+  background: #fff;
+  color: #000;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; }
+
+/* line 68, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+html, button, input, select, textarea {
+  font-family: sans-serif; }
+
+/* line 73, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+body {
+  margin: 0; }
+
+/* line 83, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+a {
+  background: transparent; }
+  /* line 85, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+  a:focus {
+    outline: thin dotted; }
+  /* line 89, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+  a:hover, a:active {
+    outline: 0; }
+
+/* line 98, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/* line 103, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0; }
+
+/* line 108, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+h3 {
+  font-size: 1.17em;
+  margin: 1em 0; }
+
+/* line 113, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+h4 {
+  font-size: 1em;
+  margin: 1.33em 0; }
+
+/* line 118, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+h5 {
+  font-size: 0.83em;
+  margin: 1.67em 0; }
+
+/* line 123, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+h6 {
+  font-size: 0.75em;
+  margin: 2.33em 0; }
+
+/* line 130, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+/* line 136, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+b, strong {
+  font-weight: bold; }
+
+/* line 147, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+dfn {
+  font-style: italic; }
+
+/* line 152, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+mark {
+  background: #ff0;
+  color: #000; }
+
+/* line 170, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+code, kbd, pre, samp {
+  font-family: monospace, serif;
+  font-size: 1em; }
+
+/* line 179, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word; }
+
+/* line 186, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019"; }
+
+/* line 199, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+q:before, q:after {
+  content: '';
+  content: none; }
+
+/* line 205, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+small {
+  font-size: 80%; }
+
+/* line 212, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+/* line 219, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+sup {
+  top: -0.5em; }
+
+/* line 223, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+sub {
+  bottom: -0.25em; }
+
+/* line 269, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+img {
+  border: 0; }
+
+/* line 277, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+svg:not(:root) {
+  overflow: hidden; }
+
+/* line 284, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+figure {
+  margin: 0; }
+
+/* line 298, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
+
+/* line 308, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+legend {
+  border: 0;
+  padding: 0;
+  white-space: normal; }
+
+/* line 324, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline; }
+
+/* line 336, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+button, input {
+  line-height: normal; }
+
+/* line 345, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+button, select {
+  text-transform: none; }
+
+/* line 359, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer; }
+
+/* line 369, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+button[disabled], input[disabled] {
+  cursor: default; }
+
+/* line 378, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+input[type="checkbox"], input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0; }
+
+/* line 389, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box; }
+
+/* line 398, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+input[type="search"]::-webkit-search-cancel-button, input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none; }
+
+/* line 405, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+button::-moz-focus-inner, input::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
+/* line 413, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+textarea {
+  overflow: auto;
+  vertical-align: top; }
+
+/* line 421, /Users/carlos/code/xml-workflow/scss/modules/_normalize */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/* line 41, /Users/carlos/code/xml-workflow/scss/style.scss */
+html {
+  font-size: 16px;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; }
+
+/* line 48, /Users/carlos/code/xml-workflow/scss/style.scss */
+body {
+  background-color: white;
+  color: #333;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 1em;
+  font-weight: 300;
+  line-height: 1.5;
+  padding-left: 10rem;
+  padding-right: 10rem; }
+
+/* line 68, /Users/carlos/code/xml-workflow/scss/style.scss */
+pre code {
+  font-family: "Source Code Pro", monospace;
+  font-size: 1em;
+  line-height: 1.25em;
+  page-break-inside: avoid;
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word; }
+
+/* line 3, /Users/carlos/code/xml-workflow/scss/partials/_asides */
+aside.lowlight {
+  opacity: 0.3; }
+  /* line 5, /Users/carlos/code/xml-workflow/scss/partials/_asides */
+  aside.lowlight :hover {
+    opacity: 1; }
+
+/* line 12, /Users/carlos/code/xml-workflow/scss/partials/_asides */
+aside h3 {
+  text-align: center;
+  padding-left: 20px; }
+
+/*
+ * Al fonts share family and weight. The htings unique to each
+ * will be listed below
+*/
+/* line 5, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+h1, h2, h3, h4 {
+  margin: 1.414em 0 0.5em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  line-height: 1.2; }
+
+/* line 13, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+h1 {
+  margin-top: 0;
+  font-size: 3.157em; }
+
+/* line 18, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+h2 {
+  font-size: 2.369em; }
+
+/* line 22, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+h3 {
+  font-size: 1.777em; }
+
+/* line 26, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+h4 {
+  font-size: 1.333em;
+  text-transform: uppercase; }
+
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+aside {
+  width: 100%;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
+  border-top: 3px double #ddd;
+  border-bottom: 3px double #ddd;
+  color: #666;
+  line-height: 1.4em;
+  font-size: 1.8em; }
+  /* line 11, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+  aside .pull {
+    margin-left: -20%;
+    margin-top: 0.2em;
+    margin-bottom: 0.5em; }
+
+/* line 20, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+blockquote {
+  margin-left: 1em;
+  margin-bottom: 1em;
+  font-style: italic; }
+
+/* line 26, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+.opening {
+  font-size: 2em;
+  text-align: center;
+  border-top: 3px double #ddd;
+  padding-top: 2em;
+  border-bottom: 3px double #ddd;
+  padding-bottom: 2em;
+  margin-bottom: 10em; }
+
+/* line 37, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+.margin-notes, .content-left {
+  width: 230px;
+  margin-left: -230px;
+  margin-right: 20px;
+  text-align: right;
+  font-size: 0.75em; }
+
+/* line 46, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+.margin-notes-right, .content-right {
+  width: 230px;
+  margin-left: 760px;
+  margin-right: -20px;
+  text-align: left;
+  font-size: 0.75em;
+  position: absolute; }
+
+/* line 55, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+.content-right {
+  width: 230px;
+  margin-left: 760px;
+  margin-right: -20px;
+  text-align: left;
+  font-size: 0.75em;
+  position: absolute; }
+
+/* line 65, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+.content-right ul, .content-left ul {
+  list-style: none; }
+
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
+.metadata {
+  padding-left: 2rem;
+  padding-right: 2rem; }
+
+/* line 6, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
+.metadata li {
+  list-style-type: none; }
+
+/* line 10, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
+.no-margin-left {
+  margin-left: -2em; }
+
+/* line 2, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
+p {
+  font-size: 1.2em;
+  margin-bottom: 1.3em; }
+  /* line 6, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
+  p + p {
+    text-indent: 2em; }
+
+/* line 16, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
+.first-line {
+  text-transform: uppercase;
+  font-size: 1.1em;
+  text-indent: 0; }
+
+/* line 27, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
+.first-letter {
+  float: left;
+  font-size: 7em;
+  line-height: 0.8em;
+  margin-bottom: -0.1em;
+  padding-right: 0.1em; }
+
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_lists */
+ul li {
+  background-image: url('/list-square-bullet.png');
+  background-repeat: no-repeat;
+  background-position: 0px 7px;
+  background-size: 7px 7px;
+  font-size: 1.1em; }
+
+/* line 91, /Users/carlos/code/xml-workflow/scss/style.scss */
+.columns2 {
+  width: 100%;
+  /* How many columns? */
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+  /* Space between columns */
+  -moz-column-gap: 20px;
+  -webkit-column-gap: 20px;
+  column-gap: 20px;
+  /* How do we fill the content of our columns, default is to balance */
+  -moz-column-fill: balance;
+  -webkit-column-fill: balance;
+  column-fill: balance;
+  /* Column span, defaul is not to span columns */
+  -moz-column-span: none;
+  -webkit-column-span: none;
+  column-span: none; }
+
+/* line 96, /Users/carlos/code/xml-workflow/scss/style.scss */
+.columns3 {
+  width: 100%;
+  /* How many columns? */
+  -moz-column-count: 3;
+  -webkit-column-count: 3;
+  column-count: 3;
+  /* Space between columns */
+  -moz-column-gap: 10px;
+  -webkit-column-gap: 10px;
+  column-gap: 10px;
+  /* How do we fill the content of our columns, default is to balance */
+  -moz-column-fill: balance;
+  -webkit-column-fill: balance;
+  column-fill: balance;
+  /* Column span, defaul is not to span columns */
+  -moz-column-span: none;
+  -webkit-column-span: none;
+  column-span: none; }
+
+/*# sourceMappingURL=style.css.map */

@@ -327,7 +327,12 @@
     <!-- Elements inside section -->
     <xs:element name="link">
         <xs:annotation>
-            <xs:documentation>links... </xs:documentation>
+            <xs:documentation>
+                links... 
+                
+                What's the difference between supporting IRI and URI
+                other than URI are supposed to work only with ASCII characters
+            </xs:documentation>
         </xs:annotation>
         <xs:complexType>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
@@ -346,6 +351,20 @@
         </xs:complexType>
     </xs:element>
     
+    <!-- Named Anchor -->
+    <xs:element name="anchor">
+        <xs:annotation>
+            <xs:documentation>
+                The receiving end of an anchor link within the same document 
+                (the link is something like "#test") and the location of the 
+                test anchor has something like name="test"
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="name"/>
+        </xs:complexType>
+    </xs:element>
+    
     <!-- Div and Span elementa -->
     <xs:element name="div">
         <xs:annotation>
@@ -357,10 +376,14 @@
                 type is use to create data-type and/or epub:type annotations
             </xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-            <xs:attributeGroup ref="genericPropertiesGroup"/>
-            <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
-        </xs:complexType>
+      
+      <xs:complexType mixed="true">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="para"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+        <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
+      </xs:complexType>
     </xs:element>
     
     <xs:element name="span">
@@ -533,11 +556,7 @@
         </xs:annotation>
         <xs:complexType mixed="true">
             <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                <xs:element name="item">
-                    <xs:complexType>
-                        <xs:attributeGroup ref="genericPropertiesGroup"/>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element ref="item"/>
             </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
@@ -551,25 +570,28 @@
         </xs:annotation>
         <xs:complexType mixed="true">
             <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                <xs:element name="item">
-                    <xs:complexType>
-                        <xs:attributeGroup ref="genericPropertiesGroup"/>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element ref="item"/>
             </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
-
+    
+    <xs:element name="item">
+        <xs:complexType mixed="true">
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+        </xs:complexType>
+    </xs:element>
+    
+    <!-- Fenced code blocks -->
     <xs:element name="code">
         <xs:annotation>
             <xs:documentation>
                 Code is used to generate fenced code blocks (see Github rendered markdown code 
                 for an idea of how I want this to look). 
                 
-                When using CSS we'll generate a <code><pre></pre></code> block with a language attribute
-                that will be formated with either Google Code Prettify or Highlight.js (the chosen
-                package will be a part of the tool chain)
+                When using CSS we'll generate a <code><pre></pre></code> block with a language 
+                attribute that will be formated with Highlight.js (the chosen package will be 
+                a part of the tool chain)
                 
                 Because of the intended use, the language attribute is required. 
                 
@@ -581,7 +603,8 @@
             <xs:attribute name="language" use="required"/>
         </xs:complexType>
     </xs:element>
-
+  
+    <!-- Paragraphs -->
     <xs:element name="para">
         <xs:annotation>
             <xs:documentation>Para is the essential text content element. It'll get hairy because we
@@ -614,7 +637,24 @@
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
-
+  
+    <!-- Blockquotes, asides and marginalia -->
+    <xs:element name="blockquote">
+      <xs:annotation>
+        <xs:documentation>
+          We use blockquote for longer, block level, quotations
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+        <xs:all>
+          <xs:element name="attribution"/>
+        </xs:all>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+        <xs:attribute name="align" type="align" use="optional" default="left"/>
+      </xs:complexType>
+    </xs:element>
+    
+    
     <!-- Headings -->
     <xs:element name="h1">
         <xs:annotation>
@@ -760,7 +800,7 @@
                     <xs:documentation>A title and at least one paragraph </xs:documentation>
                 </xs:annotation>
                 <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
-                <xs:choice maxOccurs="unbounded">
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element ref="code"/>
                     <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
                     <xs:element ref="ulist"/>
@@ -769,6 +809,13 @@
                     <xs:element ref="image"/>
                     <xs:element ref="div"/>
                     <xs:element ref="span"/>
+                    <xs:element ref="blockquote"/>
+                    <xs:element ref="h1"/>
+                    <xs:element ref="h2"/>
+                    <xs:element ref="h3"/>
+                    <xs:element ref="h4"/>
+                    <xs:element ref="h5"/>
+                    <xs:element ref="h6"/>
                 </xs:choice>
             </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>

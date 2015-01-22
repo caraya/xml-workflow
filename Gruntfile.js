@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  var module, require; // Do I really need this?
   module.exports = function (grunt) {
     // require it at the top and pass in the grunt instance
     // it will measure how long things take for performance
@@ -31,8 +32,8 @@
         build: {
           options: {
             create: ['build']
-          },
-        },
+          }
+        }
       },
 
       'copy': {
@@ -60,12 +61,12 @@
         // These files will get pushed to the `
         // gh-pages` branch (the default)
         // We have to specifically remove node_modules
-              src: ['**/*'],
+        src: ['**/*']
       },
 
       watch: {
         options: {
-          nospawn: true,
+          nospawn: true
         },
         // Watch all javascript files and hint them
         js: {
@@ -76,12 +77,14 @@
     }); // closes initConfig
 
     grunt.task.registerTask(
-      'publish', [
-      'clean:production',
-      'mkdir:build',
-      'jshint',
-      'copy:build',
-      'gh-pages'
-    ]);
+      'publish',
+      [
+        'clean:production',
+        'mkdir:build',
+        'jshint',
+        'copy:build',
+        'gh-pages'
+      ]
+    );
   }; // closes module.exports
 }()); // closes the use strict function
