@@ -255,20 +255,20 @@ h1, h2, h3, h4 {
   font-weight: 400;
   line-height: 1.2; }
 
-/* line 13, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+/* line 15, /Users/carlos/code/xml-workflow/scss/partials/_headings */
 h1 {
   margin-top: 0;
   font-size: 3.157em; }
 
-/* line 18, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+/* line 20, /Users/carlos/code/xml-workflow/scss/partials/_headings */
 h2 {
   font-size: 2.369em; }
 
-/* line 22, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+/* line 24, /Users/carlos/code/xml-workflow/scss/partials/_headings */
 h3 {
   font-size: 1.777em; }
 
-/* line 26, /Users/carlos/code/xml-workflow/scss/partials/_headings */
+/* line 28, /Users/carlos/code/xml-workflow/scss/partials/_headings */
 h4 {
   font-size: 1.333em;
   text-transform: uppercase; }
@@ -339,14 +339,12 @@ blockquote {
 .metadata {
   padding-left: 2rem;
   padding-right: 2rem; }
-
-/* line 6, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
-.metadata li {
-  list-style-type: none; }
-
-/* line 10, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
-.no-margin-left {
-  margin-left: -2em; }
+  /* line 5, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
+  .metadata li {
+    list-style-type: none; }
+  /* line 9, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
+  .metadata p:not(:first-of-type) {
+    margin-left: -2em; }
 
 /* line 2, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
 p {
