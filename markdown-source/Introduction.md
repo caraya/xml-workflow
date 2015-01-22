@@ -38,4 +38,4 @@ For the purpose of this project we'll define a set of resources that work with a
 </book>
 ```
 
-It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated
+It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.
