@@ -28,6 +28,28 @@ The -g flag will install this globally, as opposed to installing it in the proje
 
 Now that we have the required sotfware installed we can move ahead and create our configiuration files. 
 
+### Optional: Ruby and SASS
+
+The only external dependencies you need to worry about are Ruby and SASS. Ruby comes installe in most (if not all) Macintosh and Linux systems; an [installer for Windows](http://rubyinstaller.org/) is also available.
+
+To install SASS, open a terminal/command window and type:
+
+```bash
+$ gem install sass
+```
+
+Note that on Mac and Linux you may need to run the command as a superuser:
+
+```bash
+$ sudo gem install sass
+```
+
+And enter your password when/if prompter to do so.
+
+> Ruby and SASS are only necessary if you plan to change the SCSS/SASS files. If you don't you can skip the Ruby install and work directly with the CSS files
+>
+> If you want to peek at the source look at the files under the scss directory. 
+
 ## Grunt first
 
 Grunt is a Node.js based task runner. It's a declarative version of Make and similar tools in other languages. Since Grunt and it's associated plugins are Node Packages we need to configure Node. 
@@ -37,3 +59,7 @@ At the root of the project there's a `package.json` file where all the files nec
 ```bash
 npm install
 ```
+
+This will install all the packages indicated in configuration file and all their dependencies; go get a cup of coffee as this may take a while in slower machines.
+
+As it installs the software it'll display a list of what it installed and when it's done you'll have all the packages 
