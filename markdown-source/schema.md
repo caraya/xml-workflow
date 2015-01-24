@@ -267,26 +267,64 @@ and with the optional attributes it will look like this
 <link class="external" id="ex01" href="http://google.com" label="link to google"></link>
 ```
 
-As I was working on further ideas for the project I realized that we forgot to create inline and block level inner containers for the content, important if you're going to style smaller portions of content within a paragraph or witin a section. Taking the names from HTML we define section (inline) and div (block) elements. They are both lightweight with three attributes: `class`, `id` and `type`
-
-Type is used in these two elements and in our sections to create data-type and epub:type attributes. These are used in the Paged Media stylesheet to decide how will the content be formated.
+Once I had the links I figured I need a way to create anchors for internal links that look like this: `&lt;a href="#top">` and expect the target to be formated like this `&lt;<a name="top">`. To accomodate this I created an anchor element to provide the destination for internal links. 
 
 ```xml
-<xs:element name="div">
+<!-- Named Anchor -->
+<xs:element name="anchor">
   <xs:annotation>
     <xs:documentation>
-      Allows for inline content using span
-
-      class and id attributes from genericPropertiesGroup
-
-      type is use to create data-type and/or epub:type annotations
+      The receiving end of an anchor link within the same document 
+      (the link is something like "#test") and the location of the 
+      test anchor has something like name="test"
     </xs:documentation>
   </xs:annotation>
   <xs:complexType>
-    <xs:attributeGroup ref="genericPropertiesGroup"/>
-    <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
+    <xs:attribute name="name"/>
   </xs:complexType>
 </xs:element>
+```
+
+As I was working on further ideas for the project I realized that we forgot to create inline and block level containers for the content, important if you're going to style smaller portions of content within a paragraph or witin a section. Taking the names from HTML we define section (inline) and div (block) elements. Div is a secondary section, containing the same model as the section, including additional div containers.
+
+```xml
+<xs:element name="div">
+    <xs:annotation>
+        <xs:documentation>
+            Allows for block level content using div
+
+            class and id attributes from genericPropertiesGroup
+
+            type is use to create data-type and/or epub:type annotations
+        </xs:documentation>
+    </xs:annotation>
+
+  <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="code"/>
+        <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="ulist"/>
+        <xs:element ref="olist"/>
+        <xs:element ref="figure"/>
+        <xs:element ref="image"/>
+        <xs:element ref="div"/>
+        <xs:element ref="span"/>
+        <xs:element ref="blockquote"/>
+        <xs:element ref="h1"/>
+        <xs:element ref="h2"/>
+        <xs:element ref="h3"/>
+        <xs:element ref="h4"/>
+        <xs:element ref="h5"/>
+        <xs:element ref="h6"/>
+      </xs:choice>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="type" type="xs:token" use="optional"></xs:attribute>
+  </xs:complexType>
+</xs:element>
+
+Span is an inline element, therefore the model is greatly reduced to only the elements that can be inside a paragraph
+
+Type is used in these two elements and in our sections to create data-type and epub:type attributes. These are used in the Paged Media stylesheet to decide how will the content be formated.
 
 <xs:element name="span">
   <xs:annotation>
@@ -305,7 +343,7 @@ Type is used in these two elements and in our sections to create data-type and e
 </xs:element>
 ```
 
-Next are images and figures where we borrow from HTML, again, for the name of attribute names and their functionality. We define 3 elements for the image-related tags: `figure`, `figcaption` and the image itself. 
+Next are images and figures where we borrow from HTML, again, for the name of attribute names and their functionality. We define 3 elements for the image-related tags: `figure`, `figcaption` and the `image` itself. 
 
 `Figure` is the wrapper around a `figcaption` caption and the `image` element itself. The `figcaption` is a text-only element that will contain the caption for the associated image
 
@@ -357,7 +395,7 @@ directory/image.png
 http://mysite.org/images/image.png
 ```
 
-We could create branches of our schema to deal with the different locations but I've chosen to let the XSLT style sheets deal with this particular situation
+We could create branches of our schema to deal with the different locations but I've chosen to let the XSLT style sheets deal with this particular situation. The schema type for the image (`xs:anyURI`) should also help to sort out the issue. 
 
 `width` and `height` are expressed as integer and are left as optional to account for the possibility that the CSS or XSLT stylesheets modify the image dimensions. Making these dimensions mandatory may affect how the element interact with the styles later on. 
 
@@ -431,25 +469,87 @@ Class and ID (from `genericPropertiesGroup`) are optional
 </xs:element>
 ```
 
-Lists provide bulleted and numbered lists as a block element inside a section. Rather than create elements (like `<ol>` and `<ul>` in HTML) we create a single list type and we add a `listType` attribute to indicate the type of list. 
+When I first conceptualized the project I envisioned one element for both numbered and bulleted lists. That proved to difficult to  implement and to cumbersome to write so I reverted to having to sepratate lists, one for ordered or numbered lists (`olist`) and one for unordered or bulleted lists (`ulist`). The only difference is the type of list that we use in XSLT later on. 
 
-It also requires at least 1 `item` child. If it's going to be left empty why bother having the list to begin with. 
+The list elements also require at least 1 `item` child. If it's going to be left empty why bother having the list to begin with. 
 
-It inherits class and ID from `genreicPropertiesGroup`.
+They inherit class and ID from `genreicPropertiesGroup`.
 
 ```xml
-<xs:element name="list">
-    <xs:complexType mixed="true">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
-            <xs:element name="item">
-                <xs:complexType>
-                    <xs:attributeGroup ref="genericPropertiesGroup"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-        <xs:attribute name="listType" type="xs:token" default="unordered"/>
-        <xs:attributeGroup ref="genericPropertiesGroup"/>
-    </xs:complexType>
+<!-- Lists -->
+<xs:element name="ulist">
+  <xs:annotation>
+    <xs:documentation>
+      Unordered list
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="item"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="olist">
+  <xs:annotation>
+    <xs:documentation>
+      Ordered list
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="item"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="item">
+  <xs:complexType mixed="true">
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
+</xs:element>
+```
+
+Another type of element that came up when working on the documentation were aside, blockquotes and quotes. 
+
+```xml
+<xs:element name="blockquote">
+  <xs:annotation>
+    <xs:documentation>
+      We use blockquote for longer, block level, quotations
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element ref="attribution"/>
+      <xs:element ref="para"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="align" type="align" use="optional" default="left"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="attribution" type="xs:string">
+  <xs:annotation>
+    <xs:documentation>
+      Who said what
+    </xs:documentation>
+  </xs:annotation>
+</xs:element>
+```
+
+```xml
+<xs:element name="quote">
+  <xs:annotation>
+    <xs:documentation>
+      Shorter, inline, quotations
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
 </xs:element>
 ```
 

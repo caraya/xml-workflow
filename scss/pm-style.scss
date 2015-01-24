@@ -1,0 +1,131 @@
+// CSS STYLESHEET FOR XML-WORKFLOW PAGED MEDIA PROOF OF CONCEPT
+//
+// Typography derived from work done at this URL: http://bit.ly/1B3Qj5B
+//
+// The following scale (also using perfect fifth progression)
+// may also help: http://bit.ly/1Bl4x4v
+//
+// Feel free to play with these and use them as starting point
+// for your own work :)
+//
+// The project currently uses these fonts:
+//
+// Roboto Slab for headings
+// Roboto for body copy
+// Monserrat as body alternative
+// Source Code Pro for code blocks and preformated text
+//
+// FONT IMPORTS
+//
+// Even though CSS Lint throws a fit when I put font imports in a stylesheet,
+// I'm doing it to keep the HTML files clean. Eventually I'll switch to locally
+// hosted fonts in their own partial. Until then, suck it CSS Lint
+//
+@import url(http://fonts.googleapis.com/css?family=Roboto:400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+
+// PRELIMINARY IMPORTS
+//
+// We first import a set of variables and mixins that are general enough
+// not to fit in any dedicated partial files
+//
+// We then import normalize.scss (the scss version of normalize.css)
+//
+@import "modules/_variables";
+@import "modules/_mixins";
+
+@import "modules/_normalize";
+
+html {
+  font-size: 12px;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+  background-color: white;
+  color: #333;
+  // font-family: 'Montserrat','Helvetica Neue', Helvetica, sans-serif;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 1em;
+  font-weight: 300;
+  line-height: 1.1;
+  // Unless otherwise noted we pad the left and right margin
+  // to prevent the text from being too close to the browser's borders
+  // and to give plent of whitespace to the reader.
+  //
+  // The builtin stylesheet margin/padding combo is never enough for my
+  // liking
+  padding-left: 10rem;
+  padding-right: 10rem;
+  // Do we want this?
+  // text-align: justify;
+}
+
+
+@import "partials/_columns";
+@import "partials/_marginalia";
+@import "partials/_metadata";
+@import "partials/_paragraphs";
+@import "partials/_lists";
+//@import "partials/_images";
+
+/*
+ * Al fonts share family and weight. The htings unique to each
+ * will be listed below
+*/
+h1, h2, h3, h4 {
+  margin: 1.414em 0 0.5em;
+  font-family: 'Montserrat', sans-serif;
+  //font-family: 'Roboto Slab', sans-serif;
+  font-weight: 400;
+  line-height: 1.2;
+  // Do I want all headers uppercased?
+  text-transform: uppercase;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3.157em;
+}
+
+h2 {
+  font-size: 2.369em;
+}
+
+h3 {
+  font-size: 1.777em;
+}
+
+h4 {
+  font-size: 1.333em;
+  text-transform: uppercase;
+}
+
+pre code{
+  font-family: "Source Code Pro", monospace;
+  font-size: 1em;
+  line-height: 1.25em;
+  page-break-inside: avoid;
+  white-space: pre-line !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+
+// The classes below use the column-attribs mixin defined in _columns.scss
+// to create 2 and 3-column layouts. These classes are meant as starting points,
+// there's definitely more you can do with them like playing with line-height
+// and word/letter spacing
+.columns2 {
+  width: 100%;
+	@include column-attribs (2, 20px);
+}
+
+.columns3 {
+  width: 100%;
+  @include column-attribs (3, 10px);
+}

@@ -12,6 +12,10 @@ Still, if we use jQuery for something else (video manipulation?) it may be worth
 
 One thing it doesn't do is handle mobile well, if at all. How do we make this tool work everywhere? [Pointer Events](http://www.w3.org/TR/pointerevents/)?
 
+## Explore how to add other parts of a book structure
+
+Right now we're working with chapters and chapter-like structures. What would it take to add parts? Do we need to add them to the schema and let them trickle from there? Do we really need them?
+
 ## Build Media Queries 
 
 Particularly if we want to use the same XSLT and CSS for mutliple projects we need to be able to tailor the display for different devices and viewports. 
@@ -30,7 +34,7 @@ The current way to create filenames doesn't take into account that different `se
 
 The original idea was for text and code-heavy content. Is there a case to be made for a more expressive vocabulary? I'm thinking of additional elements for navigation and content display such as asides and blockquotes
 
-## Explore implementing a serviceworker solution for these projects
+## Explore implementing a serviceworker solution
 
 <iframe width="560" height="315" src="//www.youtube.com/embed/Rr2vXDIVerI" frameborder="0" allowfullscreen></iframe>
 

@@ -15,6 +15,10 @@
                 <first-name>Arthur</first-name>
                 <surname>Connan Doyle</surname>
             </author>
+            <author>
+              <first-name>William</first-name>
+              <surname>Henriksen</surname>
+            </author>
         </authors>
         <editors>
             <editor>
@@ -36,7 +40,7 @@
             </otherRole>
         </otherRoles>
     </metadata>
-    <section type="Introduction">
+    <section type="chapter">
         <title>What this is about</title>
         <para>This project seeks to answer the question: <strong><emphasis>What does an XML workflow looks like?</emphasis></strong></para>
         <para/>

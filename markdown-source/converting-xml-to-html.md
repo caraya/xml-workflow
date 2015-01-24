@@ -80,20 +80,26 @@ The first thing we'll do is to define the output for our master document and all
     encoding="UTF-8" omit-xml-declaration="yes" />
 ```
 
-We will being with the major areas of the document, `metadata` and `section`. The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the content inside the metadata element.
+We will being with the major areas of the document, `metadata` and `section`. The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element.
 
 ```xml
-<xsl:template match="metadata" mode="content">
+<xsl:template match="metadata">
   <div class="metadata">
     <xsl:apply-templates/>
   </div>
 </xsl:template>
 ```
 
-The `section` element is hardest to wrap your head around
+The `section` element is hardest to wrap your head around as it performs several tasks for the transformation. The template performs the following tasks:
+
+* Creates a file name for each generated file based on the @type attribute and the section's position in the document
+* If the section has a class attribute create a corresponding class attribute in the generated section using the class attribute value from XML as the class value
+* If the section has a id attribute create a corresponding id attribute in the generated section using the id attribute value from XML as the id value
+* Generate a new file using the file name created earlier and the xhtml-out output format
+* Apply all children templates
 
 ```xml
-<xsl:template match="section" mode="content">
+<xsl:template match="section">
 <!--
   Each section element will generate its own file
 

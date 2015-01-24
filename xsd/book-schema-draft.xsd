@@ -376,7 +376,6 @@
                 type is use to create data-type and/or epub:type annotations
             </xs:documentation>
         </xs:annotation>
-      
       <xs:complexType mixed="true">
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element ref="code"/>
@@ -409,10 +408,33 @@
                 type is use to create data-type and/or epub:type annotations
             </xs:documentation>
         </xs:annotation>
-        <xs:complexType>
-            <xs:attributeGroup ref="genericPropertiesGroup"/>
-            <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
-        </xs:complexType>
+      <xs:complexType mixed="true">
+        <xs:choice  minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Style, Link and Span Elements. 
+              
+              We use strong and emphasis rather than bold and italics
+              to try and stay in synch with HTML and HTML5. We may add additional tags
+              later in the process.
+              
+              We can use any of these elements inside paragraph in no particular order 
+              0 or more times (no maximum)
+              
+              Researching how to handle nested styles and whether the model below 
+              would handle nested children
+            </xs:documentation>
+          </xs:annotation>
+          <xs:element ref="strong"/>
+          <xs:element ref="emphasis"/>
+          <xs:element ref="underline"/>
+          <xs:element ref="strike"/>
+          <xs:element ref="link"/>
+          <xs:element ref="span"/>
+          <xs:element ref="quote"/>
+        </xs:choice>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+      </xs:complexType>
     </xs:element>
     
     <!-- Figure and related elements -->
@@ -622,41 +644,6 @@
         </xs:complexType>
     </xs:element>
   
-    <!-- Paragraphs -->
-    <xs:element name="para">
-        <xs:annotation>
-            <xs:documentation>Para is the essential text content element. It'll get hairy because we
-                have a lot of possible attributes we can use on it</xs:documentation>
-        </xs:annotation>
-        <xs:complexType mixed="true">
-            <xs:choice  minOccurs="0" maxOccurs="unbounded">
-                <xs:annotation>
-                    <xs:documentation>
-                        Style, Link and Span Elements. 
-                        
-                        We use strong and emphasis rather than bold and italics
-                        to try and stay in synch with HTML and HTML5. We may add additional tags
-                        later in the process.
-                        
-                        We can use any of these elements inside paragraph in no particular order 
-                        0 or more times (no maximum)
-                        
-                        Researching how to handle nested styles and whether the model below 
-                        would handle nested children
-                    </xs:documentation>
-                </xs:annotation>
-                <xs:element ref="strong"/>
-                <xs:element ref="emphasis"/>
-                <xs:element ref="underline"/>
-                <xs:element ref="strike"/>
-                <xs:element ref="link"/>
-                <xs:element ref="span"/>
-                <xs:element ref="quote"/>
-            </xs:choice>
-            <xs:attributeGroup ref="genericPropertiesGroup"/>
-        </xs:complexType>
-    </xs:element>
-  
     <!-- Blockquotes, asides and marginalia -->
     <xs:element name="attribution" type="xs:string">
       <xs:annotation>
@@ -678,20 +665,99 @@
           <xs:element ref="para"/>
         </xs:sequence>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
-        <xs:attribute name="align" type="align" use="optional" default="left"/>
       </xs:complexType>
     </xs:element>
     
-    <xs:element name="quote">
+      <xs:element name="quote">
+        <xs:annotation>
+          <xs:documentation>
+            Shorter, inline, quotations
+          </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+          <xs:attributeGroup ref="genericPropertiesGroup"/>
+        </xs:complexType>
+      </xs:element>
+    
+      <xs:element name="aside">
       <xs:annotation>
         <xs:documentation>
-          Shorter, inline, quotations
+          Asides, smaller pieces of content not directly related to the main text
         </xs:documentation>
       </xs:annotation>
       <xs:complexType mixed="true">
+        <xs:sequence>
+          <xs:annotation>
+            <xs:documentation>A title and at least one paragraph </xs:documentation>
+          </xs:annotation>
+          <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="code"/>
+            <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element ref="ulist"/>
+            <xs:element ref="olist"/>
+            <xs:element ref="figure"/>
+            <xs:element ref="image"/>
+            <xs:element ref="div"/>
+            <xs:element ref="span"/>
+            <xs:element ref="blockquote"/>
+            <xs:element ref="h1"/>
+            <xs:element ref="h2"/>
+            <xs:element ref="h3"/>
+            <xs:element ref="h4"/>
+            <xs:element ref="h5"/>
+            <xs:element ref="h6"/>
+          </xs:choice>
+        </xs:sequence>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+        <xs:attribute name="type" type="xs:token" use="optional">
+          <xs:annotation>
+            <xs:documentation>
+              The type or role for the paragraph asn in data-role or epub:type. 
+              
+              We make it optional but provide a default of chapter to make it 
+              easier to add.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+    </xs:element>
+    
+    <!-- Paragraphs -->
+    <xs:element name="para">
+      <xs:annotation>
+        <xs:documentation>Para is the essential text content element. It'll get hairy because we
+          have a lot of possible attributes we can use on it</xs:documentation>
+      </xs:annotation>
+      <xs:complexType mixed="true">
+        <xs:choice  minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Style, Link and Span Elements. 
+              
+              We use strong and emphasis rather than bold and italics
+              to try and stay in synch with HTML and HTML5. We may add additional tags
+              later in the process.
+              
+              We can use any of these elements inside paragraph in no particular order 
+              0 or more times (no maximum)
+              
+              Researching how to handle nested styles and whether the model below 
+              would handle nested children
+            </xs:documentation>
+          </xs:annotation>
+          <xs:element ref="strong"/>
+          <xs:element ref="emphasis"/>
+          <xs:element ref="underline"/>
+          <xs:element ref="strike"/>
+          <xs:element ref="link"/>
+          <xs:element ref="span"/>
+          <xs:element ref="quote"/>
+        </xs:choice>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
       </xs:complexType>
     </xs:element>
+  
     <!-- Headings -->
     <xs:element name="h1">
         <xs:annotation>
@@ -878,10 +944,10 @@
             <xs:annotation>
                 <xs:documentation>A sequence of one metadata section followed by 1 or more sections</xs:documentation>
             </xs:annotation>
-            <xs:sequence>
-                <xs:element ref="metadata" minOccurs="1" maxOccurs="1"/>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element ref="metadata" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>
-            </xs:sequence>
+            </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>

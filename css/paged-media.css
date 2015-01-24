@@ -1,6 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:700italic,300,700,300italic,400);
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab);
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
 /*
 Paged Media CSS stylesheet
 Author: Carlos Araya
@@ -15,14 +12,17 @@ For the W3C specification: http://www.w3.org/TR/css3-page/
 Antenna House Formatter Onine Manual: http://antennahouse.com/XSLsample/help/V62/AHFormatterV62.en.pdf
 Prince XML User Guide: http://www.princexml.com/doc/9.0/
 */
-/* line 19, /Users/carlos/code/xml-workflow/css/paged-media.scss */
+@import url(http://fonts.googleapis.com/css?family=Roboto:700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
 body {
   background-color: white;
   color: #333;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 300;
-  line-height: 1.45; }
+  line-height: 1.45;
+}
 
 @page {
   size: 8.5in 11in;
@@ -33,387 +33,374 @@ body {
     counter-increment: footnote;
     float: bottom;
     column-span: all;
-    height: auto; }
- }
-
+    height: auto;
+  }
+}
 @page chapter {
   @bottom-center {
     vertical-align: middle;
     text-align: center;
-    content: element(heading); }
- }
-
-/* line 49, /Users/carlos/code/xml-workflow/css/paged-media.scss */
+    content: element(heading);
+  }
+}
 body[data-type="book"] {
   color: cmyk(0%, 0%, 100%, 100%);
-  hyphens: auto; }
+  hyphens: auto;
+}
 
 /* page counters are tricky */
-/* line 56, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-body[data-type="book"] > div[data-type="part"]:first-of-type, body[data-type="book"] > section[data-type="chapter"]:first-of-type {
-  counter-reset: page 1; }
+body[data-type="book"] > div[data-type="part"]:first-of-type,
+body[data-type="book"] > section[data-type="chapter"]:first-of-type {
+  counter-reset: page 1;
+}
 
-/* line 57, /Users/carlos/code/xml-workflow/css/paged-media.scss */
+body[data-type="book"] > section[data-type="titlepage"] {
+  counter-reset: none;
+}
+
 body[data-type="book"] > section[data-type="chapter"] + div[data-type="part"] {
-  counter-reset: none; }
+  counter-reset: none;
+}
 
 /* Title Page*/
-/* line 61, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="titlepage"] {
-  page: titlepage; }
+  page: titlepage;
+}
 
-/* line 62, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-section[data-type="titlepage"] * {
-  text-align: center; }
+section[data-type="titlepage"] > ol li {
+  list-style-type: none;
+}
 
-/* line 63, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-h1.bookTitle {
-  font-size: 200%; }
-
-/* line 64, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-h2.author {
-  font-size: 150%;
-  font-style: italic; }
+section[data-type="titlepage"] > p :not(:first-of-type) {
+  margin-left:-2em;
+}
 
 /* Copyright page */
-/* line 70, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="copyright"] {
-  page: copyright; }
+  page: copyright;
+}
 
 /* Dedication */
-/* line 74, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="dedication"] {
-  page: dedication; }
+  page: dedication;
+}
 
-/* line 75, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="dedication"] p {
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 76, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="dedication"] * {
-  text-align: center; }
+  text-align: center;
+}
 
 /* TOC */
-/* line 80, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 nav[data-type="toc"] {
-  page: toc; }
+  page: toc;
+}
 
-/* line 81, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 nav[data-type="toc"] ol {
-  list-style-type: none; }
+  list-style-type: none;
+}
 
 /* TESTING LEADER CONTENT */
-/* line 83, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 nav[data-type="toc"] ol li a:after {
-  content: leader(dotted) " " target-counter(attr(href, url), page); }
+  content: leader(dotted) " " target-counter(attr(href, url), page);
+}
 
 /* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
 /* Right Side */
 @page toc:right {
   @bottom-right-corner {
-    content: counter(page, lower-roman); }
-
+    content: counter(page,lower-roman);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page foreword:right {
   @bottom-right-corner {
-    content: counter(page, lower-roman); }
-
+    content: counter(page,lower-roman);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page preface:right {
   @bottom-right-corner {
-    content: counter(page, lower-roman); }
-
+    content: counter(page,lower-roman);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
+    content: normal;
+  }
+}
 
 /* Left Side*/
 @page toc:left {
   @bottom-left-corner {
-    content: counter(page, lower-roman); }
-
+    content: counter(page,lower-roman);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page foreword:left {
   @bottom-left-corner {
-    content: counter(page, lower-roman); }
-
+    content: counter(page,lower-roman);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page preface:left {
   @bottom-left-corner {
-    content: counter(page, lower-roman); }
-
+    content: counter(page,lower-roman);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
+    content: normal;
+  }
+}
+
+/* Specific Page Definitions.
+ * Each page type equalys to the data-type value of the section
+ */
 
 /* Foreword  */
-/* line 119, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="foreword"] {
-  page: foreword; }
+  page: foreword;
+}
 
 /* Preface*/
-/* line 123, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="preface"] {
-  page: preface; }
+  page: preface;
+}
 
 /* Part */
-/* line 126, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 div[data-type="part"] {
-  page: part; }
+  page: part;
+}
 
 /* Chapter */
-/* line 129, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="chapter"] {
   page: chapter;
-  page-break-before: always; }
+  page-break-before: always;
+}
 
 /* Appendix */
-/* line 135, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="appendix"] {
   page: appendix;
-  page-break-before: always; }
+  page-break-before: always;
+}
 
 /* Glossary*/
-/* line 141, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="glossary"] {
   page: glossary;
-  page-break-before: always; }
+  page-break-before: always;
+}
 
 /* Bibliography */
-/* line 147, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="bibliography"] {
   page: bibliography;
-  page-break-before: always; }
+  page-break-before: always;
+}
 
 /* Index */
-/* line 153, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="index"] {
   page: index;
-  page-break-before: always; }
+  page-break-before: always;
+}
 
 /* Colophon */
-/* line 159, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="colophon"] {
   page: colophon;
-  page-break-before: always; }
+  page-break-before: always;
+}
 
 /* Common Content Page Numbering  in Arabic numerals 1... 199 */
 @page titlepage {
   /* Need this to clean up page numbers in titlepage in Prince*/
   @bottom-right-corner {
-    content: normal; }
-
+    content: normal;
+  }
   @bottom-left-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page chapter:blank {
   /* Need this to clean up page numbers in titlepage in Prince*/
   @bottom-left-corner {
-    content: normal; }
-
+    content: normal;
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 /* Right Side*/
 @page chapter:right {
   @bottom-right-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page appendix:right {
   @bottom-right-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
-
-@page glossary:right {
+    content: normal;
+  }
+}
+@page glossary:right, {
   @bottom-right-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page bibliography:right {
   @bottom-right-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page index:right {
   @bottom-right-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-left-corner {
-    content: normal; }
- }
+    content: normal;
+  }
+}
 
 /* Left Side */
 @page chapter:left {
   @bottom-left-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page appendix:left {
   @bottom-left-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
-@page glossary:left {
+    content: normal;
+  }
+}
+@page glossary:left, {
   @bottom-left-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page bibliography:left {
   @bottom-left-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
+    content: normal;
+  }
+}
 @page index:left {
   @bottom-left-corner {
-    content: counter(page); }
-
+    content: counter(page);
+  }
   @bottom-right-corner {
-    content: normal; }
- }
-
-/*  Block Elements*/
-/* line 230, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-h1, h2, h3, h4, h5, h6 {
-  hyphens: none;
-  text-align: left; }
-
-/* line 236, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-figure {
-  border: 1px solid #f00; }
-  /* line 239, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-  figure caption {
-    font-size: 80%; }
-  /* line 242, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-  figure img {
-    max-width: 100%; }
-
-/* line 247, /Users/carlos/code/xml-workflow/css/paged-media.scss */
-code {
-  font-family: "Source Code Pro", monospace; }
+    content: normal;
+  }
+}
 
 /* Widows and orphans */
-/* line 250, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 p {
-  orphans: 4;
-  /* min number of lines of a paragraph left at bottom of a page */
-  widows: 2;
-  /* min number of lines of a paragraph that left at top of a page.*/ }
+  orphans: 4; /* min number of lines of a paragraph left at bottom of a page */
+  widows: 2; /* min number of lines of a paragraph that left at top of a page.*/
+}
 
-/* line 255, /Users/carlos/code/xml-workflow/css/paged-media.scss */
+/* Chapter running header * /
 p.rh {
   position: running(heading);
   text-align: center;
-  font-style: italic; }
+  font-style: italic;
+}
 
-/* line 262, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 span.footnote {
-  float: footnote; }
+  float: footnote;
+}
 
 /*
   Footnotes
 */
-/* line 268, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 ::footnote-marker {
   content: counter(footnote);
-  list-style-position: inside; }
+  list-style-position: inside;
+}
 
-/* line 273, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 ::footnote-marker::after {
-  content: '. '; }
+  content: '. ';
+}
 
-/* line 277, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 ::footnote-call {
   content: counter(footnote);
   vertical-align: super;
-  font-size: 65%; }
+  font-size: 65%;
+}
 
 /* XReferences */
-/* line 284, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 a.xref[href]::after {
-  content: " [See page " target-counter(attr(href), page) "]"; }
+  content: " [See page " target-counter(attr(href), page) "]";
+}
 
 /*
   PDF Bookmarks
 */
-/* line 292, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="chapter"] h1 {
   -ah-bookmark-level: 1;
   -ah-bookmark-state: open;
   -ah-bookmark-label: content();
   prince-bookmark-level: 1;
   prince-bookmark-state: closed;
-  prince-bookmark-label: content(); }
+  prince-bookmark-label: content();
+}
 
-/* line 301, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="chapter"] h2 {
   -ah-bookmark-level: 2;
   -ah-bookmark-state: closed;
   -ah-bookmark-label: content();
   prince-bookmark-level: 2;
   prince-bookmark-state: closed;
-  prince-bookmark-label: content(); }
+  prince-bookmark-label: content();
+}
 
-/* line 310, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="chapter"] h3 {
   -ah-bookmark-level: 3;
   -ah-bookmark-state: closed;
   -ah-bookmark-label: content();
   prince-bookmark-level: 3;
   prince-bookmark-state: closed;
-  prince-bookmark-label: content(); }
+  prince-bookmark-label: content();
+}
 
-/* line 319, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="chapter"] h4 {
   -ah-bookmark-level: 4;
-  prince-bookmark-level: 4; }
+  prince-bookmark-level: 4;
+}
 
-/* line 324, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="chapter"] h5 {
   -ah-bookmark-level: 5;
-  prince-bookmark-level: 5; }
+  prince-bookmark-level: 5;
+}
 
-/* line 329, /Users/carlos/code/xml-workflow/css/paged-media.scss */
 section[data-type="chapter"] h6 {
   -ah-bookmark-level: 6;
-  prince-bookmark-level: 6; }
+  prince-bookmark-level: 6;
+}
 
 /*# sourceMappingURL=paged-media.css.map */
