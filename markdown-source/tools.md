@@ -30,4 +30,10 @@ Now that we have the required sotfware installed we can move ahead and create ou
 
 ## Grunt first
 
-Grunt is a Node.js based task runner. It's a declarative version of Make and other 
+Grunt is a Node.js based task runner. It's a declarative version of Make and similar tools in other languages. Since Grunt and it's associated plugins are Node Packages we need to configure Node. 
+
+At the root of the project there's a `package.json` file where all the files necessary for the project have already been configured. All that is left is to run the install command. 
+
+```bash
+npm install
+```
