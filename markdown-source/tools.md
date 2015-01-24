@@ -48,9 +48,9 @@ And enter your password when/if prompter to do so.
 
 > Ruby and SASS are only necessary if you plan to change the SCSS/SASS files. If you don't you can skip the Ruby install and work directly with the CSS files
 >
-> If you want to peek at the source look at the files under the scss directory. 
+> If you want to peek at the SASS source look at the files under the scss directory. 
 
-## Grunt first
+## Installing Node packages
 
 Grunt is a Node.js based task runner. It's a declarative version of Make and similar tools in other languages. Since Grunt and it's associated plugins are Node Packages we need to configure Node. 
 
@@ -62,4 +62,18 @@ npm install
 
 This will install all the packages indicated in configuration file and all their dependencies; go get a cup of coffee as this may take a while in slower machines.
 
-As it installs the software it'll display a list of what it installed and when it's done you'll have all the packages 
+As it installs the software it'll display a list of what it installed and when it's done you'll have all the packages. 
+
+The final step of the node installation is to run bower, a front end package manager. It is not configured by default but you can use it to manage packages such as jQuery, Highlight.JS, Polymer web components and others.
+
+## The Gruntfile
+
+Grunt has its own configuration file (`Gruntfile.js`) one of which is provided as a model for the example application. 
+
+The Goals of the grunt file are to provide the following functionality:
+
+* Provide facilities to clean build files
+* Convert SASS files to CSS and copy the result to the CSS directory
+* Use Jshint to lint Javascript files
+* Concatenate and minify all Javascript files and copy them to the appropriate directories
+* 

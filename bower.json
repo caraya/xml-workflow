@@ -13,6 +13,5 @@
     "tests"
   ],
   "dependencies": {
-    "highlightjs": "~8.4.0"
   }
 }
