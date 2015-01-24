@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="file:/Users/carlos/code/xml-workflow/xsd/book-schema-draft.xsd">
-    <metadata>
-        <title>The new Adventures of Sherlock Holmes</title>
-        <isbn>0-9882625-7-6</isbn>
-        <edition>1</edition>
-
-        <authors>
-            <author>
-                <first-name>Captain</first-name>
-                <surname>Nemo</surname>
-            </author>
-            <author>
-                <first-name>Arthur</first-name>
-                <surname>Connan Doyle</surname>
-            </author>
-            <author>
-              <first-name>William</first-name>
-              <surname>Henriksen</surname>
-            </author>
-        </authors>
-        <editors>
-            <editor>
-                <first-name>John</first-name>
-                <surname>Watson</surname>
-                <type>Managing</type>
-            </editor>
-            <editor>
-                <first-name>Allison</first-name>
-                <surname>Brownlee</surname>
-                <type>Acquisition</type>
-            </editor>
-        </editors>
-        <otherRoles>
-            <otherRole>
-                <first-name>Aldo</first-name>
-                <surname>Lestrade</surname>
-                <role>Illustrator</role>
-            </otherRole>
-        </otherRoles>
-    </metadata>
+  <metadata>
+    <title>The new Adventures of Sherlock Holmes</title>
+    <isbn>0-9882625-7-6</isbn>
+    <edition>1</edition>
+    <authors>
+      <author>
+        <first-name>Captain</first-name>
+        <surname>Nemo</surname>
+      </author>
+      <author>
+        <first-name>Arthur</first-name>
+        <surname>Connan Doyle</surname>
+      </author>
+      <author>
+        <first-name>William</first-name>
+        <surname>Henriksen</surname>
+      </author>
+    </authors>
+    <editors>
+      <editor>
+        <first-name>John</first-name>
+        <surname>Watson</surname>
+        <type>Managing</type>
+      </editor>
+      <editor>
+        <first-name>Allison</first-name>
+        <surname>Brownlee</surname>
+        <type>Acquisition</type>
+      </editor>
+    </editors>
+    <otherRoles>
+      <otherRole>
+        <first-name>Aldo</first-name>
+        <surname>Lestrade</surname>
+        <role>Illustrator</role>
+      </otherRole>
+    </otherRoles>
+  </metadata>
     <section type="chapter">
         <title>What this is about</title>
         <para>This project seeks to answer the question: <strong><emphasis>What does an XML workflow looks like?</emphasis></strong></para>

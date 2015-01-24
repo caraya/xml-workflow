@@ -43,11 +43,13 @@
         <xsl:element name="title">
           <xsl:value-of select="metadata/title"/>
         </xsl:element>
-        <link rel="stylesheet" href="css/pm-style.css" />
+        <link rel="stylesheet" href="css/style.css" />
+        <!-- Just so I won't forget it again -->
+        <link rel="stylesheet" href="css/paged-media.css"/>
         <!--
               Use highlight.js and docco style
         -->
-        <link rel="stylesheet" href="css/styles/railscasts.css" />
+        <link rel="stylesheet" href="css/styles/docco.css" />
         <!-- Load highlight.js -->
         <script src="js/highlight.pack.js"></script>
         <script>
@@ -56,14 +58,13 @@
       </head>
 
       <body>
-        <xsl:attribute name="data-type">
-          <xsl:value-of select="book"/>
-        </xsl:attribute>
-        <xsl:comment>Generated using
-          <xsl:value-of select="system-property('xsl:product-name')"/>
-          <xsl:value-of select="system-property('xsl:product-version')"/>
-          <xsl:text> </xsl:text>
-        </xsl:comment>
+        <xsl:attribute name="data-type">book</xsl:attribute>
+        <xsl:element name="meta">
+          <xsl:attribute name="generator">
+            <xsl:value-of select="system-property('xsl:product-name')"/>
+            <xsl:value-of select="system-property('xsl:product-version')"/>
+          </xsl:attribute>
+        </xsl:element>
         <xsl:apply-templates/>
       </body>
     </html>
@@ -104,10 +105,10 @@
   <!-- Metadata -->
   <xsl:template match="metadata">
     <xsl:element name="section">
-      <xsl:attribute name="class">titlepage</xsl:attribute>
+      <xsl:attribute name="data-type">titlepage</xsl:attribute>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
 
-
+  <xsl:template match="book" mode="toc"/>
 </xsl:stylesheet>

@@ -3,7 +3,7 @@
 <xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:epub="http://www.idpf.org/2007/opf"
+  xmlns:epub="http://www.idpf.org/2007/opf" exclude-result-prefixes="dc epub"
   xml:lang="en-US"
   version="2.0">
   <!-- Strip whitespace from the listed elements -->
@@ -28,11 +28,17 @@
   </xsl:template>
 
   <!-- Root template, matching / -->
-  <xsl:template match="book" priority="1">
+  <xsl:template match="book">
     <html>
     <head>
       <xsl:element name="title">
         <xsl:value-of select="metadata/title"/>
+      </xsl:element>
+      <xsl:element name="meta">
+        <xsl:attribute name="generator">
+          <xsl:value-of select="system-property('xsl:product-name')"/>
+          <xsl:value-of select="system-property('xsl:product-version')"/>
+        </xsl:attribute>
       </xsl:element>
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="(code)">
@@ -53,10 +59,6 @@
     </head>
 
     <body>
-      <xsl:comment>
-        Generated using <xsl:value-of select="system-property('xsl:product-name')"/>
-        <xsl:value-of select="system-property('xsl:product-version')"></xsl:value-of>
-      </xsl:comment>
       <xsl:apply-templates/>
       <xsl:apply-templates select="/" mode="toc"/>
     </body>
@@ -64,7 +66,7 @@
   </xsl:template>
 
   <xsl:template match="/" mode="toc">
-    <div class="toc">
+    <nav class="toc">
       <h2>Table of Contents</h2>
       <ol>
         <xsl:for-each select="book/section">
@@ -78,7 +80,7 @@
           </xsl:element>
         </xsl:for-each>
       </ol>
-    </div>
+    </nav>
   </xsl:template>
 
   <!-- Metadata -->
@@ -192,6 +194,20 @@
     </xsl:result-document>
   </xsl:template>
 
+  <!-- Create Table of Contents ... work in progress -->
+  <xsl:template match="book" mode="toc">
+    <section data-type="toc">
+      <nav>
+        <ol>
+          <xsl:for-each select="section">
+            <li>
+              <a href=""><xsl:value-of select="title"></xsl:value-of></a>
+            </li>
+          </xsl:for-each>
+        </ol>
+      </nav>
+    </section>
+  </xsl:template>
   <!-- Headings -->
   <!--
     Note that the headings use mostly the same code.
@@ -208,7 +224,27 @@
     If we need to style the titles differently we can create a separate
     template to match it to
   -->
-  <xsl:template match="h1 | title ">
+  <xsl:template match="title ">
+    <xsl:element name="h1">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+  <xsl:template match="h1">
     <xsl:element name="h1">
       <xsl:if test="@align">
         <xsl:attribute name="align">
