@@ -4,3 +4,4 @@
 // Adding bower and npm package dumps. Don't be lazy and do your own installs
 node_modules
 bower_components
+*.zip
