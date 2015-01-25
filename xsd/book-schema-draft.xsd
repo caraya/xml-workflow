@@ -4,7 +4,6 @@
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
-
     <!-- Simple types to use in the content -->
     <xs:simpleType name="token255">
         <xs:annotation>
@@ -377,9 +376,13 @@
             </xs:documentation>
         </xs:annotation>
       <xs:complexType mixed="true">
+        <xs:sequence>
+          <xs:annotation>
+            <xs:documentation>A title and at least one paragraph </xs:documentation>
+          </xs:annotation>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element ref="code"/>
-            <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element ref="para"/>
             <xs:element ref="ulist"/>
             <xs:element ref="olist"/>
             <xs:element ref="figure"/>
@@ -394,9 +397,11 @@
             <xs:element ref="h5"/>
             <xs:element ref="h6"/>
           </xs:choice>
+        </xs:sequence>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
         <xs:attribute name="type" type="xs:token" use="optional"></xs:attribute>
-      </xs:complexType>    </xs:element>
+      </xs:complexType>
+    </xs:element>
     
     <xs:element name="span">
         <xs:annotation>

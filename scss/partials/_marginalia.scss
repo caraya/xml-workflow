@@ -16,7 +16,6 @@ aside {
 
 }
 
-
 blockquote {
   margin-left: 1em;
   margin-bottom: 1em;
@@ -64,4 +63,37 @@ blockquote {
 .content-right ul,
 .content-left ul {
   list-style: none;
+}
+
+
+.pullquote {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 38px;
+  width: 200px;
+  margin-right: 100px;
+  padding: 20px 0 20px 0;
+  border-top: 18px solid #000;
+  border-bottom: 18px solid #000;
+  letter-spacing: -0.02em;
+  position: relative;
+
+  p {
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #00298a;
+  }
+
+  p:last-child {
+    line-height: 20px;
+    padding-top: 2px;
+  }
+
+  cite {
+    font-size: 18px;
+    font-weight: 400;
+    color: #333;
+  }
 }

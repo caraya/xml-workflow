@@ -60,5 +60,143 @@ Rather than define a flow of content and then the content CSS Paged Media uses a
 }
 ```
 
-The only problem with the code above is that there is no native broser support. For our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. 
+The only problem with the code above is that there is no native broser support. For our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. In the not so distant future we will be able to do this transformation in the browser and print the PDF directly. Until then it's a two step process: Modifying the HTML we get from the XML file and running the HTML through Prince to get the PDF. 
+
+## Modifying the HTML results
+
+We'll use this opportunity to create an xslt customization layer to make changes only to the templates where we need to. 
+
+We create a customization layer by importing the original stylesheet and making any necessary changes in the new stylesheet. Imported stylesheets have a lower precedence order than the local version so the local version will win if there is conflict.
+
+In this particular situation we want to:
+
+* Add the data-type=book attribute to the body of the document
+* Convert the multiple file book into a single file by eliminating the result-document element
+* Remove filename variable. It's not needed
+* Change the test for type attribute so it'll terminate
+  if it fails (type attribute is required for our implementation of the Paged Media style sheet)
+* Add the element that will build our running footer
+  (p class="rh" with the same value as the chapter title)
+* Remove the toc mode apply-template call from the book template.
+  It's not needed, we may move it to a separate template for navigation
+* Rework the metadata template so it'll match the spec on the CSS  (it's a section with data-type = title page)
+* Insert a link to the paged media CSS style sheet in the head of the document to make the Prince command easier (and so I won't forget it during testing and development)
+
+Only the templates defined in this stilesheet are overriden
+
+The style sheet is shown below (with large comments removed)
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  exclude-result-prefixes="xs"
+  version="2.0">
+  <!--
+    XSLT Paged Media Customization Layer
+
+    Makes the necessary changes to the content to work with the Paged Media CSS stylesheet
+  -->
+  <!-- First import the base stylesheet -->
+  <xsl:import href="book.xsl"/>
+
+  <!-- Define the output for this and all document children -->
+  <xsl:output name="xhtml-out" method="xhtml"
+    indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
+
+  <xsl:template match="book">
+    <html>
+      <head>
+        <xsl:element name="title">
+          <xsl:value-of select="metadata/title"/>
+        </xsl:element>
+        <link rel="stylesheet" href="css/pm-style.css" />
+        <!-- Just so I won't forget it again -->
+        <link rel="stylesheet" href="css/paged-media.css"/>
+        <!--
+              Use highlight.js and docco style
+        -->
+        <link rel="stylesheet" href="css/styles/docco.css" />
+        <!-- Load highlight.js -->
+        <script src="lib/highlight.pack.js"></script>
+        <script>
+          hljs.initHighlightingOnLoad();
+        </script>
+        <script src="js/script.js"></script>
+      </head>
+
+      <body>
+        <xsl:attribute name="data-type">book</xsl:attribute>
+          <xsl:element name="meta">
+            <xsl:attribute name="generator">
+              <xsl:value-of select="system-property('xsl:product-name')"/>
+              <xsl:value-of select="system-property('xsl:product-version')"/>
+            </xsl:attribute>
+          </xsl:element>
+          <xsl:element name="meta">
+            <xsl:attribute name="vendor">
+              <xsl:value-of select="system-property('xsl:vendor')" />
+            </xsl:attribute>
+          </xsl:element>
+          <xsl:element name="meta">
+            <xsl:attribute name="vendor-URL">
+              <xsl:value-of select="system-property('xsl:vendor-url')" />
+            </xsl:attribute>
+          </xsl:element>
+        <xsl:apply-templates/>
+      </body>
+    </html>
+  </xsl:template>
+
+  <xsl:template match="book/section">
+    <section>
+      <xsl:choose>
+        <xsl:when test="@type">
+          <xsl:attribute name="data-type">
+            <xsl:value-of select="@type"/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:message terminate="yes">
+            Type attribute is required for paged media
+          </xsl:message>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:element name="p">
+        <xsl:attribute name="class">rh</xsl:attribute>
+        <xsl:value-of select="title"/>
+      </xsl:element>
+      <xsl:apply-templates/>
+    </section>
+  </xsl:template>
+
+  <!-- Metadata -->
+  <xsl:template match="metadata">
+    <xsl:element name="section">
+      <xsl:attribute name="data-type">titlepage</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="book" mode="toc"/>
+</xsl:stylesheet>
+```
+
+Once we have the HTML file ready we can run it through PrinceXML to get our PDF using another CSS stylesheet formatted for Paged Media. The command to run the conversion for a book.html file is:
+
+```bash
+$ prince --verbose book.html test-book.pdf
+```
+
+Because we added the stylesheet link directly to the HTML document we can skip declaring it in the conversion itself. This is always a cause of errors and frustratoins for me so I thought I'd save everyone else the hassle. 
 

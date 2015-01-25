@@ -1,6 +1,7 @@
+/*global module */
+/*global require */
 (function () {
   'use strict';
-  var module, require; // Do I really need this?
   module.exports = function (grunt) {
     // require it at the top and pass in the grunt instance
     // it will measure how long things take for performance
@@ -20,14 +21,30 @@
         files: ['Gruntfile.js', 'js/{,*/}*.js'],
         options: {
           reporter: require('jshint-stylish')
-          // options here to override JSHint defaults
+            // options here to override JSHint defaults
+        }
+      },
+
+      // Converts all the files under scss/ ending with .scss
+      // into the equivalent css file on the css/ directory
+      sass: {
+        dev: {
+          options: {
+            style: 'expanded'
+          },
+          files: [{
+            expand: true,
+            cwd: 'scss',
+            src: ['*.scss'],
+            dest: 'css',
+            ext: '.css'
+          }]
         }
       },
 
       // Can't seem to make the copy task create the directory
       // if it doesn't exist so we go to another task to create
       // the fn directory
-
       mkdir: {
         build: {
           options: {
@@ -36,22 +53,25 @@
         }
       },
 
+      // Copy the files from our repository into the build directory
       'copy': {
         build: {
           files: [
             {
               expand: true,
-              src: [ 'app/**/*' ],
+              src: ['app/**/*'],
               dest: 'build/'
             }
           ]
         }
       },
 
+      // Clean the build directory
       clean: {
-        production: [ 'build/']
+        production: ['build/']
       },
 
+      // Push the specified content into the repositories gh-pages branch
       'gh-pages': {
         options: {
           message: 'Content committed from Grunt gh-pages',
@@ -64,14 +84,21 @@
         src: ['**/*']
       },
 
+
+      // Watch for changes on the js and scss files and perform
+      // the specified task
       watch: {
         options: {
           nospawn: true
         },
         // Watch all javascript files and hint them
         js: {
-          files: ['js/{,*/}*.js'],
+          files: ['Gruntfile.js', 'js/{,*/}*.js'],
           tasks: ['jshint']
+        },
+        sass: {
+          files: ['scss/*.scss'],
+          tasks: ['sass']
         }
       }
     }); // closes initConfig

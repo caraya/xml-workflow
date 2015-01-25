@@ -40,6 +40,16 @@
           <xsl:value-of select="system-property('xsl:product-version')"/>
         </xsl:attribute>
       </xsl:element>
+      <xsl:element name="meta">
+        <xsl:attribute name="vendor">
+          <xsl:value-of select="system-property('xsl:vendor-url')" />
+        </xsl:attribute>
+      </xsl:element>
+      <xsl:element name="meta">
+        <xsl:attribute name="vendor-URL">
+          <xsl:value-of select="system-property('xsl:vendor-url')" />
+        </xsl:attribute>
+      </xsl:element>
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="(code)">
         <!--
@@ -47,7 +57,7 @@
             -->
         <link rel="stylesheet" href="css/styles/docco.css" />
         <!-- Load highlight.js -->
-        <script src="js/highlight.pack.js"></script>
+        <script src="lib/highlight.pack.js"></script>
         <script>
           hljs.initHighlightingOnLoad();
         </script>
@@ -86,9 +96,7 @@
   <!-- Metadata -->
   <xsl:template match="metadata">
     <xsl:element name="div">
-      <xsl:attribute name="class">
-        <xsl:value-of select="name(.)"/>
-      </xsl:attribute>
+      <xsl:attribute name="class">metadata</xsl:attribute>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
@@ -160,7 +168,7 @@
             -->
             <link rel="stylesheet" href="css/styles/docco.css" />
             <!-- Load highlight.js -->
-            <script src="js/highlight.pack.js"></script>
+            <script src="lib/highlight.pack.js"></script>
             <script>
               hljs.initHighlightingOnLoad();
             </script>
@@ -196,12 +204,14 @@
 
   <!-- Create Table of Contents ... work in progress -->
   <xsl:template match="book" mode="toc">
+    <xsl:variable name="fileName" select="concat('#', (@type), (position()-1))"/>
     <section data-type="toc">
+      <h2>Table of Contents</h2>
       <nav>
         <ol>
           <xsl:for-each select="section">
             <li>
-              <a href=""><xsl:value-of select="title"></xsl:value-of></a>
+              <a href="${filename}"><xsl:value-of select="title"></xsl:value-of></a>
             </li>
           </xsl:for-each>
         </ol>
@@ -389,7 +399,7 @@
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:value-of select="."/>
+      <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
 

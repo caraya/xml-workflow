@@ -252,7 +252,7 @@ a.xref[href]::after {
   Bookmarks
 */
 
-section[data-type="chapter"]  h1 {
+section[data-type="chapter"] h1 {
   -ah-bookmark-level: 1;
   -ah-bookmark-state: open;
   -ah-bookmark-label: content();
@@ -261,7 +261,7 @@ section[data-type="chapter"]  h1 {
   prince-bookmark-label: content();
 }
 
-section[data-type="chapter"]  h2 {
+section[data-type="chapter"] h2 {
   -ah-bookmark-level: 2;
   -ah-bookmark-state: closed;
   -ah-bookmark-label: content();
@@ -270,7 +270,7 @@ section[data-type="chapter"]  h2 {
   prince-bookmark-label: content();
 }
 
-section[data-type="chapter"]  h3 {
+section[data-type="chapter"] h3 {
   -ah-bookmark-level: 3;
   -ah-bookmark-state: closed;
   -ah-bookmark-label: content();

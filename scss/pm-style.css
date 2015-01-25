@@ -248,13 +248,13 @@ aside {
     margin-top: 0.2em;
     margin-bottom: 0.5em; }
 
-/* line 20, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 19, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 blockquote {
   margin-left: 1em;
   margin-bottom: 1em;
   font-style: italic; }
 
-/* line 26, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 25, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .opening {
   font-size: 2em;
   text-align: center;
@@ -264,7 +264,7 @@ blockquote {
   padding-bottom: 2em;
   margin-bottom: 10em; }
 
-/* line 37, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 36, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .margin-notes, .content-left {
   width: 230px;
   margin-left: -230px;
@@ -272,7 +272,7 @@ blockquote {
   text-align: right;
   font-size: 0.75em; }
 
-/* line 46, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 45, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .margin-notes-right, .content-right {
   width: 230px;
   margin-left: 760px;
@@ -281,7 +281,7 @@ blockquote {
   font-size: 0.75em;
   position: absolute; }
 
-/* line 55, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 54, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .content-right {
   width: 230px;
   margin-left: 760px;
@@ -290,24 +290,42 @@ blockquote {
   font-size: 0.75em;
   position: absolute; }
 
-/* line 65, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 64, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .content-right ul, .content-left ul {
   list-style: none; }
 
-/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
-.metadata {
-  padding-left: 2rem;
-  padding-right: 2rem; }
-  /* line 5, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
-  .metadata li {
-    list-style-type: none; }
-  /* line 9, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
-  .metadata p:not(:first-of-type) {
-    margin-left: -2em; }
+/* line 69, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+.pullquote {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 38px;
+  width: 200px;
+  margin-right: 100px;
+  padding: 20px 0 20px 0;
+  border-top: 18px solid #000;
+  border-bottom: 18px solid #000;
+  letter-spacing: -0.02em;
+  position: relative; }
+  /* line 81, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+  .pullquote p {
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #00298a; }
+  /* line 89, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+  .pullquote p:last-child {
+    line-height: 20px;
+    padding-top: 2px; }
+  /* line 94, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+  .pullquote cite {
+    font-size: 18px;
+    font-weight: 400;
+    color: #333; }
 
 /* line 2, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
 p {
-  font-size: 1.2em;
+  font-size: 1em;
   margin-bottom: 1.3em; }
   /* line 6, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
   p + p {
@@ -339,7 +357,7 @@ ol li {
  * Al fonts share family and weight. The htings unique to each
  * will be listed below
 */
-/* line 80, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 79, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h1, h2, h3, h4 {
   margin: 1.414em 0 0.5em;
   font-family: 'Montserrat', sans-serif;
@@ -347,25 +365,25 @@ h1, h2, h3, h4 {
   line-height: 1.2;
   text-transform: uppercase; }
 
-/* line 90, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 89, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h1 {
   margin-top: 0;
   font-size: 3.157em; }
 
-/* line 95, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 94, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h2 {
   font-size: 2.369em; }
 
-/* line 99, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 98, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h3 {
   font-size: 1.777em; }
 
-/* line 103, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 102, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h4 {
   font-size: 1.333em;
   text-transform: uppercase; }
 
-/* line 108, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 107, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 pre code {
   font-family: "Source Code Pro", monospace;
   font-size: 1em;
@@ -375,17 +393,27 @@ pre code {
   overflow-wrap: break-word;
   word-wrap: break-word; }
 
-/* line 123, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 119, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+.metadata .no-bullet ul li, .metadata ul li {
+  list-style-type: none;
+  margin-left: -2em; }
+/* line 124, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+.metadata p :not(:first-of-type) {
+  margin-left: -2em !important; }
+
+/* line 137, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 .columns2 {
   width: 100%;
+  line-height: 1.25em;
+  margin-bottom: 1.25em;
   /* How many columns? */
   -moz-column-count: 2;
   -webkit-column-count: 2;
   column-count: 2;
   /* Space between columns */
-  -moz-column-gap: 20px;
-  -webkit-column-gap: 20px;
-  column-gap: 20px;
+  -moz-column-gap: 3em;
+  -webkit-column-gap: 3em;
+  column-gap: 3em;
   /* How do we fill the content of our columns, default is to balance */
   -moz-column-fill: balance;
   -webkit-column-fill: balance;
@@ -395,7 +423,11 @@ pre code {
   -webkit-column-span: none;
   column-span: none; }
 
-/* line 128, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 144, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+.columns2 > p:not(:first-of-type) {
+  text-indent: 2em; }
+
+/* line 148, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 .columns3 {
   width: 100%;
   /* How many columns? */
@@ -414,5 +446,12 @@ pre code {
   -moz-column-span: none;
   -webkit-column-span: none;
   column-span: none; }
+  /* line 152, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  .columns3 p {
+    line-height: 1.2em;
+    margin-bottom: 1em; }
+    /* line 156, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+    .columns3 p + p {
+      text-indent: 1em; }
 
 /*# sourceMappingURL=pm-style.css.map */

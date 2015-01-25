@@ -330,19 +330,8 @@ blockquote {
   list-style: none;
 }
 
-.metadata {
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-.metadata li {
-  list-style-type: none;
-}
-.metadata p:not(:first-of-type) {
-  margin-left: -2em;
-}
-
 p {
-  font-size: 1.2em;
+  font-size: 1em;
   margin-bottom: 1.3em;
 }
 p + p {
@@ -411,16 +400,26 @@ pre code {
   word-wrap: break-word;
 }
 
+.metadata .no-bullet ul li,
+.metadata ul li {
+  list-style-type: none;
+  margin-left: -2em;
+}
+.metadata p :not(:first-of-type) {
+  margin-left: -2em !important;
+}
+
 .columns2 {
   width: 100%;
+  line-height: 1em;
   /* How many columns? */
   -moz-column-count: 2;
   -webkit-column-count: 2;
   column-count: 2;
   /* Space between columns */
-  -moz-column-gap: 20px;
-  -webkit-column-gap: 20px;
-  column-gap: 20px;
+  -moz-column-gap: 3em;
+  -webkit-column-gap: 3em;
+  column-gap: 3em;
   /* How do we fill the content of our columns, default is to balance */
   -moz-column-fill: balance;
   -webkit-column-fill: balance;
@@ -429,6 +428,10 @@ pre code {
   -moz-column-span: none;
   -webkit-column-span: none;
   column-span: none;
+}
+.columns2 p {
+  text-indent: 1em;
+  margin-bottom: 1.5em;
 }
 
 .columns3 {
@@ -449,6 +452,13 @@ pre code {
   -moz-column-span: none;
   -webkit-column-span: none;
   column-span: none;
+}
+.columns3 p {
+  line-height: 1.2em;
+  margin-bottom: 1em;
+}
+.columns3 p + p {
+  text-indent: 1em;
 }
 
 /*# sourceMappingURL=pm-style.css.map */

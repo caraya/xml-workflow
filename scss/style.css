@@ -290,13 +290,13 @@ aside {
     margin-top: 0.2em;
     margin-bottom: 0.5em; }
 
-/* line 20, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 19, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 blockquote {
   margin-left: 1em;
   margin-bottom: 1em;
   font-style: italic; }
 
-/* line 26, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 25, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .opening {
   font-size: 2em;
   text-align: center;
@@ -306,7 +306,7 @@ blockquote {
   padding-bottom: 2em;
   margin-bottom: 10em; }
 
-/* line 37, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 36, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .margin-notes, .content-left {
   width: 230px;
   margin-left: -230px;
@@ -314,7 +314,7 @@ blockquote {
   text-align: right;
   font-size: 0.75em; }
 
-/* line 46, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 45, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .margin-notes-right, .content-right {
   width: 230px;
   margin-left: 760px;
@@ -323,7 +323,7 @@ blockquote {
   font-size: 0.75em;
   position: absolute; }
 
-/* line 55, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 54, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .content-right {
   width: 230px;
   margin-left: 760px;
@@ -332,9 +332,38 @@ blockquote {
   font-size: 0.75em;
   position: absolute; }
 
-/* line 65, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+/* line 64, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
 .content-right ul, .content-left ul {
   list-style: none; }
+
+/* line 69, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+.pullquote {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 38px;
+  width: 200px;
+  margin-right: 100px;
+  padding: 20px 0 20px 0;
+  border-top: 18px solid #000;
+  border-bottom: 18px solid #000;
+  letter-spacing: -0.02em;
+  position: relative; }
+  /* line 81, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+  .pullquote p {
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #00298a; }
+  /* line 89, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+  .pullquote p:last-child {
+    line-height: 20px;
+    padding-top: 2px; }
+  /* line 94, /Users/carlos/code/xml-workflow/scss/partials/_marginalia */
+  .pullquote cite {
+    font-size: 18px;
+    font-weight: 400;
+    color: #333; }
 
 /* line 1, /Users/carlos/code/xml-workflow/scss/partials/_metadata */
 .metadata {
@@ -349,7 +378,7 @@ blockquote {
 
 /* line 2, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
 p {
-  font-size: 1.2em;
+  font-size: 1em;
   margin-bottom: 1.3em; }
   /* line 6, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs */
   p + p {

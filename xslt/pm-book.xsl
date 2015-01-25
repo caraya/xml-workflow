@@ -43,7 +43,7 @@
         <xsl:element name="title">
           <xsl:value-of select="metadata/title"/>
         </xsl:element>
-        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/pm-style.css" />
         <!-- Just so I won't forget it again -->
         <link rel="stylesheet" href="css/paged-media.css"/>
         <!--
@@ -51,20 +51,20 @@
         -->
         <link rel="stylesheet" href="css/styles/docco.css" />
         <!-- Load highlight.js -->
-        <script src="js/highlight.pack.js"></script>
+        <script src="lib/highlight.pack.js"></script>
         <script>
           hljs.initHighlightingOnLoad();
         </script>
+        <script src="js/script.js"></script>
       </head>
-
       <body>
         <xsl:attribute name="data-type">book</xsl:attribute>
-        <xsl:element name="meta">
-          <xsl:attribute name="generator">
-            <xsl:value-of select="system-property('xsl:product-name')"/>
-            <xsl:value-of select="system-property('xsl:product-version')"/>
-          </xsl:attribute>
-        </xsl:element>
+          <xsl:element name="meta">
+            <xsl:attribute name="generator">
+              <xsl:value-of select="system-property('xsl:product-name')"/>
+              <xsl:value-of select="system-property('xsl:product-version')"/>
+            </xsl:attribute>
+          </xsl:element>
         <xsl:apply-templates/>
       </body>
     </html>
@@ -110,5 +110,6 @@
     </xsl:element>
   </xsl:template>
 
+  <!-- By making the template empty we skip execution -->
   <xsl:template match="book" mode="toc"/>
 </xsl:stylesheet>

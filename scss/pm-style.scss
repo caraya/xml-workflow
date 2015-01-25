@@ -68,7 +68,6 @@ body {
 
 @import "partials/_columns";
 @import "partials/_marginalia";
-@import "partials/_metadata";
 @import "partials/_paragraphs";
 @import "partials/_lists";
 //@import "partials/_images";
@@ -115,17 +114,47 @@ pre code{
   word-wrap: break-word;
 }
 
+.metadata {
+  .no-bullet ul li,
+  ul li {
+    list-style-type: none ;
+    margin-left: -2em;
+  }
+
+  p :not(:first-of-type) {
+    margin-left:-2em !important;
+  }
+}
 
 // The classes below use the column-attribs mixin defined in _columns.scss
 // to create 2 and 3-column layouts. These classes are meant as starting points,
 // there's definitely more you can do with them like playing with line-height
-// and word/letter spacing
+// and word/letter spacing.
+//
+// Still researching why I can't do indenting and paragraph spacing on the
+// resulting PDF
+
 .columns2 {
   width: 100%;
-	@include column-attribs (2, 20px);
+  line-height: 1.25em;
+  margin-bottom: 1.25em;
+  @include column-attribs (2, 3em);
+}
+
+.columns2 > p:not(:first-of-type) {
+  text-indent: 2em;
 }
 
 .columns3 {
   width: 100%;
   @include column-attribs (3, 10px);
+
+  p {
+    line-height: 1.2em;
+    margin-bottom: 1em;
+
+    + p {
+      text-indent: 1em;
+    }
+  }
 }
