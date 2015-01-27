@@ -15,19 +15,19 @@
 // Also note that not all attributes are supported across browsers/readers
 // test your content in your target browser(s) to make sure
 @mixin column-attribs ($cols, $gap, $fill: balance, $span: none){
-  /* How many columns? */
+//   How many columns?
   -moz-column-count: $cols;
   -webkit-column-count: $cols;
   column-count: $cols;
-  /* Space between columns */
+//   Space between columns
   -moz-column-gap: $gap;
   -webkit-column-gap: $gap;
   column-gap: $gap;
-  /* How do we fill the content of our columns, default is to balance */
+//   How do we fill the content of our columns, default is to balance
   -moz-column-fill: $fill;
   -webkit-column-fill: $fill;
   column-fill: $fill;
-  /* Column span, defaul is not to span columns */
+//   Column span, defaul is not to span columns
   -moz-column-span: $span;
   -webkit-column-span: $span;
   column-span: $span;

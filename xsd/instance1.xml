@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/Users/carlos/code/xml-workflow/xsd/book-schema-draft.xsd">
+  <section>
+    <title>title0</title>
+  </section>
+  <section>
+    <title>title1</title>
+  </section>
+</book>

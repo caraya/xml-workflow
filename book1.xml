@@ -39,7 +39,8 @@
       </otherRole>
     </otherRoles>
   </metadata>
-    <section type="chapter">
+
+  <section type="chapter">
         <title>What this is about</title>
         <para>This project seeks to answer the question: <strong><emphasis>What does an XML workflow looks like?</emphasis></strong></para>
         <para/>
@@ -157,7 +158,8 @@ padding: 0;
       <para>Venison sausage frankfurter shank turducken, biltong porchetta meatloaf doner. Meatloaf venison strip steak sirloin brisket corned beef, pork chop kevin tail pork loin shank ham hamburger. Pig tail meatball salami ribeye boudin corned beef filet mignon swine prosciutto t-bone. Ball tip ham brisket short ribs landjaeger turkey bresaola ground round jerky beef ribs rump leberkas pork loin. Short ribs rump turducken, porchetta pork belly ham hock short loin andouille tail beef ribs. Short ribs leberkas cupim flank cow.</para>
 
     </section>
-    <section type="chapter">
+
+  <section type="chapter">
         <title>Chapter 2: Bacon</title>
     <div class="columns2">
       <para>Bacon ipsum dolor amet jerky bacon ribeye boudin. Capicola drumstick pancetta corned beef, filet mignon turducken picanha swine chuck fatback chicken bacon ball tip frankfurter pastrami. Tongue pork chop ball tip, tenderloin corned beef venison bacon. Tri-tip turducken pastrami boudin shankle ham. Shank porchetta salami shankle sirloin. Cupim jowl porchetta jerky brisket, tongue picanha strip steak pork fatback frankfurter kielbasa filet mignon shoulder short ribs.</para>
@@ -219,7 +221,8 @@ padding: 0;
       <para>Venison sausage frankfurter shank turducken, biltong porchetta meatloaf doner. Meatloaf venison strip steak sirloin brisket corned beef, pork chop kevin tail pork loin shank ham hamburger. Pig tail meatball salami ribeye boudin corned beef filet mignon swine prosciutto t-bone. Ball tip ham brisket short ribs landjaeger turkey bresaola ground round jerky beef ribs rump leberkas pork loin. Short ribs rump turducken, porchetta pork belly ham hock short loin andouille tail beef ribs. Short ribs leberkas cupim flank cow.</para>
   </div>
   </section>
-    <section type="chapter">
+
+  <section type="chapter">
         <title>Chapter 3</title>
 
       <para>Bacon ipsum dolor amet jerky bacon ribeye boudin. Capicola drumstick pancetta corned beef, filet mignon turducken picanha swine chuck fatback chicken bacon ball tip frankfurter pastrami. Tongue pork chop ball tip, tenderloin corned beef venison bacon. Tri-tip turducken pastrami boudin shankle ham. Shank porchetta salami shankle sirloin. Cupim jowl porchetta jerky brisket, tongue picanha strip steak pork fatback frankfurter kielbasa filet mignon shoulder short ribs.</para>
@@ -242,7 +245,8 @@ padding: 0;
 
       <para>Venison sausage frankfurter shank turducken, biltong porchetta meatloaf doner. Meatloaf venison strip steak sirloin brisket corned beef, pork chop kevin tail pork loin shank ham hamburger. Pig tail meatball salami ribeye boudin corned beef filet mignon swine prosciutto t-bone. Ball tip ham brisket short ribs landjaeger turkey bresaola ground round jerky beef ribs rump leberkas pork loin. Short ribs rump turducken, porchetta pork belly ham hock short loin andouille tail beef ribs. Short ribs leberkas cupim flank cow.</para>
     </section>
-    <section type="chapter">
+
+  <section type="chapter">
         <title>Chapter 4</title>
 
       <para>Bacon ipsum dolor amet jerky bacon ribeye boudin. Capicola drumstick pancetta corned beef, filet mignon turducken picanha swine chuck fatback chicken bacon ball tip frankfurter pastrami. Tongue pork chop ball tip, tenderloin corned beef venison bacon. Tri-tip turducken pastrami boudin shankle ham. Shank porchetta salami shankle sirloin. Cupim jowl porchetta jerky brisket, tongue picanha strip steak pork fatback frankfurter kielbasa filet mignon shoulder short ribs.</para>

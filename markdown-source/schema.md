@@ -70,39 +70,6 @@ We also allow the optional use of `class` and `id` attributes for the book by as
 </xs:attributeGroup> 
 ```
 
-After I had finished my first version of the schema I discovered a problem. I was not able to nest style elements that are childre of paragraph. The following markup was not allowed in my book document:
-
-```xml
-<para>This is an example of <strong><emphasis>bold and italics together</emphasis></strong>.</para>
-```
-
-In order to acommodate nesting of the four basic styles available to our documents: `strong`, `emphasis`, `strike` and `underline` we had to do some juryriging of the elements to tell the schema what children are allowed for each element.  The schema look like this:
-
-```xml
-<xs:element name="strong">
-    <xs:complexType mixed="true">
-        <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element ref="emphasis"/>
-            <xs:element ref="underline"/>
-            <xs:element ref="strike"/>
-        </xs:choice>
-    </xs:complexType>
-</xs:element>
-    
-<xs:element name="emphasis">
-  <xs:complexType mixed="true">
-      <xs:choice minOccurs="0" maxOccurs="unbounded">
-          <xs:element ref="strong"/>
-          <xs:element ref="emphasis"/>
-          <xs:element ref="underline"/>
-          <xs:element ref="strike"/>
-      </xs:choice>
-  </xs:complexType>
-</xs:element>
-```
-
-The `emphasis` element is the only one that allows the same element to be nested. When nesting emphasis elements they cancel each other 
-
 The next stage is to define elements to create our 'people' types.  We create a base person element and then create three role elements based on person. We will use this next to define groups for each role.
 
 ```xml
@@ -452,22 +419,52 @@ The `alt` attribute indicates alternative text for the image. It is not meant as
 </xs:element>
 ```
 
-The `code` element wraps code and works as higlighted, fenced code blocks (think Github Flavored Markdown.)
-
-When using CSS we'll generate a &lt;code>&lt;pre>&lt;/pre>&lt;/code> block with a language attribute that will be formated with either Google Code Prettify or Highlight.js (the chosen package will be a part of the project tool chain)
-
-Because of the intended use, the `language` attribute is required. 
-
-Class and ID (from `genericPropertiesGroup`) are optional
+In order to acommodate the four basic styles available to our documents: `strong`, `emphasis`, `strike` and `underline` and their nesting we had to do some juryriging of the elements to tell the schema what children are allowed for each element.  The schema look like this:
 
 ```xml
-<xs:element name="code">
+<xs:element name="strong">
     <xs:complexType mixed="true">
-        <xs:attributeGroup ref="genericPropertiesGroup"/>
-        <xs:attribute name="language" use="required"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="emphasis"/>
+            <xs:element ref="underline"/>
+            <xs:element ref="strike"/>
+        </xs:choice>
     </xs:complexType>
 </xs:element>
+    
+<xs:element name="emphasis">
+  <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="strong"/>
+          <xs:element ref="emphasis"/>
+          <xs:element ref="underline"/>
+          <xs:element ref="strike"/>
+      </xs:choice>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="underline">
+  <xs:complexType mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="strong"/>
+      <xs:element ref="emphasis"/>
+      <xs:element ref="strike"/>
+    </xs:choice>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="strike">
+  <xs:complexType mixed="true">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="strong"/>
+      <xs:element ref="emphasis"/>
+      <xs:element ref="underline"/>
+    </xs:choice>
+  </xs:complexType>
+</xs:element>
 ```
+
+The `emphasis` element is the only one that allows the same element to be nested. When nesting emphasis elements they cancel each other 
 
 When I first conceptualized the project I envisioned one element for both numbered and bulleted lists. That proved to difficult to  implement and to cumbersome to write so I reverted to having to sepratate lists, one for ordered or numbered lists (`olist`) and one for unordered or bulleted lists (`ulist`). The only difference is the type of list that we use in XSLT later on. 
 
@@ -512,7 +509,24 @@ They inherit class and ID from `genreicPropertiesGroup`.
 </xs:element>
 ```
 
-Another type of element that came up when working on the documentation were aside, blockquotes and quotes. 
+The `code` element wraps code and works as higlighted, fenced code blocks (think Github Flavored Markdown.)
+
+When using CSS we'll generate a &lt;code>&lt;pre>&lt;/pre>&lt;/code> block with a language attribute that will be formated with Highlight.js (the chosen package will be a part of the project tool chain)
+
+Because of the intended use, the `language` attribute is required. 
+
+Class and ID (from `genericPropertiesGroup`) are optional
+
+```xml
+<xs:element name="code">
+    <xs:complexType mixed="true">
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+        <xs:attribute name="language" use="required"/>
+    </xs:complexType>
+</xs:element>
+```
+
+Another type of element that came up when working on the documentation were aside, blockquotes and quotes. `Blockquote` and `attribution` are for longer block level quotations (more than 4 lines of text) while `quote` is for shorter quotations usually inserted in a paragraph.
 
 ```xml
 <xs:element name="blockquote">
@@ -531,16 +545,20 @@ Another type of element that came up when working on the documentation were asid
   </xs:complexType>
 </xs:element>
 
-<xs:element name="attribution" type="xs:string">
+<xs:element name="attribution">
   <xs:annotation>
     <xs:documentation>
-      Who said what
+      Who said it
     </xs:documentation>
   </xs:annotation>
+  <xs:complexType mixed="true">
+    <xs:choice  minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="para"/>
+    </xs:choice>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
 </xs:element>
-```
 
-```xml
 <xs:element name="quote">
   <xs:annotation>
     <xs:documentation>
@@ -560,40 +578,67 @@ We include 3 different groups of properties in the paragraph declaration: Styles
 This model barely begins to scratch the surface of what we can do with our paragraph model. I decided to go for simplicity rather than completeness. This will definitely change in future versions of the schema. 
 
 ```xml
+<!-- Paragraphs -->
 <xs:element name="para">
-  <xs:annotation>
-    <xs:documentation>
-      Para is the essential text content element. It'll get
-      hairy because we have a lot of possible attributes we
-      can use on it
-    </xs:documentation>
-  </xs:annotation>
   <xs:complexType mixed="true">
-    <xs:sequence>
-      <!-- 
-        Style Elements. 
+    <xs:choice  minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="strong"/>
+      <xs:element ref="emphasis"/>
+      <xs:element ref="underline"/>
+      <xs:element ref="strike"/>
+      <xs:element ref="link"/>
+      <xs:element ref="span"/>
+      <xs:element ref="quote"/>
+    </xs:choice>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
+</xs:element>
+```
 
-        We use strong and emphasis rather than bold and italics
-        to try and stay in synch with HTML and HTML5. We may
-        add additional tags later in the process.
-      -->
-      <xs:element name="strong" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-      <xs:element name="emphasis" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-      <xs:element name="underline" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-      <xs:element name="strike" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-      <!-- 
-        Organization Elements 
-      -->
-      <xs:element name="span" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-      <xs:element ref="link" minOccurs="0" maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:documentation>
-            Links should happen inside paragraphs and it's an optional element.
-          </xs:documentation>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
-    <xs:attributeGroup ref="genericPropertiesGroup" />
+Like HTML we've chose to create 6 levels of headings although, to be honest, I can't see the need for more than 4. 
+
+We give all links three attributes: `class`, `id` and `align` to hint stylesheets where we want to place the heading (left, right, center)
+```xml
+<!-- Headings -->
+<xs:element name="h1">
+  <xs:complexType mixed="true">
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="align" type="align" use="optional" default="left"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="h2">
+  <xs:complexType mixed="true">
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="align" type="align" use="optional" default="left"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="h3">
+  <xs:complexType mixed="true">
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="align" type="align" use="optional" default="left"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="h4">
+  <xs:complexType mixed="true">
+      <xs:attributeGroup ref="genericPropertiesGroup"/>
+      <xs:attribute name="align" type="align" use="optional" default="left"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="h5">
+  <xs:complexType mixed="true">
+      <xs:attributeGroup ref="genericPropertiesGroup"/>
+      <xs:attribute name="align" type="align" use="optional" default="left"/>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="h6">
+  <xs:complexType mixed="true">
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="align" type="align" use="optional" default="left"/>
   </xs:complexType>
 </xs:element>
 ```
@@ -656,19 +701,12 @@ Finally we add the `type` to create data-type and/or epub:type attributes. I cho
 
 ```xml
 <!-- Section element -->
+<!-- Section element -->
 <xs:element name="section">
-  <xs:annotation>
-    <xs:documentation>section structure</xs:documentation>
-  </xs:annotation>
   <xs:complexType mixed="true">
     <xs:sequence>
-      <xs:annotation>
-        <xs:documentation>
-          A title and at least one paragraph
-        </xs:documentation>
-      </xs:annotation>
-      <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
-      <xs:choice maxOccurs="unbounded">
+      <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="code"/>
         <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
         <xs:element ref="ulist"/>
@@ -677,19 +715,17 @@ Finally we add the `type` to create data-type and/or epub:type attributes. I cho
         <xs:element ref="image"/>
         <xs:element ref="div"/>
         <xs:element ref="span"/>
+        <xs:element ref="blockquote"/>
+        <xs:element ref="h1"/>
+        <xs:element ref="h2"/>
+        <xs:element ref="h3"/>
+        <xs:element ref="h4"/>
+        <xs:element ref="h5"/>
+        <xs:element ref="h6"/>
       </xs:choice>
-    </xs:sequence>
-    <xs:attributeGroup ref="genericPropertiesGroup"/>
-    <xs:attribute name="type" type="xs:token" use="optional" default="chapter">
-      <xs:annotation>
-        <xs:documentation>
-          The type or role for the paragraph asn in data-role or epub:type. 
-          
-          We make it optional but provide a default of chapter to make it 
-          easier to add.
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
+      </xs:sequence>
+      <xs:attributeGroup ref="genericPropertiesGroup"/>
+      <xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
   </xs:complexType>
 </xs:element>
 ```
@@ -702,21 +738,13 @@ As with all our elements we add `class` and `ID` from our genericPropertiesGroup
 
 ```xml
 <xs:element name="book">
-    <xs:annotation>
-        <xs:documentation>The main book element and it's children</xs:documentation>
-    </xs:annotation>
-    <xs:complexType mixed="true">
-        <xs:annotation>
-            <xs:documentation>
-              A sequence of one metadata element followed by 1 or more sections
-            </xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element ref="metadata" minOccurs="1" maxOccurs="1"/>
-            <xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attributeGroup ref="genericPropertiesGroup"/>
-    </xs:complexType>
+  <xs:complexType mixed="true">
+    <xs:sequence>
+      <xs:element ref="metadata" minOccurs="0" maxOccurs="1"/>
+      <xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+  </xs:complexType>
 </xs:element>
 ```
 

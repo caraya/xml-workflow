@@ -177,7 +177,7 @@ We wrap the Gruntfile with a self executing function as a deffensive coding stra
 
 When concatenating Javascript files there may be some that use strict Javascript and some that don't; With Javascript [variable hoisting](http://code.tutsplus.com/tutorials/javascript-hoisting-explained--net-15092) the use stric declaration would be placed at the very top of the concatenated file making all the scripts underneat use the strict declaration.
 
-The function wrap prevents this by making the use strict declaration local to the file where it was written. None of the other files will be affected. 
+The function wrap prevents this by making the use strict declaration local to the file where it was written. None of the other templates will be affected and they will still execute from the master stylesheet. 
 
 ## Apache Ant build file
 
@@ -249,4 +249,7 @@ The Java build files performs the following tasks:
   </target>
 </project>
 ```
+
+As far as Ant buildfiles go this is a very basic one. We're not uisng it to fetch content (although we could if we needed to) or to organize the content of our build directory (it's possible to do so in Ant but I've chosen to use Grunt for that task and only call the Grunt task from Ant.)
+
 

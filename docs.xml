@@ -1,24 +1,661 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
-    <metadata>
-        <title>XML workflow documentation</title>
+  <metadata>
+      <title>XML workflow documentation</title>
 
-        <authors>
-            <author>
-                <first-name>Carlos</first-name>
-                <surname>Araya</surname>
-            </author>
-        </authors>
+      <authors>
+          <author>
+              <first-name>Carlos</first-name>
+              <surname>Araya</surname>
+          </author>
+      </authors>
+  </metadata>
 
-        <para>Thanks to Laura Brady for getting this particular idea started :)</para>
+  <section type="dedication">
+    <title>Thank you and assorted stuff</title>
+    <para>Thanks to Laura Brady for getting this particular idea started :)</para>
 
-        <para>I'm dogfooding my XML workflow for digital publishing, there are certainly bugs remaining. Please let me know if you find any</para>
-    </metadata>
-    <section type="chapter">
-      <title>Converting our content to HTML</title>
+    <para>I'm dogfooding my XML workflow for digital publishing, there are certainly bugs remaining. Please let me know if you find any</para>
+  </section>
+  <section type="chapter">
+      <title>Introduction</title>
 
-      <para></para>
+      <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like <link href="http://docbook.org" label="Docbook"/> are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</para>
 
+<para>By creating our own markup vocabulary we can be as expressive as we need to be without adding additional complexity for writers and users and without adding unecessary complexity for the developers building the tools to interact with the markup.
+</para>
+
+<h2>Why create our own markup</h2>
+
+<para>I have a few answers to that question:</para>
+
+<para>In creating your own xml-based markup you enforce separation of content and style. The XML document provides the basic content of the document and the hints to use elsewhere. XSLT stylesheets allow you to structure the base document and associated hints into any number of formats (for the purposes of this document we'll concentrate on XHTML, PDF created through Paged Media CSS and PDF created using XSL formatting Objects)</para>
+
+<para>Creating a domain specific markup vocabulary allows you think about structure and complexity for yourself as the editor/typesetter and for your authors. It makes you think about elements and attributes and which one is better for the given experience you want and what, if any, restrictions you want to impose on your makeup.</para>
+
+<para>By creating our own vocabulary we make it easier for authors to write clean and simple content. XML provides a host of validation tools to enforce the structure and format of the XML document.</para>
+
+<h2>Options for defining the markup</h2>
+
+<para>For the purpose of this project we'll define a set of resources that work with a book structure like the one below:</para>
+
+<code language="xml">
+ &lt;?xml version="1.0" encoding="UTF-8"?>
+ &lt;book
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
+  &lt;metadata>
+    &lt;title>Sample Document&lt;/title>
+    &lt;authors>
+      &lt;author>
+        &lt;first-name>Carlos&lt;/first-name>
+        &lt;surname>Araya&lt;/surname>
+      &lt;/author>
+    &lt;/authors>
+  &lt;/metadata>
+
+  &lt;section type="chapter">
+    &lt;title>Chapter 1&lt;/title>
+
+    &lt;para>&lt;/para>
+    &lt;para>&lt;/para>
+    &lt;para>&lt;/para>
+
+  &lt;/section>
+
+  &lt;section type="chapter">
+
+  &lt;title>Chapter 2&lt;/title>
+
+  &lt;para>&lt;/para>
+  &lt;para>&lt;/para>
+  &lt;para>&lt;/para>
+
+  &lt;/section>
+&lt;/book>
+</code>
+
+
+<para>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</para>
     </section>
+  <section type="chapter">
+      <title>XML Schema</title>
+
+<para>The schema is defined from most general to most specific elements. We'll follow the same process to explain what the schema does and how we arrived to the choices we made. </para>
+
+<para>At the beginning of the schema we define some custom types that will be used throughout the document.</para>
+
+<para>The first one, <emphasis>string255</emphasis> is a string that is limited to 255 characters in length. We do this to prevent overtly long strings.</para>
+
+<para>The second one, <emphasis>isbn</emphasis> is a regular expression to match 10 digits ISBN numbers. We'll have to modify it to handle ISBN-13 as well as 10.</para>
+
+<para>The third custom type is an enumeration of all possible values for the <emphasis>align</emphasis> attribute acording to CSS and HTML. Rather than manually type each of these we will reference this enumeration and include all its values for "free".</para>
+
+<para>We also allow the optional use of `class` and `id` attributes for the book by assigning `genericPropertiesGroup` attribute group as attributes to the group. We'll see this assigned to other elements so I decided to make it reusable rather than have to duplicate the attributes in every element I want to use them in.</para>
+
+<code language="xml">
+&lt;!-- Simple types to use in the content -->
+&lt;xs:simpleType name="token255">
+  &lt;xs:restriction base="xs:token">
+    &lt;xs:maxLength value="255"/>
+  &lt;/xs:restriction>
+&lt;/xs:simpleType>
+
+&lt;xs:simpleType name="isbn">
+  &lt;xs:restriction base="xs:unsignedLong">
+    &lt;xs:totalDigits value="10"/>
+    &lt;xs:pattern value="d{10}"/>
+  &lt;/xs:restriction>
+&lt;/xs:simpleType>
+
+&lt;xs:simpleType name="align">
+  &lt;xs:restriction base="xs:token">
+    &lt;xs:enumeration value="left"/>
+    &lt;xs:enumeration value="center"/>
+    &lt;xs:enumeration value="right"/>
+    &lt;xs:enumeration value="justify"/>
+  &lt;/xs:restriction>
+&lt;/xs:simpleType>
+
+&lt;xs:attributeGroup name="genericPropertiesGroup">
+  &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
+  &lt;xs:attribute name="class" type="xs:token" use="optional"/>
+&lt;/xs:attributeGroup>
+</code>
+
+<para>The next stage is to define elements to create our <emphasis>people</emphasis> types.  We create a base person element and then create three role elements based on person. We will use this next to define groups for each role.</para>
+
+<code language="xml">
+&lt;!-- complex types to create groups of similar person items -->
+&lt;xs:complexType name="person">
+  &lt;xs:sequence>
+    &lt;xs:element name="first-name" type="xs:token"/>
+    &lt;xs:element name="surname" type="xs:token"/>
+  &lt;/xs:sequence>
+  &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="author">
+  &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
+    &lt;xs:element name="author" type="person"/>
+  &lt;/xs:choice>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="editor">
+  &lt;xs:complexContent>
+    &lt;xs:extension base="person">
+      &lt;xs:sequence>
+        &lt;xs:element name="type" type="xs:string"/>
+      &lt;/xs:sequence>
+    &lt;/xs:extension>
+  &lt;/xs:complexContent>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="otherRole">
+  &lt;xs:complexContent>
+    &lt;xs:extension base="person">
+      &lt;xs:sequence minOccurs="1" maxOccurs="1">
+        &lt;xs:element name="role" type="xs:string"/>
+      &lt;/xs:sequence>
+    &lt;/xs:extension>
+  &lt;/xs:complexContent>
+&lt;/xs:complexType>
+</code>
+
+Two of the derived types add attributes or elements to the base person element to make the generic person more appropriate to their role rather than repeat the content of person each time that an author, editor or other role appear.
+
+Author is the most straight forward and only wraps person in the author element.
+
+
+Editor takes the base person element and adds a `type` child to indicate the type of editor (some that come to mind are acquisition, production and managing.) The editor elements looks like this:
+
+<code language="xml">
+&lt;editor>
+&lt;first-name>Carlos&lt;/first-name>
+&lt;surname>Araya&lt;/surname>
+&lt;type>Managing&lt;/type>
+&lt;/editor>
+</code>
+
+OtherRoles takes all other roles that are not author or editor and adds a role element to specify what role they play, for example: Illustrator, Indexer, Research Assistant, among others. The element looks like this:
+
+<code language="xml">
+  &lt;otherRole>
+  &lt;first-name>Sherlock&lt;/first-name>
+  &lt;surname>Holmes&lt;/surname>
+  &lt;role>Researcher&lt;/role>
+  &lt;/otherRole>
+</code>
+
+      <para>Next we create wrappers for each group as <emphasis>authors</emphasis>, <emphasis>editors</emphasis> and <emphasis>otherRoles</emphasis> so we can provide easier styling with XSLT and CSS later on.</para>
+
+<code language="xml">
+  &lt;xs:complexType name="authors">
+  &lt;xs:annotation>
+  &lt;xs:documentation>Wrapper to get more than one author&lt;/xs:documentation>
+  &lt;/xs:annotation>
+  &lt;xs:sequence>
+  &lt;xs:element name="author" type="person"/>
+  &lt;/xs:sequence>
+  &lt;/xs:complexType>
+
+  &lt;xs:complexType name="editors">
+  &lt;xs:annotation>
+  &lt;xs:documentation>
+  extension to person to indicate editor and his/her role
+  &lt;/xs:documentation>
+  &lt;/xs:annotation>
+  &lt;xs:complexContent>
+  &lt;xs:extension base="person">
+  &lt;xs:sequence>
+  &lt;xs:element name="type" type="xs:token"/>
+  &lt;/xs:sequence>
+  &lt;/xs:extension>
+  &lt;/xs:complexContent>
+  &lt;/xs:complexType>
+
+  &lt;xs:complexType name="otherRoles">
+  &lt;xs:annotation>
+  &lt;xs:documentation>
+  extension to person to accomodate roles other than author and editor
+  &lt;/xs:documentation>
+  &lt;/xs:annotation>
+  &lt;xs:complexContent>
+  &lt;xs:extension base="person">
+  &lt;xs:sequence>
+  &lt;xs:element name="role" type="xs:token"/>
+  &lt;/xs:sequence>
+  &lt;/xs:extension>
+  &lt;/xs:complexContent>
+  &lt;/xs:complexType>
+</code>
+
+<para>We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters.</para>
+
+<para>We'll look at links first as it is the simplest of our content structures. We borrow the <emphasis>href</emphasis> attribute from HTML to indicate the destination for the link and make it required. </para>
+
+<para>We also incoporate a <emphasis>label</emphasis> so we can later build the link and for accessibility purposes. It also uses our `genericPropertiesGroup` attribute set to add class and ID as attributes for our links.</para>
+
+<code language="xml">
+  &lt;!-- Elements inside section -->
+  &lt;xs:element name="link">
+  &lt;xs:annotation>
+  &lt;xs:documentation>links...&lt;/xs:documentation>
+  &lt;/xs:annotation>
+  &lt;xs:complexType>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup" />
+  &lt;xs:attribute name="href" type="xs:string" use="required">
+  &lt;xs:annotation>
+  &lt;xs:documentation>
+  Link destination
+  &lt;/xs:documentation>
+  &lt;/xs:annotation>
+  &lt;/xs:attribute>
+  &lt;xs:attribute name="label" type="xs:string" use="required"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+The link in our resulting book will look like this:
+
+<code language="xml">
+&lt;link href="http://google.com" label="link to google"/>
+</code>
+
+and with the optional attributes it will look like this
+
+<code language="xml">
+&lt;link class="external" id="ex01" href="http://google.com" label="link to google">
+</code>
+
+<para>Once I had the links I figured I need a way to create anchors for internal links that look like this: <emphasis>&lt;a href="#top"></emphasis> and expect the target to be formated like this <emphasis>&lt;a name="top"></emphasis>. To accomodate this I created an anchor element to provide the destination for internal links. </para>
+
+<code language="xml">
+&lt;!-- Named Anchor -->
+&lt;xs:element name="anchor">
+  &lt;xs:complexType>
+    &lt;xs:attribute name="name"/>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+</code>
+
+<para>As I was working on further ideas for the project I realized that we forgot to create inline and block level containers for the content, important if you're going to style smaller portions of content within a paragraph or witin a section. Taking the names from HTML we define <emphasis>section</emphasis> (inline) and <emphasis>div</emphasis> (block) elements. Div is a secondary section, containing the same model as the section, including additional div containers.</para>
+
+<code language="javascript">
+&lt;xs:element name="div">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
+      &lt;xs:element ref="code"/>
+      &lt;xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+      &lt;xs:element ref="ulist"/>
+      &lt;xs:element ref="olist"/>
+      &lt;xs:element ref="figure"/>
+      &lt;xs:element ref="image"/>
+      &lt;xs:element ref="div"/>
+      &lt;xs:element ref="span"/>
+      &lt;xs:element ref="blockquote"/>
+      &lt;xs:element ref="h1"/>
+      &lt;xs:element ref="h2"/>
+      &lt;xs:element ref="h3"/>
+      &lt;xs:element ref="h4"/>
+      &lt;xs:element ref="h5"/>
+      &lt;xs:element ref="h6"/>
+    &lt;/xs:choice>
+    &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+    &lt;xs:attribute name="type" type="xs:token" use="optional"/>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+</code>
+
+<para>Span is an inline element, therefore the model is greatly reduced to only the elements that can be inside a paragraph</para>
+
+<para>Type is used in these two elements and in our sections to create data-type and epub:type attributes. These are used in the Paged Media stylesheet to decide how will the content be formated.</para>
+
+<code language="xml">
+&lt;xs:element name="span">
+  &lt;xs:complexType>
+    &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+    &lt;xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+</code>
+
+<para>Next are images and figures where we borrow from HTML, again, for the name of attribute names and their functionality. We define 3 elements for the image-related tags: <emphasis>figure</emphasis>, <emphasis>figcaption</emphasis> and the <emphasis>image</emphasis> itself.</para>
+
+<para><emphasis>Figure</emphasis> is the wrapper around a `figcaption` caption and the `image` element itself. The `figcaption` is a text-only element that will contain the caption for the associated image</para>
+
+<code language="xml">
+  &lt;!-- Figure and related elements -->
+  &lt;xs:element name="figure">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:all>
+  &lt;xs:element ref="image"/>
+  &lt;xs:element ref="figcaption"/>
+  &lt;/xs:all>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>The caption child only uses text and, because it's only used as a child of figure, we don't need to assign attributes to it. It will inherit from the image or the surrounding figure.</para>
+
+<code language="xml">
+  &lt;xs:element name="figcaption">
+  &lt;xs:annotation>
+  &lt;xs:documentation>
+  caption for the image in the figure. Because it's only used
+  as a child of figure, we don't need to assign attributes to
+  it
+  &lt;/xs:documentation>
+  &lt;/xs:annotation>
+  &lt;/xs:element>
+</code>
+
+<para>When working with the image element we start with `genericPropertiesGroup` to define <emphasis>class</emphasis> and <emphasis>id</emphasis>.</para>
+
+<para>Then we require a <emphasis>src</emphasis> attribute to tell where the image is located. We need to be careful because we haven't told the schema the different types of images. We have at least three different locations for the image files. All three of these are valid locations for our image.png file.</para>
+
+<code language="bash">
+  image.png
+  directory/image.png
+  http://mysite.org/images/image.png
+</code>
+
+<para>We could create branches of our schema to deal with the different locations but I've chosen to let the XSLT style sheets deal with this particular situation. The schema type for the image (<emphasis>xs:anyURI</emphasis>) should also help to sort out the issue.</para>
+
+<para> <emphasis>width</emphasis> and <emphasis>height</emphasis> are expressed as integer and are left as optional to account for the possibility that the CSS or XSLT stylesheets modify the image dimensions. Making these dimensions mandatory may affect how the element interact with the styles later on.</para>
+
+<para>The <emphasis>alt</emphasis> attribute indicates alternative text for the image. It is not meant as a full description so we've constrained it to 255 characters.</para>
+
+<para><emphasis>align</emphasis> uses our align enumeration to indicae the image's alignment. It is not essential to the XML but will be useful to the XSLT stylesheets we'll create later as part of the process.</para>
+
+<code language="xml">
+  &lt;xs:element name="image">
+  &lt;xs:complexType>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup" />
+  &lt;xs:attribute name="src" type="xs:string" use="required"/>
+  &lt;xs:attribute name="height" type="xs:integer" use="optional"/>
+  &lt;xs:attribute name="width" type="xs:integer" use="optional"/>
+  &lt;xs:attribute name="alt" type="string255" use="required"/>
+  &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>In order to acommodate the four basic styles available to our documents: <emphasis>strong</emphasis>, <emphasis>emphasis</emphasis>, <emphasis>strike</emphasis> and <emphasis>underline</emphasis> and their nesting we had to do some juryriging of the elements to tell the schema what children are allowed for each element.  The schema look like this:</para>
+
+<code language="xml">
+  &lt;xs:element name="strong">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
+  &lt;xs:element ref="emphasis"/>
+  &lt;xs:element ref="underline"/>
+  &lt;xs:element ref="strike"/>
+  &lt;/xs:choice>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="emphasis">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
+  &lt;xs:element ref="strong"/>
+  &lt;xs:element ref="emphasis"/>
+  &lt;xs:element ref="underline"/>
+  &lt;xs:element ref="strike"/>
+  &lt;/xs:choice>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="underline">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
+  &lt;xs:element ref="strong"/>
+  &lt;xs:element ref="emphasis"/>
+  &lt;xs:element ref="strike"/>
+  &lt;/xs:choice>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="strike">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
+  &lt;xs:element ref="strong"/>
+  &lt;xs:element ref="emphasis"/>
+  &lt;xs:element ref="underline"/>
+  &lt;/xs:choice>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>The <emphasis>emphasis</emphasis> element is the only one that allows the same element to be nested. When nesting emphasis elements they cancel each other</para>
+
+<para>When I first conceptualized the project I envisioned one element for both numbered and bulleted lists. That proved to difficult to  implement and to cumbersome to write so I reverted to having to sepratate lists, one for ordered or numbered lists (<emphasis>olist</emphasis>) and one for unordered or bulleted lists (<emphasis>ulist</emphasis>). The only difference is the type of list that we use in XSLT later on.</para>
+
+<para>The list elements also require at least 1 <emphasis>item</emphasis> child. If it's going to be left empty why bother having the list to begin with.</para>
+
+<para>They inherit class and ID from <emphasis>genreicPropertiesGroup</emphasis>.</para>
+
+<code language="xml">
+  &lt;!-- Lists -->
+  &lt;xs:element name="ulist">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:sequence minOccurs="1" maxOccurs="unbounded">
+  &lt;xs:element ref="item"/>
+  &lt;/xs:sequence>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="olist">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:sequence minOccurs="1" maxOccurs="unbounded">
+  &lt;xs:element ref="item"/>
+  &lt;/xs:sequence>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="item">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>The <emphasis>code</emphasis> element wraps code and works as higlighted, fenced code blocks (think Github Flavored Markdown.)</para>
+
+<para>When using CSS we'll generate a &lt;code>&lt;pre>&lt;/pre>&lt;/code> block with a language attribute that will be formated with Highlight.js (the chosen package will be a part of the project tool chain)</para>
+
+<para>Because of the intended use, the `language` attribute is required.</para>
+
+<para>Class and ID (from <emphasis>genericPropertiesGroup</emphasis>) are optional</para>
+
+<code language="xml">
+  &lt;xs:element name="code">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="language" use="required"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>Another type of element that came up when working on the documentation were aside, blockquotes and quotes. `Blockquote` and `attribution` are for longer block level quotations (more than 4 lines of text) while `quote` is for shorter quotations usually inserted in a paragraph.</para>
+
+<code language="xml">
+&lt;xs:element name="code">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+    &lt;xs:attribute name="language" use="required"/>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+</code>
+
+<para>Paragraphs (<emphasis>para</emphasis> in our documents) are the essential unit of content for our books. The paragraph is where most content will happen, text, styles and additional elements that we may add as we go along (inline code comes to mind).</para>
+
+<para>We include 3 different groups of properties in the paragraph declaration: Styles (<emphasis>strong</emphasis>, <emphasis>emphasis</emphasis>, <emphasis>underline</emphasis> and <emphasis>strike</emphasis> to do bold, italics, underline (outside links) and strikethrough text); Organization (<emphasis>span</emphasis> and <emphasis>link</emphasis>) and our <emphasis>genericPropertiesGroup</emphasis> (class and id).</para>
+
+<para>This model barely begins to scratch the surface of what we can do with our paragraph model. I decided to go for simplicity rather than completeness. This will definitely change in future versions of the schema.</para>
+
+<code language="xml">
+  &lt;!-- Paragraphs -->
+  &lt;xs:element name="para">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:choice  minOccurs="0" maxOccurs="unbounded">
+  &lt;xs:element ref="strong"/>
+  &lt;xs:element ref="emphasis"/>
+  &lt;xs:element ref="underline"/>
+  &lt;xs:element ref="strike"/>
+  &lt;xs:element ref="link"/>
+  &lt;xs:element ref="span"/>
+  &lt;xs:element ref="quote"/>
+  &lt;/xs:choice>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>Like HTML we've chose to create 6 levels of headings although, to be honest, I can't see the need for more than 4. </para>
+
+<para>We give all links three attributes: <emphasis>class</emphasis>, <emphasis>id</emphasis> and <emphasis>align</emphasis> to hint stylesheets where we want to place the heading (left, right, center)</para>
+
+<code language="xml">
+  &lt;!-- Headings -->
+  &lt;xs:element name="h1">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="h2">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="h3">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="h4">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="h5">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+
+  &lt;xs:element name="h6">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+
+      <para>The metadata section tells us more about the book itself and can be used to build a <emphasis>package.opf</emphasis> manifest using XSLT as part of our transformation process. We include basic information such as <emphasis>isbn</emphasis> (validated as an ISBN type defined earlier in the schema), an <emphasis>edition</emphasis> (integer indicating what edition of the book it is) and <emphasis>title</emphasis>.</para>
+
+<code language="xml">
+  &lt;!-- Metadata element -->
+  &lt;xs:element name="metadata">
+  &lt;xs:complexType>
+  &lt;xs:sequence>
+  &lt;xs:element name="isbn" type="isbn"/>
+  &lt;xs:element name="edition" type="xs:integer"/>
+  &lt;xs:element name="title" type="token255"/>
+  &lt;xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
+  &lt;xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
+  &lt;xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
+  &lt;xs:element ref="para"/>
+  &lt;/xs:sequence>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>Section is our primary container for paragraphs and associated content. Some of the items exclusive to sections are:</para>
+
+<para>The <emphasis>title</emphasis> element is required to appear exactly one time.</para>
+
+<para>We can have 1 or more <emphasis>para</emphasis> elements.</para>
+
+<para>We can use 0 or more of the following elements:</para>
+
+<ulist>
+  <item><emphasis>code</emphasis> fenced code blocks elements</item>
+  <item><emphasis>ulist</emphasis> unordered list</item>
+  <item><emphasis>olist</emphasis> ordered (numbered) lists</item>
+  <item><emphasis>figure</emphasis> for captioned images</item>
+  <item><emphasis>image</emphasis> without captions</item>
+  <item><emphasis>div</emphasis> block level containers</item>
+  <item><emphasis>span</emphasis> inline level container</item>
+</ulist>
+
+<para>The element inherits <emphasis>class</emphasis> and <emphasis>ID</emphasis> from genericPropertiesGroup.</para>
+
+<para>Finally we add the `type` to create data-type and/or epub:type attributes. I chose to make it option and default it to chapter. We want to make it easier for authors to create content; where possible. I'd rather have the wrong value than no value at all.</para>
+
+<code language="xml">
+  &lt;!-- Section element -->
+  &lt;xs:element name="section">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:sequence>
+  &lt;xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
+  &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
+  &lt;xs:element ref="code"/>
+  &lt;xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+  &lt;xs:element ref="ulist"/>
+  &lt;xs:element ref="olist"/>
+  &lt;xs:element ref="figure"/>
+  &lt;xs:element ref="image"/>
+  &lt;xs:element ref="div"/>
+  &lt;xs:element ref="span"/>
+  &lt;xs:element ref="blockquote"/>
+  &lt;xs:element ref="h1"/>
+  &lt;xs:element ref="h2"/>
+  &lt;xs:element ref="h3"/>
+  &lt;xs:element ref="h4"/>
+  &lt;xs:element ref="h5"/>
+  &lt;xs:element ref="h6"/>
+  &lt;/xs:choice>
+  &lt;/xs:sequence>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;xs:attribute name="type" type="xs:token" use="optional" default="chapter"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>Now that we have defined our elements, we'll define the core structure of the document by defining the structure of the `book` element.</para>
+
+<para>After all the work we've done defining the content the definition of our book is almost anticlimatic. We define the `book` element as the sequence of exactly 1 <emphasis>metadata</emphasis> element and 1 or more <emphasis>section</emphasis> elements.</para>
+
+<para>As with all our elements we add <emphasis>class</emphasis> and <emphasis>ID</emphasis> from our genericPropertiesGroup.</para>
+
+<code language="xml">
+  &lt;xs:element name="book">
+  &lt;xs:complexType mixed="true">
+  &lt;xs:sequence>
+  &lt;xs:element ref="metadata" minOccurs="0" maxOccurs="1"/>
+  &lt;xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>
+  &lt;/xs:sequence>
+  &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;/xs:complexType>
+  &lt;/xs:element>
+</code>
+
+<para>This covers the schema for our document type. It is not completed by any stretch of the imagination. It can be further customized to suit individual needs. The current version represents a very basic text heavy document type.</para>
+
+<para>There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs.</para>
+</section>
 </book>

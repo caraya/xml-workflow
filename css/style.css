@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
@@ -256,13 +256,14 @@ html {
 
 body {
   background-color: white;
-  color: #333;
-  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  color: #554c4d;
+  color: #554C4D;
+  font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif;
   font-size: 1em;
-  font-weight: 300;
-  line-height: 1.5;
-  padding-left: 10rem;
-  padding-right: 10rem;
+  font-weight: 100;
+  line-height: 1.1;
+  padding-left: 10em;
+  padding-right: 10em;
 }
 
 aside.lowlight {
@@ -372,6 +373,35 @@ blockquote {
   list-style: none;
 }
 
+.pullquote {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 38px;
+  width: 200px;
+  margin-right: 100px;
+  padding: 20px 0 20px 0;
+  border-top: 18px solid #000;
+  border-bottom: 18px solid #000;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+.pullquote p {
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #00298a;
+}
+.pullquote p:last-child {
+  line-height: 20px;
+  padding-top: 2px;
+}
+.pullquote cite {
+  font-size: 18px;
+  font-weight: 400;
+  color: #333;
+}
+
 .metadata {
   padding-left: 2rem;
   padding-right: 2rem;
@@ -413,41 +443,44 @@ ol li {
   list-style: decimal;
 }
 
+.justified {
+  text-align: justify;
+}
+
 .columns2 {
   width: 100%;
-  /* How many columns? */
+  line-height: 1em;
   -moz-column-count: 2;
   -webkit-column-count: 2;
   column-count: 2;
-  /* Space between columns */
-  -moz-column-gap: 20px;
-  -webkit-column-gap: 20px;
-  column-gap: 20px;
-  /* How do we fill the content of our columns, default is to balance */
+  -moz-column-gap: 3em;
+  -webkit-column-gap: 3em;
+  column-gap: 3em;
   -moz-column-fill: balance;
   -webkit-column-fill: balance;
   column-fill: balance;
-  /* Column span, defaul is not to span columns */
   -moz-column-span: none;
   -webkit-column-span: none;
   column-span: none;
 }
+.columns2 p:first-of-type {
+  margin-top: 0;
+}
+.columns2 p:not:first-of-type {
+  text-indent: 2em;
+}
 
 .columns3 {
   width: 100%;
-  /* How many columns? */
   -moz-column-count: 3;
   -webkit-column-count: 3;
   column-count: 3;
-  /* Space between columns */
   -moz-column-gap: 10px;
   -webkit-column-gap: 10px;
   column-gap: 10px;
-  /* How do we fill the content of our columns, default is to balance */
   -moz-column-fill: balance;
   -webkit-column-fill: balance;
   column-fill: balance;
-  /* Column span, defaul is not to span columns */
   -moz-column-span: none;
   -webkit-column-span: none;
   column-span: none;

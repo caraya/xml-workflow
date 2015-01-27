@@ -364,7 +364,7 @@
         </xs:complexType>
     </xs:element>
     
-    <!-- Div and Span elementa -->
+    <!-- Div and Span elements -->
     <xs:element name="div">
         <xs:annotation>
             <xs:documentation>
@@ -622,9 +622,33 @@
     </xs:element>
     
     <xs:element name="item">
-        <xs:complexType mixed="true">
-            <xs:attributeGroup ref="genericPropertiesGroup"/>
-        </xs:complexType>
+      <xs:complexType mixed="true">
+        <xs:choice  minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              Style, Link and Span Elements. 
+              
+              We use strong and emphasis rather than bold and italics
+              to try and stay in synch with HTML and HTML5. We may add additional tags
+              later in the process.
+              
+              We can use any of these elements inside paragraph in no particular order 
+              0 or more times (no maximum)
+              
+              Researching how to handle nested styles and whether the model below 
+              would handle nested children
+            </xs:documentation>
+          </xs:annotation>
+          <xs:element ref="strong"/>
+          <xs:element ref="emphasis"/>
+          <xs:element ref="underline"/>
+          <xs:element ref="strike"/>
+          <xs:element ref="link"/>
+          <xs:element ref="span"/>
+          <xs:element ref="quote"/>
+        </xs:choice>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+      </xs:complexType>
     </xs:element>
     
     <!-- Fenced code blocks -->
@@ -650,12 +674,18 @@
     </xs:element>
   
     <!-- Blockquotes, asides and marginalia -->
-    <xs:element name="attribution" type="xs:string">
+    <xs:element name="attribution">
       <xs:annotation>
         <xs:documentation>
-          Who said what
+          Who said it
         </xs:documentation>
       </xs:annotation>
+      <xs:complexType mixed="true">
+        <xs:choice  minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="para"/>
+        </xs:choice>
+        <xs:attributeGroup ref="genericPropertiesGroup"/>
+      </xs:complexType>
     </xs:element>
  
     <xs:element name="blockquote">
@@ -693,9 +723,8 @@
       <xs:complexType mixed="true">
         <xs:sequence>
           <xs:annotation>
-            <xs:documentation>A title and at least one paragraph </xs:documentation>
+            <xs:documentation>At least one paragraph </xs:documentation>
           </xs:annotation>
-          <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element ref="code"/>
             <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
@@ -715,16 +744,7 @@
           </xs:choice>
         </xs:sequence>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
-        <xs:attribute name="type" type="xs:token" use="optional">
-          <xs:annotation>
-            <xs:documentation>
-              The type or role for the paragraph asn in data-role or epub:type. 
-              
-              We make it optional but provide a default of chapter to make it 
-              easier to add.
-            </xs:documentation>
-          </xs:annotation>
-        </xs:attribute>
+        <xs:attribute name="type" type="xs:token" use="optional"/>
       </xs:complexType>
     </xs:element>
     
