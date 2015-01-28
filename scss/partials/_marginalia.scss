@@ -1,57 +1,58 @@
 aside {
-  width: 100%;
+  border-bottom: 3px double #ddd;
+  border-top: 3px double #ddd;
+  color: #666;
+  font-size: 1.8em;
+  line-height: 1.4em;
   padding-bottom: .5em;
   padding-top: .5em;
-  border-top: 3px double #ddd;
-  border-bottom: 3px double #ddd;
-  color: #666;
-  line-height: 1.4em;
-  font-size: 1.8em;
+  width: 100%;
+
 
   .pull {
+    margin-bottom: .5em;
     margin-left: -20%;
     margin-top: .2em;
-    margin-bottom: .5em;
   }
 
 }
 
 .opening {
-  font-size: 2em;
-  text-align: center;
-  border-top: 3px double #ddd;
-  padding-top: 2em;
   border-bottom: 3px double #ddd;
-  padding-bottom: 2em;
+  border-top: 3px double #ddd;
+  font-size: 2em;
   margin-bottom: 10em;
+  padding-bottom: 2em;
+  padding-top: 2em;
+  text-align: center;
 }
 
 .margin-notes,
 .content-left {
-  width: 230px;
+  font-size: .75em;
   margin-left: -230px;
   margin-right: 20px;
   text-align: right;
-  font-size: .75em;
+  width: 230px;
 }
 
 .margin-notes-right,
 .content-right {
-  width: 230px;
+  font-size: .75em;
   margin-left: 760px;
   margin-right: -20px;
-  text-align: left;
-  font-size: .75em;
   position: absolute;
+  text-align: left;
+  width: 230px;
 }
 
 .content-right {
-  width: 230px;
+  font-size: .75em;
   margin-left: 760px;
   margin-right: -20px;
-  text-align: left;
-  font-size: .75em;
   position: absolute;
+  text-align: left;
+  width: 230px;
 }
 
 .content-right ul,
@@ -60,39 +61,56 @@ aside {
 }
 
 // Blockquote styles
+//blockquote {
+//  color: #222023;
+//  font-style: italic;
+//  font-weight: 100;
+//  font-size: 1.5em;
+//  margin-top: 1.55em;
+//  margin-bottom: 1.5em;
+//  margin-left: 2em;
+//  padding-left: 0.5;
+//}
+
+// An alternative blockquote style with a 5 pixel bar
+// on the left side
 blockquote {
-  border-left: 5px solid #060f94;
+  border-left: 5px solid #ccc;
   color: #222023;
+  font-size: 1.5em;
   font-style: italic;
-  font-weight: 200;
-  font-size: 1.2em;
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  margin-left: 2em;
-  padding-left: 0.5;
+  font-weight: 100;
+  margin-bottom: 2em;
+  margin-left: 4em;
+  margin-right: 4em;
+  margin-top: 2em;
+
+  p {
+    padding-left: .5em;
+  }
 }
 
 
 // Testing classes for pullquotes like the ones
 // in this URL: http://es.pn/1Ekby6O
 .pullquote {
-  border-top: 18px solid #000;
   border-bottom: 18px solid #000;
+  border-top: 18px solid #000;
   font-size: 36px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -.02em;
   line-height: 38px;
   margin-right: 100px;
-  padding: 20px 0 20px 0;
+  padding: 20px 0;
   position: relative;
   width: 200px;
 
   p {
-    position: relative;
-    z-index: 1;
-    text-transform: uppercase;
-    font-weight: 700;
     color: #00298a;
+    font-weight: 700;
+    position: relative;
+    text-transform: uppercase;
+    z-index: 1;
   }
 
   p:last-child {
@@ -101,8 +119,8 @@ blockquote {
   }
 
   cite {
+    color: #333;
     font-size: 18px;
     font-weight: 400;
-    color: #333;
   }
 }

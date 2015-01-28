@@ -14,7 +14,10 @@
 //
 // Also note that not all attributes are supported across browsers/readers
 // test your content in your target browser(s) to make sure
-@mixin column-attribs ($cols, $gap, $fill: balance, $span: none){
+//
+// DO WE WANT TO KEEP THE ATTRIBUTES HERE OR RUN THE RESULTING FILE
+// THROUGH ATTRIBUTE PREFIXER?
+@mixin column-attribs ($cols, $gap, $fill: balance, $span: none) {
 //   How many columns?
   -moz-column-count: $cols;
   -webkit-column-count: $cols;

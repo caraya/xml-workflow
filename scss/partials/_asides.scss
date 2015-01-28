@@ -1,7 +1,8 @@
 // Playing with the idea of using opacity to highlight
 // or mute the display of aside elements.
-aside.lowlight {
+aside .lowlight {
   opacity: .3;
+
   :hover {
     opacity: 1;
   }
@@ -10,6 +11,6 @@ aside.lowlight {
 // If we're using asides as sidebars
 // We may want to do this as well.
 aside h3 {
-  text-align: center;
   padding-left: 20px;
+  text-align: center;
 }

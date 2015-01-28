@@ -4,8 +4,8 @@
 // USED FOR SMALLER FORM FACTORS
 @mixin phone-rendering () {
   @media screen and (max-device-width: 480px) {
-  body {
-    text-rendering: optimizeSpeed;
+    body {
+      text-rendering: optimizeSpeed;
     }
   }
 }
@@ -15,30 +15,29 @@
   border-style: solid;
 }
 
-
 // The following mixins are from
 // http://web-design-weekly.com/2013/05/12/handy-sass-mixins/
-
 // CLEARFIX
 @mixin clearfix() {
-    &:before,
-    &:after {
-        content: "";
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
+  &:before,
+  &:after {
+    content: '';
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
 }
 
 // BORDER RADIUS
 @mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-      -ms-border-radius: $radius;
-          border-radius: $radius;
-  /* stops bg color from leaking outside the border: */
+  // stops bg color from leaking outside the border:
   background-clip: padding-box;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
 }
 
 // CENTER A BLOCK ELEMENT
@@ -64,17 +63,17 @@
   }
 }
 
-/* Order of the includes matters, and it is: normal, bold, italic, bold+italic. */
+// Order of the includes matters, and it is: normal, bold, italic, bold+italic.
 @mixin font-face($font-family, $file-path, $weight: normal, $style: normal) {
   @font-face {
     font-family: $font-family;
     font-weight: $weight;
     font-style: $style;
 
-      src: url('#{$file-path}.eot');
-      src: url('#{$file-path}.eot?#iefix')               format('embedded-opentype'),
-           url('#{$file-path}.woff')                     format('woff'),
-           url('#{$file-path}.ttf')                      format('truetype'),
-           url('#{$file-path}.svg##{$font-family}')      format('svg');
+    src: url('#{$file-path}.eot');
+    src: url('#{$file-path}.eot?#iefix')               format('embedded-opentype'),
+         url('#{$file-path}.woff')                     format('woff'),
+         url('#{$file-path}.ttf')                      format('truetype'),
+         url('#{$file-path}.svg##{$font-family}')      format('svg');
   }
 }

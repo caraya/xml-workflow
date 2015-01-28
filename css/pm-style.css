@@ -266,15 +266,6 @@ body {
   widows: 2;
 }
 
-blockquote {
-  border-left: 5px solid #060f94;
-  color: #222023;
-  font-style: italic;
-  font-weight: 200;
-  font-size: 1.5em;
-  margin: 2em 3.5em;
-}
-
 em {
   font-style: italic;
   font-weight: 300;
@@ -294,12 +285,6 @@ aside .pull {
   margin-left: -20%;
   margin-top: .2em;
   margin-bottom: .5em;
-}
-
-blockquote {
-  margin-left: 1em;
-  margin-bottom: 1em;
-  font-style: italic;
 }
 
 .opening {
@@ -345,17 +330,32 @@ blockquote {
   list-style: none;
 }
 
+blockquote {
+  border-left: 5px solid #ccc;
+  color: #222023;
+  font-size: 1.5em;
+  font-style: italic;
+  font-weight: 100;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  margin-left: 4em;
+  margin-right: 4em;
+}
+blockquote p {
+  padding-left: .5em;
+}
+
 .pullquote {
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 38px;
-  width: 200px;
-  margin-right: 100px;
-  padding: 20px 0 20px 0;
   border-top: 18px solid #000;
   border-bottom: 18px solid #000;
+  font-size: 36px;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  line-height: 38px;
+  margin-right: 100px;
+  padding: 20px 0 20px 0;
   position: relative;
+  width: 200px;
 }
 .pullquote p {
   position: relative;

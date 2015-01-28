@@ -39,6 +39,37 @@
             dest: 'css',
             ext: '.css'
           }]
+        },
+        production: {
+          options: {
+            style: 'compact'
+          },
+          files: [{
+            expand: true,
+            cwd: 'scss',
+            src: ['*.scss'],
+            dest: 'css',
+            ext: '.css'
+          }]
+        }
+      },
+
+      // This task requires the scss-lint ruby gem to be installed on your system
+      // If you choose not to install it, comment out this task and the prep-css
+      // and work-lint tasks below
+      //
+      // I've chosen not to fail on errors or warnings.
+      scsslint: {
+        allFiles: [
+          'scss/*.scss',
+          'scss/modules/_mixins.scss',
+          'scss/modules/_variables.scss',
+          'scss/partials/*.scss'
+        ],
+        options: {
+          config: '.scss-lint.yml',
+          force: true,
+          colorizeOutput: true
         }
       },
 
@@ -104,14 +135,22 @@
     }); // closes initConfig
 
     grunt.task.registerTask(
-      'publish',
+      'lint-work',
       [
-        'clean:production',
-        'mkdir:build',
-        'jshint',
-        'copy:build',
-        'gh-pages'
+        'scsslint',
+        'jshint'
       ]
     );
+
+//    grunt.task.registerTask(
+//      'publish',
+//      [
+//        'clean:production',
+//        'mkdir:build',
+//        'jshint',
+//        'copy:build',
+//        'gh-pages'
+//      ]
+//    );
   }; // closes module.exports
 }()); // closes the use strict function
