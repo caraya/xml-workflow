@@ -1,9 +1,12 @@
-pre code{
-  font-family: "Source Code Pro", monospace;
-  font-size: 1em;
-  line-height: 1.25em;
-  page-break-inside: avoid;
-  white-space: pre-line !important;
+pre {
   overflow-wrap: break-word;
+  white-space: pre-line !important;
   word-wrap: break-word;
+
+  code {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 1em;
+    line-height: 1.2em;
+    page-break-inside: avoid;
+  }
 }

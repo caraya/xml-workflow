@@ -27,7 +27,7 @@ To convert our XML into other formats we will use XSL Transformations (also know
 
 XSLT is a functional language designed to transform XML into other markup vocabularies. It defines template rules that match elements in your source document and processing them to convert them to the target vocabulary. 
 
-In the XSLT example below, we do the following:
+In the XSLT template below, we do the following:
 
 1. Declare the file to be an XML document
 2. Define the root element of the stylesheet (xsl:stylesheet)
@@ -36,39 +36,40 @@ In the XSLT example below, we do the following:
 5. Create the default output we'll use for the main document and all generated pages (discussed later)
 6. Create a default template to warn us if we missed anything
 
+
 ```xml
-<?xml version="1.0" ?>
-<!-- Define stylesheet root and namespaces we'll work with -->
-<xsl:stylesheet
+&lt;?xml version="1.0" ?>
+&lt;!-- Define stylesheet root and namespaces we'll work with -->
+&lt;xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:epub="http://www.idpf.org/2007/opf"
   exclude-result-prefixes="dc epub"
   xml:lang="en-US"
   version="2.0">
-  <!-- Strip whitespace from the listed elements -->
-  <xsl:strip-space elements="*"/>
-  <!-- And preserve it from the elements below -->
-  <xsl:preserve-space elements="code"/>
-  <!-- Define the output for this and all document children -->
-  <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
+  &lt;!-- Strip whitespace from the listed elements -->
+  &lt;xsl:strip-space elements="*"/>
+  &lt;!-- And preserve it from the elements below -->
+  &lt;xsl:preserve-space elements="code"/>
+  &lt;!-- Define the output for this and all document children -->
+  &lt;xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
 
-  <!--
+  &lt;!--
     Default template taken from http://bit.ly/1sXqIL8
 
     This will tell us of any unmatched elements rather than
     failing silently
   -->
-  <xsl:template match="*">
-    <xsl:message terminate="no">
-      WARNING: Unmatched element: <xsl:value-of select="name()"/>
-    </xsl:message>
+  &lt;xsl:template match="*">
+    &lt;xsl:message terminate="no">
+      WARNING: Unmatched element: &lt;xsl:value-of select="name()"/>
+    &lt;/xsl:message>
 
-    <xsl:apply-templates/>
-  </xsl:template>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:template>
   
-  <!-- More content to be added -->
-</xsl:stylesheet>
+  &lt;!-- More content to be added -->
+&lt;/xsl:stylesheet>
 ```
 
 This is a lot of work before we start creating our XSLT content. But it's worth doing the work up front. We'll see what are the advantages of doint it this way as we move down the style sheet.
@@ -80,52 +81,52 @@ Now onto our root templates. The first one is the entry point to our document. I
 3. In the body we 'apply' the templates that match the content inside our document (more on this later)
 
 ```xml
-  <!-- Root template, matching / -->
-  <xsl:template match="book">
-    <html>
-    <head>
-      <xsl:element name="title">
-        <xsl:value-of select="metadata/title"/>
-      </xsl:element>
-      <xsl:element name="meta">
-        <xsl:attribute name="generator">
-          <xsl:value-of select="system-property('xsl:product-name')"/>
-          <xsl:value-of select="system-property('xsl:product-version')"/>
-        </xsl:attribute>
-      </xsl:element>
-      <xsl:element name="meta">
-        <xsl:attribute name="vendor">
-          <xsl:value-of select="system-property('xsl:vendor-url')" />
-        </xsl:attribute>
-      </xsl:element>
-      <xsl:element name="meta">
-        <xsl:attribute name="vendor-URL">
-          <xsl:value-of select="system-property('xsl:vendor-url')" />
-        </xsl:attribute>
-      </xsl:element>
-      <link rel="stylesheet" href="css/style.css" />
-      <xsl:if test="(code)">
-        <!--
-              Use highlight.js and docco style
-            -->
-        <link rel="stylesheet" href="css/styles/docco.css" />
-        <!-- Load highlight.js -->
-        <script src="lib/highlight.pack.js"></script>
-        <script>
-          hljs.initHighlightingOnLoad();
-        </script>
-      </xsl:if>
-      <!--
-        Comment this out for now. It'll become relevant when we add video
-        <script src="js/script.js"></script>
-      -->
-    </head>
-    <body>
-      <xsl:apply-templates/>
-      <xsl:apply-templates select="/" mode="toc"/>
-    </body>
-    </html>
-  </xsl:template>
+&lt;!-- Root template, matching / -->
+&lt;xsl:template match="book">
+  &lt;html>
+  &lt;head>
+    &lt;xsl:element name="title">
+      &lt;xsl:value-of select="metadata/title"/>
+    &lt;/xsl:element>
+    &lt;xsl:element name="meta">
+      &lt;xsl:attribute name="generator">
+        &lt;xsl:value-of select="system-property('xsl:product-name')"/>
+        &lt;xsl:value-of select="system-property('xsl:product-version')"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:element>
+    &lt;xsl:element name="meta">
+      &lt;xsl:attribute name="vendor">
+        &lt;xsl:value-of select="system-property('xsl:vendor-url')" />
+      &lt;/xsl:attribute>
+    &lt;/xsl:element>
+    &lt;xsl:element name="meta">
+      &lt;xsl:attribute name="vendor-URL">
+        &lt;xsl:value-of select="system-property('xsl:vendor-url')" />
+      &lt;/xsl:attribute>
+    &lt;/xsl:element>
+    &lt;link rel="stylesheet" href="css/style.css" />
+    &lt;xsl:if test="(code)">
+      &lt;!--
+            Use highlight.js and docco style
+          -->
+      &lt;link rel="stylesheet" href="css/styles/docco.css" />
+      &lt;!-- Load highlight.js -->
+      &lt;script src="lib/highlight.pack.js">&lt;/script>
+      &lt;script>
+        hljs.initHighlightingOnLoad();
+      &lt;/script>
+    &lt;/xsl:if>
+    &lt;!--
+      Comment this out for now. It'll become relevant when we add video
+      &lt;script src="js/script.js">&lt;/script>
+    -->
+  &lt;/head>
+  &lt;body>
+    &lt;xsl:apply-templates/>
+    &lt;xsl:apply-templates select="/" mode="toc"/>
+  &lt;/body>
+  &lt;/html>
+&lt;/xsl:template>
 ```
 We could build the CSS stylesheet and Javascript files as part of our root template but we chose not to.. 
 
@@ -137,670 +138,679 @@ By linking to external CSS and Javascript files we can leverage expertise indepe
 
 Furthermore we can reuse our CSS and Javascript on multiple documents.
 
-There is a second template matching the root element of our document to create a table of content. At first thought this looks like the wrong approach 
+### Table of contents
 
+> The table of content template is under active development and will be different depending on the desired output. I document it here as it is right now but will definitely change as it's further developed.
+
+There is a second template matching the root element of our document to create a table of content. At first thought this looks like the wrong approach 
 
 We leverage XSLT modes that allow us to create templates for the same element to perform different tasks. In `toc mode` we want the root template to do the following:
 
 1. Create the section and nav and ol elements
 2. Add the title for the table of contents
-2. For each section element that is a child of root create these elements
+3. For each section element that is a child of root create these elements
     1. The `li` element
     2. The a element with the corresponding href element
     3. The value of the href element (a concatenation of the section's type attribute, the position within the document and the .html string)
     4. The title of the section as the 'clickable' portion of the link
 
 ```xml
-<xsl:template match="/" mode="toc">
-  <section data-type="toc"> (1)
-    <nav class="toc"> (1)
-      <h2>Table of Contents</h2>
-      <ol>
-        <xsl:for-each select="book/section">
-          <xsl:element name="li"> (3.1)
-            <xsl:element name="a"> (3.2)
-              <xsl:attribute name="href"> (3.2)
-                <xsl:value-of select="concat((@type), position(),'.html')"/> (3.3)
-              </xsl:attribute>
-              <xsl:value-of select="title"/> (3.4)
-            </xsl:element>
-          </xsl:element>
-        </xsl:for-each>
-      </ol>
-    </nav>
-  </section>
-</xsl:template>
+&lt;xsl:template match="/" mode="toc">
+  &lt;section data-type="toc"> (1)
+    &lt;nav class="toc"> (1)
+      &lt;h2>Table of Contents&lt;/h2>
+      &lt;ol>
+        &lt;xsl:for-each select="book/section">
+          &lt;xsl:element name="li"> (3.1)
+            &lt;xsl:element name="a"> (3.2)
+              &lt;xsl:attribute name="href"> (3.2)
+                &lt;xsl:value-of select="concat((@type), position(),'.html')"/> (3.3)
+              &lt;/xsl:attribute>
+              &lt;xsl:value-of select="title"/> (3.4)
+            &lt;/xsl:element>
+          &lt;/xsl:element>
+        &lt;/xsl:for-each>
+      &lt;/ol>
+    &lt;/nav>
+  &lt;/section>
+&lt;/xsl:template>
 ```
+<!-- current location -->
 
-With these templates in place we can now 
+### Metadata and Section
 
-We will being with the major areas of the document, `metadata` and `section`. The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element.
+With these templates in place we can now start writing the major areas of the document, `metadata` and `section`. 
 
+#### Metadata
 
+The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element using the apply-template XSLT instruction. The template looks like this
 
 ```xml
+&lt;xsl:template match="metadata">
+  &lt;xsl:element name="div">
+    &lt;xsl:attribute name="class">metadata&lt;/xsl:attribute>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
+#### Section
 
-  <!-- Metadata -->
-  <xsl:template match="metadata">
-    <xsl:element name="div">
-      <xsl:attribute name="class">metadata</xsl:attribute>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
+The section container on the other hand is a lot more complex because it has a lot of work to do. It is our primary unit for generating files, takes most of the same attributes as the root template and then processes the rest of the content. 
 
-  <!-- Section -->
-  <xsl:template match="section">
-    <!-- Variable to create section file names -->
-    <xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/>
-    <!-- An example result of the variable above would be introduction1.xhtml -->
-    <xsl:result-document href='{$fileName}' format="xhtml-out">
-      <html>
-        <head>
-          <link rel="stylesheet" href="css/style.css" />
-          <xsl:if test="(code)">
-            <!--
-              Use highlight.js and github style
-            -->
-            <link rel="stylesheet" href="css/styles/docco.css" />
-            <!-- Load highlight.js -->
-            <script src="lib/highlight.pack.js"></script>
-            <script>
-              hljs.initHighlightingOnLoad();
-            </script>
-          </xsl:if>
-          <!--
-            Comment this out for now. It'll become relevant when we add video
-            <script src="js/script.js"></script>
+Inside the template we first create a vairable to hold the name of the file we'll generate. The file name is a concatenation of the following elements:
+
+* The type attribute
+* The position in the document
+* the string "html"
+
+The result-document element takes two parameters: the value of the file name variable we just defined and the xhtml-out format we defined at the top of the document. The XHTML format may look like overkill right now but it makes sense when we consider moving the generated content to ePub or other fomats where strict XHTML conformance is a requirement. 
+
+We start generating the skeleton of the page, we add the default style sheet and  do the first conditional test of the document. Don't want to add stylesheets to the page unless they are needed so we test if there is a code element on the page and only add highlight.js related stylesheets and scripts. 
+
+In the body element we see the first of many times we'll conditionally add attributes to the element. We use only add a data-type attribute to body if there is a type attribute in the source document. We do the same thing for id and class.
+
+```xml
+&lt;xsl:template match="section">
+  &lt;!-- Variable to create section file names -->
+  &lt;xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/>
+  &lt;!-- An example result of the variable above would be introduction1.xhtml -->
+  &lt;xsl:result-document href='{$fileName}' format="xhtml-out">
+    &lt;html>
+      &lt;head>
+        &lt;link rel="stylesheet" href="css/style.css" />
+        &lt;xsl:if test="(code)">
+          &lt;!--
+            Use highlight.js and github style
           -->
-        </head>
-        <body>
-          <section>
-            <xsl:if test="@type">
-              <xsl:attribute name="data-type">
-                <xsl:value-of select="@type"/>
-              </xsl:attribute>
-            </xsl:if>
-            <xsl:if test="(@class)">
-              <xsl:attribute name="class">
-                <xsl:value-of select="@class"/>
-              </xsl:attribute>
-            </xsl:if>
-            <xsl:if test="(@id)">
-              <xsl:attribute name="id">
-                <xsl:value-of select="@id"/>
-              </xsl:attribute>
-            </xsl:if>
-            <xsl:apply-templates/>
-          </section>
-        </body>
-      </html>
-    </xsl:result-document>
-  </xsl:template>
-  
-  <!-- Metadata Children-->
-  <xsl:template match="isbn">
-    <p>ISBN: <xsl:value-of select="."/></p>
-  </xsl:template>
+          &lt;link rel="stylesheet" href="css/styles/docco.css" />
+          &lt;!-- Load highlight.js -->
+          &lt;script src="lib/highlight.pack.js">&lt;/script>
+          &lt;script>
+            hljs.initHighlightingOnLoad();
+          &lt;/script>
+        &lt;/xsl:if>
+        &lt;!--
+          Comment this out for now. It'll become relevant when we add video
+          &lt;script src="js/script.js">&lt;/script>
+        -->
+      &lt;/head>
+      &lt;body>
+        &lt;section>
+          &lt;xsl:if test="@type">
+            &lt;xsl:attribute name="data-type">
+              &lt;xsl:value-of select="@type"/>
+            &lt;/xsl:attribute>
+          &lt;/xsl:if>
+          &lt;xsl:if test="(@class)">
+            &lt;xsl:attribute name="class">
+              &lt;xsl:value-of select="@class"/>
+            &lt;/xsl:attribute>
+          &lt;/xsl:if>
+          &lt;xsl:if test="(@id)">
+            &lt;xsl:attribute name="id">
+              &lt;xsl:value-of select="@id"/>
+            &lt;/xsl:attribute>
+          &lt;/xsl:if>
+          &lt;xsl:apply-templates/>
+        &lt;/section>
+      &lt;/body>
+    &lt;/html>
+  &lt;/xsl:result-document>
+&lt;/xsl:template>
+```
+<!-- CURRENT SECTION -->
+### Metadata content
 
-  <xsl:template match="edition">
-    <p class="no-margin-left">Edition: <xsl:value-of select="."/></p>
-  </xsl:template>
 
-  <!-- PEOPLE GROUPS -->
-  <xsl:template match="metadata/authors">
-    <h2>Authors</h2>
-    <ul>
-      <xsl:for-each select="author">
-        <li>
-          <xsl:value-of select="first-name"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="surname"/>
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
 
-  <xsl:template match="metadata/editors">
-    <h2>Editorial Team</h2>
-    <ul class="no-bullet">
-      <xsl:for-each select="editor">
-        <li>
-          <xsl:value-of select="first-name"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="surname"/>
-          <xsl:value-of select="concat(' - ', type, ' ', 'editor')"></xsl:value-of>
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
+#### Publication information
+```xml
+&lt;xsl:template match="isbn">
+  &lt;p>ISBN: &lt;xsl:value-of select="."/>&lt;/p>
+&lt;/xsl:template>
+```
 
-  <xsl:template match="metadata/otherRoles">
-    <h2>Production team</h2>
-    <ul class="no-bullet">
-      <xsl:for-each select="otherRole">
-        <li>
-          <xsl:value-of select="first-name" />
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="surname" />
-          <xsl:text> - </xsl:text>
-          <xsl:value-of select="role" />
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
+```xml
+&lt;xsl:template match="edition">
+  &lt;p class="no-margin-left">Edition: &lt;xsl:value-of select="."/>&lt;/p>
+&lt;/xsl:template>
+```
 
-  <!-- Create Table of Contents ... work in progress -->
-  <xsl:template match="book" mode="toc">
-    <xsl:variable name="fileName" select="concat('#', (@type), (position()-1))"/>
-    <section data-type="toc">
-      <h2>Table of Contents</h2>
-      <nav>
-        <ol>
-          <xsl:for-each select="section">
-            <li>
-              <a href="${filename}"><xsl:value-of select="title"/></a>
-            </li>
-          </xsl:for-each>
-        </ol>
-      </nav>
-    </section>
-  </xsl:template>
+#### Individuals
 
-  <!-- Headings -->
-  <!--
-    Note that the headings use mostly the same code.
-    
-    THe goal is to create as simple a markup as we can so we can better leverage
-    CSS to style and make our content display as intended
+```xml
+&lt;!-- complex types to create groups of similar person items -->
+&lt;xs:complexType name="person">
+    &lt;xs:annotation>
+        &lt;xs:documentation>
+            Generic element to denote an individual involved in creating the book
+        &lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+        &lt;xs:element name="first-name" type="xs:token"/>
+        &lt;xs:element name="surname" type="xs:token"/>
+    &lt;/xs:sequence>
+    &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
+&lt;/xs:complexType>
 
-    We want to treat the title of each section the same as our h1 headings. We do
-    this by matching all on the same template.
+&lt;xs:complexType name="author">
+    &lt;xs:annotation>
+        &lt;xs:documentation>
+            Author person
+        &lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:complexContent>
+        &lt;xs:extension base="person">
+        &lt;/xs:extension>
+    &lt;/xs:complexContent>
+&lt;/xs:complexType>
 
-    If we need to style the titles differently we can create a separate
-    template to match it to
-  -->
-  <xsl:template match="title ">
-    <xsl:element name="h1">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+&lt;xs:complexType name="editor">
+    &lt;xs:annotation>
+        &lt;xs:documentation>extension to person to indicate editor and his/her role&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:complexContent>
+        &lt;xs:extension base="person">
+            &lt;xs:choice>
+                &lt;xs:element name="type" type="xs:token"/>
+            &lt;/xs:choice>
+        &lt;/xs:extension>
+    &lt;/xs:complexContent>
+&lt;/xs:complexType>
 
-  <xsl:template match="h1">
-    <xsl:element name="h1">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+&lt;xs:complexType name="otherRole">
+    &lt;xs:annotation>
+        &lt;xs:documentation>extension to person to accomodate roles other than author and editor&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:complexContent>
+        &lt;xs:extension base="person">
+            &lt;xs:sequence minOccurs="1" maxOccurs="1">
+                &lt;xs:element name="role" type="xs:token"/>
+            &lt;/xs:sequence>
+        &lt;/xs:extension>
+    &lt;/xs:complexContent>
+&lt;/xs:complexType>
+```
 
-  <xsl:template match="h2">
-    <xsl:element name="h2">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+#### People groups
+```xml
+&lt;xsl:template match="metadata/authors">
+  &lt;h2>Authors&lt;/h2>
+  &lt;ul>
+    &lt;xsl:for-each select="author">
+      &lt;li>
+        &lt;xsl:value-of select="first-name"/>
+        &lt;xsl:text> &lt;/xsl:text>
+        &lt;xsl:value-of select="surname"/>
+      &lt;/li>
+    &lt;/xsl:for-each>
+  &lt;/ul>
+&lt;/xsl:template>
 
-  <xsl:template match="h3">
-    <xsl:element name="h3">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+&lt;xsl:template match="metadata/editors">
+  &lt;h2>Editorial Team&lt;/h2>
+  &lt;ul class="no-bullet">
+    &lt;xsl:for-each select="editor">
+      &lt;li>
+        &lt;xsl:value-of select="first-name"/>
+        &lt;xsl:text> &lt;/xsl:text>
+        &lt;xsl:value-of select="surname"/>
+        &lt;xsl:value-of select="concat(' - ', type, ' ', 'editor')">&lt;/xsl:value-of>
+      &lt;/li>
+    &lt;/xsl:for-each>
+  &lt;/ul>
+&lt;/xsl:template>
 
-  <xsl:template match="h4">
-    <xsl:element name="h4">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+&lt;xsl:template match="metadata/otherRoles">
+  &lt;h2>Production team&lt;/h2>
+  &lt;ul class="no-bullet">
+    &lt;xsl:for-each select="otherRole">
+      &lt;li>
+        &lt;xsl:value-of select="first-name" />
+        &lt;xsl:text> &lt;/xsl:text>
+        &lt;xsl:value-of select="surname" />
+        &lt;xsl:text> - &lt;/xsl:text>
+        &lt;xsl:value-of select="role" />
+      &lt;/li>
+    &lt;/xsl:for-each>
+  &lt;/ul>
+&lt;/xsl:template>
+```
 
-  <xsl:template match="h5">
-    <xsl:element name="h5">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+#### Titles and headings
 
-  <xsl:template match="h6">
-    <xsl:element name="h6">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
-  
-  <!-- BLOCKQUOTES, QUOTES AND ASIDES -->
-  <!-- BLOCKQUOTE-->
-  <xsl:template match="blockquote">
-    <xsl:element name="blockquote">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates />
-    </xsl:element>
-  </xsl:template>
-  
-  <!-- BLOCKQUOTE ATTRIBUTION-->
-  <xsl:template match="attribution">
-    <xsl:element name="cite">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
-  
-  <!-- INLINE QUOTATION -->
-  <xsl:template match="quote">
-    <q><xsl:value-of select="."/></q>
-  </xsl:template>
+Titles and headings use mostly the same code. We've put them in separate templates to make it possible and easier to generate different code for each heading. It's not the same as using CSS where you can declare rules for the same attribute multiple times (with the last one winning); when writing transformations you can only have one per element otherwise you will get an error.
 
-  <!-- ASIDE ELEMENT -->
-  <xsl:template match="aside">
-    <aside>
-      <xsl:if test="type">
-        <xsl:attribute name="data-type">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </aside>
-  </xsl:template>
+The goal is to create as simple a markup as we can so we can better leverage CSS to style and make our content display as intended.
 
-  <!-- DIV ELEMENT -->
-  <xsl:template match="div">
-    <xsl:element name="div">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
+```xml
+&lt;xsl:template match="title ">
+  &lt;xsl:element name="h1">
+    &lt;xsl:if test="@align">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
 
-  <!-- SPAN ELEMENT-->
-  <xsl:template match="span">
-    <xsl:element name="span">
-      <xsl:if test="@type">
-        <xsl:attribute name="data-type">
-          <xsl:value-of select="@type"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+&lt;xsl:template match="h1">
+  &lt;xsl:element name="h1">
+    &lt;xsl:if test="@align">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
 
-  <!-- PARAGRAPHS -->
-  <xsl:template match="para">
-    <xsl:element name="p">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
+#### Blockquotes, quotes and asides
 
-  <!-- STYLES -->
-  <xsl:template match="strong">
-    <strong><xsl:apply-templates /></strong>
-  </xsl:template>
+```xml
+&lt;xsl:template match="blockquote">
+  &lt;xsl:element name="blockquote">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates />
+  &lt;/xsl:element>
+&lt;/xsl:template>
 
-  <xsl:template match="emphasis">
-    <em><xsl:apply-templates/></em>
-  </xsl:template>
+&lt;!-- BLOCKQUOTE ATTRIBUTION-->
+&lt;xsl:template match="attribution">
+  &lt;xsl:element name="cite">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
 
-  <xsl:template match="strike">
-    <strike><xsl:apply-templates/></strike>
-  </xsl:template>
+```xml
+&lt;xsl:template match="quote">
+  &lt;q>&lt;xsl:value-of select="."/>&lt;/q>
+&lt;/xsl:template>
+```
 
-  <xsl:template match="underline">
-    <u><xsl:apply-templates/></u>
-  </xsl:template>
+```xml
+&lt;xsl:template match="aside">
+  &lt;aside>
+    &lt;xsl:if test="type">
+      &lt;xsl:attribute name="data-type">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/aside>
+&lt;/xsl:template>
+```
 
-  <!-- LINKS AND ANCHORS -->
-  <xsl:template match="link">
-      <xsl:element name="a">
-        <xsl:if test="(@class)">
-          <xsl:attribute name="class">
-            <xsl:value-of select="@class"/>
-          </xsl:attribute>
-        </xsl:if>
-        <xsl:if test="(@id)">
-          <xsl:attribute name="id">
-            <xsl:value-of select="@id"/>
-          </xsl:attribute>
-        </xsl:if>
-        <xsl:attribute name="href">
-          <xsl:value-of select="@href"/>
-        </xsl:attribute>
-        <xsl:attribute name="label">
-          <xsl:value-of select="@label"/>
-        </xsl:attribute>
-        <xsl:value-of select="@label"/>
-      </xsl:element>
-  </xsl:template>
+#### Div and Span
+```xml
+&lt;xsl:template match="div">
+  &lt;xsl:element name="div">
+    &lt;xsl:if test="@align">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
 
-  <xsl:template match="anchor">
-    <!--
-    Not sure if I want to make this an empty element or not
+```xml
+&lt;xsl:template match="span">
+  &lt;xsl:element name="span">
+    &lt;xsl:if test="@type">
+      &lt;xsl:attribute name="data-type">
+        &lt;xsl:value-of select="@type"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
+#### Paragraphs
+```xml
+&lt;xsl:template match="para">
+  &lt;xsl:element name="p">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
+#### Styles
 
-    Empty element <anchor name="home"/> appeals to my ease
-    of use paradigm but it may not be as easy to understand
-    for peope who are not familiar with XML empty elements
-  -->
-    <xsl:element name="a">
-      <xsl:attribute name="name">
-        <xsl:apply-templates/>
-      </xsl:attribute>
-    </xsl:element>
-  </xsl:template>
+```xml
+&lt;xsl:template match="strong">
+  &lt;strong>&lt;xsl:apply-templates />&lt;/strong>
+&lt;/xsl:template>
 
-  <!-- FENCED CODE FRAGMENTS -->
-  <xsl:template match="code">
-    <xsl:element name="pre">
-      <xsl:element name="code">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@language"/>
-        </xsl:attribute>
-        <xsl:value-of select="."/>
-      </xsl:element>
-    </xsl:element>
-  </xsl:template>
+&lt;xsl:template match="emphasis">
+  &lt;em>&lt;xsl:apply-templates/>&lt;/em>
+&lt;/xsl:template>
 
-  <!-- LIST AND LIST ITEMS -->
-  <xsl:template match="ulist">
-    <xsl:element name="ul">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
+&lt;xsl:template match="strike">
+  &lt;strike>&lt;xsl:apply-templates/>&lt;/strike>
+&lt;/xsl:template>
 
-  <xsl:template match="olist">
-    <xsl:element name="ol">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </xsl:element>
-  </xsl:template>
+&lt;xsl:template match="underline">
+  &lt;u>&lt;xsl:apply-templates/>&lt;/u>
+&lt;/xsl:template>
+```
 
-  <xsl:template match="item">
-    <xsl:element name="li">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
+### Links and anchors
 
-  <!-- FIGURES -->
-  <xsl:template match="figure">
-    <xsl:element name="figure">
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      <!-- 
-        If the width of the figure is smaller than the width of the containing image 
-        we may have display problems. 
-        
-        If the width of the containging figure is smaller than the width of the image, 
-        make the figure width equal to the width of hthe image, otherwise use the width
-        of the figure element
-      -->
-      <xsl:choose>
-        <xsl:when test="@width lt image/@width">
-          <xsl:attribute name="width">
-            <xsl:value-of select="@width"/>
-          </xsl:attribute>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="width">
-            <xsl:value-of select="image/@width"/>
-          </xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
-      <!-- 
-        We don't care about height as much as we do width, the caption 
-        and image are contained inside the figure. 
-        
-        We only test if it exists. It's up to the author to make sure
-        there are no conflicts
-      -->
-      <xsl:if test="(@height)">
-        <xsl:attribute name="height">
-          <xsl:value-of select="@height"/>
-        </xsl:attribute>
-      </xsl:if>
-      <!-- 
-        Alignment can be different. We can have a centered image inside a 
-        left aligned figure
-      -->
-      <xsl:if test="(@align)">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:apply-templates select="image"/>
-      <xsl:apply-templates select="figcaption"/>
-    </xsl:element>
-  </xsl:template>
+One of the 
 
-  <xsl:template match="figcaption">
-    <figcaption><xsl:apply-templates/></figcaption>
-  </xsl:template>
+```xml
+&lt;xsl:template match="link">
+  &lt;xsl:element name="a">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:attribute name="href">
+      &lt;xsl:value-of select="@href"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:attribute name="label">
+      &lt;xsl:value-of select="@label"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:value-of select="@label"/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
 
-  <xsl:template match="image">
-    <xsl:element name="img">
-      <xsl:attribute name="src">
-        <xsl:value-of select="@src"/>
-      </xsl:attribute>
-      <xsl:attribute name="alt">
-        <xsl:value-of select="@alt"/>
-      </xsl:attribute>
-      <xsl:if test="(@width)">
-        <xsl:attribute name="width">
-          <xsl:value-of select="@width"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@height)">
-        <xsl:attribute name="height">
-          <xsl:value-of select="@height"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@align)">
-        <xsl:attribute name="align">
-          <xsl:value-of select="@align"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-    </xsl:element>
-  </xsl:template>
+When working with links there are times when we want to link to sections within the same document or to specific sections in another document. To do this we need anchors that will resolve to the following HTML:
+
+```html
+&lt;a name="target">&lt;a>
+```
+
+The transformation element looks like this:
+
+```xml
+&lt;xsl:template match="anchor">
+  &lt;xsl:element name="a">
+    &lt;xsl:attribute name="name">
+    &lt;/xsl:attribute>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
+
+Not sure if I want to make this an empty element or not
+
+Empty element &lt;anchor name="home"/> appeals to my ease of use paradigm but it may not be as easy to understand for peope who are not familiar with XML empty elements
+
+### Code blocks
+
+Code elements create [fenced code blocks](https://help.github.com/articles/github-flavored-markdown/#fenced-code-blocks) like the ones from [Github Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/). 
+
+We use [Adobe Source Code Pro](https://www.google.com/fonts/specimen/Source+Code+Pro) font. It's a clean and readable font designed specifically for source code display.
+
+We highlight our code with [Highlight.js](https://highlightjs.org/). 
+
+> Note that the syntax higlighting only works for HTML. Although PrinceXML supports Highlight.js it is not working. I've asked on the Prince support forums and am waiting for an answer.
+
+```xml
+&lt;xsl:template match="code">
+  &lt;xsl:element name="pre">
+    &lt;xsl:element name="code">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@language"/>
+      &lt;/xsl:attribute>
+      &lt;xsl:value-of select="."/>
+    &lt;/xsl:element>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
+
+### Lists and list items
+
+When I first conceptualized this project I had designed a single list element and attributes to produce bulleted and numbered lists. This proved to difficult to implement so I went back to two separate elements: `ulist` for bulleted lists and `olist` for  numbered lists. 
+
+Both elements share the `item` element to indicates the items inside the list. At least one item is required a list.
+
+```xml
+&lt;xsl:template match="ulist">
+  &lt;xsl:element name="ul">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;xsl:template match="olist">
+  &lt;xsl:element name="ol">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;xsl:template match="item">
+  &lt;xsl:element name="li">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+```
+
+### Figures and Images
+
+Figures, captions and the images inside present a few challenges. Because we allow authors to set height and width on both figure and the imageg inside we may find situations where the figure container is narrower than the image inside. 
+
+To avoid this issue we test whether the figure width value is smaller than the width of the image inside. If it is, we use the width of the image as the width of the figure, ootherwise we use the width of the image inside. 
+
+We didn't do the same thing for the height. It may be changed in a future iteration. 
+
+The data model for our content allows both figures and images to be used in the document. This is so we don't have to insert empty captions to figures just so we can add an image... If we don't want a caption we can insert the image directly on our document. 
+
+```xml
+&lt;xsl:template match="figure">
+  &lt;xsl:element name="figure">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;!-- 
+      If the width of the figure is smaller than the width of the containing image 
+      we may have display problems. 
+
+      If the width of the containging figure is smaller than the width of the image, 
+      make the figure width equal to the width of hthe image, otherwise use the width
+      of the figure element
+    -->
+    &lt;xsl:choose>
+      &lt;xsl:when test="@width lt image/@width">
+        &lt;xsl:attribute name="width">
+          &lt;xsl:value-of select="@width"/>
+        &lt;/xsl:attribute>
+      &lt;/xsl:when>
+      &lt;xsl:otherwise>
+        &lt;xsl:attribute name="width">
+          &lt;xsl:value-of select="image/@width"/>
+        &lt;/xsl:attribute>
+      &lt;/xsl:otherwise>
+    &lt;/xsl:choose>
+    &lt;!-- 
+      We don't care about height as much as we do width, the caption 
+      and image are contained inside the figure. 
+
+      We only test if it exists. It's up to the author to make sure
+      there are no conflicts
+    -->
+    &lt;xsl:if test="(@height)">
+      &lt;xsl:attribute name="height">
+        &lt;xsl:value-of select="@height"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;!-- 
+      Alignment can be different. We can have a centered image inside a 
+      left aligned figure
+    -->
+    &lt;xsl:if test="(@align)">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates select="image"/>
+    &lt;xsl:apply-templates select="figcaption"/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;xsl:template match="figcaption">
+  &lt;figcaption>&lt;xsl:apply-templates/>&lt;/figcaption>
+&lt;/xsl:template>
+
+&lt;xsl:template match="image">
+  &lt;xsl:element name="img">
+    &lt;xsl:attribute name="src">
+      &lt;xsl:value-of select="@src"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:attribute name="alt">
+      &lt;xsl:value-of select="@alt"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:if test="(@width)">
+      &lt;xsl:attribute name="width">
+        &lt;xsl:value-of select="@width"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@height)">
+      &lt;xsl:attribute name="height">
+        &lt;xsl:value-of select="@height"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@align)">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+  &lt;/xsl:element>
+&lt;/xsl:template>
 ```

@@ -600,9 +600,11 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
-            <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                <xs:element ref="item"/>
-            </xs:sequence>
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+              <xs:element ref="item"/>
+              <xs:element ref="olist"/>
+              <xs:element ref="ulist"/>
+            </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
@@ -614,9 +616,11 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
-            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
                 <xs:element ref="item"/>
-            </xs:sequence>
+                <xs:element ref="olist"/>
+                <xs:element ref="ulist"/>
+            </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
@@ -695,10 +699,10 @@
         </xs:documentation>
       </xs:annotation>
       <xs:complexType mixed="true">
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:choice maxOccurs="unbounded">
           <xs:element ref="attribution"/>
           <xs:element ref="para"/>
-        </xs:sequence>
+        </xs:choice>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
       </xs:complexType>
     </xs:element>

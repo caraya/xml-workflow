@@ -18,7 +18,8 @@
 
     <para>I'm dogfooding my XML workflow for digital publishing, there are certainly bugs remaining. Please let me know if you find any</para>
   </section>
-  <section type="chapter">
+
+  <section type="preface">
       <title>Introduction</title>
 
       <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like <link href="http://docbook.org" label="Docbook"/> are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</para>
@@ -79,6 +80,7 @@
 
 <para>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</para>
     </section>
+
   <section type="chapter">
       <title>XML Schema</title>
 
@@ -92,7 +94,7 @@
 
 <para>The third custom type is an enumeration of all possible values for the <emphasis>align</emphasis> attribute acording to CSS and HTML. Rather than manually type each of these we will reference this enumeration and include all its values for "free".</para>
 
-<para>We also allow the optional use of `class` and `id` attributes for the book by assigning `genericPropertiesGroup` attribute group as attributes to the group. We'll see this assigned to other elements so I decided to make it reusable rather than have to duplicate the attributes in every element I want to use them in.</para>
+<para>We also allow the optional use of <emphasis>class</emphasis> and <emphasis>id</emphasis> attributes for the book by assigning `genericPropertiesGroup` attribute group as attributes to the group. We'll see this assigned to other elements so I decided to make it reusable rather than have to duplicate the attributes in every element I want to use them in.</para>
 
 <code language="xml">
 &lt;!-- Simple types to use in the content -->
@@ -163,12 +165,12 @@
 &lt;/xs:complexType>
 </code>
 
-Two of the derived types add attributes or elements to the base person element to make the generic person more appropriate to their role rather than repeat the content of person each time that an author, editor or other role appear.
+<para>Two of the derived types add attributes or elements to the base person element to make the generic person more appropriate to their role rather than repeat the content of person each time that an author, editor or other role appear.</para>
 
-Author is the most straight forward and only wraps person in the author element.
+<para>Author is the most straight forward and only wraps person in the author element.
+</para>
 
-
-Editor takes the base person element and adds a `type` child to indicate the type of editor (some that come to mind are acquisition, production and managing.) The editor elements looks like this:
+<para>Editor takes the base person element and adds a `type` child to indicate the type of editor (some that come to mind are acquisition, production and managing.) The editor elements looks like this:</para>
 
 <code language="xml">
 &lt;editor>
@@ -178,7 +180,7 @@ Editor takes the base person element and adds a `type` child to indicate the typ
 &lt;/editor>
 </code>
 
-OtherRoles takes all other roles that are not author or editor and adds a role element to specify what role they play, for example: Illustrator, Indexer, Research Assistant, among others. The element looks like this:
+<para>OtherRoles takes all other roles that are not author or editor and adds a role element to specify what role they play, for example: Illustrator, Indexer, Research Assistant, among others. The element looks like this:</para>
 
 <code language="xml">
   &lt;otherRole>
@@ -297,8 +299,8 @@ and with the optional attributes it will look like this
       &lt;xs:element ref="blockquote"/>
       &lt;xs:element ref="h1"/>
       &lt;xs:element ref="h2"/>
+      &lt;xs:element ref="h2"/>
       &lt;xs:element ref="h3"/>
-      &lt;xs:element ref="h4"/>
       &lt;xs:element ref="h5"/>
       &lt;xs:element ref="h6"/>
     &lt;/xs:choice>
@@ -535,14 +537,14 @@ and with the optional attributes it will look like this
   &lt;/xs:complexType>
   &lt;/xs:element>
 
-  &lt;xs:element name="h3">
+  &lt;xs:element name="h2">
   &lt;xs:complexType mixed="true">
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
   &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
   &lt;/xs:complexType>
   &lt;/xs:element>
 
-  &lt;xs:element name="h4">
+  &lt;xs:element name="h3">
   &lt;xs:complexType mixed="true">
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
   &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
@@ -624,8 +626,8 @@ and with the optional attributes it will look like this
   &lt;xs:element ref="blockquote"/>
   &lt;xs:element ref="h1"/>
   &lt;xs:element ref="h2"/>
+  &lt;xs:element ref="h2"/>
   &lt;xs:element ref="h3"/>
-  &lt;xs:element ref="h4"/>
   &lt;xs:element ref="h5"/>
   &lt;xs:element ref="h6"/>
   &lt;/xs:choice>
@@ -658,4 +660,805 @@ and with the optional attributes it will look like this
 
 <para>There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs.</para>
 </section>
+
+  <section type="chapter">
+    <title>From XML to HTML</title>
+
+    <para>One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then use tools like <link href="http://www.princexml.com" label="PrinceXML"/> or <link href="http://www.antennahouse.com" label="AntenaHouse"/> we'll convert the HTML/CSS files to PDF</para>
+
+    <h2>Why HTML</h2>
+
+    <para>HTML is the default format for the web and for most web/html based content such as ePub and Kindle. As such it makes a perfect candidate to explore how to generate it programatically from a single source file.</para>
+
+    <para>HTML will also act as our source for using CSS paged media to create PDF cotnent.</para>
+
+    <h2>Why PDF</h2>
+
+    <para>Rather than having to deal with <link href="http://www.w3.org/TR/2006/REC-xsl11-20061205/" label="XSL-FO"/>, another XML based vocabulary to create PDF content, we'll use XSLT to create another HTML file and process it with <link href="http://dev.w3.org/csswg/css-page-3/" label="CSS Paged Media"/> and the companion <link href="http://www.w3.org/TR/css-gcpm-3/" label="Generated Content for Paged Media"/> specifications to create PDF content.</para>
+
+    <para>In this document we'll concentrate on the XSLT to HTML conversion and will defer the from HTML to PDF to a later article.</para>
+
+    <h1>Creating our conversion stylesheets</h1>
+
+    <para>To convert our XML into other formats we will use XSL Transformations (also known as XSLT) <link href="http://www.w3.org/TR/xslt" label="version 2"/> (a W3C standard) and <link href="http://www.w3.org/TR/xslt-30/" label="version 3"/> (a W3C last call draft recommendation) where appropriate.</para>
+
+    <para>XSLT is a functional language designed to transform XML into other markup vocabularies. It defines template rules that match elements in your source document and processing them to convert them to the target vocabulary.</para>
+
+    <para>In the XSLT example below, we do the following:</para>
+
+    <olist>
+      <item>Declare the file to be an XML document</item>
+      <item>Define the root element of the stylesheet (xsl:stylesheet)</item>
+      <item>Indicate the namespaces that we'll use in the document and, in this case, tell the processor to excluse the given namespaces</item>
+      <item>Strip whitespaces from all elements and preserve it in the code elements</item>
+      <item>Create the default output we'll use for the main document and all generated pages (discussed later)</item>
+      <item>Create a default template to warn us if we missed anything</item>
+    </olist>
+
+    <code language="xml">&lt;?xml version="1.0" ?>
+&lt;!-- Define stylesheet root and namespaces we'll work with -->
+&lt;xsl:stylesheet
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:epub="http://www.idpf.org/2007/opf"
+  exclude-result-prefixes="dc epub"
+  xml:lang="en-US"
+  version="2.0">
+  &lt;!-- Strip whitespace from the listed elements -->
+  &lt;xsl:strip-space elements="*"/>
+  &lt;!-- And preserve it from the elements below -->
+  &lt;xsl:preserve-space elements="code"/>
+  &lt;!-- Define the output for this and all document children -->
+  &lt;xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
+
+    &lt;!--
+    Default template taken from http://bit.ly/1sXqIL8
+
+    This will tell us of any unmatched elements rather than
+    failing silently
+    -->
+    &lt;xsl:template match="*">
+      &lt;xsl:message terminate="no">
+        WARNING: Unmatched element: &lt;xsl:value-of select="name()"/>
+      &lt;/xsl:message>
+
+      &lt;xsl:apply-templates/>
+    &lt;/xsl:template>
+
+  &lt;!-- More content to be added -->
+&lt;/xsl:stylesheet></code>
+
+    <para>This is a lot of work before we start creating our XSLT content. But it's worth doing the work up front. We'll see what are the advantages of doint it this way as we move down the style sheet.</para>
+
+    <para>Now onto our root templates. The first one is the entry point to our document. It performs the following tasks:</para>
+
+    <olist>
+      <item>Match the root element to create the skeleton for our HTML content</item>
+      <item>In the title we insert the content of the <emphasis>metadata/title</emphasis> element</item>
+      <item>In the body we 'apply' the templates that match the content inside our document (more on this later)</item>
+    </olist>
+
+    <code language="xml">&lt;!-- Root template, matching / -->
+&lt;xsl:template match="book">
+  &lt;html>
+    &lt;head>
+      &lt;xsl:element name="title">
+          &lt;xsl:value-of select="metadata/title"/>
+      &lt;/xsl:element>
+      &lt;xsl:element name="meta">
+        &lt;xsl:attribute name="generator">
+          &lt;xsl:value-of select="system-property('xsl:product-name')"/>
+          &lt;xsl:value-of select="system-property('xsl:product-version')"/>
+        &lt;/xsl:attribute>
+      &lt;/xsl:element>
+      &lt;link rel="stylesheet" href="css/style.css" />
+      &lt;xsl:if test="(code)">
+        &lt;!--
+        Use highlight.js and docco style
+        -->
+        &lt;link rel="stylesheet" href="css/styles/docco.css" />
+        &lt;!-- Load highlight.js -->
+        &lt;script src="lib/highlight.pack.js">&lt;/script>
+        &lt;script>
+          hljs.initHighlightingOnLoad();
+        &lt;/script>
+      &lt;/xsl:if>
+      &lt;!--
+        Comment this out for now. It'll become relevant when we add video
+        &lt;script src="js/script.js">&lt;/script>
+      -->
+    &lt;/head>
+    &lt;body>
+      &lt;xsl:apply-templates/>
+      &lt;xsl:apply-templates select="/" mode="toc"/>
+    &lt;/body>
+  &lt;/html>
+&lt;/xsl:template></code>
+
+    <para>We could build the CSS stylesheet and Javascript files as part of our root template but we chose not to.</para>
+
+    <para>Working with the stylesheet as part of the XSLT stylesheet allows the XSLT stylesheet designer to embed the style and parameterize the stylesheet, thus making the stylesheet customizable from the command line.</para>
+
+    <para>For all advantages, this method ties the styles for the project to the XSLT stylesheet and requires the XSLT stylesheet designer to be involved in all CSS and Javascript updates.</para>
+
+    <para>By linking to external CSS and Javascript files we can leverage expertise independent of the Schema and XSLT stylesheets. Book designers can work on the CSS, UX and experience designers can work on Javascript and additional CSS areas, book designers can work on the Paged Media stylesheets and authors can just write.</para>
+
+    <para>Furthermore we can reuse our CSS and Javascript on multiple documents.</para>
+
+    <h2>Table of contents</h2>
+
+    <blockquote>
+      <para>The table of content template is under active development and will be different depending on the desired output. I document it here as it is right now but will definitely change as it's further developed.</para>
+    </blockquote>
+
+    <para>There is a second template matching the root element of our document to create a table of content. At first thought this looks like the wrong approach</para>
+
+    <para>We leverage XSLT modes that allow us to create templates for the same element to perform different tasks. In `toc mode` we want the root template to do the following:</para>
+
+    <olist>
+      <item>Create the section and nav and ol elements</item>
+      <item>Add the title for the table of contents</item>
+      <item>For each section element that is a child of root create these elements</item>
+      <olist>
+        <item>The `li` element</item>
+        <item>The a element with the corresponding href element</item>
+        <item>The value of the href element (a concatenation of the section's type attribute, the position within the document and the .html string)</item>
+        <item>The title of the section as the 'clickable' portion of the link</item>
+      </olist>
+    </olist>
+
+    <code language="xml">&lt;xsl:template match="/" mode="toc">
+&lt;section data-type="toc"> (1)
+&lt;nav class="toc"> (1)
+&lt;h2>Table of Contents&lt;/h2>
+&lt;ol>
+&lt;xsl:for-each select="book/section">
+&lt;xsl:element name="li"> (3.1)
+&lt;xsl:element name="a"> (3.2)
+&lt;xsl:attribute name="href"> (3.2)
+&lt;xsl:value-of select="concat((@type), position(),'.html')"/> (3.3)
+&lt;/xsl:attribute>
+&lt;xsl:value-of select="title"/> (3.4)
+&lt;/xsl:element>
+&lt;/xsl:element>
+&lt;/xsl:for-each>
+&lt;/ol>
+&lt;/nav>
+&lt;/section>
+&lt;/xsl:template></code>
+
+
+<h2>Metadata and Section</h2>
+
+<para>With these templates in place we can now start writing the major areas of the document, <emphasis>metadata</emphasis> and <emphasis>section</emphasis>.</para>
+
+<h3>Metadata</h3>
+
+<para>The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element using the apply-template XSLT instruction. The template looks like this</para>
+
+<code language='xml'>
+&lt;xsl:template match="metadata">
+  &lt;xsl:element name="div">
+    &lt;xsl:attribute name="class">metadata&lt;/xsl:attribute>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+</code>
+
+<h3>Section</h3>
+
+<para>The section container on the other hand is a lot more complex because it has a lot of work to do. It is our primary unit for generating files, takes most of the same attributes as the root template and then processes the rest of the content.</para>
+
+<para>Inside the template we first create a vairable to hold the name of the file we'll generate. The file name is a concatenation of the following elements:</para>
+
+<ulist>
+  <item>The type attribute</item>
+  <item>The position in the document</item>
+  <item>the string "html"</item>
+</ulist>
+
+<para>The result-document element takes two parameters: the value of the file name variable we just defined and the xhtml-out format we defined at the top of the document. The XHTML format may look like overkill right now but it makes sense when we consider moving the generated content to ePub or other fomats where strict XHTML conformance is a requirement.</para>
+
+<para>We start generating the skeleton of the page, we add the default style sheet and  do the first conditional test of the document. Don't want to add stylesheets to the page unless they are needed so we test if there is a code element on the page and only add highlight.js related stylesheets and scripts. </para>
+
+<para>In the body element we see the first of many times we'll conditionally add attributes to the element. We use only add a data-type attribute to body if there is a type attribute in the source document. We do the same thing for id and class.</para>
+
+<code language='xml'>
+&lt;xsl:template match="section">
+  &lt;!-- Variable to create section file names -->
+  &lt;xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/>
+  &lt;!-- An example result of the variable above would be introduction1.xhtml -->
+  &lt;xsl:result-document href='{$fileName}' format="xhtml-out">
+    &lt;html>
+      &lt;head>
+        &lt;link rel="stylesheet" href="css/style.css" />
+        &lt;xsl:if test="(code)">
+          &lt;!--
+            Use highlight.js and github style
+          -->
+          &lt;link rel="stylesheet" href="css/styles/docco.css" />
+          &lt;!-- Load highlight.js -->
+          &lt;script src="lib/highlight.pack.js">&lt;/script>
+          &lt;script>
+            hljs.initHighlightingOnLoad();
+          &lt;/script>
+        &lt;/xsl:if>
+        &lt;!--
+          Comment this out for now. It'll become relevant when we add video
+          &lt;script src="js/script.js">&lt;/script>
+        -->
+      &lt;/head>
+      &lt;body>
+        &lt;section>
+          &lt;xsl:if test="@type">
+            &lt;xsl:attribute name="data-type">
+              &lt;xsl:value-of select="@type"/>
+            &lt;/xsl:attribute>
+          &lt;/xsl:if>
+          &lt;xsl:if test="(@class)">
+            &lt;xsl:attribute name="class">
+              &lt;xsl:value-of select="@class"/>
+            &lt;/xsl:attribute>
+          &lt;/xsl:if>
+          &lt;xsl:if test="(@id)">
+            &lt;xsl:attribute name="id">
+              &lt;xsl:value-of select="@id"/>
+            &lt;/xsl:attribute>
+          &lt;/xsl:if>
+          &lt;xsl:apply-templates/>
+        &lt;/section>
+      &lt;/body>
+    &lt;/html>
+  &lt;/xsl:result-document>
+&lt;/xsl:template>
+</code>
+
+<h2>Metadata content</h2>
+
+<h3>Publication information</h3>
+
+<code language='xml'>
+&lt;xsl:template match="isbn">
+  &lt;p>ISBN: &lt;xsl:value-of select="."/>&lt;/p>
+&lt;/xsl:template>
+</code>
+
+<code language='xml'>
+&lt;xsl:template match="edition">
+  &lt;p class="no-margin-left">Edition: &lt;xsl:value-of select="."/>&lt;/p>
+&lt;/xsl:template>
+</code>
+
+<h3>Individuals</h3>
+
+<code language='xml'>
+&lt;!-- complex types to create groups of similar person items -->
+&lt;xs:complexType name="person">
+    &lt;xs:annotation>
+        &lt;xs:documentation>
+            Generic element to denote an individual involved in creating the book
+        &lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:sequence>
+        &lt;xs:element name="first-name" type="xs:token"/>
+        &lt;xs:element name="surname" type="xs:token"/>
+    &lt;/xs:sequence>
+    &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="author">
+    &lt;xs:annotation>
+        &lt;xs:documentation>
+            Author person
+        &lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:complexContent>
+        &lt;xs:extension base="person">
+        &lt;/xs:extension>
+    &lt;/xs:complexContent>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="editor">
+    &lt;xs:annotation>
+        &lt;xs:documentation>extension to person to indicate editor and his/her role&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:complexContent>
+        &lt;xs:extension base="person">
+            &lt;xs:choice>
+                &lt;xs:element name="type" type="xs:token"/>
+            &lt;/xs:choice>
+        &lt;/xs:extension>
+    &lt;/xs:complexContent>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="otherRole">
+    &lt;xs:annotation>
+        &lt;xs:documentation>extension to person to accomodate roles other than author and editor&lt;/xs:documentation>
+    &lt;/xs:annotation>
+    &lt;xs:complexContent>
+        &lt;xs:extension base="person">
+            &lt;xs:sequence minOccurs="1" maxOccurs="1">
+                &lt;xs:element name="role" type="xs:token"/>
+            &lt;/xs:sequence>
+        &lt;/xs:extension>
+    &lt;/xs:complexContent>
+&lt;/xs:complexType>
+</code>
+
+<h3>People groups</h3>
+
+<code language='xml'>
+&lt;xsl:template match="metadata/authors">
+  &lt;h2>Authors&lt;/h2>
+  &lt;ul>
+    &lt;xsl:for-each select="author">
+      &lt;li>
+        &lt;xsl:value-of select="first-name"/>
+        &lt;xsl:text> &lt;/xsl:text>
+        &lt;xsl:value-of select="surname"/>
+      &lt;/li>
+    &lt;/xsl:for-each>
+  &lt;/ul>
+&lt;/xsl:template>
+
+&lt;xsl:template match="metadata/editors">
+  &lt;h2>Editorial Team&lt;/h2>
+  &lt;ul class="no-bullet">
+    &lt;xsl:for-each select="editor">
+      &lt;li>
+        &lt;xsl:value-of select="first-name"/>
+        &lt;xsl:text> &lt;/xsl:text>
+        &lt;xsl:value-of select="surname"/>
+        &lt;xsl:value-of select="concat(' - ', type, ' ', 'editor')">&lt;/xsl:value-of>
+      &lt;/li>
+    &lt;/xsl:for-each>
+  &lt;/ul>
+&lt;/xsl:template>
+
+&lt;xsl:template match="metadata/otherRoles">
+  &lt;h2>Production team&lt;/h2>
+  &lt;ul class="no-bullet">
+    &lt;xsl:for-each select="otherRole">
+      &lt;li>
+        &lt;xsl:value-of select="first-name" />
+        &lt;xsl:text> &lt;/xsl:text>
+        &lt;xsl:value-of select="surname" />
+        &lt;xsl:text> - &lt;/xsl:text>
+        &lt;xsl:value-of select="role" />
+      &lt;/li>
+    &lt;/xsl:for-each>
+  &lt;/ul>
+&lt;/xsl:template>
+</code>
+
+<h2>Titles and headings</h2>
+
+<para>Titles and headings use mostly the same code. We've put them in separate templates to make it possible and easier to generate different code for each heading. It's not the same as using CSS where you can declare rules for the same attribute multiple times (with the last one winning); when writing transformations you can only have one per element otherwise you will get an error.</para>
+
+<para>The goal is to create as simple a markup as we can so we can better leverage CSS to style and make our content display as intended.</para>
+
+<code language="xml">&lt;xsl:template match="title ">
+  &lt;xsl:element name="h1">
+    &lt;xsl:if test="@align">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;xsl:template match="h1">
+  &lt;xsl:element name="h1">
+    &lt;xsl:if test="@align">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template></code>
+
+<h2>Blockquotes, quotes and asides</h2>
+
+<code language="xml">&lt;xsl:template match="blockquote">
+  &lt;xsl:element name="blockquote">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates />
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;!-- BLOCKQUOTE ATTRIBUTION-->
+&lt;xsl:template match="attribution">
+  &lt;xsl:element name="cite">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+</code>
+
+<code language='xml'>
+&lt;xsl:template match="quote">
+  &lt;q>&lt;xsl:value-of select="."/>&lt;/q>
+&lt;/xsl:template></code>
+
+
+<code language="xml">&lt;xsl:template match="aside">
+  &lt;aside>
+    &lt;xsl:if test="type">
+      &lt;xsl:attribute name="data-type">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/aside>
+&lt;/xsl:template>
+</code>
+
+<h2>Div and Span</h2>
+
+<code language="xml">&lt;xsl:template match="div">
+  &lt;xsl:element name="div">
+    &lt;xsl:if test="@align">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template></code>
+
+<code language="xml">&lt;xsl:template match="span">
+  &lt;xsl:element name="span">
+    &lt;xsl:if test="@type">
+      &lt;xsl:attribute name="data-type">
+        &lt;xsl:value-of select="@type"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template></code>
+
+<h2>Paragraphs</h2>
+
+<code language="xml">&lt;xsl:template match="para">
+  &lt;xsl:element name="p">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template></code>
+
+<h2>Styles</h2>
+
+<code language="xml">&lt;xsl:template match="strong">
+  &lt;strong>&lt;xsl:apply-templates />&lt;/strong>
+&lt;/xsl:template>
+
+&lt;xsl:template match="emphasis">
+  &lt;em>&lt;xsl:apply-templates/>&lt;/em>
+&lt;/xsl:template>
+
+&lt;xsl:template match="strike">
+  &lt;strike>&lt;xsl:apply-templates/>&lt;/strike>
+&lt;/xsl:template>
+
+&lt;xsl:template match="underline">
+  &lt;u>&lt;xsl:apply-templates/>&lt;/u>
+&lt;/xsl:template>
+</code>
+
+<h2>Links and anchors</h2>
+
+<para>One of the</para>
+
+<code language="xml">&lt;xsl:template match="link">
+  &lt;xsl:element name="a">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:attribute name="href">
+      &lt;xsl:value-of select="@href"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:attribute name="label">
+      &lt;xsl:value-of select="@label"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:value-of select="@label"/>
+  &lt;/xsl:element>
+&lt;/xsl:template></code>
+
+<para>When working with links there are times when we want to link to sections within the same document or to specific sections in another document. To do this we need anchors that will resolve to the following HTML:</para>
+
+<code language="html">&lt;a name="target">&lt;a></code>
+
+<para>The transformation element looks like this:</para>
+
+<code language="xml">&lt;xsl:template match="anchor">
+  &lt;xsl:element name="a">
+    &lt;xsl:attribute name="name">
+    &lt;/xsl:attribute>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+</code>
+
+<para>Not sure if I want to make this an empty element or not</para>
+
+<para>Empty element &lt;anchor name="home"/> appeals to my ease of use paradigm but it may not be as easy to understand for peope who are not familiar with XML empty elements</para>
+
+<h2>Code blocks</h2>
+
+    <para>Code elements create <link href="https://help.github.com/articles/github-flavored-markdown/#fenced-code-blocks" label="fenced code blocks"/> like the ones from <link href="https://help.github.com/articles/github-flavored-markdown/" label="Github Flavored Markdown"/>. </para>
+
+    <para>We use <link href="https://www.google.com/fonts/specimen/Source+Code+Pro" label="Adobe Source Code Pro"/> font. It's a clean and readable font designed specifically for source code display.</para>
+
+    <para>We highlight our code with <link href="https://highlightjs.org/" label="Highlight.js"/>.</para>
+
+<blockquote>
+  <para>Note that the syntax higlighting only works for HTML. Although PrinceXML supports Highlight.js it is not working. I've asked on the Prince support forums and am waiting for an answer.</para>
+</blockquote>
+
+<code language="xml">&lt;xsl:template match="code">
+  &lt;xsl:element name="pre">
+    &lt;xsl:element name="code">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@language"/>
+      &lt;/xsl:attribute>
+      &lt;xsl:value-of select="."/>
+    &lt;/xsl:element>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+</code>
+
+<h2>Lists and list items</h2>
+
+<para>When I first conceptualized this project I had designed a single list element and attributes to produce bulleted and numbered lists. This proved to difficult to implement so I went back to two separate elements: `ulist` for bulleted lists and `olist` for  numbered lists.</para>
+
+<para>Both elements share the <emphasis>item</emphasis> element to indicates the items inside the list. At least one item is required a list.</para>
+
+<code language="xml">
+&lt;xsl:template match="ulist">
+  &lt;xsl:element name="ul">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;xsl:template match="olist">
+  &lt;xsl:element name="ol">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;xsl:template match="item">
+  &lt;xsl:element name="li">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:value-of select="."/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+</code>
+
+<h2>Figures and Images</h2>
+
+<para>Figures, captions and the images inside present a few challenges. Because we allow authors to set height and width on both figure and the imageg inside we may find situations where the figure container is narrower than the image inside.</para>
+
+<para>To avoid this issue we test whether the figure width value is smaller than the width of the image inside. If it is, we use the width of the image as the width of the figure, ootherwise we use the width of the image inside.</para>
+
+<para>We didn't do the same thing for the height. It may be changed in a future iteration. </para>
+
+<para>The data model for our content allows both figures and images to be used in the document. This is so we don't have to insert empty captions to figures just so we can add an image... If we don't want a caption we can insert the image directly on our document.</para>
+
+<code language='xml'>
+&lt;xsl:template match="figure">
+  &lt;xsl:element name="figure">
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;!--
+      If the width of the figure is smaller than the width of the containing image
+      we may have display problems.
+
+      If the width of the containging figure is smaller than the width of the image,
+      make the figure width equal to the width of hthe image, otherwise use the width
+      of the figure element
+    -->
+    &lt;xsl:choose>
+      &lt;xsl:when test="@width lt image/@width">
+        &lt;xsl:attribute name="width">
+          &lt;xsl:value-of select="@width"/>
+        &lt;/xsl:attribute>
+      &lt;/xsl:when>
+      &lt;xsl:otherwise>
+        &lt;xsl:attribute name="width">
+          &lt;xsl:value-of select="image/@width"/>
+        &lt;/xsl:attribute>
+      &lt;/xsl:otherwise>
+    &lt;/xsl:choose>
+    &lt;!--
+      We don't care about height as much as we do width, the caption
+      and image are contained inside the figure.
+
+      We only test if it exists. It's up to the author to make sure
+      there are no conflicts
+    -->
+    &lt;xsl:if test="(@height)">
+      &lt;xsl:attribute name="height">
+        &lt;xsl:value-of select="@height"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;!--
+      Alignment can be different. We can have a centered image inside a
+      left aligned figure
+    -->
+    &lt;xsl:if test="(@align)">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:apply-templates select="image"/>
+    &lt;xsl:apply-templates select="figcaption"/>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+
+&lt;xsl:template match="figcaption">
+  &lt;figcaption>&lt;xsl:apply-templates/>&lt;/figcaption>
+&lt;/xsl:template>
+
+&lt;xsl:template match="image">
+  &lt;xsl:element name="img">
+    &lt;xsl:attribute name="src">
+      &lt;xsl:value-of select="@src"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:attribute name="alt">
+      &lt;xsl:value-of select="@alt"/>
+    &lt;/xsl:attribute>
+    &lt;xsl:if test="(@width)">
+      &lt;xsl:attribute name="width">
+        &lt;xsl:value-of select="@width"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@height)">
+      &lt;xsl:attribute name="height">
+        &lt;xsl:value-of select="@height"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@align)">
+      &lt;xsl:attribute name="align">
+        &lt;xsl:value-of select="@align"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@class)">
+      &lt;xsl:attribute name="class">
+        &lt;xsl:value-of select="@class"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+    &lt;xsl:if test="(@id)">
+      &lt;xsl:attribute name="id">
+        &lt;xsl:value-of select="@id"/>
+      &lt;/xsl:attribute>
+    &lt;/xsl:if>
+  &lt;/xsl:element>
+&lt;/xsl:template>
+</code>
+
+  </section>
 </book>
+
+
