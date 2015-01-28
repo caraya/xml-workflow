@@ -11,24 +11,6 @@
   <!-- First import the base stylesheet -->
   <xsl:import href="book.xsl"/>
 
-  <!--
-    Override of the section template.
-
-    In this particular situation we need to:
-      * Remove filename variable. It's not needed
-      * Remove the result document element (it's all one file)
-      * Change the test for type attribute so it'll terminate
-        if it fails (type attribute is required)
-      * Add the element that will build our running footer
-        (p class="rh")
-      * Remove the toc mode apply-template call from the book template.
-        It's not needed, we may move it to a separate template for navigation
-      * Rework the metadata template so it'll match the spec on the CSS
-
-    All other templates remain unchanged and are used from the base stylesheet.
-
-    Only the templates defined in this stilesheet are overriden or created.
-  -->
   <!-- Define the output for this and all document children -->
   <xsl:output
     name="xhtml-out"
@@ -37,14 +19,21 @@
     encoding="UTF-8"
     omit-xml-declaration="yes" />
 
+  <!-- Root template matching book -->
   <xsl:template match="book">
     <html>
       <head>
         <xsl:element name="title">
           <xsl:value-of select="metadata/title"/>
         </xsl:element>
+        <!-- Load Typekit Font -->
+        <script src="https://use.typekit.net/qcp8nid.js"></script>
+        <script>try{Typekit.load();}catch(e){}</script>
+        <!-- Paged Media Styles -->
         <link rel="stylesheet" href="css/pm-style.css" />
-        <!-- Just so I won't forget it again -->
+        <!--
+          Load Paged Media definitions just so I won't forget it again
+        -->
         <link rel="stylesheet" href="css/paged-media.css"/>
         <!--
               Use highlight.js and docco style
@@ -55,7 +44,7 @@
         <script>
           hljs.initHighlightingOnLoad();
         </script>
-        <script src="js/script.js"></script>
+        <!-- <script src="js/script.js"></script> -->
       </head>
       <body>
         <xsl:attribute name="data-type">book</xsl:attribute>
@@ -66,10 +55,27 @@
             </xsl:attribute>
           </xsl:element>
         <xsl:apply-templates/>
+        <!-- <xsl:apply-templates select="book" mode="toc"/> -->
       </body>
     </html>
   </xsl:template>
 
+  <!-- Override of the section template.
+
+    In this particular situation we need to:
+
+      * Remove filename variable. It's not needed
+      * Remove the result document element (it's all one file)
+      * Change the test for type attribute so it'll terminate
+        if it fails (type attribute is required)
+      * Add the element that will build our running footer
+        (p class="rh")
+      * Rework the metadata template so it'll match the spec on the CSS
+
+    All other templates remain unchanged and are used from the base stylesheet.
+
+    Only the templates defined in this stilesheet are overriden or created.
+  -->
   <xsl:template match="book/section">
     <section>
       <xsl:choose>
@@ -94,6 +100,11 @@
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
+      <xsl:element name="a">
+        <xsl:attribute name="name">
+          <xsl:value-of select="concat('ch', position())"/>
+        </xsl:attribute>
+      </xsl:element>
       <xsl:element name="p">
         <xsl:attribute name="class">rh</xsl:attribute>
         <xsl:value-of select="title"/>
@@ -110,6 +121,46 @@
     </xsl:element>
   </xsl:template>
 
-  <!-- By making the template empty we skip execution -->
-  <xsl:template match="book" mode="toc"/>
+
+
+  <!-- Create Table of Contents ... work in progress -->
+  <xsl:template match="book" mode="toc">
+    <xsl:variable name="fileName" select="concat('#', (@type), (position()-1))"/>
+    <section data-type="toc">
+      <h2>Table of Contents</h2>
+      <nav>
+        <ol>
+          <li><a href="${filename}"><xsl:value-of select="section/title"/></a>
+          </li>
+        </ol>
+      </nav>
+    </section>
+  </xsl:template>
+  <!--
+    <xsl:template match="h1">
+    <xsl:element name="h1">
+      <xsl:if test="@align">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:element name="a">
+        <xsl:attribute name="name">
+          <xsl:value-of select="concat('ch', position())"/>
+        </xsl:attribute>
+      </xsl:element>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+  -->
 </xsl:stylesheet>

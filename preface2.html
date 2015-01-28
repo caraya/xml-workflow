@@ -11,7 +11,7 @@
       </script>
    </head>
    <body>
-      <section data-type="chapter">
+      <section data-type="preface">
          <h1>Introduction</h1>
          <p>One of the biggest limitations of markup languages, in my opinion, is how confining
             they are. Even large vocabularies like
@@ -45,44 +45,46 @@
          <p>For the purpose of this project we'll define a set of resources that work with a book
             structure like the one below:
          </p>
-         <pre>
-            <code class="xml">
-               &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-               &lt;book
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd"&gt;
-               &lt;metadata&gt;
-               &lt;title&gt;Sample Document&lt;/title&gt;
-               &lt;authors&gt;
-               &lt;author&gt;
-               &lt;first-name&gt;Carlos&lt;/first-name&gt;
-               &lt;surname&gt;Araya&lt;/surname&gt;
-               &lt;/author&gt;
-               &lt;/authors&gt;
-               &lt;/metadata&gt;
+         <div class="code">
+            <pre>
+               <code class="xml">
+                  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+                  &lt;book
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd"&gt;
+                  &lt;metadata&gt;
+                  &lt;title&gt;Sample Document&lt;/title&gt;
+                  &lt;authors&gt;
+                  &lt;author&gt;
+                  &lt;first-name&gt;Carlos&lt;/first-name&gt;
+                  &lt;surname&gt;Araya&lt;/surname&gt;
+                  &lt;/author&gt;
+                  &lt;/authors&gt;
+                  &lt;/metadata&gt;
 
-               &lt;section type="chapter"&gt;
-               &lt;title&gt;Chapter 1&lt;/title&gt;
+                  &lt;section type="chapter"&gt;
+                  &lt;title&gt;Chapter 1&lt;/title&gt;
 
-               &lt;para&gt;&lt;/para&gt;
-               &lt;para&gt;&lt;/para&gt;
-               &lt;para&gt;&lt;/para&gt;
+                  &lt;para&gt;&lt;/para&gt;
+                  &lt;para&gt;&lt;/para&gt;
+                  &lt;para&gt;&lt;/para&gt;
 
-               &lt;/section&gt;
+                  &lt;/section&gt;
 
-               &lt;section type="chapter"&gt;
+                  &lt;section type="chapter"&gt;
 
-               &lt;title&gt;Chapter 2&lt;/title&gt;
+                  &lt;title&gt;Chapter 2&lt;/title&gt;
 
-               &lt;para&gt;&lt;/para&gt;
-               &lt;para&gt;&lt;/para&gt;
-               &lt;para&gt;&lt;/para&gt;
+                  &lt;para&gt;&lt;/para&gt;
+                  &lt;para&gt;&lt;/para&gt;
+                  &lt;para&gt;&lt;/para&gt;
 
-               &lt;/section&gt;
-               &lt;/book&gt;
+                  &lt;/section&gt;
+                  &lt;/book&gt;
 
-            </code>
-         </pre>
+               </code>
+            </pre>
+         </div>
          <p>It is not a complete structure. We will continue adding elements afte we reach the
             MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.
          </p>

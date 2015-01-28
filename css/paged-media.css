@@ -47,28 +47,27 @@ body[data-type="book"] > section[data-type="chapter"]+div[data-type="part"] { co
 
 /* Title Page*/
 section[data-type="titlepage"] { page: titlepage }
-section[data-type="titlepage"] * { text-align: center }
-h1.bookTitle { font-size: 200%; }
-h2.author {
-  font-size: 150%;
-  font-style: italic;
-}
+
 
 /* Copyright page */
 section[data-type="copyright"] { page: copyright }
 
 /* Dedication */
 
-section[data-type="dedication"] { page: dedication }
-section[data-type="dedication"] p { font-style: italic }
-section[data-type="dedication"] * { text-align: center }
-
+section[data-type="dedication"] {
+  page: dedication;
+  page-break-before: always;
+}
 
 /* TOC */
-nav[data-type="toc"] { page: toc }
-nav[data-type="toc"] ol { list-style-type: none }
-/* TESTING LEADER CONTENT */
-nav[data-type="toc"] ol li a:after { content: leader(dotted) " " target-counter(attr(href, url), page); }
+section[data-type="toc"] {
+  page: toc;
+  page-break-before: always;
+}
+/*
+ nav[data-type="toc"]  ol { list-style-type: none }
+ TESTING LEADER CONTENT */
+nav[data-type="toc"] nav ol li a:after { content: leader(dotted) " " target-counter(attr(href, url), page); }
 
 /* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
 /* Right Side */

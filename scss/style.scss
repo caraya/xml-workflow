@@ -21,7 +21,7 @@
 // I'm doing it to keep the HTML files clean. Eventually I'll switch to locally
 // hosted fonts in their own partial. Until then, suck it CSS Lint
 //
-@import url(http://fonts.googleapis.com/css?family=Roboto:400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
@@ -33,58 +33,116 @@
 //
 // We then import normalize.scss (the scss version of normalize.css)
 //
-@import "modules/_variables";
-@import "modules/_mixins";
+@import 'modules/variables';
+@import 'modules/mixins';
 
-@import "modules/_normalize";
+@import 'modules/normalize';
 
 html {
   font-size: 16px;
   overflow-y: scroll;
-  -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background-color: white;
-  color: #333;
+  background-color: #fff;
+  // color: rgb(58, 60, 63);
+  // color: #3A3C3F;
+  color: rgb(85, 76, 77);
+  // hex equivalent provided as fallback for browsers that don't do rgb colors
+  color: #554c4d;
   // font-family: 'Montserrat','Helvetica Neue', Helvetica, sans-serif;
-  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  // font-family: 'Roboto Thin', 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif;
   font-size: 1em;
-  font-weight: 300;
-  line-height: 1.5;
+  font-weight: 100;
+  line-height: 1.1;
   // Unless otherwise noted we pad the left and right margin
   // to prevent the text from being too close to the browser's borders
   // and to give plent of whitespace to the reader.
-  //
-  // The builtin stylesheet margin/padding combo is never enough for my
-  // liking
-  padding-left: 10rem;
-  padding-right: 10rem;
-  // Do we want this?
-  // text-align: justify;
+  padding-left: 10em;
+  padding-right: 10em;
 }
 
 
-@import "partials/_asides";
-@import "partials/_columns";
-@import "partials/_headings";
-@import "partials/_marginalia";
-@import "partials/_metadata";
-@import "partials/_paragraphs";
-@import "partials/_lists";
-//@import "partials/_images";
+@import 'partials/asides';
+@import 'partials/columns';
+@import 'partials/headings';
+@import 'partials/marginalia';
+@import 'partials/metadata';
+@import 'partials/paragraphs';
+@import 'partials/lists';
+//@import 'partials/images';
+
+
+// Handle justification as a class to let the author decide if they want to
+// use it.
+.justified {
+  text-align: justify;
+}
+
+// Blockquote styles
+blockquote {
+  color: #060f94;
+  font-style: italic;
+  font-weight: 200;
+  font-size: 1.5em;
+  margin: 2em 3.5em;
+}
 
 // The classes below use the column-attribs mixin defined in _columns.scss
 // to create 2 and 3-column layouts. These classes are meant as starting points,
 // there's definitely more you can do with them like playing with line-height
 // and word/letter spacing
 .columns2 {
+  @include column-attribs (2, 3em);
+  line-height: 1em;
   width: 100%;
-	@include column-attribs (2, 20px);
+
+  p:first-of-type {
+    margin-top: 0;
+  }
+
+  p + p {
+    text-indent: 2em;
+  }
 }
 
 .columns3 {
-  width: 100%;
   @include column-attribs (3, 10px);
+  width: 100%;
+
 }
+
+// Section specific content
+section[data-type='titlepage'] {
+  h1,
+  h2 {
+    text-align: center;
+  }
+
+  p {
+    text-align: left;
+
+    + p {
+      text-indent: 0 !important;
+    }
+  }
+}
+
+section[data-type='dedication'] {
+  h1,
+  h2 {
+    text-align: center;
+  }
+
+  p {
+    text-align: left;
+
+    + p {
+      text-indent: 0 !important;
+    }
+  }
+}
+

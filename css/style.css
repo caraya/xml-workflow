@@ -250,14 +250,14 @@ table {
 html {
   font-size: 16px;
   overflow-y: scroll;
-  -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background-color: white;
+  background-color: #fff;
   color: #554c4d;
-  color: #554C4D;
+  color: #554c4d;
   font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif;
   font-size: 1em;
   font-weight: 100;
@@ -278,10 +278,6 @@ aside h3 {
   padding-left: 20px;
 }
 
-/*
- * Al fonts share family and weight. The htings unique to each
- * will be listed below
-*/
 h1, h2, h3, h4 {
   margin: 1.414em 0 0.5em;
   font-family: 'Montserrat', sans-serif;
@@ -409,7 +405,7 @@ blockquote {
 .metadata li {
   list-style-type: none;
 }
-.metadata p:not(:first-of-type) {
+.metadata p + p {
   margin-left: -2em;
 }
 
@@ -447,9 +443,15 @@ ol li {
   text-align: justify;
 }
 
+blockquote {
+  color: #060f94;
+  font-style: italic;
+  font-weight: 200;
+  font-size: 1.5em;
+  margin: 2em 3.5em;
+}
+
 .columns2 {
-  width: 100%;
-  line-height: 1em;
   -moz-column-count: 2;
   -webkit-column-count: 2;
   column-count: 2;
@@ -462,16 +464,17 @@ ol li {
   -moz-column-span: none;
   -webkit-column-span: none;
   column-span: none;
+  line-height: 1em;
+  width: 100%;
 }
 .columns2 p:first-of-type {
   margin-top: 0;
 }
-.columns2 p:not:first-of-type {
+.columns2 p + p {
   text-indent: 2em;
 }
 
 .columns3 {
-  width: 100%;
   -moz-column-count: 3;
   -webkit-column-count: 3;
   column-count: 3;
@@ -484,6 +487,29 @@ ol li {
   -moz-column-span: none;
   -webkit-column-span: none;
   column-span: none;
+  width: 100%;
+}
+
+section[data-type='titlepage'] h1,
+section[data-type='titlepage'] h2 {
+  text-align: center;
+}
+section[data-type='titlepage'] p {
+  text-align: left;
+}
+section[data-type='titlepage'] p + p {
+  text-indent: 0 !important;
+}
+
+section[data-type='dedication'] h1,
+section[data-type='dedication'] h2 {
+  text-align: center;
+}
+section[data-type='dedication'] p {
+  text-align: left;
+}
+section[data-type='dedication'] p + p {
+  text-indent: 0 !important;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -1,15 +1,17 @@
 <?xml version="1.0" ?>
-<!-- Define stylesheet root and namespaces we'll work with -->
+<!--
+  Define stylesheet root and namespaces we'll work with
+-->
 <xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:epub="http://www.idpf.org/2007/opf" exclude-result-prefixes="dc epub"
   xml:lang="en-US"
   version="2.0">
+  <!-- Preserve whitespace from the elements below -->
+  <xsl:preserve-space elements="code"/>
   <!-- Strip whitespace from the listed elements -->
   <xsl:strip-space elements="*"/>
-  <!-- And preserve it from the elements below -->
-  <xsl:preserve-space elements="code"/>
   <!-- Define the output for this and all document children -->
   <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
 
@@ -50,6 +52,9 @@
           <xsl:value-of select="system-property('xsl:vendor-url')" />
         </xsl:attribute>
       </xsl:element>
+      <!-- Load Typekit Font -->
+      <script src="//use.typekit.net/qcp8nid.js"></script>
+      <script>try{Typekit.load();}catch(e){}</script>
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="(code)">
         <!--
@@ -67,100 +72,45 @@
         <script src="js/script.js"></script>
       -->
     </head>
-
     <body>
       <xsl:apply-templates/>
-      <xsl:apply-templates select="/" mode="toc"/>
     </body>
     </html>
   </xsl:template>
 
-  <xsl:template match="/" mode="toc">
-    <nav class="toc">
-      <h2>Table of Contents</h2>
-      <ol>
-        <xsl:for-each select="book/section">
+<xsl:template match="book" mode="toc">
+      <section data-type="toc">
+        <nav>
           <xsl:element name="li">
             <xsl:element name="a">
               <xsl:attribute name="href">
-                <xsl:value-of select="concat((@type), position(),'.html')"/>
+                <xsl:value-of select="concat((@type), (position()-1),'.html')"/>
               </xsl:attribute>
-              <xsl:value-of select="title"/>
             </xsl:element>
           </xsl:element>
-        </xsl:for-each>
-      </ol>
-    </nav>
+        </nav>
+      </section>
   </xsl:template>
 
   <!-- Metadata -->
   <xsl:template match="metadata">
-    <xsl:element name="div">
-      <xsl:attribute name="class">metadata</xsl:attribute>
+    <xsl:element name="section">
+      <xsl:attribute name="data-type">titlepage</xsl:attribute>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
 
-  <!-- Metadata Children-->
-  <xsl:template match="isbn">
-    <p>ISBN: <xsl:value-of select="."/></p>
-  </xsl:template>
-
-  <xsl:template match="edition">
-    <p class="no-margin-left">Edition: <xsl:value-of select="."/></p>
-  </xsl:template>
-
-  <!-- PEOPLE GROUPS -->
-  <xsl:template match="metadata/authors">
-    <h2>Authors</h2>
-    <ul>
-      <xsl:for-each select="author">
-        <li>
-          <xsl:value-of select="first-name"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="surname"/>
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
-
-  <xsl:template match="metadata/editors">
-    <h2>Editorial Team</h2>
-    <ul class="no-bullet">
-      <xsl:for-each select="editor">
-        <li>
-          <xsl:value-of select="first-name"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="surname"/>
-          <xsl:value-of select="concat(' - ', type, ' ', 'editor')"></xsl:value-of>
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
-
-  <xsl:template match="metadata/otherRoles">
-    <h2>Production team</h2>
-    <ul class="no-bullet">
-      <xsl:for-each select="otherRole">
-        <li>
-          <xsl:value-of select="first-name" />
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="surname" />
-          <xsl:text> - </xsl:text>
-          <xsl:value-of select="role" />
-        </li>
-      </xsl:for-each>
-    </ul>
-  </xsl:template>
-
   <!-- Section -->
-  <xsl:template match="book/section">
+  <xsl:template match="section">
     <!-- Variable to create section file names -->
     <xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
     <xsl:result-document href='{$fileName}' format="xhtml-out">
       <html>
         <head>
+          <!-- Load Typekit Font -->
+          <script src="//use.typekit.net/qcp8nid.js"></script>
+          <script>try{Typekit.load();}catch(e){}</script>
           <link rel="stylesheet" href="css/style.css" />
           <xsl:if test="(code)">
             <!--
@@ -202,30 +152,61 @@
     </xsl:result-document>
   </xsl:template>
 
-  <!-- Create Table of Contents ... work in progress -->
-  <xsl:template match="book" mode="toc">
-    <xsl:variable name="fileName" select="concat('#', (@type), (position()-1))"/>
-    <section data-type="toc">
-      <h2>Table of Contents</h2>
-      <nav>
-        <ol>
-          <xsl:for-each select="section">
-            <li>
-              <a href="${filename}"><xsl:value-of select="title"></xsl:value-of></a>
-            </li>
-          </xsl:for-each>
-        </ol>
-      </nav>
-    </section>
+  <!-- Metadata Children-->
+  <xsl:template match="isbn">
+    <p>ISBN: <xsl:value-of select="."/></p>
   </xsl:template>
+
+  <xsl:template match="edition">
+    <p class="no-margin-left">Edition: <xsl:value-of select="."/></p>
+  </xsl:template>
+
+  <!-- PEOPLE GROUPS -->
+  <xsl:template match="metadata/authors">
+      <xsl:for-each select="author">
+        <h2 class="author">
+          <xsl:value-of select="first-name"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="surname"/>
+        </h2>
+      </xsl:for-each>
+
+  </xsl:template>
+
+  <xsl:template match="metadata/editors">
+    <h2>Editorial Team</h2>
+    <ul class="no-bullet">
+      <xsl:for-each select="editor">
+        <li>
+          <xsl:value-of select="first-name"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="surname"/>
+          <xsl:value-of select="concat(' - ', type, ' ', 'editor')"></xsl:value-of>
+        </li>
+      </xsl:for-each>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="metadata/otherRoles">
+    <h2>Production team</h2>
+    <ul class="no-bullet">
+      <xsl:for-each select="otherRole">
+        <li>
+          <xsl:value-of select="first-name" />
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="surname" />
+          <xsl:text> - </xsl:text>
+          <xsl:value-of select="role" />
+        </li>
+      </xsl:for-each>
+    </ul>
+  </xsl:template>
+
   <!-- Headings -->
   <!--
     Note that the headings use mostly the same code.
 
-    We could have coded them with just one template but that would have made it
-    harder to style with CSS.
-
-    Our goal is to create as simple a markup as we can so we can better leverage
+    THe goal is to create as simple a markup as we can so we can better leverage
     CSS to style and make our content display as intended
 
     We want to treat the title of each section the same as our h1 headings. We do
@@ -254,6 +235,7 @@
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="h1">
     <xsl:element name="h1">
       <xsl:if test="@align">
@@ -380,6 +362,67 @@
     </xsl:element>
   </xsl:template>
 
+  <!-- BLOCKQUOTES, QUOTES AND ASIDES -->
+  <!-- BLOCKQUOTE-->
+  <xsl:template match="blockquote">
+    <xsl:element name="blockquote">
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates />
+    </xsl:element>
+  </xsl:template>
+
+  <!-- BLOCKQUOTE ATTRIBUTION-->
+  <xsl:template match="attribution">
+    <xsl:element name="cite">
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- INLINE QUOTATION -->
+  <xsl:template match="quote">
+    <q><xsl:value-of select="."/></q>
+  </xsl:template>
+
+  <!-- ASIDE ELEMENT -->
+  <xsl:template match="aside">
+    <aside>
+      <xsl:if test="type">
+        <xsl:attribute name="data-type">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </aside>
+  </xsl:template>
 
   <!-- DIV ELEMENT -->
   <xsl:template match="div">
@@ -443,9 +486,6 @@
   </xsl:template>
 
   <!-- STYLES -->
-  <!--
-    TODO: INVESTIGATE WHY STYLES ARE NOT NESTING PROPERLY
-  -->
   <xsl:template match="strong">
     <strong><xsl:apply-templates /></strong>
   </xsl:template>
@@ -501,15 +541,24 @@
   </xsl:template>
 
   <!-- FENCED CODE FRAGMENTS -->
+  <!--
+    Until we get highlight.js working we're wrapping code blocks
+    on a div with class = code.
+
+    When highlight.js works we can remove the exta wrapper
+  -->
   <xsl:template match="code">
-    <xsl:element name="pre">
-      <xsl:element name="code">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@language"/>
-        </xsl:attribute>
-        <xsl:value-of select="."/>
+    <xsl:element name="div">
+      <xsl:attribute name="class">code</xsl:attribute>
+      <xsl:element name="pre">
+        <xsl:element name="code">
+          <xsl:attribute name="class">
+            <xsl:value-of select="@language"/>
+          </xsl:attribute>
+          <xsl:value-of select="."/>
+        </xsl:element>
       </xsl:element>
-    </xsl:element>
+      </xsl:element>
   </xsl:template>
 
   <!-- LIST AND LIST ITEMS -->
@@ -562,6 +611,13 @@
   </xsl:template>
 
   <!-- FIGURES -->
+  <!--
+    Note that according to spec you can also use figure to create code blocks,
+    that we create with the code tag.
+
+    We may create conditional branches to match the spec but I don't think
+    it's really useful as we already have something that performs that task
+  -->
   <xsl:template match="figure">
     <xsl:element name="figure">
       <xsl:if test="(@class)">
@@ -574,19 +630,45 @@
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(image/@width)">
-        <xsl:attribute name="width">
-          <xsl:value-of select="image/@width"/>
-        </xsl:attribute>
-      </xsl:if>
-      <xsl:if test="(image/@height)">
+      <!--
+        If the width of the figure is smaller than the width of the containing image
+        we may have display problems.
+
+        If the width of the containging figure is smaller than the width of the image,
+        make the figure width equal to the width of hthe image, otherwise use the width
+        of the figure element
+      -->
+      <xsl:choose>
+        <xsl:when test="@width gt image/@width">
+          <xsl:attribute name="width">
+            <xsl:value-of select="@width"/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="width">
+            <xsl:value-of select="image/@width"/>
+          </xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+      <!--
+        We don't care about height as much as we do width, the caption
+        and image are contained inside the figure.
+
+        We only test if it exists. It's up to the author to make sure
+        there are no conflicts
+      -->
+      <xsl:if test="(@height)">
         <xsl:attribute name="height">
-          <xsl:value-of select="image/@height"/>
+          <xsl:value-of select="@height"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(image/@align)">
+      <!--
+        Alignment can be different. We can have a centered image inside a
+        left aligned figure
+      -->
+      <xsl:if test="(@align)">
         <xsl:attribute name="align">
-          <xsl:value-of select="image/@align"/>
+          <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
       <xsl:apply-templates select="image"/>
@@ -595,7 +677,7 @@
   </xsl:template>
 
   <xsl:template match="figcaption">
-    <xsl:apply-templates/>
+    <figcaption><xsl:apply-templates/></figcaption>
   </xsl:template>
 
   <xsl:template match="image">

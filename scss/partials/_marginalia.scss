@@ -16,12 +16,6 @@ aside {
 
 }
 
-blockquote {
-  margin-left: 1em;
-  margin-bottom: 1em;
-  font-style: italic;
-}
-
 .opening {
   font-size: 2em;
   text-align: center;
@@ -65,20 +59,33 @@ blockquote {
   list-style: none;
 }
 
+// Blockquote styles
+blockquote {
+  border-left: 5px solid #060f94;
+  color: #222023;
+  font-style: italic;
+  font-weight: 200;
+  font-size: 1.2em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  margin-left: 2em;
+  padding-left: 0.5;
+}
+
 
 // Testing classes for pullquotes like the ones
 // in this URL: http://es.pn/1Ekby6O
 .pullquote {
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 38px;
-  width: 200px;
-  margin-right: 100px;
-  padding: 20px 0 20px 0;
   border-top: 18px solid #000;
   border-bottom: 18px solid #000;
+  font-size: 36px;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  line-height: 38px;
+  margin-right: 100px;
+  padding: 20px 0 20px 0;
   position: relative;
+  width: 200px;
 
   p {
     position: relative;
