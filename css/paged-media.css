@@ -34,40 +34,42 @@ Prince XML User Guide: http://www.princexml.com/doc/9.0/
   }
 }
 
-body[data-type="book"] {
+body[data-type='book'] {
   color: cmyk(0%,0%,100%,100%);
   hyphens: auto;
 }
 
 /* page counters are tricky */
-body[data-type="book"] > div[data-type="part"]:first-of-type,
-body[data-type="book"] > section[data-type="chapter"]:first-of-type { counter-reset: page 1 }
-body[data-type="book"] > section[data-type="chapter"]+div[data-type="part"] { counter-reset: none }
 
+body[data-type='book'] > div[data-type='part']:first-of-type,
+body[data-type='book'] > section[data-type='chapter']:first-of-type,
+body[data-type='book'] + section[data-type='chapter']:first-of-type { counter-reset: page 1 }
+body[data-type='book'] > section[data-type='chapter']+div[data-type='part'] { counter-reset: none }
 
 /* Title Page*/
-section[data-type="titlepage"] { page: titlepage }
+section[data-type='titlepage'] { page: titlepage }
 
 
 /* Copyright page */
-section[data-type="copyright"] { page: copyright }
+section[data-type='copyright'] { page: copyright }
 
 /* Dedication */
 
-section[data-type="dedication"] {
+section[data-type='dedication'] {
   page: dedication;
   page-break-before: always;
 }
 
 /* TOC */
-section[data-type="toc"] {
+section[data-type='toc'] {
   page: toc;
   page-break-before: always;
 }
+
 /*
- nav[data-type="toc"]  ol { list-style-type: none }
+ nav[data-type='toc']  ol { list-style-type: none }
  TESTING LEADER CONTENT */
-nav[data-type="toc"] nav ol li a:after { content: leader(dotted) " " target-counter(attr(href, url), page); }
+nav[data-type='toc'] nav ol li a:after { content: leader(dotted) ' ' target-counter(attr(href, url), page); }
 
 /* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
 /* Right Side */
@@ -77,12 +79,13 @@ nav[data-type="toc"] nav ol li a:after { content: leader(dotted) " " target-coun
 }
 
 @page foreword:right {
-  @bottom-right-corner { content: counter(page, lower-roman) }
+  @bottom-center { content: counter(page, lower-roman) }
   @bottom-left-corner { content: normal }
 }
 
 @page preface:right {
-  @bottom-right-corner { content: counter(page, lower-roman) }
+  @bottom-center {content: counter(page, lower-roman)}
+  @bottom-right-corner { content: normal }
   @bottom-left-corner { content: normal }
 }
 
@@ -98,51 +101,62 @@ nav[data-type="toc"] nav ol li a:after { content: leader(dotted) " " target-coun
 }
 
 @page preface:left  {
-  @bottom-left-corner { content: counter(page, lower-roman) }
+  @bottom-center {content: counter(page, lower-roman)}
   @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
 }
 
 /* Foreword  */
-section[data-type="foreword"] { page: foreword }
-
+section[data-type='foreword'] { page: foreword }
 
 /* Preface*/
-section[data-type="preface"] { page: preface }
+section[data-type='preface'] { page: preface }
 
 /* Part */
-div[data-type="part"] { page: part }
+div[data-type='part'] { page: part }
 
 /* Chapter */
-section[data-type="chapter"] {
+section[data-type='chapter'] {
   page: chapter;
   page-break-before: always;
 }
 
 /* Appendix */
-section[data-type="appendix"] {
+section[data-type='appendix'] {
   page: appendix;
   page-break-before: always;
 }
 
 /* Glossary*/
-section[data-type="glossary"] { page: glossary }
+section[data-type='glossary'] { page: glossary }
 
 /* Bibliography */
-section[data-type="bibliography"] { page: bibliography }
+section[data-type='bibliography'] { page: bibliography }
 
 /* Index */
-section[data-type="index"] { page: index }
+section[data-type='index'] { page: index }
 
 /* Colophon */
-section[data-type="colophon"] { page: colophon }
+section[data-type='colophon'] { page: colophon }
 
 /* Common Content Page Numbering  in Arabic numerals 1... 199 */
 @page titlepage{ /* Need this to clean up page numbers in titlepage in Prince*/
+  margin-top: 18em;
   @bottom-right-corner { content: normal }
   @bottom-left-corner { content: normal }
+  page-break-after: always;
+}
+
+@page dedication { /* Need this to clean up page numbers in titlepage in Prince*/
+  page-break-before: always;
+  margin-top: 18em;
+  @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
+
 }
 
 @page chapter:blank { /* Need this to clean up page numbers in titlepage in Prince*/
+  @top-center { content: "This page is intentionally left blank" }
   @bottom-left-corner { content: normal;}
   @bottom-right-corner {content:normal;}
 }
@@ -218,15 +232,17 @@ p.rh {
   position: running(heading);
   text-align: center;
   font-style: italic;
-
 }
 
-span.footnote {
-  float: footnote;
-}
+
+
 /*
   Footnotes
 */
+span.footnote {
+  float: footnote;
+}
+
 ::footnote-marker {
   content: counter(footnote);
   list-style-position: inside;
@@ -244,14 +260,13 @@ span.footnote {
 
 /* XReferences */
 a.xref[href]::after {
-    content: " [See page " target-counter(attr(href), page) "]"
+    content: ' [See page ' target-counter(attr(href), page) ']'
 }
 
 /*
-  Bookmarks
+  PDF BOOKMARKS
 */
-
-section[data-type="chapter"] h1 {
+section[data-type='chapter'] h1 {
   -ah-bookmark-level: 1;
   -ah-bookmark-state: open;
   -ah-bookmark-label: content();
@@ -260,7 +275,7 @@ section[data-type="chapter"] h1 {
   prince-bookmark-label: content();
 }
 
-section[data-type="chapter"] h2 {
+section[data-type='chapter'] h2 {
   -ah-bookmark-level: 2;
   -ah-bookmark-state: closed;
   -ah-bookmark-label: content();
@@ -269,7 +284,7 @@ section[data-type="chapter"] h2 {
   prince-bookmark-label: content();
 }
 
-section[data-type="chapter"] h3 {
+section[data-type='chapter'] h3 {
   -ah-bookmark-level: 3;
   -ah-bookmark-state: closed;
   -ah-bookmark-label: content();
@@ -278,17 +293,17 @@ section[data-type="chapter"] h3 {
   prince-bookmark-label: content();
 }
 
-section[data-type="chapter"] h4 {
+section[data-type='chapter'] h4 {
   -ah-bookmark-level: 4;
   prince-bookmark-level: 4;
 }
 
-section[data-type="chapter"] h5 {
+section[data-type='chapter'] h5 {
   -ah-bookmark-level: 5;
   prince-bookmark-level: 5;
 }
 
-section[data-type="chapter"] h6 {
+section[data-type='chapter'] h6 {
   -ah-bookmark-level: 6;
   prince-bookmark-level: 6;
 }
