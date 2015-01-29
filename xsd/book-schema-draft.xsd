@@ -381,6 +381,7 @@
             <xs:documentation>A title and at least one paragraph </xs:documentation>
           </xs:annotation>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="anchor"/>
             <xs:element ref="code"/>
             <xs:element ref="para"/>
             <xs:element ref="ulist"/>
@@ -460,6 +461,7 @@
         </xs:annotation>
         <xs:complexType mixed="true">
             <xs:all>
+                <xs:element ref="anchor"/>
                 <xs:element ref="image"/>
                 <xs:element ref="figcaption"/>
             </xs:all>
@@ -672,6 +674,9 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
+            <xs:choice>
+              <xs:element ref="anchor"/>
+            </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
             <xs:attribute name="language" use="required"/>
         </xs:complexType>
@@ -700,6 +705,7 @@
       </xs:annotation>
       <xs:complexType mixed="true">
         <xs:choice maxOccurs="unbounded">
+          <xs:element ref="anchor"/>
           <xs:element ref="attribution"/>
           <xs:element ref="para"/>
         </xs:choice>
@@ -931,7 +937,8 @@
                 <xs:annotation>
                     <xs:documentation>A title and at least one paragraph </xs:documentation>
                 </xs:annotation>
-                <xs:element name="title" type="xs:token" minOccurs="1" maxOccurs="1"/>
+                <xs:element ref="anchor" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="title" type="xs:token" minOccurs="0" maxOccurs="1"/>
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element ref="code"/>
                     <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
