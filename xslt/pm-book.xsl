@@ -29,6 +29,7 @@
         <!-- Load Typekit Font -->
         <script src="https://use.typekit.net/qcp8nid.js"></script>
         <script>try{Typekit.load();}catch(e){}</script>
+        <!-- Normalize -->
         <!-- Paged Media Styles -->
         <link rel="stylesheet" href="css/pm-style.css" />
         <!--

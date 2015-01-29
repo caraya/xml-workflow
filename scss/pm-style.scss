@@ -19,8 +19,7 @@
 //
 // Even though CSS Lint throws a fit when I put font imports in a stylesheet,
 // I'm doing it to keep the HTML files clean. Eventually I'll switch to locally
-// hosted fonts in their own partial. Until then, suck it CSS Lint
-//
+// hosted fonts in their own partial.
 @import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
@@ -34,8 +33,6 @@
 //
 @import 'modules/variables';
 @import 'modules/mixins';
-
-@import 'modules/normalize';
 
 html {
   overflow-y: scroll;

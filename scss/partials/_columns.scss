@@ -19,20 +19,12 @@
 // THROUGH ATTRIBUTE PREFIXER?
 @mixin column-attribs ($cols, $gap, $fill: balance, $span: none) {
 //   How many columns?
-  -moz-column-count: $cols;
-  -webkit-column-count: $cols;
   column-count: $cols;
 //   Space between columns
-  -moz-column-gap: $gap;
-  -webkit-column-gap: $gap;
   column-gap: $gap;
 //   How do we fill the content of our columns, default is to balance
-  -moz-column-fill: $fill;
-  -webkit-column-fill: $fill;
   column-fill: $fill;
 //   Column span, defaul is not to span columns
-  -moz-column-span: $span;
-  -webkit-column-span: $span;
   column-span: $span;
 }
 

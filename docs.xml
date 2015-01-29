@@ -1457,6 +1457,63 @@ and with the optional attributes it will look like this
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
+</section>
+  <section type="chapter">
+    <title>Things to Do and Further Research</title>
+
+    <para>These are the things I want to look at after finishing mvp.</para>
+
+    <h2>Deep Linking using Emphasis</h2>
+
+    <para>The NYT developed a deep linking library called Emphasis (<link href="https://github.com/NYTimes/Emphasis" label="code"/> - <link href="http://open.blogs.nytimes.com/2011/01/11/emphasis-update-and-source/" label="writeup"/> that would allow us to create links to specific areas of our content.</para>
+
+    <para>Downside is that it uses jQuery and I'm not certain I want to go through the pain in the ass process of converting it to plain JS or ES6 (and if it's even possible)</para>
+
+    <para>Still, if we use jQuery for something else (video manipulation?) it may be worth exploring both as a sharing tool and as a technology.</para>
+
+    <para>One thing it doesn't do is handle mobile well, if at all. How do we make this tool work everywhere? <link href="http://www.w3.org/TR/pointerevents/" label="Pointer Events"/>?</para>
+
+    <h2>Explore how to add other parts of a book structure</h2>
+
+    <para>Right now we're working with chapters and chapter-like structures. What would it take to add parts? Do we need to add them to the schema and let them trickle from there? Do we really need them?</para>
+
+    <h2>Build Media Queries</h2>
+
+    <para>Particularly if we want to use the same XSLT and CSS for mutliple projects we need to be able to tailor the display for different devices and viewports.</para>
+
+    <para>Media Queries are the best solution (or are they?)</para>
+
+    <h2>Using XSLT to build navigation</h2>
+
+    <para>The same way we build the table of content should allow us to build navigation within the pages of a publication using preceeding-sibling and following-sibling logic</para>
+
+    <h2>Create a better way to generate filenames</h2>
+
+    <para>The current way to create filenames doesn't take into account that different <emphasis>section/@type</emphasis> elements have different starting values. Can I make it start from 1 for every @type in the document?</para>
+
+    <h2>Expand the use cases for this project</h2>
+
+    <para>The original idea was for text and code-heavy content. Is there a case to be made for a more expressive vocabulary? I'm thinking of additional elements for navigation and content display such as asides and blockquotes</para>
+
+    <h2>Explore implementing a serviceworker solution</h2>
+
+    <para>The core of the proposed offline capabilities is a scoped service worker that will initially handle the caching of the publication's content. We take advantage of the multiple cache capabilitity available with service workers to create caches for individual unitts of content (like magazine issues) and to expire them within a certain time period (by removing and deleting the cache).</para>
+
+    <para>For publications needing to pull data from specific URLs we can special case the requests based on different pieces of the URL allowing to create different caches based on edition (assuming each edition is stored in its own directory), resource type or even the URL we are requesting.</para>
+
+    <para>Serviceworkers have another benefit not directly related with offline connections. They will give all access to our content a speed boost by eliminating the network roundtrip after the content is installed. If the content is in the cache, the resource's time to load is only limited by the Hard Drive's speed.</para>
+
+    <h3>Limitations</h3>
+
+    <para>As powerful as service workers are they also have some drawbacks. They can only be served through HTTPS (you cannot install a service worker in a non secure server) to prevent <link href="http://www.wikiwand.com/en/Man-in-the-middle_attack" label="man-in-the-middle attacks"/>.</para>
+
+    <para>There is limited support for the API (only Chrome Canary and  Firefox Nightly builds behind a flag will work.) This will change as the API matures and becomes finalized in the WHATWG and/or a recommendation with the W3C.</para>
+
+    <para>Even in browsers that support the API the support is not complete. Chrome uses a polyfill for elements of the cache API that it does not support natively. This should be fixed in upcoming versions of Chrome and Chromium (the open source project Chrome is based on.)</para>
+
+    <para>We need to be careful with how much data we choose to store in the caches. From what I understand the ammount of storage given to offline applications is divided between all offline storage types: IndexedDB, Session Storage, Web Workers and ServiceWorkers and this amount is not consistent across all browsers.</para>
+
+    <para>Furthermore I am not aware of any way to increase this total amount or to specifically increase the storage assigned to ServiceWorkers; Jake Archibald mentions this in the offline cookbook section on <link href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence" label="cache persistence"/></para>
 
   </section>
 </book>

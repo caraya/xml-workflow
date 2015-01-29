@@ -22,6 +22,7 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-uglify": "^0.7.0",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-gh-pages": "^0.9.1",
     "grunt-mkdir": "^0.1.2",
     "grunt-scss-lint": "^0.3.4",
@@ -34,8 +35,5 @@
     "postinstall": "bower install",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1"
-  },
-  "dependencies": {
-    "grunt-contrib-watch": "^0.6.1"
   }
 }
