@@ -15,6 +15,7 @@
 
     grunt.initConfig({
 
+      // JAVASCRIPT TASKS
       // Hint the grunt file and all files under js/
       // and one directory below
       jshint: {
@@ -25,6 +26,30 @@
         }
       },
 
+      // Takes all the files under js/ and selected files under lib
+      // and concatenates them together. I've chosen not to mangle
+      // the compressed file
+      uglify: {
+        dist: {
+          options: {
+            mangle: false,
+            sourceMap: true,
+            sourceMapName: 'css/script.min.map'
+          },
+          files: {
+            'js/script.min.js': ['js/video.js', 'lib/highlight.pack.js']
+          }
+        }
+      },
+
+      jscs: {
+        options: {
+          'standard': 'Idiomatic'
+        },
+        all: ['js/']
+      },
+
+      // SASS RELATED TASKS
       // Converts all the files under scss/ ending with .scss
       // into the equivalent css file on the css/ directory
       sass: {
@@ -73,6 +98,34 @@
         }
       },
 
+
+      autoprefixer: {
+        options: {
+          // We need to `freeze` browsers versions for testing purposes.
+          browsers: ['last 2']
+        },
+
+        files: {
+          expand: true,
+          flatten: true,
+          src: 'scss/*.scss',
+          dest: 'css/'
+        }
+      },
+
+      // CSS TASKS TO RUN AFTER CONVERSION
+      // Cleans the CSS based on what's used in the specified files
+      // See https://github.com/addyosmani/grunt-uncss for more
+      // information
+      uncss: {
+        dist: {
+          files: {
+            'css/tidy.css': ['*.html', '!docs.html']
+          }
+        }
+      },
+
+      // FILE MANAGEMENT
       // Can't seem to make the copy task create the directory
       // if it doesn't exist so we go to another task to create
       // the fn directory
@@ -85,15 +138,13 @@
       },
 
       // Copy the files from our repository into the build directory
-      'copy': {
+      copy: {
         build: {
-          files: [
-            {
-              expand: true,
-              src: ['app/**/*'],
-              dest: 'build/'
-            }
-          ]
+          files: [{
+            expand: true,
+            src: ['app/**/*'],
+            dest: 'build/'
+          }]
         }
       },
 
@@ -102,6 +153,7 @@
         production: ['build/']
       },
 
+      // GH-PAGES TASK
       // Push the specified content into the repositories gh-pages branch
       'gh-pages': {
         options: {
@@ -115,7 +167,7 @@
         src: ['**/*']
       },
 
-
+      // WATCH TASK
       // Watch for changes on the js and scss files and perform
       // the specified task
       watch: {
@@ -131,26 +183,75 @@
           files: ['scss/*.scss'],
           tasks: ['sass']
         }
+      },
+
+      // COMPILE AND EXECUTE TASKS
+      // rather than using Ant, I've settled on Grunt's shell
+      // task to run the compilation steps to create HTML and PDF.
+      // This reduces teh number of dependecies for our project
+      shell: {
+        options: {
+          failOnError: true,
+          stderr: false
+        },
+        html: {
+          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/book.xsl docs.xml -o:index.html'
+        },
+        single: {
+          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/pm-book.xsl docs.xml -o:docs.html'
+        },
+        prince: {
+          command: 'prince --verbose --javascript docs.html -o docs.pdf'
+        }
       }
+
+
     }); // closes initConfig
 
+    // CUSTOM TASKS
+    // Usually a combination of one or more tasks defined above
     grunt.task.registerTask(
-      'lint-work',
+      'lint',
       [
         'scsslint',
         'jshint'
       ]
     );
 
-//    grunt.task.registerTask(
-//      'publish',
-//      [
-//        'clean:production',
-//        'mkdir:build',
-//        'jshint',
-//        'copy:build',
-//        'gh-pages'
-//      ]
-//    );
+    // Prep CSS starting with SASS, autoprefix et. al
+    grunt.task.registerTask(
+      'prep-css',
+      [
+        'scsslint',
+        'sass:dev',
+        'autoprefixer'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'prep-js',
+      [
+        'jshint',
+        'uglify'
+      ]
+    );
+
+    // This task should run last, after all the other tasks are completed
+    grunt.task.registerTask(
+      'generate-pdf',
+      [
+        'shell:single',
+        'shell:prince'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-all',
+      [
+        'shell'
+      ]
+    );
+
+
   }; // closes module.exports
 }()); // closes the use strict function
