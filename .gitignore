@@ -7,3 +7,4 @@ bower_components
 *.zip
 .sass-cache/
 ideas/
+scss-lint.log
