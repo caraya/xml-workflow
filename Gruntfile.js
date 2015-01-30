@@ -125,6 +125,57 @@
         }
       },
 
+      // OPTIONAL TASKS
+      // Tasks below have been set up but are currently not used.
+      // If you want them, uncomment the corresponding block below
+
+      // COFFEESCRIPT
+      // If you want to use coffeescript (http://coffeescript.org/)
+      // instead of vanilla JS, uncoment the block below and change
+      // the cwd value to the locations of your coffee files
+      // coffee: {
+      //  target1: {
+      //    expand: true,
+      //    flatten: true,
+      //    cwd: 'src/',
+      //    src: ['*.coffee'],
+      //    dest: 'build/',
+      //    ext: '.js'
+      //
+      //},
+      // GH-PAGES TASK
+      // Push the specified content into the repositories gh-pages branch
+      //'gh-pages': {
+      //  options: {
+      //    message: 'Content committed from Grunt gh-pages',
+      //    base: './build/app',
+      //    dotfiles: true
+      //  },
+      //  // These files will get pushed to the `
+      //  // gh-pages` branch (the default)
+      //  // We have to specifically remove node_modules
+      //  src: ['**/*']
+      //},
+      //
+      //SFTP TASK
+      //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
+      //to store files in a remote SFTP server. Alternative to gh-pages
+      //secret: grunt.file.readJSON('secret.json'),
+      //sftp: {
+      //  test: {
+      //    files: {
+      //      "./": "*json"
+      //    },
+      //    options: {
+      //      path: '/tmp/',
+      //      host: '<%= secret.host %>',
+      //      username: '<%= secret.username %>',
+      //      password: '<%= secret.password %>',
+      //      showProgress: true
+      //    }
+      //  }
+      //},
+
       // FILE MANAGEMENT
       // Can't seem to make the copy task create the directory
       // if it doesn't exist so we go to another task to create
@@ -212,6 +263,13 @@
     // Usually a combination of one or more tasks defined above
     grunt.task.registerTask(
       'lint',
+      [
+        'jshint'
+      ]
+    )
+
+    grunt.task.registerTask(
+      'lint-all',
       [
         'scsslint',
         'jshint'

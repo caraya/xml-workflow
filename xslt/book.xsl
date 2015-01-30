@@ -42,25 +42,17 @@
           <xsl:value-of select="system-property('xsl:product-version')"/>
         </xsl:attribute>
       </xsl:element>
-      <xsl:element name="meta">
-        <xsl:attribute name="vendor">
-          <xsl:value-of select="system-property('xsl:vendor-url')" />
-        </xsl:attribute>
-      </xsl:element>
-      <xsl:element name="meta">
-        <xsl:attribute name="vendor-URL">
-          <xsl:value-of select="system-property('xsl:vendor-url')" />
-        </xsl:attribute>
-      </xsl:element>
       <!-- Load Typekit Font -->
       <script src="//use.typekit.net/qcp8nid.js"></script>
       <script>try{Typekit.load();}catch(e){}</script>
+      <!-- Load Normalize library -->
+      <link rel="stylesheet" href="css/normalize.css"/>
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="(code)">
         <!--
               Use highlight.js and docco style
             -->
-        <link rel="stylesheet" href="css/styles/docco.css" />
+        <link rel="stylesheet" href="css/styles/railscasts.css" />
         <!-- Load highlight.js -->
         <script src="lib/highlight.pack.js"></script>
         <script>
@@ -73,21 +65,28 @@
       -->
     </head>
     <body>
+      <xsl:apply-templates select="/" mode="toc"/>
       <xsl:apply-templates/>
     </body>
     </html>
   </xsl:template>
 
-<xsl:template match="book" mode="toc">
+  <xsl:template match="book" mode="toc">
       <section data-type="toc">
+        <h2>Table of Contents</h2>
         <nav>
-          <xsl:element name="li">
-            <xsl:element name="a">
-              <xsl:attribute name="href">
-                <xsl:value-of select="concat((@type), (position()-1),'.html')"/>
-              </xsl:attribute>
-            </xsl:element>
-          </xsl:element>
+          <ol>
+            <xsl:for-each select="section">
+              <xsl:element name="li">
+                <xsl:element name="a">
+                  <xsl:attribute name="href">
+                    <xsl:value-of select="concat(@type, position(),'.html')"/>
+                  </xsl:attribute>
+                  <xsl:value-of select="title"/>
+                </xsl:element>
+              </xsl:element>
+            </xsl:for-each>
+          </ol>
         </nav>
       </section>
   </xsl:template>
@@ -103,7 +102,7 @@
   <!-- Section -->
   <xsl:template match="section">
     <!-- Variable to create section file names -->
-    <xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/>
+    <xsl:variable name="fileName" select="concat(@type, (position()-1),'.html')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
     <xsl:result-document href='{$fileName}' format="xhtml-out">
       <html>
@@ -112,11 +111,13 @@
           <script src="//use.typekit.net/qcp8nid.js"></script>
           <script>try{Typekit.load();}catch(e){}</script>
           <link rel="stylesheet" href="css/style.css" />
+          <!-- Load Normalize library -->
+          <link rel="stylesheet" href="css/normalize.css"/>
           <xsl:if test="(code)">
             <!--
               Use highlight.js and github style
             -->
-            <link rel="stylesheet" href="css/styles/docco.css" />
+            <link rel="stylesheet" href="css/styles/railscasts.css" />
             <!-- Load highlight.js -->
             <script src="lib/highlight.pack.js"></script>
             <script>
@@ -130,17 +131,17 @@
         </head>
         <body>
           <section>
-            <xsl:if test="@type">
+            <xsl:if test="string(@type)">
               <xsl:attribute name="data-type">
                 <xsl:value-of select="@type"/>
               </xsl:attribute>
             </xsl:if>
-            <xsl:if test="(@class)">
+            <xsl:if test="string(@class)">
               <xsl:attribute name="class">
                 <xsl:value-of select="@class"/>
               </xsl:attribute>
             </xsl:if>
-            <xsl:if test="(@id)">
+            <xsl:if test="string(@id)">
               <xsl:attribute name="id">
                 <xsl:value-of select="@id"/>
               </xsl:attribute>
@@ -158,7 +159,7 @@
   </xsl:template>
 
   <xsl:template match="edition">
-    <p class="no-margin-left">Edition: <xsl:value-of select="."/></p>
+    <p>Edition: <xsl:value-of select="."/></p>
   </xsl:template>
 
   <!-- PEOPLE GROUPS -->
@@ -217,17 +218,17 @@
   -->
   <xsl:template match="title ">
     <xsl:element name="h1">
-      <xsl:if test="@align">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -238,38 +239,38 @@
 
   <xsl:template match="h1">
     <xsl:element name="h1">
-      <xsl:if test="@align">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:value-of select="."/>
-    </xsl:element>
+        <xsl:value-of select="."/>
+    </xsl:element> <!-- closes h1 -->
   </xsl:template>
 
   <xsl:template match="h2">
     <xsl:element name="h2">
-      <xsl:if test="@align">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -280,17 +281,17 @@
 
   <xsl:template match="h3">
     <xsl:element name="h3">
-      <xsl:if test="@align">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -301,17 +302,17 @@
 
   <xsl:template match="h4">
     <xsl:element name="h4">
-      <xsl:if test="@align">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -322,17 +323,17 @@
 
   <xsl:template match="h5">
     <xsl:element name="h5">
-      <xsl:if test="@align">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -343,17 +344,17 @@
 
   <xsl:template match="h6">
     <xsl:element name="h6">
-      <xsl:if test="@align">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -366,12 +367,12 @@
   <!-- BLOCKQUOTE-->
   <xsl:template match="blockquote">
     <xsl:element name="blockquote">
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -383,12 +384,12 @@
   <!-- BLOCKQUOTE ATTRIBUTION-->
   <xsl:template match="attribution">
     <xsl:element name="cite">
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -405,17 +406,17 @@
   <!-- ASIDE ELEMENT -->
   <xsl:template match="aside">
     <aside>
-      <xsl:if test="type">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="data-type">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -427,17 +428,17 @@
   <!-- DIV ELEMENT -->
   <xsl:template match="div">
     <xsl:element name="div">
-      <xsl:if test="@align">
-        <xsl:attribute name="align">
+      <xsl:if test="string(@align)">
+        <xsl:attribute name="data-type">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -449,17 +450,17 @@
   <!-- SPAN ELEMENT-->
   <xsl:template match="span">
     <xsl:element name="span">
-      <xsl:if test="@type">
+      <xsl:if test="string(@type)">
         <xsl:attribute name="data-type">
           <xsl:value-of select="@type"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -471,12 +472,12 @@
   <!-- PARAGRAPHS -->
   <xsl:template match="para">
     <xsl:element name="p">
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -505,12 +506,12 @@
   <!-- LINKS AND ANCHORS -->
   <xsl:template match="link">
       <xsl:element name="a">
-        <xsl:if test="(@class)">
+        <xsl:if test="string(@class)">
           <xsl:attribute name="class">
             <xsl:value-of select="@class"/>
           </xsl:attribute>
         </xsl:if>
-        <xsl:if test="(@id)">
+        <xsl:if test="string(@id)">
           <xsl:attribute name="id">
             <xsl:value-of select="@id"/>
           </xsl:attribute>
@@ -548,28 +549,25 @@
     When highlight.js works we can remove the exta wrapper
   -->
   <xsl:template match="code">
-    <xsl:element name="div">
-      <xsl:attribute name="class">code</xsl:attribute>
-      <xsl:element name="pre">
-        <xsl:element name="code">
-          <xsl:attribute name="class">
+    <xsl:element name="pre">
+      <xsl:element name="code">
+          <xsl:attribute name="language">
             <xsl:value-of select="@language"/>
           </xsl:attribute>
           <xsl:value-of select="."/>
         </xsl:element>
-      </xsl:element>
-      </xsl:element>
+    </xsl:element>
   </xsl:template>
 
   <!-- LIST AND LIST ITEMS -->
   <xsl:template match="ulist">
     <xsl:element name="ul">
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -580,12 +578,12 @@
 
   <xsl:template match="olist">
     <xsl:element name="ol">
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -596,12 +594,12 @@
 
   <xsl:template match="item">
     <xsl:element name="li">
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -620,12 +618,12 @@
   -->
   <xsl:template match="figure">
     <xsl:element name="figure">
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
@@ -657,7 +655,7 @@
         We only test if it exists. It's up to the author to make sure
         there are no conflicts
       -->
-      <xsl:if test="(@height)">
+      <xsl:if test="string(@height)">
         <xsl:attribute name="height">
           <xsl:value-of select="@height"/>
         </xsl:attribute>
@@ -666,7 +664,7 @@
         Alignment can be different. We can have a centered image inside a
         left aligned figure
       -->
-      <xsl:if test="(@align)">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
@@ -688,27 +686,27 @@
       <xsl:attribute name="alt">
         <xsl:value-of select="@alt"/>
       </xsl:attribute>
-      <xsl:if test="(@width)">
+      <xsl:if test="string(@width)">
         <xsl:attribute name="width">
           <xsl:value-of select="@width"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@height)">
+      <xsl:if test="string(@height)">
         <xsl:attribute name="height">
           <xsl:value-of select="@height"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@align)">
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>

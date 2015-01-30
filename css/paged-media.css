@@ -13,6 +13,9 @@ Antenna House Formatter Onine Manual: http://antennahouse.com/XSLsample/help/V62
 Prince XML User Guide: http://www.princexml.com/doc/9.0/
 */
 
+/*
+ * STEP 1: DEFINE THE DEFAULT PAGE
+ */
 @page {
   size: 8.5in 11in;
   margin: 0.5in 1in;
@@ -26,35 +29,35 @@ Prince XML User Guide: http://www.princexml.com/doc/9.0/
     }
   }
 
-@page chapter {
-  @bottom-center {
-    vertical-align: middle;
-    text-align: center;
-    content: element(heading);
-  }
-}
 
+/*
+ * CMYK COLOT SCHEME FOR BOOK
+ */
 body[data-type='book'] {
-  color: cmyk(0%,0%,100%,100%);
+  /*  color: cmyk(0%,0%,100%,100%); */
   hyphens: auto;
 }
 
-/* page counters are tricky */
-
+/* PAGE COUNTERS */
 body[data-type='book'] > div[data-type='part']:first-of-type,
-body[data-type='book'] > section[data-type='chapter']:first-of-type,
-body[data-type='book'] + section[data-type='chapter']:first-of-type { counter-reset: page 1 }
-body[data-type='book'] > section[data-type='chapter']+div[data-type='part'] { counter-reset: none }
+body[data-type='book'] > section[data-type='chapter']:first-of-type {
+  counter-reset: page
+}
+body[data-type='book'] > section[data-type='chapter']+div[data-type='part'] {
+  counter-reset: none
+}
+
+/*
+ * MATCH THE PARTS OF OUR BOOK FILE TO EACH OF OUR PAGES DEFINED LATER
+ */
 
 /* Title Page*/
 section[data-type='titlepage'] { page: titlepage }
-
 
 /* Copyright page */
 section[data-type='copyright'] { page: copyright }
 
 /* Dedication */
-
 section[data-type='dedication'] {
   page: dedication;
   page-break-before: always;
@@ -65,45 +68,9 @@ section[data-type='toc'] {
   page: toc;
   page-break-before: always;
 }
-
-/*
- nav[data-type='toc']  ol { list-style-type: none }
- TESTING LEADER CONTENT */
-nav[data-type='toc'] nav ol li a:after { content: leader(dotted) ' ' target-counter(attr(href, url), page); }
-
-/* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
-/* Right Side */
-@page toc:right {
-  @bottom-right-corner { content: counter(page, lower-roman) }
-  @bottom-left-corner { content: normal }
-}
-
-@page foreword:right {
-  @bottom-center { content: counter(page, lower-roman) }
-  @bottom-left-corner { content: normal }
-}
-
-@page preface:right {
-  @bottom-center {content: counter(page, lower-roman)}
-  @bottom-right-corner { content: normal }
-  @bottom-left-corner { content: normal }
-}
-
-/* Left Side*/
-@page toc:left  {
-  @bottom-left-corner { content: counter(page, lower-roman) }
-  @bottom-right-corner { content: normal }
-}
-
-@page foreword:left  {
-  @bottom-left-corner { content: counter(page, lower-roman) }
-  @bottom-right-corner { content: normal }
-}
-
-@page preface:left  {
-  @bottom-center {content: counter(page, lower-roman)}
-  @bottom-right-corner { content: normal }
-  @bottom-left-corner { content: normal }
+/* Leader for toc page */
+section[data-type='toc'] nav ol li a:after {
+  content: leader(dotted) ' ' target-counter(attr(href, url), page);
 }
 
 /* Foreword  */
@@ -139,12 +106,47 @@ section[data-type='index'] { page: index }
 /* Colophon */
 section[data-type='colophon'] { page: colophon }
 
+
+/* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
+@page toc:right {
+  @bottom-right-corner { content: counter(page, lower-roman) }
+  @bottom-left-corner { content: normal }
+}
+
+@page toc:left  {
+  @bottom-left-corner { content: counter(page, lower-roman) }
+  @bottom-right-corner { content: normal }
+}
+
+
+@page foreword:right {
+  @bottom-center { content: counter(page, lower-roman) }
+  @bottom-left-corner { content: normal }
+}
+
+@page foreword:left  {
+  @bottom-left-corner { content: counter(page, lower-roman) }
+  @bottom-right-corner { content: normal }
+}
+
+
+@page preface:right {
+  @bottom-center {content: counter(page, lower-roman)}
+  @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
+}
+
+@page preface:left  {
+  @bottom-center {content: counter(page, lower-roman)}
+  @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
+}
+
 /* Common Content Page Numbering  in Arabic numerals 1... 199 */
 @page titlepage{ /* Need this to clean up page numbers in titlepage in Prince*/
   margin-top: 18em;
   @bottom-right-corner { content: normal }
   @bottom-left-corner { content: normal }
-  page-break-after: always;
 }
 
 @page dedication { /* Need this to clean up page numbers in titlepage in Prince*/
@@ -155,16 +157,29 @@ section[data-type='colophon'] { page: colophon }
 
 }
 
+
+@page chapter {
+  @bottom-center {
+    vertical-align: middle;
+    text-align: center;
+    content: element(heading);
+  }
+}
+
 @page chapter:blank { /* Need this to clean up page numbers in titlepage in Prince*/
   @top-center { content: "This page is intentionally left blank" }
   @bottom-left-corner { content: normal;}
   @bottom-right-corner {content:normal;}
 }
 
-/* Right Side*/
 @page chapter:right  {
   @bottom-right-corner { content: counter(page) }
   @bottom-left-corner { content: normal }
+}
+
+@page chapter:left {
+  @bottom-left-corner { content: counter(page) }
+  @bottom-right-corner { content: normal }
 }
 
 @page appendix:right  {
@@ -172,30 +187,14 @@ section[data-type='colophon'] { page: colophon }
   @bottom-left-corner { content: normal }
 }
 
-@page glossary:right,  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-@page bibliography:right  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-@page index:right  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-/* Left Side */
-@page chapter:left {
-  @bottom-left-corner { content: counter(page) }
-  @bottom-right-corner { content: normal }
-}
-
 @page appendix:left {
   @bottom-left-corner { content: counter(page) }
   @bottom-right-corner { content: normal }
+}
+
+@page glossary:right,  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
 }
 
 @page glossary:left, {
@@ -203,29 +202,24 @@ section[data-type='colophon'] { page: colophon }
   @bottom-right-corner { content: normal }
 }
 
+@page bibliography:right  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
+}
+
 @page bibliography:left {
   @bottom-left-corner { content: counter(page) }
   @bottom-right-corner { content: normal }
 }
 
+@page index:right  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
+}
+
 @page index:left {
   @bottom-left-corner { content: counter(page) }
   @bottom-right-corner { content: normal }
-}
-
-
-/* One possible way to style figures,  figure caption and figure images */
-/*
-figure { border: 1px solid #f00; }
-figure caption {}
-figure img { max-width: 100% }
-*/
-code { font-family: monospace }
-
-/* Widows and orphans */
-p {
-  orphans:4; /* min number of lines of a paragraph left at bottom of a page */
-  widows:2; /* min number of lines of a paragraph that left at top of a page.*/
 }
 
 p.rh {
@@ -234,11 +228,7 @@ p.rh {
   font-style: italic;
 }
 
-
-
-/*
-  Footnotes
-*/
+/* Footnotes */
 span.footnote {
   float: footnote;
 }
@@ -263,9 +253,7 @@ a.xref[href]::after {
     content: ' [See page ' target-counter(attr(href), page) ']'
 }
 
-/*
-  PDF BOOKMARKS
-*/
+/* PDF BOOKMARKS */
 section[data-type='chapter'] h1 {
   -ah-bookmark-level: 1;
   -ah-bookmark-state: open;

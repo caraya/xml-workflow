@@ -29,7 +29,6 @@
         <!-- Load Typekit Font -->
         <script src="https://use.typekit.net/qcp8nid.js"></script>
         <script>try{Typekit.load();}catch(e){}</script>
-        <!-- Normalize -->
         <!-- Paged Media Styles -->
         <link rel="stylesheet" href="css/pm-style.css" />
         <!--
@@ -39,7 +38,7 @@
         <!--
               Use highlight.js and docco style
         -->
-        <link rel="stylesheet" href="css/styles/docco.css" />
+        <link rel="stylesheet" href="css/styles/railscasts.css" />
         <!-- Load highlight.js -->
         <script src="lib/highlight.pack.js"></script>
         <script>
@@ -55,8 +54,8 @@
               <xsl:value-of select="system-property('xsl:product-version')"/>
             </xsl:attribute>
           </xsl:element>
+        <xsl:apply-templates select="/" mode="toc"/>
         <xsl:apply-templates/>
-        <!-- <xsl:apply-templates select="book" mode="toc"/> -->
       </body>
     </html>
   </xsl:template>
@@ -77,39 +76,35 @@
 
     Only the templates defined in this stilesheet are overriden or created.
   -->
-  <xsl:template match="book/section">
+  <xsl:template match="section">
     <section>
       <xsl:choose>
-        <xsl:when test="@type">
+        <xsl:when test="string(@type)">
           <xsl:attribute name="data-type">
             <xsl:value-of select="@type"/>
           </xsl:attribute>
         </xsl:when>
         <xsl:otherwise>
           <xsl:message terminate="yes">
-            Type attribute is required for paged media
+            Type attribute is required for paged media.Check your section tags for missing type attributes
           </xsl:message>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:element name="a">
-        <xsl:attribute name="name">
-          <xsl:value-of select="concat('ch', position())"/>
-        </xsl:attribute>
-      </xsl:element>
+      <!-- Running header paragraph -->
       <xsl:element name="p">
         <xsl:attribute name="class">rh</xsl:attribute>
         <xsl:value-of select="title"/>
-      </xsl:element>
+      </xsl:element> <!-- closses rh class -->
       <xsl:apply-templates/>
     </section>
   </xsl:template>
@@ -122,46 +117,50 @@
     </xsl:element>
   </xsl:template>
 
-
-
   <!-- Create Table of Contents ... work in progress -->
-  <xsl:template match="book" mode="toc">
-    <xsl:variable name="fileName" select="concat('#', (@type), (position()-1))"/>
+  <xsl:template match="/" mode="toc">
     <section data-type="toc">
       <h2>Table of Contents</h2>
       <nav>
         <ol>
-          <li><a href="${filename}"><xsl:value-of select="section/title"/></a>
-          </li>
+          <xsl:for-each select="//section">
+            <li>
+              <a>
+                <xsl:attribute name="href">
+                  <xsl:value-of select="concat('#', generate-id())"/>
+                </xsl:attribute>
+                <xsl:value-of select="title"/>
+              </a>
+            </li>
+          </xsl:for-each>
         </ol>
       </nav>
     </section>
   </xsl:template>
-  <!--
-    <xsl:template match="h1">
+
+  <xsl:template match="title">
     <xsl:element name="h1">
-      <xsl:if test="@align">
+      <xsl:attribute name="id">
+        <xsl:value-of select="generate-id(..)"/>
+      </xsl:attribute>
+      <xsl:if test="string(@align)">
         <xsl:attribute name="align">
           <xsl:value-of select="@align"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@class)">
+      <xsl:if test="string(@class)">
         <xsl:attribute name="class">
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:if test="(@id)">
+      <!--
+      <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:element name="a">
-        <xsl:attribute name="name">
-          <xsl:value-of select="concat('ch', position())"/>
-        </xsl:attribute>
-      </xsl:element>
+      -->
       <xsl:value-of select="."/>
-    </xsl:element>
+    </xsl:element> <!-- closes h1 -->
   </xsl:template>
-  -->
 </xsl:stylesheet>
