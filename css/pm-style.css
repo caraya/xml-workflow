@@ -197,6 +197,13 @@ h6 {
   text-align: inherit;
 }
 
+section[data-type='bibliography'] p {
+  text-align: left;
+}
+section[data-type='bibliography'] p + p {
+  text-indent: 0 !important;
+}
+
 section[data-type='titlepage'] h1,
 section[data-type='titlepage'] h2 {
   text-align: center;
@@ -219,11 +226,6 @@ section[data-type='dedication'] p + p {
   text-indent: 0 !important;
 }
 
-.code {
-  background-color: #eee;
-  opacity: .75;
-}
-
 pre {
   overflow-wrap: break-word;
   white-space: pre-line !important;
@@ -238,6 +240,11 @@ pre code {
 
 .justified {
   text-align: justify;
+}
+
+.code {
+  background-color: #c5c5d0;
+  opacity: .5;
 }
 
 .columns2 {

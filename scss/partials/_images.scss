@@ -1,7 +1,14 @@
 figure {
-  display: block;
+  border: 1px solid $red;
+  counter-increment: figure_count;
+  margin-bottom: 1em;
+  margin-top: 1em;
 
-  img {
-    max-width: 100%;
+  figcaption {
+    font-size: 80%;
+
+    &::before {
+      content: 'Figure ' counter(figure_count) ': ';
+    }
   }
 }

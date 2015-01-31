@@ -61,8 +61,6 @@ body {
 
 }
 
-
-
 em {
   font-style: italic;
   font-weight: 300;
@@ -117,6 +115,19 @@ h6 {
   text-align: inherit;
 }
 
+// If this works it should add the string Figure and a counter
+// of figure elements before the caption element in any figure
+
+section[data-type='bibliography'] {
+  p {
+    text-align: left;
+
+    + p {
+      text-indent: 0 !important;
+    }
+  }
+}
+
 section[data-type='titlepage'] {
   h1,
   h2 {
@@ -147,12 +158,6 @@ section[data-type='dedication'] {
   }
 }
 
-// Temporary until I can get highlight.js
-.code {
-  background-color: #eee;
-  opacity: .75;
-}
-
 pre {
   overflow-wrap: break-word;
   white-space: pre-line !important;
@@ -170,10 +175,15 @@ pre {
   text-align: justify;
 }
 
+// Temporary until I can get highlight.js to work
+.code {
+  background-color: lighten( #c5c5d0, 20% )
+  opacity: .75;
+}
 
 // The classes below use the column-attribs mixin defined in _columns.scss
 // to create 2 and 3-column layouts. These classes are meant as starting points,
-// there's definitely more you can do with them like playing with line-height
+// there is definitely more you can do with them like playing with line-height
 // and word/letter spacing.
 .columns2 {
   @include column-attribs (2, 3em);

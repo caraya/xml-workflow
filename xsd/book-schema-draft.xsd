@@ -445,18 +445,19 @@
     
     <!-- Figure and related elements -->
     <!-- 
-        Note that the schema accepts both images and figures as children of section
-        to accomodate images with and without captions
-        
-        Not sure if this is the way to go or whether we should make figcaption 
-        (or a caption attribute) part of image and whether it should be mandatory or not
+        The schema accepts both images and figures as children of section to accomodate 
+        images with and without captions
     -->
     <xs:element name="figure">
         <xs:annotation>
             <xs:documentation>
-                Figure is a wrapper for an image and a caption. Because we accept either 
+                Figure is a wrapper for an image and a caption. 
+                
+                Because we accept either 
                 figure or image as part of our content model we keep most of the attributes 
-                on the image and 
+                on the image and duplicate those that are needed in the figure element.
+                
+                Unlike the image all attributes of figure are optional
             </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
@@ -465,7 +466,28 @@
                 <xs:element ref="image"/>
                 <xs:element ref="figcaption"/>
             </xs:all>
-            <xs:attributeGroup ref="genericPropertiesGroup"/>
+            <xs:attribute name="height" type="xs:nonNegativeInteger" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  Height for the image expressed as a positive integer
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="width" type="xs:nonNegativeInteger" use="optional">
+              <xs:annotation>
+                <xs:documentation>
+                  Width for the image expressed as a positive integer
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="align" type="align" use="optional" default="left">
+              <xs:annotation>
+                <xs:documentation>
+                  Optional alignment
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          <xs:attributeGroup ref="genericPropertiesGroup"/>
         </xs:complexType>
     </xs:element>
     

@@ -69,7 +69,7 @@
       * Change the test for type attribute so it'll terminate
         if it fails (type attribute is required)
       * Add the element that will build our running footer
-        (p class="rh")
+        (p class="rh") and assign the value of title to it
       * Rework the metadata template so it'll match the spec on the CSS
 
     All other templates remain unchanged and are used from the base stylesheet.
@@ -118,25 +118,7 @@
   </xsl:template>
 
   <!-- Create Table of Contents ... work in progress -->
-  <xsl:template match="/" mode="toc">
-    <section data-type="toc">
-      <h2>Table of Contents</h2>
-      <nav>
-        <ol>
-          <xsl:for-each select="//section">
-            <li>
-              <a>
-                <xsl:attribute name="href">
-                  <xsl:value-of select="concat('#', generate-id())"/>
-                </xsl:attribute>
-                <xsl:value-of select="title"/>
-              </a>
-            </li>
-          </xsl:for-each>
-        </ol>
-      </nav>
-    </section>
-  </xsl:template>
+  <xsl:template match="/" mode="toc"/>
 
   <xsl:template match="title">
     <xsl:element name="h1">

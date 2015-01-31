@@ -21,7 +21,7 @@ body {
   padding-right: 0;
   widows: 2; }
 
-/* line 66, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 64, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 em {
   font-style: italic;
   font-weight: 300; }
@@ -156,7 +156,7 @@ ul li {
 ol li {
   list-style: decimal; }
 
-/* line 84, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 82, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
@@ -165,70 +165,77 @@ h1, h2, h3, h4, h5, h6 {
   margin: 1.414em 0 0.5em;
   text-transform: uppercase; }
 
-/* line 96, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 94, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h1 {
   font-size: 3.157em;
   margin-top: 0; }
 
-/* line 101, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 99, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h2 {
   font-size: 2.369em; }
 
-/* line 105, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 103, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h3 {
   font-size: 1.777em; }
 
-/* line 109, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 107, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h4 {
   font-size: 1.333em;
   text-transform: uppercase; }
 
-/* line 116, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 114, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h4, h5, h6 {
   text-align: inherit; }
 
 /* line 122, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+section[data-type='bibliography'] p {
+  text-align: left; }
+  /* line 125, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  section[data-type='bibliography'] p + p {
+    text-indent: 0 !important; }
+
+/* line 133, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 section[data-type='titlepage'] h1, section[data-type='titlepage'] h2 {
   text-align: center; }
-/* line 126, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 137, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 section[data-type='titlepage'] p {
   text-align: left; }
-  /* line 129, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 140, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   section[data-type='titlepage'] p + p {
     text-indent: 0 !important; }
 
-/* line 137, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 148, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 section[data-type='dedication'] h1, section[data-type='dedication'] h2 {
   text-align: center; }
-/* line 141, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 152, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 section[data-type='dedication'] p {
   text-align: left; }
-  /* line 144, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 155, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   section[data-type='dedication'] p + p {
     text-indent: 0 !important; }
 
-/* line 151, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
-.code {
-  background-color: #eee;
-  opacity: 0.75; }
-
-/* line 156, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 161, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 pre {
   overflow-wrap: break-word;
   white-space: pre-line !important;
   word-wrap: break-word; }
-  /* line 161, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 166, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   pre code {
     font-family: 'Source Code Pro', monospace;
     font-size: 1em;
     line-height: 1.2em;
     page-break-inside: avoid; }
 
-/* line 169, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 174, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 .justified {
   text-align: justify; }
 
-/* line 178, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 179, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+.code {
+  background-color: #c5c5d0;
+  opacity: 0.5; }
+
+/* line 188, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 .columns2 {
   column-count: 2;
   column-gap: 3em;
@@ -236,30 +243,30 @@ pre {
   column-span: none;
   line-height: 1.25em;
   width: 100%; }
-  /* line 183, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 193, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   .columns2 p:first-of-type {
     margin-top: 0; }
-  /* line 187, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 197, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   .columns2 p + p {
     text-indent: 2em; }
-  /* line 191, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 201, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   .columns2 p:last-of-type {
     margin-bottom: 1.25em; }
 
-/* line 196, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+/* line 206, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 .columns3 {
   column-count: 3;
   column-gap: 10px;
   column-fill: balance;
   column-span: none;
   width: 100%; }
-  /* line 200, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 210, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   .columns3 p:first-of-type {
     margin-top: 0; }
-  /* line 204, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 214, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   .columns3 p:not:first-of-type {
     text-indent: 2em; }
-  /* line 208, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
+  /* line 218, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
   .columns3 p:last-of-type {
     margin-bottom: 1.25em; }
 

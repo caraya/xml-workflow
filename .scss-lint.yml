@@ -19,7 +19,7 @@ linters:
     enabled: true
 
   DuplicateProperty:
-    enabled: true
+    enabled: false
 
   EmptyLineBetweenBlocks:
     enabled: true
@@ -120,3 +120,15 @@ linters:
 
   Compass::*:
     enabled: false
+
+  VendorPrefixes:
+    enabled: false
+    identifier_list: base
+    include: []
+    exclude: []
+
+  QualifyingElement:
+    enabled: false
+    allow_element_with_attribute: false
+    allow_element_with_class: false
+    allow_element_with_id: false

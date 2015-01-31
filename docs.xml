@@ -79,7 +79,7 @@
 <para>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</para>
     </section>
 
-  <section type="chapter" class="test">
+  <section type="chapter">
       <title>XML Schema</title>
 
 <para>The schema is defined from most general to most specific elements. We'll follow the same process to explain what the schema does and how we arrived to the choices we made. </para>
@@ -1655,6 +1655,12 @@ and with the optional attributes it will look like this
   <section type="chapter">
     <title>Task Automation with Grunt</title>
 
+    <figure>
+      <anchor/>
+      <image src="images/grund-js-opt.png" height="276" width="504" alt="Grunt"/>
+      <figcaption>Grunt.js, a Javascript task runner</figcaption>
+    </figure>
+
     <para><link href="http://gruntjs.com/" label="Grunt.js"/> is a task runner written in Javascript. </para>
 
     <code language="javascript">
@@ -1925,7 +1931,7 @@ grunt.task.registerTask(
     </code>
   </section>
 
-  <section type="chapter">
+  <section type="chapter" class="research">
     <title>Things to Do and Further Research</title>
 
     <para>These are the things I want to look at after finishing mvp.</para>
@@ -1985,7 +1991,7 @@ grunt.task.registerTask(
   </section>
 
   <section type="bibliography">
-    <title>References</title>
+    <title>Annotated Bibliography</title>
 
     <para>For more information, see: <link href="http://alistapart.com/article/building-books-with-css3" label="Building books with css3"/></para>
 

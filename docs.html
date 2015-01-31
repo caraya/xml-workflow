@@ -7,35 +7,19 @@
           hljs.initHighlightingOnLoad();
         </script></head>
    <body data-type="book">
-      <meta generator="SAXONHE 9.5.1.3">
-      <section data-type="toc">
-         <h2>Table of Contents</h2>
-         <nav>
-            <ol>
-               <li><a href="#d2e11">Thank You</a></li>
-               <li><a href="#d2e16">Introduction</a></li>
-               <li><a href="#d2e44">XML Schema</a></li>
-               <li><a href="#d2e424">From XML to HTML</a></li>
-               <li><a href="#d2e684">From XML to PDF: Part 1: Special Transformation</a></li>
-               <li><a href="#d2e744">From XML to PDF. Part 2: CSS Paged Media</a></li>
-               <li><a href="#d2e749">Task Automation with Grunt</a></li>
-               <li><a href="#d2e773">Things to Do and Further Research</a></li>
-               <li><a href="#d2e844">References</a></li>
-            </ol>
-         </nav>
-      </section>
+      <meta generator="SAXONHE 9.6.0.1">
       <section data-type="titlepage">
-         <h1 id="">XML workflow documentation</h1>
+         <h1 id="d2e2">XML workflow documentation</h1>
          <h2 class="author">Carlos Araya</h2>
       </section>
       <section data-type="dedication">
          <p class="rh">Thank You</p>
-         <h1 id="">Thank You</h1>
+         <h1 id="d2e11">Thank You</h1>
          <p>Thanks to Laura Brady for getting this particular idea started :)</p>
       </section>
       <section data-type="preface">
          <p class="rh">Introduction</p>
-         <h1 id="">Introduction</h1>
+         <h1 id="d2e16">Introduction</h1>
          <p>One of the biggest limitations of markup languages, in my opinion, is how confining
             they are. Even large vocabularies like <a href="http://docbook.org" label="Docbook">Docbook</a> are limited in what they can do out of the box. HTML4 is non-extensible and HTML5
             is limited in how you can extend it (web components are the only way to extend HTML5
@@ -66,7 +50,8 @@
          <h2>Options for defining the markup</h2>
          <p>For the purpose of this project we'll define a set of resources that work with a book
             structure like the one below:
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
  &lt;book
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -100,13 +85,14 @@
 
   &lt;/section&gt;
 &lt;/book&gt;
-</code></pre><p>It is not a complete structure. We will continue adding elements afte we reach the
+</code></pre></div>
+         <p>It is not a complete structure. We will continue adding elements afte we reach the
             MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.
          </p>
       </section>
       <section data-type="chapter">
          <p class="rh">XML Schema</p>
-         <h1 id="">XML Schema</h1>
+         <h1 id="d2e44">XML Schema</h1>
          <p>The schema is defined from most general to most specific elements. We'll follow the
             same process to explain what the schema does and how we arrived to the choices we
             made.
@@ -127,7 +113,8 @@
             attributes to the group. We'll see this assigned to other elements so I decided to
             make it reusable rather than have to duplicate the attributes in every element I want
             to use them in.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;!-- Simple types to use in the content --&gt;
 &lt;xs:simpleType name="token255"&gt;
   &lt;xs:restriction base="xs:token"&gt;
@@ -155,9 +142,11 @@
   &lt;xs:attribute name="id" type="xs:ID" use="optional"/&gt;
   &lt;xs:attribute name="class" type="xs:token" use="optional"/&gt;
 &lt;/xs:attributeGroup&gt;
-</code></pre><p>The next stage is to define elements to create our <em>people</em> types.  We create a base person element and then create three role elements based
+</code></pre></div>
+         <p>The next stage is to define elements to create our <em>people</em> types.  We create a base person element and then create three role elements based
             on person. We will use this next to define groups for each role.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;!-- complex types to create groups of similar person items --&gt;
 &lt;xs:complexType name="person"&gt;
   &lt;xs:sequence&gt;
@@ -192,7 +181,8 @@
     &lt;/xs:extension&gt;
   &lt;/xs:complexContent&gt;
 &lt;/xs:complexType&gt;
-</code></pre><p>Two of the derived types add attributes or elements to the base person element to
+</code></pre></div>
+         <p>Two of the derived types add attributes or elements to the base person element to
             make the generic person more appropriate to their role rather than repeat the content
             of person each time that an author, editor or other role appear.
          </p>
@@ -202,23 +192,28 @@
          <p>Editor takes the base person element and adds a `type` child to indicate the type
             of editor (some that come to mind are acquisition, production and managing.) The editor
             elements looks like this:
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;editor&gt;
 &lt;first-name&gt;Carlos&lt;/first-name&gt;
 &lt;surname&gt;Araya&lt;/surname&gt;
 &lt;type&gt;Managing&lt;/type&gt;
 &lt;/editor&gt;
-</code></pre><p>OtherRoles takes all other roles that are not author or editor and adds a role element
+</code></pre></div>
+         <p>OtherRoles takes all other roles that are not author or editor and adds a role element
             to specify what role they play, for example: Illustrator, Indexer, Research Assistant,
             among others. The element looks like this:
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;otherRole&gt;
   &lt;first-name&gt;Sherlock&lt;/first-name&gt;
   &lt;surname&gt;Holmes&lt;/surname&gt;
   &lt;role&gt;Researcher&lt;/role&gt;
   &lt;/otherRole&gt;
-</code></pre><p>Next we create wrappers for each group as <em>authors</em>, <em>editors</em> and <em>otherRoles</em> so we can provide easier styling with XSLT and CSS later on.
-         </p><pre><code language="xml">
+</code></pre></div>
+         <p>Next we create wrappers for each group as <em>authors</em>, <em>editors</em> and <em>otherRoles</em> so we can provide easier styling with XSLT and CSS later on.
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;xs:complexType name="authors"&gt;
   &lt;xs:annotation&gt;
   &lt;xs:documentation&gt;Wrapper to get more than one author&lt;/xs:documentation&gt;
@@ -257,7 +252,8 @@
   &lt;/xs:extension&gt;
   &lt;/xs:complexContent&gt;
   &lt;/xs:complexType&gt;
-</code></pre><p>We now look at the elements that we can put inside a section. Some of these elements
+</code></pre></div>
+         <p>We now look at the elements that we can put inside a section. Some of these elements
             are overtly complex and deliberately so since they have to acommodate a lot of possible
             parameters.
          </p>
@@ -267,7 +263,8 @@
          </p>
          <p>We also incoporate a <em>label</em> so we can later build the link and for accessibility purposes. It also uses our `genericPropertiesGroup`
             attribute set to add class and ID as attributes for our links.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;!-- Elements inside section --&gt;
   &lt;xs:element name="link"&gt;
   &lt;xs:annotation&gt;
@@ -285,34 +282,40 @@
   &lt;xs:attribute name="label" type="xs:string" use="required"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre>
+</code></pre></div>
 
          The link in our resulting book will look like this:
 
-         <pre><code language="xml">
+
+         <div class="code"><pre><code language="xml">
 &lt;link href="http://google.com" label="link to google"/&gt;
-</code></pre>
+</code></pre></div>
 
          and with the optional attributes it will look like this
 
-         <pre><code language="xml">
+
+         <div class="code"><pre><code language="xml">
 &lt;link class="external" id="ex01" href="http://google.com" label="link to google"&gt;
-</code></pre><p>Once I had the links I figured I need a way to create anchors for internal links that
+</code></pre></div>
+         <p>Once I had the links I figured I need a way to create anchors for internal links that
             look like this: <em>&lt;a href="#top"&gt;</em> and expect the target to be formated like this <em>&lt;a name="top"&gt;</em>. To accomodate this I created an anchor element to provide the destination for internal
             links.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;!-- Named Anchor --&gt;
 &lt;xs:element name="anchor"&gt;
   &lt;xs:complexType&gt;
     &lt;xs:attribute name="name"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre><p>As I was working on further ideas for the project I realized that we forgot to create
+</code></pre></div>
+         <p>As I was working on further ideas for the project I realized that we forgot to create
             inline and block level containers for the content, important if you're going to style
             smaller portions of content within a paragraph or witin a section. Taking the names
             from HTML we define <em>section</em> (inline) and <em>div</em> (block) elements. Div is a secondary section, containing the same model as the section,
             including additional div containers.
-         </p><pre><code language="javascript">
+         </p>
+         <div class="code"><pre><code language="javascript">
 &lt;xs:element name="div"&gt;
   &lt;xs:complexType mixed="true"&gt;
     &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
@@ -336,26 +339,30 @@
     &lt;xs:attribute name="type" type="xs:token" use="optional"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre><p>Span is an inline element, therefore the model is greatly reduced to only the elements
+</code></pre></div>
+         <p>Span is an inline element, therefore the model is greatly reduced to only the elements
             that can be inside a paragraph
          </p>
          <p>Type is used in these two elements and in our sections to create data-type and epub:type
             attributes. These are used in the Paged Media stylesheet to decide how will the content
             be formated.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;xs:element name="span"&gt;
   &lt;xs:complexType&gt;
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
     &lt;xs:attribute name="type" type="xs:token" use="optional" default="chapter"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre><p>Next are images and figures where we borrow from HTML, again, for the name of attribute
+</code></pre></div>
+         <p>Next are images and figures where we borrow from HTML, again, for the name of attribute
             names and their functionality. We define 3 elements for the image-related tags: <em>figure</em>, <em>figcaption</em> and the <em>image</em> itself.
          </p>
          <p><em>Figure</em> is the wrapper around a `figcaption` caption and the `image` element itself. The
             `figcaption` is a text-only element that will contain the caption for the associated
             image
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;!-- Figure and related elements --&gt;
   &lt;xs:element name="figure"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -366,10 +373,12 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>The caption child only uses text and, because it's only used as a child of figure,
+</code></pre></div>
+         <p>The caption child only uses text and, because it's only used as a child of figure,
             we don't need to assign attributes to it. It will inherit from the image or the surrounding
             figure.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;xs:element name="figcaption"&gt;
   &lt;xs:annotation&gt;
   &lt;xs:documentation&gt;
@@ -379,17 +388,20 @@
   &lt;/xs:documentation&gt;
   &lt;/xs:annotation&gt;
   &lt;/xs:element&gt;
-</code></pre><p>When working with the image element we start with `genericPropertiesGroup` to define
+</code></pre></div>
+         <p>When working with the image element we start with `genericPropertiesGroup` to define
             <em>class</em> and <em>id</em>.
          </p>
          <p>Then we require a <em>src</em> attribute to tell where the image is located. We need to be careful because we haven't
             told the schema the different types of images. We have at least three different locations
             for the image files. All three of these are valid locations for our image.png file.
-         </p><pre><code language="bash">
+         </p>
+         <div class="code"><pre><code language="bash">
   image.png
   directory/image.png
   http://mysite.org/images/image.png
-</code></pre><p>We could create branches of our schema to deal with the different locations but I've
+</code></pre></div>
+         <p>We could create branches of our schema to deal with the different locations but I've
             chosen to let the XSLT style sheets deal with this particular situation. The schema
             type for the image (<em>xs:anyURI</em>) should also help to sort out the issue.
          </p>
@@ -403,7 +415,8 @@
          <p><em>align</em> uses our align enumeration to indicae the image's alignment. It is not essential
             to the XML but will be useful to the XSLT stylesheets we'll create later as part of
             the process.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;xs:element name="image"&gt;
   &lt;xs:complexType&gt;
   &lt;xs:attributeGroup ref="genericPropertiesGroup" /&gt;
@@ -414,9 +427,11 @@
   &lt;xs:attribute name="align" type="align" use="optional" default="left"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>In order to acommodate the four basic styles available to our documents: <em>strong</em>, <em>emphasis</em>, <em>strike</em> and <em>underline</em> and their nesting we had to do some juryriging of the elements to tell the schema
+</code></pre></div>
+         <p>In order to acommodate the four basic styles available to our documents: <em>strong</em>, <em>emphasis</em>, <em>strike</em> and <em>underline</em> and their nesting we had to do some juryriging of the elements to tell the schema
             what children are allowed for each element.  The schema look like this:
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;xs:element name="strong"&gt;
   &lt;xs:complexType mixed="true"&gt;
   &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
@@ -457,7 +472,8 @@
   &lt;/xs:choice&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>The <em>emphasis</em> element is the only one that allows the same element to be nested. When nesting emphasis
+</code></pre></div>
+         <p>The <em>emphasis</em> element is the only one that allows the same element to be nested. When nesting emphasis
             elements they cancel each other
          </p>
          <p>When I first conceptualized the project I envisioned one element for both numbered
@@ -467,7 +483,8 @@
          <p>The list elements also require at least 1 <em>item</em> child. If it's going to be left empty why bother having the list to begin with.
          </p>
          <p>They inherit class and ID from <em>genreicPropertiesGroup</em>.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;!-- Lists --&gt;
   &lt;xs:element name="ulist"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -492,7 +509,8 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>The <em>code</em> element wraps code and works as higlighted, fenced code blocks (think Github Flavored
+</code></pre></div>
+         <p>The <em>code</em> element wraps code and works as higlighted, fenced code blocks (think Github Flavored
             Markdown.)
          </p>
          <p>When using CSS we'll generate a &lt;code&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/code&gt; block with a language attribute
@@ -501,25 +519,29 @@
          </p>
          <p>Because of the intended use, the `language` attribute is required.</p>
          <p>Class and ID (from <em>genericPropertiesGroup</em>) are optional
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;xs:element name="code"&gt;
   &lt;xs:complexType mixed="true"&gt;
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;xs:attribute name="language" use="required"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>Another type of element that came up when working on the documentation were aside,
+</code></pre></div>
+         <p>Another type of element that came up when working on the documentation were aside,
             blockquotes and quotes. `Blockquote` and `attribution` are for longer block level
             quotations (more than 4 lines of text) while `quote` is for shorter quotations usually
             inserted in a paragraph.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;xs:element name="code"&gt;
   &lt;xs:complexType mixed="true"&gt;
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
     &lt;xs:attribute name="language" use="required"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre><p>Paragraphs (<em>para</em> in our documents) are the essential unit of content for our books. The paragraph
+</code></pre></div>
+         <p>Paragraphs (<em>para</em> in our documents) are the essential unit of content for our books. The paragraph
             is where most content will happen, text, styles and additional elements that we may
             add as we go along (inline code comes to mind).
          </p>
@@ -529,7 +551,8 @@
          <p>This model barely begins to scratch the surface of what we can do with our paragraph
             model. I decided to go for simplicity rather than completeness. This will definitely
             change in future versions of the schema.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;!-- Paragraphs --&gt;
   &lt;xs:element name="para"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -545,11 +568,13 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>Like HTML we've chose to create 6 levels of headings although, to be honest, I can't
+</code></pre></div>
+         <p>Like HTML we've chose to create 6 levels of headings although, to be honest, I can't
             see the need for more than 4.
          </p>
          <p>We give all links three attributes: <em>class</em>, <em>id</em> and <em>align</em> to hint stylesheets where we want to place the heading (left, right, center)
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;!-- Headings --&gt;
   &lt;xs:element name="h1"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -592,10 +617,12 @@
   &lt;xs:attribute name="align" type="align" use="optional" default="left"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>The metadata section tells us more about the book itself and can be used to build
+</code></pre></div>
+         <p>The metadata section tells us more about the book itself and can be used to build
             a <em>package.opf</em> manifest using XSLT as part of our transformation process. We include basic information
             such as <em>isbn</em> (validated as an ISBN type defined earlier in the schema), an <em>edition</em> (integer indicating what edition of the book it is) and <em>title</em>.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;!-- Metadata element --&gt;
   &lt;xs:element name="metadata"&gt;
   &lt;xs:complexType&gt;
@@ -610,7 +637,8 @@
   &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>Section is our primary container for paragraphs and associated content. Some of the
+</code></pre></div>
+         <p>Section is our primary container for paragraphs and associated content. Some of the
             items exclusive to sections are:
          </p>
          <p>The <em>title</em> element is required to appear exactly one time.
@@ -633,7 +661,8 @@
             to make it option and default it to chapter. We want to make it easier for authors
             to create content; where possible. I'd rather have the wrong value than no value at
             all.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;!-- Section element --&gt;
   &lt;xs:element name="section"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -661,14 +690,16 @@
   &lt;xs:attribute name="type" type="xs:token" use="optional" default="chapter"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>Now that we have defined our elements, we'll define the core structure of the document
+</code></pre></div>
+         <p>Now that we have defined our elements, we'll define the core structure of the document
             by defining the structure of the `book` element.
          </p>
          <p>After all the work we've done defining the content the definition of our book is almost
             anticlimatic. We define the `book` element as the sequence of exactly 1 <em>metadata</em> element and 1 or more <em>section</em> elements.
          </p>
          <p>As with all our elements we add <em>class</em> and <em>ID</em> from our genericPropertiesGroup.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
   &lt;xs:element name="book"&gt;
   &lt;xs:complexType mixed="true"&gt;
   &lt;xs:sequence&gt;
@@ -678,7 +709,8 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre><p>This covers the schema for our document type. It is not completed by any stretch of
+</code></pre></div>
+         <p>This covers the schema for our document type. It is not completed by any stretch of
             the imagination. It can be further customized to suit individual needs. The current
             version represents a very basic text heavy document type.
          </p>
@@ -688,7 +720,7 @@
       </section>
       <section data-type="chapter">
          <p class="rh">From XML to HTML</p>
-         <h1 id="">From XML to HTML</h1>
+         <h1 id="d2e424">From XML to HTML</h1>
          <p>One of the biggest advantages of working with XML is that we can convert the abstract
             tags into other markups. For the purposes of this project we'll convert the XML created
             to match the schema we just created to HTML and then use tools like <a href="http://www.princexml.com" label="PrinceXML">PrinceXML</a> or <a href="http://www.antennahouse.com" label="AntenaHouse">AntenaHouse</a> we'll convert the HTML/CSS files to PDF
@@ -726,7 +758,8 @@
                (discussed later)
             </li>
             <li>Create a default template to warn us if we missed anything</li>
-         </ol><pre><code language="xml">&lt;?xml version="1.0" ?&gt;
+         </ol>
+         <div class="code"><pre><code language="xml">&lt;?xml version="1.0" ?&gt;
 &lt;!-- Define stylesheet root and namespaces we'll work with --&gt;
 &lt;xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -757,7 +790,8 @@
     &lt;/xsl:template&gt;
 
   &lt;!-- More content to be added --&gt;
-&lt;/xsl:stylesheet&gt;</code></pre><p>This is a lot of work before we start creating our XSLT content. But it's worth doing
+&lt;/xsl:stylesheet&gt;</code></pre></div>
+         <p>This is a lot of work before we start creating our XSLT content. But it's worth doing
             the work up front. We'll see what are the advantages of doint it this way as we move
             down the style sheet.
          </p>
@@ -770,7 +804,8 @@
             <li>In the body we 'apply' the templates that match the content inside our document (more
                on this later)
             </li>
-         </ol><pre><code language="xml">&lt;!-- Root template, matching / --&gt;
+         </ol>
+         <div class="code"><pre><code language="xml">&lt;!-- Root template, matching / --&gt;
 &lt;xsl:template match="book"&gt;
   &lt;html&gt;
     &lt;head&gt;
@@ -805,7 +840,8 @@
       &lt;xsl:apply-templates select="/" mode="toc"/&gt;
     &lt;/body&gt;
   &lt;/html&gt;
-&lt;/xsl:template&gt;</code></pre><p>We could build the CSS stylesheet and Javascript files as part of our root template
+&lt;/xsl:template&gt;</code></pre></div>
+         <p>We could build the CSS stylesheet and Javascript files as part of our root template
             but we chose not to.
          </p>
          <p>Working with the stylesheet as part of the XSLT stylesheet allows the XSLT stylesheet
@@ -847,7 +883,8 @@
                </li>
                <li>The title of the section as the 'clickable' portion of the link</li>
             </ol>
-         </ol><pre><code language="xml">&lt;xsl:template match="/" mode="toc"&gt;
+         </ol>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="/" mode="toc"&gt;
 &lt;section data-type="toc"&gt; (1)
 &lt;nav class="toc"&gt; (1)
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
@@ -865,7 +902,8 @@
 &lt;/ol&gt;
 &lt;/nav&gt;
 &lt;/section&gt;
-&lt;/xsl:template&gt;</code></pre><h2>Metadata and Section</h2>
+&lt;/xsl:template&gt;</code></pre></div>
+         <h2>Metadata and Section</h2>
          <p>With these templates in place we can now start writing the major areas of the document,
             <em>metadata</em> and <em>section</em>.
          </p>
@@ -874,14 +912,16 @@
             div that will hold the content and call `xsl:apply-templates` to process the children
             inside the metadata element using the apply-template XSLT instruction. The template
             looks like this
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="metadata"&gt;
   &lt;xsl:element name="div"&gt;
     &lt;xsl:attribute name="class"&gt;metadata&lt;/xsl:attribute&gt;
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre><h3>Section</h3>
+</code></pre></div>
+         <h3>Section</h3>
          <p>The section container on the other hand is a lot more complex because it has a lot
             of work to do. It is our primary unit for generating files, takes most of the same
             attributes as the root template and then processes the rest of the content.
@@ -908,7 +948,8 @@
          <p>In the body element we see the first of many times we'll conditionally add attributes
             to the element. We use only add a data-type attribute to body if there is a type attribute
             in the source document. We do the same thing for id and class.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="section"&gt;
   &lt;!-- Variable to create section file names --&gt;
   &lt;xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/&gt;
@@ -956,16 +997,21 @@
     &lt;/html&gt;
   &lt;/xsl:result-document&gt;
 &lt;/xsl:template&gt;
-</code></pre><h2>Metadata content</h2>
-         <h3>Publication information</h3><pre><code language="xml">
+</code></pre></div>
+         <h2>Metadata content</h2>
+         <h3>Publication information</h3>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="isbn"&gt;
   &lt;p&gt;ISBN: &lt;xsl:value-of select="."/&gt;&lt;/p&gt;
 &lt;/xsl:template&gt;
-</code></pre><pre><code language="xml">
+</code></pre></div>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="edition"&gt;
   &lt;p class="no-margin-left"&gt;Edition: &lt;xsl:value-of select="."/&gt;&lt;/p&gt;
 &lt;/xsl:template&gt;
-</code></pre><h3>Individuals</h3><pre><code language="xml">
+</code></pre></div>
+         <h3>Individuals</h3>
+         <div class="code"><pre><code language="xml">
 &lt;!-- complex types to create groups of similar person items --&gt;
 &lt;xs:complexType name="person"&gt;
     &lt;xs:annotation&gt;
@@ -1017,7 +1063,9 @@
         &lt;/xs:extension&gt;
     &lt;/xs:complexContent&gt;
 &lt;/xs:complexType&gt;
-</code></pre><h3>People groups</h3><pre><code language="xml">
+</code></pre></div>
+         <h3>People groups</h3>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="metadata/authors"&gt;
   &lt;h2&gt;Authors&lt;/h2&gt;
   &lt;ul&gt;
@@ -1059,7 +1107,8 @@
     &lt;/xsl:for-each&gt;
   &lt;/ul&gt;
 &lt;/xsl:template&gt;
-</code></pre><h2>Titles and headings</h2>
+</code></pre></div>
+         <h2>Titles and headings</h2>
          <p>Titles and headings use mostly the same code. We've put them in separate templates
             to make it possible and easier to generate different code for each heading. It's not
             the same as using CSS where you can declare rules for the same attribute multiple
@@ -1068,7 +1117,8 @@
          </p>
          <p>The goal is to create as simple a markup as we can so we can better leverage CSS to
             style and make our content display as intended.
-         </p><pre><code language="xml">&lt;xsl:template match="title "&gt;
+         </p>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="title "&gt;
   &lt;xsl:element name="h1"&gt;
     &lt;xsl:if test="@align"&gt;
       &lt;xsl:attribute name="align"&gt;
@@ -1108,7 +1158,9 @@
     &lt;/xsl:if&gt;
     &lt;xsl:value-of select="."/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre><h2>Blockquotes, quotes and asides</h2><pre><code language="xml">&lt;xsl:template match="blockquote"&gt;
+&lt;/xsl:template&gt;</code></pre></div>
+         <h2>Blockquotes, quotes and asides</h2>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="blockquote"&gt;
   &lt;xsl:element name="blockquote"&gt;
     &lt;xsl:if test="(@class)"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1140,10 +1192,12 @@
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre><pre><code language="xml">
+</code></pre></div>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="quote"&gt;
   &lt;q&gt;&lt;xsl:value-of select="."/&gt;&lt;/q&gt;
-&lt;/xsl:template&gt;</code></pre><pre><code language="xml">&lt;xsl:template match="aside"&gt;
+&lt;/xsl:template&gt;</code></pre></div>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="aside"&gt;
   &lt;aside&gt;
     &lt;xsl:if test="type"&gt;
       &lt;xsl:attribute name="data-type"&gt;
@@ -1163,7 +1217,9 @@
     &lt;xsl:apply-templates/&gt;
   &lt;/aside&gt;
 &lt;/xsl:template&gt;
-</code></pre><h2>Div and Span</h2><pre><code language="xml">&lt;xsl:template match="div"&gt;
+</code></pre></div>
+         <h2>Div and Span</h2>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="div"&gt;
   &lt;xsl:element name="div"&gt;
     &lt;xsl:if test="@align"&gt;
       &lt;xsl:attribute name="align"&gt;
@@ -1182,7 +1238,8 @@
     &lt;/xsl:if&gt;
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre><pre><code language="xml">&lt;xsl:template match="span"&gt;
+&lt;/xsl:template&gt;</code></pre></div>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="span"&gt;
   &lt;xsl:element name="span"&gt;
     &lt;xsl:if test="@type"&gt;
       &lt;xsl:attribute name="data-type"&gt;
@@ -1201,7 +1258,9 @@
     &lt;/xsl:if&gt;
     &lt;xsl:value-of select="."/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre><h2>Paragraphs</h2><pre><code language="xml">&lt;xsl:template match="para"&gt;
+&lt;/xsl:template&gt;</code></pre></div>
+         <h2>Paragraphs</h2>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="para"&gt;
   &lt;xsl:element name="p"&gt;
     &lt;xsl:if test="(@class)"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1215,7 +1274,9 @@
     &lt;/xsl:if&gt;
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre><h2>Styles</h2><pre><code language="xml">&lt;xsl:template match="strong"&gt;
+&lt;/xsl:template&gt;</code></pre></div>
+         <h2>Styles</h2>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="strong"&gt;
   &lt;strong&gt;&lt;xsl:apply-templates /&gt;&lt;/strong&gt;
 &lt;/xsl:template&gt;
 
@@ -1230,8 +1291,10 @@
 &lt;xsl:template match="underline"&gt;
   &lt;u&gt;&lt;xsl:apply-templates/&gt;&lt;/u&gt;
 &lt;/xsl:template&gt;
-</code></pre><h2>Links and anchors</h2>
-         <p>One of the</p><pre><code language="xml">&lt;xsl:template match="link"&gt;
+</code></pre></div>
+         <h2>Links and anchors</h2>
+         <p>One of the</p>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="link"&gt;
   &lt;xsl:element name="a"&gt;
     &lt;xsl:if test="(@class)"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1251,16 +1314,21 @@
     &lt;/xsl:attribute&gt;
     &lt;xsl:value-of select="@label"/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre><p>When working with links there are times when we want to link to sections within the
+&lt;/xsl:template&gt;</code></pre></div>
+         <p>When working with links there are times when we want to link to sections within the
             same document or to specific sections in another document. To do this we need anchors
             that will resolve to the following HTML:
-         </p><pre><code language="html">&lt;a name="target"&gt;&lt;a&gt;</code></pre><p>The transformation element looks like this:</p><pre><code language="xml">&lt;xsl:template match="anchor"&gt;
+         </p>
+         <div class="code"><pre><code language="html">&lt;a name="target"&gt;&lt;a&gt;</code></pre></div>
+         <p>The transformation element looks like this:</p>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="anchor"&gt;
   &lt;xsl:element name="a"&gt;
     &lt;xsl:attribute name="name"&gt;
     &lt;/xsl:attribute&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre><p>Not sure if I want to make this an empty element or not</p>
+</code></pre></div>
+         <p>Not sure if I want to make this an empty element or not</p>
          <p>Empty element &lt;anchor name="home"/&gt; appeals to my ease of use paradigm but it may
             not be as easy to understand for peope who are not familiar with XML empty elements
          </p>
@@ -1276,7 +1344,8 @@
                Highlight.js it is not working. I've asked on the Prince support forums and am waiting
                for an answer.
             </p>
-         </blockquote><pre><code language="xml">&lt;xsl:template match="code"&gt;
+         </blockquote>
+         <div class="code"><pre><code language="xml">&lt;xsl:template match="code"&gt;
   &lt;xsl:element name="pre"&gt;
     &lt;xsl:element name="code"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1286,14 +1355,16 @@
     &lt;/xsl:element&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre><h2>Lists and list items</h2>
+</code></pre></div>
+         <h2>Lists and list items</h2>
          <p>When I first conceptualized this project I had designed a single list element and
             attributes to produce bulleted and numbered lists. This proved to difficult to implement
             so I went back to two separate elements: `ulist` for bulleted lists and `olist` for
             numbered lists.
          </p>
          <p>Both elements share the <em>item</em> element to indicates the items inside the list. At least one item is required a list.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="ulist"&gt;
   &lt;xsl:element name="ul"&gt;
     &lt;xsl:if test="(@class)"&gt;
@@ -1341,7 +1412,8 @@
     &lt;xsl:value-of select="."/&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre><h2>Figures and Images</h2>
+</code></pre></div>
+         <h2>Figures and Images</h2>
          <p>Figures, captions and the images inside present a few challenges. Because we allow
             authors to set height and width on both figure and the imageg inside we may find situations
             where the figure container is narrower than the image inside.
@@ -1356,7 +1428,8 @@
          <p>The data model for our content allows both figures and images to be used in the document.
             This is so we don't have to insert empty captions to figures just so we can add an
             image... If we don't want a caption we can insert the image directly on our document.
-         </p><pre><code language="xml">
+         </p>
+         <div class="code"><pre><code language="xml">
 &lt;xsl:template match="figure"&gt;
   &lt;xsl:element name="figure"&gt;
     &lt;xsl:if test="(@class)"&gt;
@@ -1454,10 +1527,11 @@
     &lt;/xsl:if&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre></section>
+</code></pre></div>
+      </section>
       <section data-type="chapter">
          <p class="rh">From XML to PDF: Part 1: Special Transformation</p>
-         <h1 id="">From XML to PDF: Part 1: Special Transformation</h1>
+         <h1 id="d2e684">From XML to PDF: Part 1: Special Transformation</h1>
          <p>Rather than having to deal with [XSL-FO](http://www.w3.org/TR/2006/REC-xsl11-20061205/),
             another XML based vocabulary to create PDF content, we'll use XSLT to create another
             HTML file and process it with [CSS Paged Media](http://dev.w3.org/csswg/css-page-3/)
@@ -1466,7 +1540,8 @@
          </p>
          <p>I'm not against XSL-FO but the structure of document is not the easiest or most intuitive.
             An example of XSL-FO looks like this:
-         </p><pre><code language="xml">&lt;?xml version="1.0" encoding="iso-8859-1"?&gt; (1)
+         </p>
+         <div class="code"><pre><code language="xml">&lt;?xml version="1.0" encoding="iso-8859-1"?&gt; (1)
 
     &lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"&gt; (2)
     &lt;fo:layout-master-set&gt; (3)
@@ -1480,7 +1555,8 @@
     &lt;fo:block&gt;Hello, world!&lt;/fo:block&gt; (6)
     &lt;/fo:flow&gt;
     &lt;/fo:page-sequence&gt;
-    &lt;/fo:root&gt;</code></pre><ol>
+    &lt;/fo:root&gt;</code></pre></div>
+         <ol>
             <li>This is an XML declaration. XSL FO (XSLFO) belongs to XML family, so this is obligatory.</li>
             <li>Root element. The obligatory namespace attribute declares the XSL Formatting Objects
                namespace.
@@ -1508,7 +1584,8 @@
          <p>Rather than define a flow of content and then the content CSS Paged Media uses a combination
             of new and existing CSS elements to format the content. For example, to define default
             page size and then add elements to chapter pages looks like this:
-         </p><pre><code language="ccss">@page {
+         </p>
+         <div class="code"><pre><code language="ccss">@page {
     size: 8.5in 11in;
     margin: 0.5in 1in;
     /* Footnote related attributes */
@@ -1527,7 +1604,8 @@
     text-align: center;
     content: element(heading);
     }
-    }</code></pre><p>The only problem with the code above is that there is no native broser support. For
+    }</code></pre></div>
+         <p>The only problem with the code above is that there is no native broser support. For
             our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. In the
             not so distant future we will be able to do this transformation in the browser and
             print the PDF directly. Until then it's a two step process: Modifying the HTML we
@@ -1565,7 +1643,8 @@
             </li>
          </ul>
          <p>Only the templates defined in this stilesheet are overriden</p>
-         <p>The style sheet is shown below (with large comments removed)</p><pre><code language="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+         <p>The style sheet is shown below (with large comments removed)</p>
+         <div class="code"><pre><code language="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
     &lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs"
@@ -1668,19 +1747,23 @@
 
     &lt;xsl:template match="book" mode="toc"/&gt;
     &lt;/xsl:stylesheet&gt;
-</code></pre></section>
+</code></pre></div>
+      </section>
       <section data-type="chapter">
          <p class="rh">From XML to PDF. Part 2: CSS Paged Media</p>
-         <h1 id="">From XML to PDF. Part 2: CSS Paged Media</h1>
+         <h1 id="d2e744">From XML to PDF. Part 2: CSS Paged Media</h1>
          <p>This stylesheets sets up a printed stylesheet with a basic set of parameters. It is
             meant as a starting point for printed media work.
          </p>
       </section>
       <section data-type="chapter">
          <p class="rh">Task Automation with Grunt</p>
-         <h1 id="">Task Automation with Grunt</h1>
+         <h1 id="d2e749">Task Automation with Grunt</h1>
+         <figure width="504"><img src="images/grund-js-opt.png" alt="Grunt" width="504" height="276"><figcaption>Grunt.js, a Javascript task runner</figcaption>
+         </figure>
          <p><a href="http://gruntjs.com/" label="Grunt.js">Grunt.js</a> is a task runner written in Javascript.
-         </p><pre><code language="javascript">
+         </p>
+         <div class="code"><pre><code language="javascript">
 /*global module */
 /*global require */
 (function () {
@@ -1696,7 +1779,8 @@ require('time-grunt')(grunt);
 require('load-grunt-tasks')(grunt);
 
 grunt.initConfig({
-    </code></pre><pre><code language="javascript">
+    </code></pre></div>
+         <div class="code"><pre><code language="javascript">
 // JAVASCRIPT TASKS
 // Hint the grunt file and all files under js/
 // and one directory below
@@ -1730,7 +1814,8 @@ jscs: {
   },
   all: ['js/']
 },
-    </code></pre><pre><code language="javascript">
+    </code></pre></div>
+         <div class="code"><pre><code language="javascript">
 // SASS RELATED FILES
 // Converts all the files under scss/ ending with .scss
 // into the equivalent css file on the css/ directory
@@ -1779,7 +1864,8 @@ scsslint: {
     colorizeOutput: true
   }
 },
-    </code></pre><pre><code language="javascript">
+    </code></pre></div>
+         <div class="code"><pre><code language="javascript">
 autoprefixer: {
   options: {
     browsers: ['last 2']
@@ -1804,7 +1890,8 @@ uncss: {
     }
   }
 },
-</code></pre><pre><code language="javascript">
+</code></pre></div>
+         <div class="code"><pre><code language="javascript">
 // FILE MANAGEMENT
 // Can't seem to make the copy task create the directory
 // if it doesn't exist so we go to another task to create
@@ -1832,7 +1919,8 @@ copy: {
 clean: {
   production: ['build/']
 },
-</code></pre><pre><code language="javascript">
+</code></pre></div>
+         <div class="code"><pre><code language="javascript">
 // GH-PAGES TASK
 // Push the specified content into the repositories gh-pages branch
 'gh-pages': {
@@ -1846,7 +1934,8 @@ clean: {
   // We have to specifically remove node_modules
   src: ['**/*']
 },
-</code></pre><pre><code language="javascript">
+</code></pre></div>
+         <div class="code"><pre><code language="javascript">
 // WATCH TASK
 // Watch for changes on the js and scss files and perform
 // the specified task
@@ -1864,7 +1953,8 @@ watch: {
     tasks: ['sass']
   }
 },
-</code></pre><pre><code language="javascript">
+</code></pre></div>
+         <div class="code"><pre><code language="javascript">
 // COMPILE AND EXECUTE TASKS
 // rather than using Ant, I've settled on Grunt's shell
 // task to run the compilation steps to create HTML and PDF.
@@ -1889,7 +1979,8 @@ shell: {
 
 
 }); // closes initConfig
-</code></pre><pre><code language="javascript">
+</code></pre></div>
+         <div class="code"><pre><code language="javascript">
 // CUSTOM TASKS
 // Usually a combination of one or more tasks defined above
 grunt.task.registerTask(
@@ -1937,10 +2028,11 @@ grunt.task.registerTask(
 
 }; // closes module.exports
 }()); // closes the use strict function
-    </code></pre></section>
-      <section data-type="chapter">
+    </code></pre></div>
+      </section>
+      <section data-type="chapter" class="research">
          <p class="rh">Things to Do and Further Research</p>
-         <h1 id="">Things to Do and Further Research</h1>
+         <h1 id="d2e779">Things to Do and Further Research</h1>
          <p>These are the things I want to look at after finishing mvp.</p>
          <h2>Deep Linking using Emphasis</h2>
          <p>The NYT developed a deep linking library called Emphasis (<a href="https://github.com/NYTimes/Emphasis" label="code">code</a> - <a href="http://open.blogs.nytimes.com/2011/01/11/emphasis-update-and-source/" label="writeup">writeup</a> that would allow us to create links to specific areas of our content.
@@ -2018,8 +2110,8 @@ grunt.task.registerTask(
             offline cookbook section on <a href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence" label="cache persistence">cache persistence</a></p>
       </section>
       <section data-type="bibliography">
-         <p class="rh">References</p>
-         <h1 id="">References</h1>
+         <p class="rh">Annotated Bibliography</p>
+         <h1 id="d2e850">Annotated Bibliography</h1>
          <p>For more information, see: <a href="http://alistapart.com/article/building-books-with-css3" label="Building books with css3">Building books with css3</a></p>
          <p>For another example, see: <a href="https://github.com/oreillymedia/HTMLBook/blob/master/stylesheets/pdf/pdf.css" label="HTMLbook stylesheet to generate pdf">HTMLbook stylesheet to generate pdf</a> which is the basis for this project.
          </p>

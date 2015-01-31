@@ -549,13 +549,16 @@
     When highlight.js works we can remove the exta wrapper
   -->
   <xsl:template match="code">
-    <xsl:element name="pre">
-      <xsl:element name="code">
+    <xsl:element name="div">
+      <xsl:attribute name="class">code</xsl:attribute>
+      <xsl:element name="pre">
+        <xsl:element name="code">
           <xsl:attribute name="language">
             <xsl:value-of select="@language"/>
           </xsl:attribute>
           <xsl:value-of select="."/>
         </xsl:element>
+      </xsl:element>
     </xsl:element>
   </xsl:template>
 
