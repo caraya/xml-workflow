@@ -1648,8 +1648,6 @@ and with the optional attributes it will look like this
 
     <para>This stylesheets sets up a printed stylesheet with a basic set of parameters. It is meant as a starting point for printed media work.</para>
 
-
-
   </section>
 
   <section type="chapter">
@@ -1931,7 +1929,7 @@ grunt.task.registerTask(
     </code>
   </section>
 
-  <section type="chapter" class="research">
+  <section type="chapter">
     <title>Things to Do and Further Research</title>
 
     <para>These are the things I want to look at after finishing mvp.</para>
@@ -1970,6 +1968,10 @@ grunt.task.registerTask(
 
     <h2>Explore implementing a serviceworker solution</h2>
 
+    <video controls='conrtrols' width='640' height='360'>
+      <source src='video/serviceworker.mp4' type='video/mp4'/>
+    </video>
+
     <para>The core of the proposed offline capabilities is a scoped service worker that will initially handle the caching of the publication's content. We take advantage of the multiple cache capabilitity available with service workers to create caches for individual unitts of content (like magazine issues) and to expire them within a certain time period (by removing and deleting the cache).</para>
 
     <para>For publications needing to pull data from specific URLs we can special case the requests based on different pieces of the URL allowing to create different caches based on edition (assuming each edition is stored in its own directory), resource type or even the URL we are requesting.</para>
@@ -1988,6 +1990,18 @@ grunt.task.registerTask(
 
     <para>Furthermore I am not aware of any way to increase this total amount or to specifically increase the storage assigned to ServiceWorkers; Jake Archibald mentions this in the offline cookbook section on <link href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence" label="cache persistence"/></para>
 
+    <h2>Implementing Graphic Callouts</h2>
+
+    <para>What would it take to get callouts to use graphics like Docbook?</para>
+
+    <para>It would take the following:</para>
+
+    <ulist>
+      <item>Create a new element (callout)</item>
+      <item>Add the callout element to the code data model</item>
+    </ulist>
+
+    <para>This would work for code, but not necessarily for images or other elements that need callouts</para>
   </section>
 
   <section type="bibliography">
@@ -2003,4 +2017,5 @@ grunt.task.registerTask(
 
     <para><link href="http://www.princexml.com/doc/9.0/" label="Prince XML User Guide"/></para>
   </section>
+
 </book>

@@ -42,13 +42,6 @@
         }
       },
 
-      jscs: {
-        options: {
-          'standard': 'Idiomatic'
-        },
-        all: ['js/']
-      },
-
       // SASS RELATED TASKS
       // Converts all the files under scss/ ending with .scss
       // into the equivalent css file on the css/ directory
@@ -266,7 +259,7 @@
       [
         'jshint'
       ]
-    )
+    );
 
     grunt.task.registerTask(
       'lint-all',
@@ -294,10 +287,19 @@
       ]
     );
 
-    // This task should run last, after all the other tasks are completed
     grunt.task.registerTask(
       'generate-pdf',
       [
+        'shell:single',
+        'shell:prince'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-pdf-scss',
+      [
+        'scsslint',
+        'sass:dev',
         'shell:single',
         'shell:prince'
       ]

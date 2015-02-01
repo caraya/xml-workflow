@@ -70,7 +70,7 @@ em {
 @import 'partials/marginalia';
 @import 'partials/paragraphs';
 @import 'partials/lists';
-//@import 'partials/images';
+@import 'partials/images';
 
 // Al fonts share family and weight. The htings unique to each
 // will be listed below
@@ -177,7 +177,7 @@ pre {
 
 // Temporary until I can get highlight.js to work
 .code {
-  background-color: lighten( #c5c5d0, 20% )
+  background-color: adjust-hue(desaturate(lighten($grey, 11), 10), 360);
   opacity: .75;
 }
 

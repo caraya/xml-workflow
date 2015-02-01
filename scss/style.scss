@@ -71,7 +71,7 @@ body {
 @import 'partials/metadata';
 @import 'partials/paragraphs';
 @import 'partials/lists';
-//@import 'partials/images';
+@import 'partials/images';
 
 
 // Handle justification as a class to let the author decide if they want to
@@ -80,6 +80,9 @@ body {
   text-align: justify;
 }
 
+video {
+  border: 1px solid $red;
+}
 
 // Blockquote styles
 //blockquote {
@@ -121,6 +124,7 @@ blockquote {
   width: 100%;
 
   p:first-of-type {
+    border-top: 0;
     margin-top: 0;
   }
 

@@ -391,6 +391,7 @@
             <xs:element ref="div"/>
             <xs:element ref="span"/>
             <xs:element ref="blockquote"/>
+            <xs:element ref="video"/>
             <xs:element ref="h1"/>
             <xs:element ref="h2"/>
             <xs:element ref="h3"/>
@@ -544,7 +545,53 @@
             </xs:attribute>
         </xs:complexType>
     </xs:element>
+
+    <!-- Video and multimedia -->
+    <xs:element name="video">
+      <xs:complexType mixed="true">
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element ref="source"/>
+          <xs:element ref="track"/>
+        </xs:choice>
+        <xs:attribute name="height" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="width" type="xs:nonNegativeInteger"/>
+        <xs:attribute name="controls" type='xs:string' use="optional"/>
+        <xs:attribute name="poster" type="xs:anyURI" use="optional"/>
+        <xs:attribute name="autoplay" type="xs:string" use="optional"/>
+        <xs:attribute name="preload" type="xs:string" use="optional" default="none"/>
+        <xs:attribute name="loop" type="xs:string" use="optional"/>
+        <xs:attribute name="muted" type="xs:string" use="optional"/>
+      </xs:complexType>
+    </xs:element>
+
+    <xs:element name="source">
+      <xs:annotation>
+        <xs:documentation>
+          Source track for video, can be used instead of the src attribute in the video itself
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:attribute name="src" type='xs:string' use="required"/>
+        <xs:attribute name="type" type='xs:string' use="optional"/>
+        <xs:anyAttribute/><!-- There's got to be more attributes -->
+      </xs:complexType>
+    </xs:element>
     
+    <xs:element name="track">
+      <xs:annotation>
+        <xs:documentation>
+          VTT track for accessibility and additional payloads
+        </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+        <xs:attribute name="src" type='xs:string' use="required"/>
+        <xs:attribute name="label" type='xs:string' use="required"/>
+        <xs:attribute name="kind" type='xs:string'/>
+        <xs:attribute name="srclang" type='xs:string' default='en'/>
+        <xs:anyAttribute/> <!-- Not sure hot to handle the deafult attribute -->
+      </xs:complexType>
+    </xs:element>
+  
     <!-- Style elements -->
     <xs:element name="strong">
         <xs:annotation>
@@ -935,7 +982,7 @@
                     <xs:documentation>Metadata choice using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier</xs:documentation>
                 </xs:annotation>
                 <xs:element name="isbn" type="ISBN-type10"/>
-                <xs:element name="edition" type="xs:integer"/>
+                <xs:element name="edition" type="xs:nonNegativeInteger"/>
                 <xs:element name="title" type="token255"/>
                 <xs:element ref="authors"/>
                 <xs:element ref="editors"/>
@@ -971,6 +1018,7 @@
                     <xs:element ref="div"/>
                     <xs:element ref="span"/>
                     <xs:element ref="blockquote"/>
+                    <xs:element ref="video"/>
                     <xs:element ref="h1"/>
                     <xs:element ref="h2"/>
                     <xs:element ref="h3"/>

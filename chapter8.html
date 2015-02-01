@@ -6,7 +6,7 @@
       <link rel="stylesheet" href="css/normalize.css"></link>
    </head>
    <body>
-      <section data-type="chapter" class="research">
+      <section data-type="chapter">
          <h1>Things to Do and Further Research</h1>
          <p>These are the things I want to look at after finishing mvp.</p>
          <h2>Deep Linking using Emphasis</h2>
@@ -49,6 +49,9 @@
             and content display such as asides and blockquotes
          </p>
          <h2>Explore implementing a serviceworker solution</h2>
+         <video height="360" width="640" controls="controls">
+            <source src="video/serviceworker.mp4" type="video/mp4"></source>
+         </video>
          <p>The core of the proposed offline capabilities is a scoped service worker that will
             initially handle the caching of the publication's content. We take advantage of the
             multiple cache capabilitity available with service workers to create caches for individual
@@ -89,6 +92,16 @@
             increase the storage assigned to ServiceWorkers; Jake Archibald mentions this in the
             offline cookbook section on
             <a href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence" label="cache persistence">cache persistence</a>
+         </p>
+         <h2>Implementing Graphic Callouts</h2>
+         <p>What would it take to get callouts to use graphics like Docbook?</p>
+         <p>It would take the following:</p>
+         <ul>
+            <li>Create a new element (callout)</li>
+            <li>Add the callout element to the code data model</li>
+         </ul>
+         <p>This would work for code, but not necessarily for images or other elements that need
+            callouts
          </p>
       </section>
    </body>

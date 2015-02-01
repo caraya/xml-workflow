@@ -159,6 +159,20 @@ ol li {
   list-style: decimal;
 }
 
+figure {
+  counter-increment: figure_count;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+figure figcaption {
+  font-weight: 700;
+  padding-bottom: 1em;
+  padding-top: .2em;
+}
+figure figcaption::before {
+  content: "Figure " counter(figure_count) ": ";
+}
+
 h1,
 h2,
 h3,
@@ -243,8 +257,8 @@ pre code {
 }
 
 .code {
-  background-color: #c5c5d0;
-  opacity: .5;
+  background-color: #e6e6e7;
+  opacity: .75;
 }
 
 .columns2 {

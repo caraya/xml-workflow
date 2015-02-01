@@ -1,8 +1,8 @@
 # Tools
 
-Because we use XML we can't just dump our code in the browser or the PDF viewer we need to prepare our content for conversion to PDF before we can view it.  There are also front-end web development best practices to follow. 
+Because we use XML we can't just dump our code in the browser or the PDF viewer we need to prepare our content for conversion to PDF before we can view it.  There are also front-end web development best practices to follow.
 
-This chapter will discuss tools to accomplish both tasks from one  build file. 
+This chapter will discuss tools to accomplish both tasks from one  build file.
 
 ## What software we need
 
@@ -13,10 +13,9 @@ For this to work you need the following software installed:
 
 Once you have java installed, you can install the following Java packages
 
-* [Apache Ant](http://ant.apache.org/bindownload.cgi)
 * [Saxon](http://sourceforge.net/projects/saxon/files/latest/download?source=files) (9.0.6.4 for Java)
 
-A note about Saxon: OxygenXML comes with a version of Saxon Enterprise Edition. We'll use a different version to make it easier to use outside the editor. 
+A note about Saxon: OxygenXML comes with a version of Saxon Enterprise Edition. We'll use a different version to make it easier to use outside the editor.
 
 Node packages are handled through NPM, the Node Package Manager. On the Node side we need at least the `grunt-cli` package installed globally. TO do so we use this command:
 
@@ -24,13 +23,17 @@ Node packages are handled through NPM, the Node Package Manager. On the Node sid
 $ npm install -g grunt-cli
 ```
 
-The -g flag will install this globally, as opposed to installing it in the project director. 
+The -g flag will install this globally, as opposed to installing it in the project director.
 
-Now that we have the required sotfware installed we can move ahead and create our configiuration files. 
+Now that we have the required sotfware installed we can move ahead and create our configuration files.
 
-### Optional: Ruby and SASS
+## Optional: Ruby, SCSS-Lint and SASS
 
-The only external dependencies you need to worry about are Ruby and SASS. Ruby comes installe in most (if not all) Macintosh and Linux systems; an [installer for Windows](http://rubyinstaller.org/) is also available.
+The only external dependencies you need to worry about are Ruby, SCSS-Lint and SASS. Ruby comes installe in most (if not all) Macintosh and Linux systems; an [installer for Windows](http://rubyinstaller.org/) is also available.
+
+SASS (syntactically awesome style sheets) are a superset of CSS that brings to the table enhancements to CSS that make life easier for designers and the people who have to create the stylesheets. I've taken advantage of these features to simplify my stylesheets and to save myself from repetitive and tedious tasks.
+
+SASS, the main tool, is written in Ruby and is available as a Ruby Gem.
 
 To install SASS, open a terminal/command window and type:
 
@@ -41,20 +44,34 @@ $ gem install sass
 Note that on Mac and Linux you may need to run the command as a superuser:
 
 ```bash
+$ gem install sass
+```
+
+If you get an error, you probably need to install the gem as an administrator. Try the following command
+
+```bash
 $ sudo gem install sass
 ```
 
-And enter your password when/if prompter to do so.
+and enter your password when prompted.
 
-> Ruby and SASS are only necessary if you plan to change the SCSS/SASS files. If you don't you can skip the Ruby install and work directly with the CSS files
+SCSS-Lint is a linter for the SCSS flavor of SASS. As with other linters it will detect errors and potential erors in your SCSS style sheets.  As with SASS, SCSSLint is a Ruby Gem that can be installed with the following command:
+
+```bash
+$ sudo gem install scss-lint
+```
+
+The same caveat about errors and installing as an administrator apply.
+
+> Ruby, SCSS-Lint and SASS are only necessary if you plan to change the SCSS/SASS files. If you don't you can skip the Ruby install and work directly with the CSS files
 >
-> If you want to peek at the SASS source look at the files under the scss directory. 
+> If you want to peek at the SASS source look at the files under the scss directory.
 
 ## Installing Node packages
 
-Grunt is a Node.js based task runner. It's a declarative version of Make and similar tools in other languages. Since Grunt and it's associated plugins are Node Packages we need to configure Node. 
+Grunt is a Node.js based task runner. It's a declarative version of Make and similar tools in other languages. Since Grunt and it's associated plugins are Node Packages we need to configure Node.
 
-At the root of the project there's a `package.json` file where all the files necessary for the project have already been configured. All that is left is to run the install command. 
+At the root of the project there's a `package.json` file where all the files necessary for the project have already been configured. All that is left is to run the install command.
 
 ```bash
 npm install
@@ -62,36 +79,427 @@ npm install
 
 This will install all the packages indicated in configuration file and all their dependencies; go get a cup of coffee as this may take a while in slower machines.
 
-As it installs the software it'll display a list of what it installed and when it's done you'll have all the packages. 
+As it installs the software it'll display a list of what it installed and when it's done you'll have all the packages.
 
 The final step of the node installation is to run bower, a front end package manager. It is not configured by default but you can use it to manage packages such as jQuery, Highlight.JS, Polymer web components and others.
 
 ## Grunt &amp; Front End Development best practices
 
-Developing the workflow has given me the chance to research and implement front end development best practices. Decreasing the size of the files requested when accessing the site
+While developing the XML and XSL for this project, I decided that it was also a good chance to test front end development tools and best practices for styling and general front end development.
 
+One of the best known tools for front end development is Grunt. It is a Javascript task runner and it can do pretty much whatever you need to do in your development environment. The fact that Grunt is written in Javascript saves developers from having to learn another language for task management.
 
-Grunt has its own configuration file (`Gruntfile.js`) one of which is provided as a model for the example application. 
+Grunt has its own configuration file (`Gruntfile.js`) one of which is provided as a model for the project.
 
-The Grunt file provides the following functionality:
+As currently written the Grunt file provides the following functionality in the assigned tasks. Please note that the tasks with an asterisk have subtasks to perform specific functions. We will discuss the subtasks as we look at each portion of the file and its purpose.
 
-* Prefix CSS files automatically
-* Clean files and folders
-* Copy files as neeed
-* Validate all Javascript files
-* Compile Sass to CSS
-* Minify Javascript files
-* Run predefined tasks whenever watched files change
-* Publish to gh-pages
-* Make directories as needed
-* Validate SCSS files
-* Remove unused CSS based on what rules are used in specified files
+<pre>
+      autoprefixer  Prefix CSS files. *
+             clean  Clean files and folders. *
+            coffee  Compile CoffeeScript files into JavaScript *
+              copy  Copy files. *
+            jshint  Validate files with JSHint. *
+              sass  Compile Sass to CSS *
+            uglify  Minify files with UglifyJS. *
+             watch  Run predefined tasks whenever watched files change.
+          gh-pages  Publish to gh-pages. *
+    gh-pages-clean  Clean cache dir
+             mkdir  Make directories. *
+          scsslint  Validate `.scss` files with `scss-lint`. *
+             shell  Run shell commands *
+              sftp  Copy files to a (remote) machine running an SSH daemon. *
+           sshexec  Executes a shell command on a remote machine *
+             uncss  Remove unused CSS *
+              lint  Alias for "jshint" task.
+          lint-all  Alias for "scsslint", "jshint" tasks.
+          prep-css  Alias for "scsslint", "sass:dev", "autoprefixer" tasks.
+           prep-js  Alias for "jshint", "uglify" tasks.
+      generate-pdf  Alias for "shell:single", "shell:prince" tasks.
+ generate-pdf-scss  Alias for "scsslint", "sass:dev", "shell:single",
+                    "shell:prince" tasks.
+      generate-all  Alias for "shell" task.
+</pre>
 
-we will discuss each portion of the file and its purpose as we move down the file
+The first thing we do is declare two variables (module and require) as global for JSLint and JSHint. Otherwise we'll get errors and it's not essential to declare them before they are used.
 
-We wrap the Gruntfile with a self executing function as a deffensive coding strategy. 
+We then wrap the Gruntfile with a self executing function as a deffensive coding strategy.
 
 When concatenating Javascript files there may be some that use strict Javascript and some that don't; With Javascript [variable hoisting](http://code.tutsplus.com/tutorials/javascript-hoisting-explained--net-15092) the use stric declaration would be placed at the very top of the concatenated file making all the scripts underneat use the strict declaration.
 
-The function wrap prevents this by making the use strict declaration local to the file where it was written. None of the other templates will be affected and they will still execute from the master stylesheet. 
+The function wrap prevents this by making the use strict declaration local to the file where it was written. None of the other templates will be affected and they will still execute from the master stylesheet. It's not essential for Grunt drivers (Gruntfile.js in our case) but it's always a good habit to get into.
 
+```javascript
+/*global module */
+/*global require */
+(function () {
+  'use strict';
+  module.exports = function (grunt) {
+    // require it at the top and pass in the grunt instance
+    // it will measure how long things take for performance
+    //testing
+    require('time-grunt')(grunt);
+
+    // load-grunt will read the package file and automatically
+    // load all our packages configured there.
+    // Yay for laziness
+    require('load-grunt-tasks')(grunt);
+```
+The first two elements that work with our content are `time-grunt` and `load-grunt-tasks`.
+
+Time-grunt provides a breakdown of time and percentage of total execution time for each task performed in this particular Grunt run. THe example below illustrates the result when running multiple tasks.
+
+```bash
+Execution Time (2015-02-01 03:43:57 UTC)
+loading tasks      983ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 12%
+scsslint:allFiles   1.1s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 13%
+sass:dev           441ms  ▇▇▇▇▇▇▇▇▇ 5%
+shell:html          1.5s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 18%
+shell:single        1.2s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 14%
+shell:prince        2.9s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 36%
+Total 8.1s
+```
+
+Load-grunt-tasks automates the loading of packages located in the `package.json` configuration file. It's specially good for forgetful people like me whose main mistake when building Grunt-based tool chains is forgetting to load the plugins to use :-).
+
+
+```javascript
+    grunt.initConfig({
+
+      // JAVASCRIPT TASKS
+      // Hint the grunt file and all files under js/
+      // and one directory below
+      jshint: {
+        files: ['Gruntfile.js', 'js/{,*/}*.js'],
+        options: {
+          reporter: require('jshint-stylish')
+            // options here to override JSHint defaults
+        }
+      },
+
+      // Takes all the files under js/ and selected files under lib
+      // and concatenates them together. I've chosen not to mangle
+      // the compressed file
+      uglify: {
+        dist: {
+          options: {
+            mangle: false,
+            sourceMap: true,
+            sourceMapName: 'css/script.min.map'
+          },
+          files: {
+            'js/script.min.js': ['js/video.js', 'lib/highlight.pack.js']
+          }
+        }
+      },
+```
+
+The first block of tasks are Javascript related.  
+
+JSHint will lint the Gruntfile itself and all files under the js/ directory for errors and potential errors. 
+
+<pre>
+[20:58:14] carlos@rivendell xml-workflow 13902$ grunt jshint
+Running "jshint:files" (jshint) task
+
+Gruntfile.js
+  line 9    col 33  Missing semicolon.
+  line 269  col 6   Missing semicolon.
+
+  ⚠  2 warnings
+
+Warning: Task "jshint:files" failed. Use --force to continue.
+
+Aborted due to warnings.
+</pre>
+
+Uglify allow us to concatenate our Javascript files and, if we choose to, further reduce the file size by mangling the code (reduces the name of variables and other resources to, usually, single letters). I've chosen not to mangle the code to make it easier to ready.
+
+
+```javascript
+      // SASS RELATED TASKS
+      // Converts all the files under scss/ ending with .scss
+      // into the equivalent css file on the css/ directory
+      sass: {
+        dev: {
+          options: {
+            style: 'expanded'
+          },
+          files: [{
+            expand: true,
+            cwd: 'scss',
+            src: ['*.scss'],
+            dest: 'css',
+            ext: '.css'
+          }]
+        },
+        production: {
+          options: {
+            style: 'compact'
+          },
+          files: [{
+            expand: true,
+            cwd: 'scss',
+            src: ['*.scss'],
+            dest: 'css',
+            ext: '.css'
+          }]
+        }
+      },
+
+      // This task requires the scss-lint ruby gem to be installed on your system
+      // If you choose not to install it, comment out this task and the prep-css
+      // and work-lint tasks below
+      //
+      // I've chosen not to fail on errors or warnings.
+      scsslint: {
+        allFiles: [
+          'scss/*.scss',
+          'scss/modules/_mixins.scss',
+          'scss/modules/_variables.scss',
+          'scss/partials/*.scss'
+        ],
+        options: {
+          config: '.scss-lint.yml',
+          force: true,
+          colorizeOutput: true
+        }
+      },
+
+
+      autoprefixer: {
+        options: {
+          // We need to `freeze` browsers versions for testing purposes.
+          browsers: ['last 2']
+        },
+
+        files: {
+          expand: true,
+          flatten: true,
+          src: 'scss/*.scss',
+          dest: 'css/'
+        }
+      },
+
+      // CSS TASKS TO RUN AFTER CONVERSION
+      // Cleans the CSS based on what's used in the specified files
+      // See https://github.com/addyosmani/grunt-uncss for more
+      // information
+      uncss: {
+        dist: {
+          files: {
+            'css/tidy.css': ['*.html', '!docs.html']
+          }
+        }
+      },
+```
+
+```javascript
+      // OPTIONAL TASKS
+      // Tasks below have been set up but are currently not used.
+      // If you want them, uncomment the corresponding block below
+
+      // COFFEESCRIPT
+      // If you want to use coffeescript (http://coffeescript.org/)
+      // instead of vanilla JS, uncoment the block below and change
+      // the cwd value to the locations of your coffee files
+      coffee: {
+        target1: {
+          expand: true,
+          flatten: true,
+          cwd: 'src/',
+          src: ['*.coffee'],
+          dest: 'build/',
+          ext: '.js'
+
+      },
+      // GH-PAGES TASK
+      // Push the specified content into the repositories gh-pages branch
+      'gh-pages': {
+        options: {
+          message: 'Content committed from Grunt gh-pages',
+          base: './build/app',
+          dotfiles: true
+        },
+        // These files will get pushed to the `
+        // gh-pages` branch (the default)
+        // We have to specifically remove node_modules
+        src: ['**/*']
+      },
+
+      //SFTP TASK
+      //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
+      //to store files in a remote SFTP server. Alternative to gh-pages
+      //secret: grunt.file.readJSON('secret.json'),
+      sftp: {
+        test: {
+          files: {
+            "./": "*json"
+          },
+          options: {
+            path: '/tmp/',
+            host: '<%= secret.host %>',
+            username: '<%= secret.username %>',
+            password: '<%= secret.password %>',
+            showProgress: true
+          }
+        }
+      },
+```
+
+```javascript
+      // FILE MANAGEMENT
+      // Can't seem to make the copy task create the directory
+      // if it doesn't exist so we go to another task to create
+      // the fn directory
+      mkdir: {
+        build: {
+          options: {
+            create: ['build']
+          }
+        }
+      },
+
+      // Copy the files from our repository into the build directory
+      copy: {
+        build: {
+          files: [{
+            expand: true,
+            src: ['app/**/*'],
+            dest: 'build/'
+          }]
+        }
+      },
+
+      // Clean the build directory
+      clean: {
+        production: ['build/']
+      },
+```
+
+```javascript
+      // GH-PAGES TASK
+      // Push the specified content into the repositories gh-pages branch
+      'gh-pages': {
+        options: {
+          message: 'Content committed from Grunt gh-pages',
+          base: './build/app',
+          dotfiles: true
+        },
+        // These files will get pushed to the `
+        // gh-pages` branch (the default)
+        // We have to specifically remove node_modules
+        src: ['**/*']
+      },
+```
+
+```javascript
+      // WATCH TASK
+      // Watch for changes on the js and scss files and perform
+      // the specified task
+      watch: {
+        options: {
+          nospawn: true
+        },
+        // Watch all javascript files and hint them
+        js: {
+          files: ['Gruntfile.js', 'js/{,*/}*.js'],
+          tasks: ['jshint']
+        },
+        sass: {
+          files: ['scss/*.scss'],
+          tasks: ['sass']
+        }
+      },
+```
+
+```javascript
+      // COMPILE AND EXECUTE TASKS
+      // rather than using Ant, I've settled on Grunt's shell
+      // task to run the compilation steps to create HTML and PDF.
+      // This reduces teh number of dependecies for our project
+      shell: {
+        options: {
+          failOnError: true,
+          stderr: false
+        },
+        html: {
+          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/book.xsl docs.xml -o:index.html'
+        },
+        single: {
+          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/pm-book.xsl docs.xml -o:docs.html'
+        },
+        prince: {
+          command: 'prince --verbose --javascript docs.html -o docs.pdf'
+        }
+      }
+
+
+    }); // closes initConfig
+```
+
+```javascript
+    // CUSTOM TASKS
+    // Usually a combination of one or more tasks defined above
+    grunt.task.registerTask(
+      'lint',
+      [
+        'jshint'
+      ]
+    )
+
+    grunt.task.registerTask(
+      'lint-all',
+      [
+        'scsslint',
+        'jshint'
+      ]
+    );
+
+    // Prep CSS starting with SASS, autoprefix et. al
+    grunt.task.registerTask(
+      'prep-css',
+      [
+        'scsslint',
+        'sass:dev',
+        'autoprefixer'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'prep-js',
+      [
+        'jshint',
+        'uglify'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-pdf',
+      [
+        'shell:single',
+        'shell:prince'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-pdf-scss',
+      [
+        'scsslint',
+        'sass:dev',
+        'shell:single',
+        'shell:prince'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-all',
+      [
+        'shell'
+      ]
+    );
+
+
+  }; // closes module.exports
+}()); // closes the use strict function
+```
+```

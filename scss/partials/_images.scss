@@ -1,11 +1,13 @@
 figure {
-  border: 1px solid $red;
+  // border: 1px solid $grey;
   counter-increment: figure_count;
   margin-bottom: 1em;
   margin-top: 1em;
 
   figcaption {
-    font-size: 80%;
+    font-weight: 700;
+    padding-bottom: 1em;
+    padding-top: .2em;
 
     &::before {
       content: 'Figure ' counter(figure_count) ': ';

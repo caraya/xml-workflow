@@ -48,7 +48,7 @@
       <!-- Load Normalize library -->
       <link rel="stylesheet" href="css/normalize.css"/>
       <link rel="stylesheet" href="css/style.css" />
-      <xsl:if test="(code)">
+      <xsl:if test="code">
         <!--
               Use highlight.js and docco style
             -->
@@ -60,12 +60,14 @@
         </script>
       </xsl:if>
       <!--
-        Comment this out for now. It'll become relevant when we add video
-        <script src="js/script.js"></script>
+            Comment this out for now. It'll become relevant when we add video
+            <script src="js/script.js"></script>
+
+            Working on figuring out why the js/video.js doesn't work on desktop
       -->
     </head>
     <body>
-      <xsl:apply-templates select="/" mode="toc"/>
+      <xsl:apply-templates select="book" mode="toc"/>
       <xsl:apply-templates/>
     </body>
     </html>
@@ -469,6 +471,66 @@
     </xsl:element>
   </xsl:template>
 
+  <!-- VIDEO AND TRACKS -->
+  <xsl:template match="video">
+    <xsl:element name='video'>
+      <!-- Poster, Height and Width are required -->
+      <xsl:attribute name="height" select="@height"/>
+      <xsl:attribute name="width" select="@width"/>
+      <!-- All other attributes are optional -->
+      <xsl:if test="string(@poster)">
+        <xsl:attribute name="poster" select="@poster"/>
+      </xsl:if>
+      <xsl:if test="string(@src)">
+        <xsl:attribute name="src" select="@src"/>
+      </xsl:if>
+      <xsl:if test="string(@controls)">
+        <xsl:attribute name="controls">controls</xsl:attribute>
+      </xsl:if>
+      <xsl:if test="string(@autoplay)">
+        <xsl:attribute name="controls">controls</xsl:attribute>
+      </xsl:if>
+      <xsl:if test="string(@preload)">
+        <xsl:attribute name="preload">preload</xsl:attribute>
+      </xsl:if>
+      <xsl:if test="string(@loop)">
+        <xsl:attribute name="poster">loop</xsl:attribute>
+      </xsl:if>
+      <xsl:if test="string(@looped)">
+        <xsl:attribute name="looped">looped</xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="source">
+    <xsl:element name="source">
+      <xsl:attribute name="src">
+        <xsl:value-of select="@src"/>
+      </xsl:attribute>
+      <xsl:if test="string(@type)">
+        <xsl:attribute name="type" select="@type"/>
+      </xsl:if>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="track">
+    <xsl:element name="track">
+      <xsl:attribute name="src">
+        <xsl:value-of select="@src"/>
+      </xsl:attribute>
+      <xsl:attribute name="label">
+        <xsl:value-of select="@label"/>
+      </xsl:attribute>
+      <xsl:if test="string(@kind)">
+        <xsl:attribute name="kind" select="@kind"/>
+      </xsl:if>
+      <xsl:if test="string(@srclang)">
+        <xsl:attribute name="srclang" select="@srclang"/>
+      </xsl:if>
+    </xsl:element>
+  </xsl:template>
+
   <!-- PARAGRAPHS -->
   <xsl:template match="para">
     <xsl:element name="p">
@@ -640,14 +702,14 @@
         of the figure element
       -->
       <xsl:choose>
-        <xsl:when test="@width gt image/@width">
+        <xsl:when test="(string(@width) and (@width gt image/@width))">
           <xsl:attribute name="width">
-            <xsl:value-of select="@width"/>
+            <xsl:value-of select="concat(@width, 'px')"/>
           </xsl:attribute>
         </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name="width">
-            <xsl:value-of select="image/@width"/>
+            <xsl:value-of select="concat(image/@width, 'px')"/>
           </xsl:attribute>
         </xsl:otherwise>
       </xsl:choose>
@@ -660,7 +722,7 @@
       -->
       <xsl:if test="string(@height)">
         <xsl:attribute name="height">
-          <xsl:value-of select="@height"/>
+          <xsl:value-of select="concat(@height, 'px')"/>
         </xsl:attribute>
       </xsl:if>
       <!--
@@ -691,12 +753,12 @@
       </xsl:attribute>
       <xsl:if test="string(@width)">
         <xsl:attribute name="width">
-          <xsl:value-of select="@width"/>
+          <xsl:value-of select="concat(@width, 'px')"/>
         </xsl:attribute>
       </xsl:if>
       <xsl:if test="string(@height)">
         <xsl:attribute name="height">
-          <xsl:value-of select="@height"/>
+          <xsl:value-of select="concat(@height, 'px')"/>
         </xsl:attribute>
       </xsl:if>
       <xsl:if test="string(@align)">

@@ -200,11 +200,29 @@ ul li {
 ol li {
   list-style: decimal; }
 
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/images */
+figure {
+  counter-increment: figure_count;
+  margin-bottom: 1em;
+  margin-top: 1em; }
+  /* line 7, /Users/carlos/code/xml-workflow/scss/partials/images */
+  figure figcaption {
+    font-weight: 700;
+    padding-bottom: 1em;
+    padding-top: 0.2em; }
+    /* line 12, /Users/carlos/code/xml-workflow/scss/partials/images */
+    figure figcaption::before {
+      content: 'Figure ' counter(figure_count) ': '; }
+
 /* line 79, /Users/carlos/code/xml-workflow/scss/style.scss */
 .justified {
   text-align: justify; }
 
-/* line 98, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 83, /Users/carlos/code/xml-workflow/scss/style.scss */
+video {
+  border: 1px solid #cc092f; }
+
+/* line 101, /Users/carlos/code/xml-workflow/scss/style.scss */
 blockquote {
   border-left: 5px solid #ccc;
   color: #222023;
@@ -215,11 +233,11 @@ blockquote {
   margin-left: 4em;
   margin-right: 4em;
   margin-top: 2em; }
-  /* line 109, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 112, /Users/carlos/code/xml-workflow/scss/style.scss */
   blockquote p {
     padding-left: 0.5em; }
 
-/* line 118, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 121, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns2 {
   column-count: 2;
   column-gap: 3em;
@@ -227,14 +245,15 @@ blockquote {
   column-span: none;
   line-height: 1em;
   width: 100%; }
-  /* line 123, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 126, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p:first-of-type {
+    border-top: 0;
     margin-top: 0; }
-  /* line 127, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 131, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p + p {
     text-indent: 2em; }
 
-/* line 132, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 136, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns3 {
   column-count: 3;
   column-gap: 10px;
@@ -242,23 +261,23 @@ blockquote {
   column-span: none;
   width: 100%; }
 
-/* line 141, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 145, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='titlepage'] h1, section[data-type='titlepage'] h2 {
   text-align: center; }
-/* line 145, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 149, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='titlepage'] p {
   text-align: left; }
-  /* line 148, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 152, /Users/carlos/code/xml-workflow/scss/style.scss */
   section[data-type='titlepage'] p + p {
     text-indent: 0 !important; }
 
-/* line 156, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 160, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] h1, section[data-type='dedication'] h2 {
   text-align: center; }
-/* line 160, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 164, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] p {
   text-align: left; }
-  /* line 163, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 167, /Users/carlos/code/xml-workflow/scss/style.scss */
   section[data-type='dedication'] p + p {
     text-indent: 0 !important; }
 

@@ -156,6 +156,20 @@ ul li {
 ol li {
   list-style: decimal; }
 
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/images */
+figure {
+  counter-increment: figure_count;
+  margin-bottom: 1em;
+  margin-top: 1em; }
+  /* line 7, /Users/carlos/code/xml-workflow/scss/partials/images */
+  figure figcaption {
+    font-weight: 700;
+    padding-bottom: 1em;
+    padding-top: 0.2em; }
+    /* line 12, /Users/carlos/code/xml-workflow/scss/partials/images */
+    figure figcaption::before {
+      content: 'Figure ' counter(figure_count) ': '; }
+
 /* line 82, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
@@ -232,8 +246,8 @@ pre {
 
 /* line 179, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 .code {
-  background-color: #c5c5d0;
-  opacity: 0.5; }
+  background-color: #e6e6e7;
+  opacity: 0.75; }
 
 /* line 188, /Users/carlos/code/xml-workflow/scss/pm-style.scss */
 .columns2 {

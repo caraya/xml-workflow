@@ -1759,7 +1759,7 @@
       <section data-type="chapter">
          <p class="rh">Task Automation with Grunt</p>
          <h1 id="d2e749">Task Automation with Grunt</h1>
-         <figure width="504"><img src="images/grund-js-opt.png" alt="Grunt" width="504" height="276"><figcaption>Grunt.js, a Javascript task runner</figcaption>
+         <figure width="504px"><img src="images/grund-js-opt.png" alt="Grunt" width="504px" height="276px"><figcaption>Grunt.js, a Javascript task runner</figcaption>
          </figure>
          <p><a href="http://gruntjs.com/" label="Grunt.js">Grunt.js</a> is a task runner written in Javascript.
          </p>
@@ -2030,7 +2030,7 @@ grunt.task.registerTask(
 }()); // closes the use strict function
     </code></pre></div>
       </section>
-      <section data-type="chapter" class="research">
+      <section data-type="chapter">
          <p class="rh">Things to Do and Further Research</p>
          <h1 id="d2e779">Things to Do and Further Research</h1>
          <p>These are the things I want to look at after finishing mvp.</p>
@@ -2070,6 +2070,9 @@ grunt.task.registerTask(
             and content display such as asides and blockquotes
          </p>
          <h2>Explore implementing a serviceworker solution</h2>
+         <video height="360" width="640" controls>
+            <source src="video/serviceworker.mp4" type="video/mp4"></source>
+         </video>
          <p>The core of the proposed offline capabilities is a scoped service worker that will
             initially handle the caching of the publication's content. We take advantage of the
             multiple cache capabilitity available with service workers to create caches for individual
@@ -2108,10 +2111,20 @@ grunt.task.registerTask(
          <p>Furthermore I am not aware of any way to increase this total amount or to specifically
             increase the storage assigned to ServiceWorkers; Jake Archibald mentions this in the
             offline cookbook section on <a href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence" label="cache persistence">cache persistence</a></p>
+         <h2>Implementing Graphic Callouts</h2>
+         <p>What would it take to get callouts to use graphics like Docbook?</p>
+         <p>It would take the following:</p>
+         <ul>
+            <li>Create a new element (callout)</li>
+            <li>Add the callout element to the code data model</li>
+         </ul>
+         <p>This would work for code, but not necessarily for images or other elements that need
+            callouts
+         </p>
       </section>
       <section data-type="bibliography">
          <p class="rh">Annotated Bibliography</p>
-         <h1 id="d2e850">Annotated Bibliography</h1>
+         <h1 id="d2e866">Annotated Bibliography</h1>
          <p>For more information, see: <a href="http://alistapart.com/article/building-books-with-css3" label="Building books with css3">Building books with css3</a></p>
          <p>For another example, see: <a href="https://github.com/oreillymedia/HTMLBook/blob/master/stylesheets/pdf/pdf.css" label="HTMLbook stylesheet to generate pdf">HTMLbook stylesheet to generate pdf</a> which is the basis for this project.
          </p>
