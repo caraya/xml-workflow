@@ -321,7 +321,7 @@ We've chosen to force it to run when it finds errors. We want the linting tasks 
       },
 
 
-[Autoprefixer](https://github.com/nDmitry/grunt-autoprefixer) uses the [CanIUse database](http://caniuse.com/) to determine if properties need a vendor prefix and add the prefix if they do.
+Grunt's <a href="https://github.com/nDmitry/grunt-autoprefixer">autoprefixer</a>  task uses the <a href="http://caniuse.com/">CanIUse database</a> to determine if properties need a vendor prefix and add the prefix if they do.
 
 This becomes important for older browsers or when vendors drop their prefix for a given property
 
