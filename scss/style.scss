@@ -81,38 +81,38 @@ body {
 }
 
 video {
-  border: 1px solid $red;
+  border: 1px solid $grey;
 }
 
 // Blockquote styles
-//blockquote {
-//  color: #222023;
-//  font-style: italic;
-//  font-weight: 100;
-//  font-size: 1.5em;
-//  margin-top: 1.55em;
-//  margin-bottom: 1.5em;
-//  margin-left: 2em;
-//  padding-left: 0.5;
-//}
+blockquote {
+  color: #222023;
+  font-style: italic;
+  font-weight: 100;
+  font-size: 1.5em;
+  margin-top: 1.55em;
+  margin-bottom: 1.5em;
+  margin-left: 2em;
+  padding-left: 0.5;
+}
 
 // An alternative blockquote style with a 5 pixel bar
 // on the left side
-blockquote {
-  border-left: 5px solid #ccc;
-  color: #222023;
-  font-size: 1.5em;
-  font-style: italic;
-  font-weight: 100;
-  margin-bottom: 2em;
-  margin-left: 4em;
-  margin-right: 4em;
-  margin-top: 2em;
-
-  p {
-    padding-left: .5em;
-  }
-}
+//blockquote {
+//  border-left: 5px solid #ccc;
+//  color: #222023;
+//  font-size: 1.5em;
+//  font-style: italic;
+//  font-weight: 100;
+//  margin-bottom: 2em;
+//  margin-left: 4em;
+//  margin-right: 4em;
+//  margin-top: 2em;
+//
+//  p {
+//    padding-left: .5em;
+//  }
+//}
 
 // The classes below use the column-attribs mixin defined in _columns.scss
 // to create 2 and 3-column layouts. These classes are meant as starting points,

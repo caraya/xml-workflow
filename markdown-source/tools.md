@@ -128,6 +128,9 @@ When concatenating Javascript files there may be some that use strict Javascript
 
 The function wrap prevents this by making the use strict declaration local to the file where it was written. None of the other templates will be affected and they will still execute from the master stylesheet. It's not essential for Grunt drivers (Gruntfile.js in our case) but it's always a good habit to get into.
 
+
+## Setup
+
 ```javascript
 /*global module */
 /*global require */
@@ -161,6 +164,7 @@ Total 8.1s
 
 Load-grunt-tasks automates the loading of packages located in the `package.json` configuration file. It's specially good for forgetful people like me whose main mistake when building Grunt-based tool chains is forgetting to load the plugins to use :-).
 
+## Javascript
 
 ```javascript
     grunt.initConfig({
@@ -193,7 +197,6 @@ Load-grunt-tasks automates the loading of packages located in the `package.json`
       },
 ```
 
-The first block of tasks are Javascript related.  
 
 JSHint will lint the Gruntfile itself and all files under the js/ directory for errors and potential errors. 
 
@@ -212,8 +215,13 @@ Warning: Task "jshint:files" failed. Use --force to continue.
 Aborted due to warnings.
 </pre>
 
-Uglify allow us to concatenate our Javascript files and, if we choose to, further reduce the file size by mangling the code (reduces the name of variables and other resources to, usually, single letters). I've chosen not to mangle the code to make it easier to ready.
+Uglify allow us to concatenate our Javascript files and, if we choose to, further reduce the file size by mangling the code (See this [page](http://lisperator.net/uglifyjs/mangle) for an explanation of what mangle is and does). I've chosen not to mangle the code to make it easier to read. May add it as an option for production deployments.
 
+## SASS and CSS
+
+As mentioned elsewhere I chose to use the SCSS flavor of SASS because it allows me to do some awesome things with CSS that I wouldn't be able to do with CSS alone. 
+
+The first task with SASS is convert it to CSS. For this we have two separate tasks. One for development (dev task below) where we pick all the files from the scss directory (the entire files section is equivalent to writing `scss/*.scss`) and converting them to files with the same name in the css directory. 
 
 ```javascript
       // SASS RELATED TASKS
@@ -245,11 +253,58 @@ Uglify allow us to concatenate our Javascript files and, if we choose to, furthe
           }]
         }
       },
+```
 
-      // This task requires the scss-lint ruby gem to be installed on your system
-      // If you choose not to install it, comment out this task and the prep-css
-      // and work-lint tasks below
-      //
+There are two similar versions of the task. The development version will produce the format below, which is easier to read and easier to troubleshoot (css-lint, discussed below, tells you what line the error or warning happened in.)
+
+```css
+@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+html {
+  font-size: 16px;
+  overflow-y: scroll;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #fff;
+  color: #554c4d;
+  color: #554c4d;
+  font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif;
+  font-size: 1em;
+  font-weight: 100;
+  line-height: 1.1;
+  padding-left: 10em;
+  padding-right: 10em;
+}
+```
+
+The production code compresses the output. It deletes all tabs and carriage returns to produce cod elike the one below. It reduces the file size by eliminating spaces, tabs and carriage returns inside the rules, otherwise both versions are equivalent. 
+
+```css
+@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+html { font-size: 16px; overflow-y: scroll; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+
+body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif; font-size: 1em; font-weight: 100; line-height: 1.1; padding-left: 10em; padding-right: 10em; }
+```
+
+I did consider adding [cssmin](https://github.com/gruntjs/grunt-contrib-cssmin) but decided against it for two reasons:
+
+SASS already concatenates all the files when it imports files from the modules and partials directory so we're only working with one file for each version of the project (html and PDF)
+
+The only other file we'd have to add, normalize.css, is a third party library that I'd rather leave along rather than mess with. 
+
+The `scsslint` task is a wrapper for the scss-lint Ruby Gem that must be installed on your system. It warns you of errors and potential errors in your SCSS stylesheets. 
+
+We've chosen to force it to run when it finds errors. We want the linting tasks to be used as the developer's discretion, there may  be times when vendor prefixes have to be used or where colors have to be defined multiple times to acommodate older browsers. 
+
+```javascript
       // I've chosen not to fail on errors or warnings.
       scsslint: {
         allFiles: [
@@ -266,9 +321,12 @@ Uglify allow us to concatenate our Javascript files and, if we choose to, furthe
       },
 
 
+[Autoprefixer](https://github.com/nDmitry/grunt-autoprefixer) uses the [CanIUse database](http://caniuse.com/) to determine if properties need a vendor prefix and add the prefix if they do.
+
+This becomes important for older browsers or when vendors drop their prefix for a given property
+
       autoprefixer: {
         options: {
-          // We need to `freeze` browsers versions for testing purposes.
           browsers: ['last 2']
         },
 

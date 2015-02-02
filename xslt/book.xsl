@@ -50,8 +50,8 @@
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="code">
         <!--
-              Use highlight.js and docco style
-            -->
+           Use highlight.js and docco style
+        -->
         <link rel="stylesheet" href="css/styles/railscasts.css" />
         <!-- Load highlight.js -->
         <script src="lib/highlight.pack.js"></script>
@@ -60,37 +60,60 @@
         </script>
       </xsl:if>
       <!--
-            Comment this out for now. It'll become relevant when we add video
-            <script src="js/script.js"></script>
+          Comment this out for now. It'll become relevant when we add video
+          <script src="js/script.js"></script>
 
-            Working on figuring out why the js/video.js doesn't work on desktop
+          Working on figuring out why the js/video.js doesn't work on desktop
       -->
     </head>
     <body>
-      <xsl:apply-templates select="book" mode="toc"/>
+      <xsl:apply-templates select="/" mode="toc"/>
       <xsl:apply-templates/>
     </body>
     </html>
   </xsl:template>
 
-  <xsl:template match="book" mode="toc">
-      <section data-type="toc">
-        <h2>Table of Contents</h2>
-        <nav>
-          <ol>
-            <xsl:for-each select="section">
-              <xsl:element name="li">
-                <xsl:element name="a">
-                  <xsl:attribute name="href">
-                    <xsl:value-of select="concat(@type, position(),'.html')"/>
-                  </xsl:attribute>
-                  <xsl:value-of select="title"/>
-                </xsl:element>
-              </xsl:element>
-            </xsl:for-each>
-          </ol>
-        </nav>
-      </section>
+  <xsl:template match="/" mode="toc">
+    <!--
+    <xsl:for-each-group select="section" group-by="@type">
+    <tr>
+      <td><xsl:value-of select="position()"/></td>
+      <td><xsl:value-of select="@country"/></td>
+      <td>
+        <xsl:value-of select="current-group()/@name" separator=", "/>
+      </td>
+      <td><xsl:value-of select="sum(current-group()/@pop)"/></td>
+    </tr>
+  </xsl:for-each-group>
+    -->
+    <xsl:result-document href='toc.html' format="xhtml-out">
+      <html>
+        <head>
+          <link rel="stylesheet" href="css/style.css" />
+          <!-- Load Normalize library -->
+          <link rel="stylesheet" href="css/normalize.css"/>
+        </head>
+        <body>
+          <section data-type="toc">
+            <h2>Table of Contents</h2>
+            <nav>
+              <ol>
+                <xsl:for-each select="//section">
+                  <xsl:element name="li">
+                    <xsl:element name="a">
+                      <xsl:attribute name="href">
+                        <xsl:value-of select="concat(@type, position(),'.html')"/>
+                      </xsl:attribute>
+                      <xsl:value-of select="title"/>
+                    </xsl:element>
+                  </xsl:element>
+                </xsl:for-each>
+              </ol>
+            </nav>
+          </section>
+        </body>
+      </html>
+    </xsl:result-document>
   </xsl:template>
 
   <!-- Metadata -->
