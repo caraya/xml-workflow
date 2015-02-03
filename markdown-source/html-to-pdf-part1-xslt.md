@@ -11,29 +11,29 @@ Rather than having to deal with [XSL-FO](http://www.w3.org/TR/2006/REC-xsl11-200
 I'm not against XSL-FO but the structure of document is not the easiest or most intuitive. An example of XSL-FO looks like this:
 
 ```xml
-&lt;?xml version="1.0" encoding="iso-8859-1"?> (1)
+<?xml version="1.0" encoding="iso-8859-1"?> (1)
 
-&lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"> (2)
-  &lt;fo:layout-master-set> (3)
-    &lt;fo:simple-page-master master-name="my-page">
-      &lt;fo:region-body margin="1in"/>
-    &lt;/fo:simple-page-master>
-  &lt;/fo:layout-master-set>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"> (2)
+  <fo:layout-master-set> (3)
+    <fo:simple-page-master master-name="my-page">
+      <fo:region-body margin="1in"/>
+    </fo:simple-page-master>
+  </fo:layout-master-set>
 
-  &lt;fo:page-sequence master-reference="my-page"> (4)
-    &lt;fo:flow flow-name="xsl-region-body"> (5)
-      &lt;fo:block>Hello, world!&lt;/fo:block> (6)
-    &lt;/fo:flow>
-  &lt;/fo:page-sequence>
-&lt;/fo:root>
+  <fo:page-sequence master-reference="my-page"> (4)
+    <fo:flow flow-name="xsl-region-body"> (5)
+      <fo:block>Hello, world!</fo:block> (6)
+    </fo:flow>
+  </fo:page-sequence>
+</fo:root>
 ```
 
 1. This is an XML declaration. XSL FO (XSLFO) belongs to XML family, so this is obligatory.
 2. Root element. The obligatory namespace attribute declares the XSL Formatting Objects namespace.
 3. Layout master set. This element contains one or more declarations of page masters and page sequence masters — elements that define layouts of single pages and page sequences. In the example, I have defined a rudimentary page master, with only one area in it. The area should have a 1 inch margin from all sides of the page.
-4. Page sequence. Pages in the document are grouped into sequences; each sequence starts from a new page. Master-reference attribute selects an appropriate layout scheme from masters listed inside `&lt;fo:layout-master-set>`. Setting master-reference to a page master name means that all pages in this sequence will be formatted using this page master.
+4. Page sequence. Pages in the document are grouped into sequences; each sequence starts from a new page. Master-reference attribute selects an appropriate layout scheme from masters listed inside `<fo:layout-master-set>`. Setting master-reference to a page master name means that all pages in this sequence will be formatted using this page master.
 5. Flow. This is the container object for all user text in the document. Everything contained in the flow will be formatted into regions on pages generated inside the page sequence. Flow name links the flow to a specific region on the page (defined in the page master); in our example, it is the body region.
-6. Block. This object roughly corresponds to `&lt;div>` in HTML, and normally includes a paragraph of text. I need it here, because text cannot be placed directly into a flow.
+6. Block. This object roughly corresponds to `<div>` in HTML, and normally includes a paragraph of text. I need it here, because text cannot be placed directly into a flow.
 
 Rather than define a flow of content and then the content CSS Paged Media uses a combination of new and existing CSS elements to format the content. For example, to define default page size and then add elements to chapter pages looks like this:
 
@@ -68,26 +68,26 @@ We'll use this opportunity to create an xslt customization layer to make changes
 
 We create a customization layer by importing the original stylesheet and making any necessary changes in the new stylesheet. Imported stylesheets have a lower precedence order than the local version so the local version will win if there is conflict.
 
-Only the templates defined in this stilesheet are overriden
+Only the templates defined in this stilesheet are overriden. If the template we use is not in this customization layer, the transformation engine will use the template in the base style sheet (book.xsl in this case)
 
 The style sheet is broken by templates and explained below. 
 
 ```xml
-&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="xs"
   version="2.0">
-  &lt;!--
+  <!--
     XSLT Paged Media Customization Layer
 
     Makes the necessary changes to the content to work with the Paged Media CSS stylesheet
   -->
-  &lt;!-- First import the base stylesheet -->
-  &lt;xsl:import href="book.xsl"/>
+  <!-- First import the base stylesheet -->
+  <xsl:import href="book.xsl"/>
 
-  &lt;!-- Define the output for this and all document children -->
-  &lt;xsl:output name="xhtml-out" method="xhtml"
+  <!-- Define the output for this and all document children -->
+  <xsl:output name="xhtml-out" method="xhtml"
     indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
 ```
 
@@ -96,95 +96,157 @@ The first difference in the customization layer is that it imports another style
 We will then override the templates we need in order to get a single file to pass on to Prince or any other CSS Print Processor. 
 
 ```xml
-  &lt;xsl:template match="book">
-    &lt;html>
-      &lt;head>
-        &lt;xsl:element name="title">
-          &lt;xsl:value-of select="metadata/title"/>
-        &lt;/xsl:element>
-        &lt;link rel="stylesheet" href="css/pm-style.css" />
-        &lt;!-- Just so I won't forget it again -->
-        &lt;link rel="stylesheet" href="css/paged-media.css"/>
-        &lt;!--
-              Use highlight.js and docco style
-        -->
-        &lt;link rel="stylesheet" href="css/styles/docco.css" />
-        &lt;!-- Load highlight.js -->
-        &lt;script src="lib/highlight.pack.js">&lt;/script>
-        &lt;script>
-          hljs.initHighlightingOnLoad();
-        &lt;/script>
-        &lt;script src="js/script.js">&lt;/script>
-      &lt;/head>
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  exclude-result-prefixes="xs"
+  version="2.0">
+  <!--
+    XSLT Paged Media Customization Layer
 
-      &lt;body>
-        &lt;xsl:attribute name="data-type">book&lt;/xsl:attribute>
-          &lt;xsl:element name="meta">
-            &lt;xsl:attribute name="generator">
-              &lt;xsl:value-of select="system-property('xsl:product-name')"/>
-              &lt;xsl:value-of select="system-property('xsl:product-version')"/>
-            &lt;/xsl:attribute>
-          &lt;/xsl:element>
-        &lt;xsl:apply-templates/>
-      &lt;/body>
-    &lt;/html>
-  &lt;/xsl:template>
+    Makes the necessary changes to the content to work with the Paged Media CSS stylesheet
+  -->
+  <!-- First import the base stylesheet -->
+  <xsl:import href="book.xsl"/>
+
+  <!-- Define the output for this and all document children -->
+  <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8"
+    omit-xml-declaration="yes" />
+
+  <!-- Root template matching book -->
+  <xsl:template match="book">
+    <html>
+      <head>
+        <xsl:element name="title">
+          <xsl:value-of select="metadata/title"/>
+        </xsl:element>
+        <!-- Load Typekit Font -->
+        <script src="https://use.typekit.net/qcp8nid.js"></script>
+        <script>try{Typekit.load();}catch(e){}</script>
+        <!-- Paged Media Styles -->
+        <link rel="stylesheet" href="css/pm-style.css" />
+        <!--
+          Load Paged Media definitions just so I won't forget it again
+        -->
+        <link rel="stylesheet" href="css/paged-media.css"/>
+        <!--
+              Use highlight.js and style
+        -->
+        <xsl:if test="(code)">
+          <link rel="stylesheet" href="css/styles/railscasts.css" />
+          <!-- Load highlight.js -->
+          <script src="lib/highlight.pack.js"></script>
+          <script>
+            hljs.initHighlightingOnLoad();
+          </script>
+        </xsl:if>
+        <!-- <script src="js/script.js"></script> -->
+      </head>
+      <body>
+        <xsl:attribute name="data-type">book</xsl:attribute>
+          <xsl:element name="meta">
+            <xsl:attribute name="generator">
+              <xsl:value-of select="system-property('xsl:product-name')"/>
+              <xsl:value-of select="system-property('xsl:product-version')"/>
+            </xsl:attribute>
+          </xsl:element>
+        <xsl:apply-templates select="/" mode="toc"/>
+        <xsl:apply-templates/>
+      </body>
+    </html>
+  </xsl:template>
 ```
 
-The first template to override is the root template. For this template we want to do the following:
+Most of the root template deals with undoing some of the changes we made to create multiple pages. 
 
+We've changed the CSS we use to process the content. We use paged-media.css to create the content for our media files, mostly  setting up the different pages based on the data-type attribute. 
 
-* Add the data-type=book attribute to the body of the document
-* Remove the toc mode apply-template call from the book template.
-  It's not needed, we may move it to a separate template for navigation
-* Add the paged media styles stylesheet. This is an override os our basic style sheet with information specific to print
-* Insert a link to the paged media CSS style sheet in the head of the document to make the Prince command easier (and so I won't forget it during testing and development)
-* Move the highlight.js declaraitons, both CSS style and Javascript, to the main document (the sections will not generate their own file)
+We use pm-styles.css to control the style of our documents specifically for our printed page application. We have to take into account the fact that Highlight.js is not working properly with Prince's Javascript implementation and that there are places where we don't want our paragraphs to be indented at all. 
 
+We moved elements from the original section templates. We test whether we need to add the Highlight.JS since we dropped the multipage output.
+
+## Overriding the section template
+
+In this particular situation we need to:
+
+* Remove filename variable. It's not needed
+* Remove the result document element (it's all one file)
+* Change the test for type attribute so it'll terminate if it fails (type attribute is required)
+* Add the element that will build our running footer (p class="rh") and assign the value of title to it
+* Rework the metadata template so it'll match the spec on the CSS
+
+All other templates remain unchanged and are used from the base stylesheet.
+
+Only the templates defined in this style sheet are overriden or created.
 
 ```xml
-&lt;xsl:template match="book/section">
-    &lt;section>
-      &lt;xsl:choose>
-        &lt;xsl:when test="@type">
-          &lt;xsl:attribute name="data-type">
-            &lt;xsl:value-of select="@type"/>
-          &lt;/xsl:attribute>
-        &lt;/xsl:when>
-        &lt;xsl:otherwise>
-          &lt;xsl:message terminate="yes">
-            Type attribute is required for paged media
-          &lt;/xsl:message>
-        &lt;/xsl:otherwise>
-      &lt;/xsl:choose>
-      &lt;xsl:if test="(@class)">
-        &lt;xsl:attribute name="class">
-          &lt;xsl:value-of select="@class"/>
-        &lt;/xsl:attribute>
-      &lt;/xsl:if>
-      &lt;xsl:if test="(@id)">
-        &lt;xsl:attribute name="id">
-          &lt;xsl:value-of select="@id"/>
-        &lt;/xsl:attribute>
-      &lt;/xsl:if>
-      &lt;xsl:element name="p">
-        &lt;xsl:attribute name="class">rh&lt;/xsl:attribute>
-        &lt;xsl:value-of select="title"/>
-      &lt;/xsl:element>
-      &lt;xsl:apply-templates/>
-    &lt;/section>
-  &lt;/xsl:template>
+  <!-- Override of the section template.-->
+  <xsl:template match="section">
+    <section>
+      <xsl:choose>
+        <xsl:when test="string(@type)">
+          <xsl:attribute name="data-type">
+            <xsl:value-of select="@type"/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:message terminate="yes">
+            Type attribute is required for paged media.Check your section tags for missing type attributes
+          </xsl:message>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="string(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="string(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <!-- Running header paragraph -->
+      <xsl:element name="p">
+        <xsl:attribute name="class">rh</xsl:attribute>
+        <xsl:value-of select="title"/>
+      </xsl:element> <!-- closses rh class -->
+      <xsl:apply-templates/>
+    </section>
+  </xsl:template>
 ```
 
+```javascript
+  <!-- Metadata -->
+  <xsl:template match="metadata">
+    <xsl:element name="section">
+      <xsl:attribute name="data-type">titlepage</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
 ```
-&lt;!-- Metadata -->
-  &lt;xsl:template match="metadata">
-    &lt;xsl:element name="section">
-      &lt;xsl:attribute name="data-type">titlepage&lt;/xsl:attribute>
-      &lt;xsl:apply-templates/>
-    &lt;/xsl:element>
-  &lt;/xsl:template>
 
-  &lt;xsl:template match="book" mode="toc"/>
-&lt;/xsl:stylesheet>
+
+```javascript
+  <!-- Create Table of Contents ... work in progress -->
+  <xsl:template match="/" mode="toc"/>
+
+  <xsl:template match="title">
+    <xsl:element name="h1">
+      <xsl:attribute name="id">
+        <xsl:value-of select="generate-id(..)"/>
+      </xsl:attribute>
+      <xsl:if test="string(@align)">
+        <xsl:attribute name="align">
+          <xsl:value-of select="@align"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="string(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="."/>
+    </xsl:element> <!-- closes h1 -->
+  </xsl:template>
+</xsl:stylesheet>
 ```

@@ -634,15 +634,12 @@
     When highlight.js works we can remove the exta wrapper
   -->
   <xsl:template match="code">
-    <xsl:element name="div">
-      <xsl:attribute name="class">code</xsl:attribute>
-      <xsl:element name="pre">
-        <xsl:element name="code">
-          <xsl:attribute name="language">
-            <xsl:value-of select="@language"/>
-          </xsl:attribute>
-          <xsl:value-of select="."/>
-        </xsl:element>
+     <xsl:element name="pre">
+      <xsl:element name="code">
+        <xsl:attribute name="language">
+          <xsl:value-of select="@language"/>
+        </xsl:attribute>
+        <xsl:value-of select="."/>
       </xsl:element>
     </xsl:element>
   </xsl:template>
@@ -737,17 +734,25 @@
         </xsl:otherwise>
       </xsl:choose>
       <!--
-        We don't care about height as much as we do width, the caption
-        and image are contained inside the figure.
+        If the height of the figure is smaller than the height of the containing image
+        we may have display problems.
 
-        We only test if it exists. It's up to the author to make sure
-        there are no conflicts
+        If the height of the containging figure is smaller than the height of the image,
+        make the figure height equal to the height of hthe image, otherwise use the height
+        of the figure element
       -->
-      <xsl:if test="string(@height)">
-        <xsl:attribute name="height">
-          <xsl:value-of select="concat(@height, 'px')"/>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="(string(@height) and (@height gt image/@height))">
+          <xsl:attribute name="height">
+            <xsl:value-of select="concat(@height, 'px')"/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="height">
+            <xsl:value-of select="concat(image/@height, 'px')"/>
+          </xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
       <!--
         Alignment can be different. We can have a centered image inside a
         left aligned figure

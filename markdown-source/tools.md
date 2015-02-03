@@ -478,6 +478,13 @@ We will use the mkdir and copy tasks to create a build directory and copy all cs
 
 ## Watch task
 
+Rather than type a command over and over again we can set up watchers so that, any time a file of the indicated type changes, we perform specific tasks. 
+
+AS currentlly configured we track Javascript and SASS files. 
+
+For Javascript files anytime that the Gruntfile or any file under the Javascript directorie we run the JSHint task to make sure we haven't made any mistakes. 
+
+For our SASS/SCSS files, any files under the scss directory, we run the sass:dev task to translate the files to CSS. 
 
 ```javascript
       // WATCH TASK
@@ -494,18 +501,25 @@ We will use the mkdir and copy tasks to create a build directory and copy all cs
         },
         sass: {
           files: ['scss/*.scss'],
-          tasks: ['sass']
+          tasks: ['sass:dev']
         }
       },
 ```
 
 ## Compile and Execute
 
+Rather than using Ant, I've settled on Grunt's shell task to run the compilation steps to create HTML and PDF. This reduces teh number of dependecies for our project and makes it easier to consolidate all the work. 
+
+We have three different commands:
+
+* html will create multiple html files using Saxon, a Java XSLT processor
+* single will create a single html file using Saxon
+* prince will create a PDF based on the single html file using PrinceXML
+
+We make sure that we don't continue if there is an error. Want to make sure that we troubleshoot before we get all the resulting files.
+
 ```javascript
       // COMPILE AND EXECUTE TASKS
-      // rather than using Ant, I've settled on Grunt's shell
-      // task to run the compilation steps to create HTML and PDF.
-      // This reduces teh number of dependecies for our project
       shell: {
         options: {
           failOnError: true,
@@ -527,6 +541,10 @@ We will use the mkdir and copy tasks to create a build directory and copy all cs
 ```
 
 ## Custom Tasks
+
+The custom task uses one or more of the tasks defined above to accomplish a sequence of tasks.
+
+Look at specific tasks defined above for specific definitions.
 
 ```javascript
     // CUSTOM TASKS

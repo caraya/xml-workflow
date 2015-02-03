@@ -7,7 +7,7 @@
           hljs.initHighlightingOnLoad();
         </script></head>
    <body data-type="book">
-      <meta generator="SAXONHE 9.6.0.1">
+      <meta generator="SAXONHE 9.5.1.3">
       <section data-type="titlepage">
          <h1 id="d2e2">XML workflow documentation</h1>
          <h2 class="author">Carlos Araya</h2>
@@ -50,8 +50,7 @@
          <h2>Options for defining the markup</h2>
          <p>For the purpose of this project we'll define a set of resources that work with a book
             structure like the one below:
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
  &lt;book
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -85,8 +84,7 @@
 
   &lt;/section&gt;
 &lt;/book&gt;
-</code></pre></div>
-         <p>It is not a complete structure. We will continue adding elements afte we reach the
+</code></pre><p>It is not a complete structure. We will continue adding elements afte we reach the
             MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.
          </p>
       </section>
@@ -113,8 +111,7 @@
             attributes to the group. We'll see this assigned to other elements so I decided to
             make it reusable rather than have to duplicate the attributes in every element I want
             to use them in.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;!-- Simple types to use in the content --&gt;
 &lt;xs:simpleType name="token255"&gt;
   &lt;xs:restriction base="xs:token"&gt;
@@ -142,11 +139,9 @@
   &lt;xs:attribute name="id" type="xs:ID" use="optional"/&gt;
   &lt;xs:attribute name="class" type="xs:token" use="optional"/&gt;
 &lt;/xs:attributeGroup&gt;
-</code></pre></div>
-         <p>The next stage is to define elements to create our <em>people</em> types.  We create a base person element and then create three role elements based
+</code></pre><p>The next stage is to define elements to create our <em>people</em> types.  We create a base person element and then create three role elements based
             on person. We will use this next to define groups for each role.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;!-- complex types to create groups of similar person items --&gt;
 &lt;xs:complexType name="person"&gt;
   &lt;xs:sequence&gt;
@@ -181,8 +176,7 @@
     &lt;/xs:extension&gt;
   &lt;/xs:complexContent&gt;
 &lt;/xs:complexType&gt;
-</code></pre></div>
-         <p>Two of the derived types add attributes or elements to the base person element to
+</code></pre><p>Two of the derived types add attributes or elements to the base person element to
             make the generic person more appropriate to their role rather than repeat the content
             of person each time that an author, editor or other role appear.
          </p>
@@ -192,28 +186,23 @@
          <p>Editor takes the base person element and adds a `type` child to indicate the type
             of editor (some that come to mind are acquisition, production and managing.) The editor
             elements looks like this:
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;editor&gt;
 &lt;first-name&gt;Carlos&lt;/first-name&gt;
 &lt;surname&gt;Araya&lt;/surname&gt;
 &lt;type&gt;Managing&lt;/type&gt;
 &lt;/editor&gt;
-</code></pre></div>
-         <p>OtherRoles takes all other roles that are not author or editor and adds a role element
+</code></pre><p>OtherRoles takes all other roles that are not author or editor and adds a role element
             to specify what role they play, for example: Illustrator, Indexer, Research Assistant,
             among others. The element looks like this:
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;otherRole&gt;
   &lt;first-name&gt;Sherlock&lt;/first-name&gt;
   &lt;surname&gt;Holmes&lt;/surname&gt;
   &lt;role&gt;Researcher&lt;/role&gt;
   &lt;/otherRole&gt;
-</code></pre></div>
-         <p>Next we create wrappers for each group as <em>authors</em>, <em>editors</em> and <em>otherRoles</em> so we can provide easier styling with XSLT and CSS later on.
-         </p>
-         <div class="code"><pre><code language="xml">
+</code></pre><p>Next we create wrappers for each group as <em>authors</em>, <em>editors</em> and <em>otherRoles</em> so we can provide easier styling with XSLT and CSS later on.
+         </p><pre><code language="xml">
   &lt;xs:complexType name="authors"&gt;
   &lt;xs:annotation&gt;
   &lt;xs:documentation&gt;Wrapper to get more than one author&lt;/xs:documentation&gt;
@@ -252,8 +241,7 @@
   &lt;/xs:extension&gt;
   &lt;/xs:complexContent&gt;
   &lt;/xs:complexType&gt;
-</code></pre></div>
-         <p>We now look at the elements that we can put inside a section. Some of these elements
+</code></pre><p>We now look at the elements that we can put inside a section. Some of these elements
             are overtly complex and deliberately so since they have to acommodate a lot of possible
             parameters.
          </p>
@@ -263,8 +251,7 @@
          </p>
          <p>We also incoporate a <em>label</em> so we can later build the link and for accessibility purposes. It also uses our `genericPropertiesGroup`
             attribute set to add class and ID as attributes for our links.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;!-- Elements inside section --&gt;
   &lt;xs:element name="link"&gt;
   &lt;xs:annotation&gt;
@@ -282,40 +269,34 @@
   &lt;xs:attribute name="label" type="xs:string" use="required"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
+</code></pre>
 
          The link in our resulting book will look like this:
 
-
-         <div class="code"><pre><code language="xml">
+         <pre><code language="xml">
 &lt;link href="http://google.com" label="link to google"/&gt;
-</code></pre></div>
+</code></pre>
 
          and with the optional attributes it will look like this
 
-
-         <div class="code"><pre><code language="xml">
+         <pre><code language="xml">
 &lt;link class="external" id="ex01" href="http://google.com" label="link to google"&gt;
-</code></pre></div>
-         <p>Once I had the links I figured I need a way to create anchors for internal links that
+</code></pre><p>Once I had the links I figured I need a way to create anchors for internal links that
             look like this: <em>&lt;a href="#top"&gt;</em> and expect the target to be formated like this <em>&lt;a name="top"&gt;</em>. To accomodate this I created an anchor element to provide the destination for internal
             links.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;!-- Named Anchor --&gt;
 &lt;xs:element name="anchor"&gt;
   &lt;xs:complexType&gt;
     &lt;xs:attribute name="name"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre></div>
-         <p>As I was working on further ideas for the project I realized that we forgot to create
+</code></pre><p>As I was working on further ideas for the project I realized that we forgot to create
             inline and block level containers for the content, important if you're going to style
             smaller portions of content within a paragraph or witin a section. Taking the names
             from HTML we define <em>section</em> (inline) and <em>div</em> (block) elements. Div is a secondary section, containing the same model as the section,
             including additional div containers.
-         </p>
-         <div class="code"><pre><code language="javascript">
+         </p><pre><code language="javascript">
 &lt;xs:element name="div"&gt;
   &lt;xs:complexType mixed="true"&gt;
     &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
@@ -339,30 +320,26 @@
     &lt;xs:attribute name="type" type="xs:token" use="optional"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre></div>
-         <p>Span is an inline element, therefore the model is greatly reduced to only the elements
+</code></pre><p>Span is an inline element, therefore the model is greatly reduced to only the elements
             that can be inside a paragraph
          </p>
          <p>Type is used in these two elements and in our sections to create data-type and epub:type
             attributes. These are used in the Paged Media stylesheet to decide how will the content
             be formated.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;xs:element name="span"&gt;
   &lt;xs:complexType&gt;
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
     &lt;xs:attribute name="type" type="xs:token" use="optional" default="chapter"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre></div>
-         <p>Next are images and figures where we borrow from HTML, again, for the name of attribute
+</code></pre><p>Next are images and figures where we borrow from HTML, again, for the name of attribute
             names and their functionality. We define 3 elements for the image-related tags: <em>figure</em>, <em>figcaption</em> and the <em>image</em> itself.
          </p>
          <p><em>Figure</em> is the wrapper around a `figcaption` caption and the `image` element itself. The
             `figcaption` is a text-only element that will contain the caption for the associated
             image
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;!-- Figure and related elements --&gt;
   &lt;xs:element name="figure"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -373,12 +350,10 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>The caption child only uses text and, because it's only used as a child of figure,
+</code></pre><p>The caption child only uses text and, because it's only used as a child of figure,
             we don't need to assign attributes to it. It will inherit from the image or the surrounding
             figure.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;xs:element name="figcaption"&gt;
   &lt;xs:annotation&gt;
   &lt;xs:documentation&gt;
@@ -388,20 +363,17 @@
   &lt;/xs:documentation&gt;
   &lt;/xs:annotation&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>When working with the image element we start with `genericPropertiesGroup` to define
+</code></pre><p>When working with the image element we start with `genericPropertiesGroup` to define
             <em>class</em> and <em>id</em>.
          </p>
          <p>Then we require a <em>src</em> attribute to tell where the image is located. We need to be careful because we haven't
             told the schema the different types of images. We have at least three different locations
             for the image files. All three of these are valid locations for our image.png file.
-         </p>
-         <div class="code"><pre><code language="bash">
+         </p><pre><code language="bash">
   image.png
   directory/image.png
   http://mysite.org/images/image.png
-</code></pre></div>
-         <p>We could create branches of our schema to deal with the different locations but I've
+</code></pre><p>We could create branches of our schema to deal with the different locations but I've
             chosen to let the XSLT style sheets deal with this particular situation. The schema
             type for the image (<em>xs:anyURI</em>) should also help to sort out the issue.
          </p>
@@ -415,8 +387,7 @@
          <p><em>align</em> uses our align enumeration to indicae the image's alignment. It is not essential
             to the XML but will be useful to the XSLT stylesheets we'll create later as part of
             the process.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;xs:element name="image"&gt;
   &lt;xs:complexType&gt;
   &lt;xs:attributeGroup ref="genericPropertiesGroup" /&gt;
@@ -427,11 +398,9 @@
   &lt;xs:attribute name="align" type="align" use="optional" default="left"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>In order to acommodate the four basic styles available to our documents: <em>strong</em>, <em>emphasis</em>, <em>strike</em> and <em>underline</em> and their nesting we had to do some juryriging of the elements to tell the schema
+</code></pre><p>In order to acommodate the four basic styles available to our documents: <em>strong</em>, <em>emphasis</em>, <em>strike</em> and <em>underline</em> and their nesting we had to do some juryriging of the elements to tell the schema
             what children are allowed for each element.  The schema look like this:
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;xs:element name="strong"&gt;
   &lt;xs:complexType mixed="true"&gt;
   &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
@@ -472,8 +441,7 @@
   &lt;/xs:choice&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>The <em>emphasis</em> element is the only one that allows the same element to be nested. When nesting emphasis
+</code></pre><p>The <em>emphasis</em> element is the only one that allows the same element to be nested. When nesting emphasis
             elements they cancel each other
          </p>
          <p>When I first conceptualized the project I envisioned one element for both numbered
@@ -483,8 +451,7 @@
          <p>The list elements also require at least 1 <em>item</em> child. If it's going to be left empty why bother having the list to begin with.
          </p>
          <p>They inherit class and ID from <em>genreicPropertiesGroup</em>.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;!-- Lists --&gt;
   &lt;xs:element name="ulist"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -509,8 +476,7 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>The <em>code</em> element wraps code and works as higlighted, fenced code blocks (think Github Flavored
+</code></pre><p>The <em>code</em> element wraps code and works as higlighted, fenced code blocks (think Github Flavored
             Markdown.)
          </p>
          <p>When using CSS we'll generate a &lt;code&gt;&lt;pre&gt;&lt;/pre&gt;&lt;/code&gt; block with a language attribute
@@ -519,29 +485,25 @@
          </p>
          <p>Because of the intended use, the `language` attribute is required.</p>
          <p>Class and ID (from <em>genericPropertiesGroup</em>) are optional
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;xs:element name="code"&gt;
   &lt;xs:complexType mixed="true"&gt;
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;xs:attribute name="language" use="required"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>Another type of element that came up when working on the documentation were aside,
+</code></pre><p>Another type of element that came up when working on the documentation were aside,
             blockquotes and quotes. `Blockquote` and `attribution` are for longer block level
             quotations (more than 4 lines of text) while `quote` is for shorter quotations usually
             inserted in a paragraph.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;xs:element name="code"&gt;
   &lt;xs:complexType mixed="true"&gt;
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
     &lt;xs:attribute name="language" use="required"/&gt;
   &lt;/xs:complexType&gt;
 &lt;/xs:element&gt;
-</code></pre></div>
-         <p>Paragraphs (<em>para</em> in our documents) are the essential unit of content for our books. The paragraph
+</code></pre><p>Paragraphs (<em>para</em> in our documents) are the essential unit of content for our books. The paragraph
             is where most content will happen, text, styles and additional elements that we may
             add as we go along (inline code comes to mind).
          </p>
@@ -551,8 +513,7 @@
          <p>This model barely begins to scratch the surface of what we can do with our paragraph
             model. I decided to go for simplicity rather than completeness. This will definitely
             change in future versions of the schema.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;!-- Paragraphs --&gt;
   &lt;xs:element name="para"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -568,13 +529,11 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>Like HTML we've chose to create 6 levels of headings although, to be honest, I can't
+</code></pre><p>Like HTML we've chose to create 6 levels of headings although, to be honest, I can't
             see the need for more than 4.
          </p>
          <p>We give all links three attributes: <em>class</em>, <em>id</em> and <em>align</em> to hint stylesheets where we want to place the heading (left, right, center)
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;!-- Headings --&gt;
   &lt;xs:element name="h1"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -617,12 +576,10 @@
   &lt;xs:attribute name="align" type="align" use="optional" default="left"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>The metadata section tells us more about the book itself and can be used to build
+</code></pre><p>The metadata section tells us more about the book itself and can be used to build
             a <em>package.opf</em> manifest using XSLT as part of our transformation process. We include basic information
             such as <em>isbn</em> (validated as an ISBN type defined earlier in the schema), an <em>edition</em> (integer indicating what edition of the book it is) and <em>title</em>.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;!-- Metadata element --&gt;
   &lt;xs:element name="metadata"&gt;
   &lt;xs:complexType&gt;
@@ -637,8 +594,7 @@
   &lt;/xs:sequence&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>Section is our primary container for paragraphs and associated content. Some of the
+</code></pre><p>Section is our primary container for paragraphs and associated content. Some of the
             items exclusive to sections are:
          </p>
          <p>The <em>title</em> element is required to appear exactly one time.
@@ -661,8 +617,7 @@
             to make it option and default it to chapter. We want to make it easier for authors
             to create content; where possible. I'd rather have the wrong value than no value at
             all.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;!-- Section element --&gt;
   &lt;xs:element name="section"&gt;
   &lt;xs:complexType mixed="true"&gt;
@@ -690,16 +645,14 @@
   &lt;xs:attribute name="type" type="xs:token" use="optional" default="chapter"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>Now that we have defined our elements, we'll define the core structure of the document
+</code></pre><p>Now that we have defined our elements, we'll define the core structure of the document
             by defining the structure of the `book` element.
          </p>
          <p>After all the work we've done defining the content the definition of our book is almost
             anticlimatic. We define the `book` element as the sequence of exactly 1 <em>metadata</em> element and 1 or more <em>section</em> elements.
          </p>
          <p>As with all our elements we add <em>class</em> and <em>ID</em> from our genericPropertiesGroup.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
   &lt;xs:element name="book"&gt;
   &lt;xs:complexType mixed="true"&gt;
   &lt;xs:sequence&gt;
@@ -709,8 +662,7 @@
   &lt;xs:attributeGroup ref="genericPropertiesGroup"/&gt;
   &lt;/xs:complexType&gt;
   &lt;/xs:element&gt;
-</code></pre></div>
-         <p>This covers the schema for our document type. It is not completed by any stretch of
+</code></pre><p>This covers the schema for our document type. It is not completed by any stretch of
             the imagination. It can be further customized to suit individual needs. The current
             version represents a very basic text heavy document type.
          </p>
@@ -758,8 +710,7 @@
                (discussed later)
             </li>
             <li>Create a default template to warn us if we missed anything</li>
-         </ol>
-         <div class="code"><pre><code language="xml">&lt;?xml version="1.0" ?&gt;
+         </ol><pre><code language="xml">&lt;?xml version="1.0" ?&gt;
 &lt;!-- Define stylesheet root and namespaces we'll work with --&gt;
 &lt;xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -790,8 +741,7 @@
     &lt;/xsl:template&gt;
 
   &lt;!-- More content to be added --&gt;
-&lt;/xsl:stylesheet&gt;</code></pre></div>
-         <p>This is a lot of work before we start creating our XSLT content. But it's worth doing
+&lt;/xsl:stylesheet&gt;</code></pre><p>This is a lot of work before we start creating our XSLT content. But it's worth doing
             the work up front. We'll see what are the advantages of doint it this way as we move
             down the style sheet.
          </p>
@@ -804,8 +754,7 @@
             <li>In the body we 'apply' the templates that match the content inside our document (more
                on this later)
             </li>
-         </ol>
-         <div class="code"><pre><code language="xml">&lt;!-- Root template, matching / --&gt;
+         </ol><pre><code language="xml">&lt;!-- Root template, matching / --&gt;
 &lt;xsl:template match="book"&gt;
   &lt;html&gt;
     &lt;head&gt;
@@ -840,8 +789,7 @@
       &lt;xsl:apply-templates select="/" mode="toc"/&gt;
     &lt;/body&gt;
   &lt;/html&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <p>We could build the CSS stylesheet and Javascript files as part of our root template
+&lt;/xsl:template&gt;</code></pre><p>We could build the CSS stylesheet and Javascript files as part of our root template
             but we chose not to.
          </p>
          <p>Working with the stylesheet as part of the XSLT stylesheet allows the XSLT stylesheet
@@ -883,8 +831,7 @@
                </li>
                <li>The title of the section as the 'clickable' portion of the link</li>
             </ol>
-         </ol>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="/" mode="toc"&gt;
+         </ol><pre><code language="xml">&lt;xsl:template match="/" mode="toc"&gt;
 &lt;section data-type="toc"&gt; (1)
 &lt;nav class="toc"&gt; (1)
 &lt;h2&gt;Table of Contents&lt;/h2&gt;
@@ -902,8 +849,7 @@
 &lt;/ol&gt;
 &lt;/nav&gt;
 &lt;/section&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <h2>Metadata and Section</h2>
+&lt;/xsl:template&gt;</code></pre><h2>Metadata and Section</h2>
          <p>With these templates in place we can now start writing the major areas of the document,
             <em>metadata</em> and <em>section</em>.
          </p>
@@ -912,16 +858,14 @@
             div that will hold the content and call `xsl:apply-templates` to process the children
             inside the metadata element using the apply-template XSLT instruction. The template
             looks like this
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;xsl:template match="metadata"&gt;
   &lt;xsl:element name="div"&gt;
     &lt;xsl:attribute name="class"&gt;metadata&lt;/xsl:attribute&gt;
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h3>Section</h3>
+</code></pre><h3>Section</h3>
          <p>The section container on the other hand is a lot more complex because it has a lot
             of work to do. It is our primary unit for generating files, takes most of the same
             attributes as the root template and then processes the rest of the content.
@@ -948,8 +892,7 @@
          <p>In the body element we see the first of many times we'll conditionally add attributes
             to the element. We use only add a data-type attribute to body if there is a type attribute
             in the source document. We do the same thing for id and class.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;xsl:template match="section"&gt;
   &lt;!-- Variable to create section file names --&gt;
   &lt;xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/&gt;
@@ -997,21 +940,16 @@
     &lt;/html&gt;
   &lt;/xsl:result-document&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h2>Metadata content</h2>
-         <h3>Publication information</h3>
-         <div class="code"><pre><code language="xml">
+</code></pre><h2>Metadata content</h2>
+         <h3>Publication information</h3><pre><code language="xml">
 &lt;xsl:template match="isbn"&gt;
   &lt;p&gt;ISBN: &lt;xsl:value-of select="."/&gt;&lt;/p&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <div class="code"><pre><code language="xml">
+</code></pre><pre><code language="xml">
 &lt;xsl:template match="edition"&gt;
   &lt;p class="no-margin-left"&gt;Edition: &lt;xsl:value-of select="."/&gt;&lt;/p&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h3>Individuals</h3>
-         <div class="code"><pre><code language="xml">
+</code></pre><h3>Individuals</h3><pre><code language="xml">
 &lt;!-- complex types to create groups of similar person items --&gt;
 &lt;xs:complexType name="person"&gt;
     &lt;xs:annotation&gt;
@@ -1063,9 +1001,7 @@
         &lt;/xs:extension&gt;
     &lt;/xs:complexContent&gt;
 &lt;/xs:complexType&gt;
-</code></pre></div>
-         <h3>People groups</h3>
-         <div class="code"><pre><code language="xml">
+</code></pre><h3>People groups</h3><pre><code language="xml">
 &lt;xsl:template match="metadata/authors"&gt;
   &lt;h2&gt;Authors&lt;/h2&gt;
   &lt;ul&gt;
@@ -1107,8 +1043,7 @@
     &lt;/xsl:for-each&gt;
   &lt;/ul&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h2>Titles and headings</h2>
+</code></pre><h2>Titles and headings</h2>
          <p>Titles and headings use mostly the same code. We've put them in separate templates
             to make it possible and easier to generate different code for each heading. It's not
             the same as using CSS where you can declare rules for the same attribute multiple
@@ -1117,8 +1052,7 @@
          </p>
          <p>The goal is to create as simple a markup as we can so we can better leverage CSS to
             style and make our content display as intended.
-         </p>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="title "&gt;
+         </p><pre><code language="xml">&lt;xsl:template match="title "&gt;
   &lt;xsl:element name="h1"&gt;
     &lt;xsl:if test="@align"&gt;
       &lt;xsl:attribute name="align"&gt;
@@ -1158,9 +1092,7 @@
     &lt;/xsl:if&gt;
     &lt;xsl:value-of select="."/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <h2>Blockquotes, quotes and asides</h2>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="blockquote"&gt;
+&lt;/xsl:template&gt;</code></pre><h2>Blockquotes, quotes and asides</h2><pre><code language="xml">&lt;xsl:template match="blockquote"&gt;
   &lt;xsl:element name="blockquote"&gt;
     &lt;xsl:if test="(@class)"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1192,12 +1124,10 @@
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <div class="code"><pre><code language="xml">
+</code></pre><pre><code language="xml">
 &lt;xsl:template match="quote"&gt;
   &lt;q&gt;&lt;xsl:value-of select="."/&gt;&lt;/q&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="aside"&gt;
+&lt;/xsl:template&gt;</code></pre><pre><code language="xml">&lt;xsl:template match="aside"&gt;
   &lt;aside&gt;
     &lt;xsl:if test="type"&gt;
       &lt;xsl:attribute name="data-type"&gt;
@@ -1217,9 +1147,7 @@
     &lt;xsl:apply-templates/&gt;
   &lt;/aside&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h2>Div and Span</h2>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="div"&gt;
+</code></pre><h2>Div and Span</h2><pre><code language="xml">&lt;xsl:template match="div"&gt;
   &lt;xsl:element name="div"&gt;
     &lt;xsl:if test="@align"&gt;
       &lt;xsl:attribute name="align"&gt;
@@ -1238,8 +1166,7 @@
     &lt;/xsl:if&gt;
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="span"&gt;
+&lt;/xsl:template&gt;</code></pre><pre><code language="xml">&lt;xsl:template match="span"&gt;
   &lt;xsl:element name="span"&gt;
     &lt;xsl:if test="@type"&gt;
       &lt;xsl:attribute name="data-type"&gt;
@@ -1258,9 +1185,7 @@
     &lt;/xsl:if&gt;
     &lt;xsl:value-of select="."/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <h2>Paragraphs</h2>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="para"&gt;
+&lt;/xsl:template&gt;</code></pre><h2>Paragraphs</h2><pre><code language="xml">&lt;xsl:template match="para"&gt;
   &lt;xsl:element name="p"&gt;
     &lt;xsl:if test="(@class)"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1274,9 +1199,7 @@
     &lt;/xsl:if&gt;
     &lt;xsl:apply-templates/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <h2>Styles</h2>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="strong"&gt;
+&lt;/xsl:template&gt;</code></pre><h2>Styles</h2><pre><code language="xml">&lt;xsl:template match="strong"&gt;
   &lt;strong&gt;&lt;xsl:apply-templates /&gt;&lt;/strong&gt;
 &lt;/xsl:template&gt;
 
@@ -1291,10 +1214,8 @@
 &lt;xsl:template match="underline"&gt;
   &lt;u&gt;&lt;xsl:apply-templates/&gt;&lt;/u&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h2>Links and anchors</h2>
-         <p>One of the</p>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="link"&gt;
+</code></pre><h2>Links and anchors</h2>
+         <p>One of the</p><pre><code language="xml">&lt;xsl:template match="link"&gt;
   &lt;xsl:element name="a"&gt;
     &lt;xsl:if test="(@class)"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1314,21 +1235,16 @@
     &lt;/xsl:attribute&gt;
     &lt;xsl:value-of select="@label"/&gt;
   &lt;/xsl:element&gt;
-&lt;/xsl:template&gt;</code></pre></div>
-         <p>When working with links there are times when we want to link to sections within the
+&lt;/xsl:template&gt;</code></pre><p>When working with links there are times when we want to link to sections within the
             same document or to specific sections in another document. To do this we need anchors
             that will resolve to the following HTML:
-         </p>
-         <div class="code"><pre><code language="html">&lt;a name="target"&gt;&lt;a&gt;</code></pre></div>
-         <p>The transformation element looks like this:</p>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="anchor"&gt;
+         </p><pre><code language="html">&lt;a name="target"&gt;&lt;a&gt;</code></pre><p>The transformation element looks like this:</p><pre><code language="xml">&lt;xsl:template match="anchor"&gt;
   &lt;xsl:element name="a"&gt;
     &lt;xsl:attribute name="name"&gt;
     &lt;/xsl:attribute&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <p>Not sure if I want to make this an empty element or not</p>
+</code></pre><p>Not sure if I want to make this an empty element or not</p>
          <p>Empty element &lt;anchor name="home"/&gt; appeals to my ease of use paradigm but it may
             not be as easy to understand for peope who are not familiar with XML empty elements
          </p>
@@ -1344,8 +1260,7 @@
                Highlight.js it is not working. I've asked on the Prince support forums and am waiting
                for an answer.
             </p>
-         </blockquote>
-         <div class="code"><pre><code language="xml">&lt;xsl:template match="code"&gt;
+         </blockquote><pre><code language="xml">&lt;xsl:template match="code"&gt;
   &lt;xsl:element name="pre"&gt;
     &lt;xsl:element name="code"&gt;
       &lt;xsl:attribute name="class"&gt;
@@ -1355,16 +1270,14 @@
     &lt;/xsl:element&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h2>Lists and list items</h2>
+</code></pre><h2>Lists and list items</h2>
          <p>When I first conceptualized this project I had designed a single list element and
             attributes to produce bulleted and numbered lists. This proved to difficult to implement
             so I went back to two separate elements: `ulist` for bulleted lists and `olist` for
             numbered lists.
          </p>
          <p>Both elements share the <em>item</em> element to indicates the items inside the list. At least one item is required a list.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;xsl:template match="ulist"&gt;
   &lt;xsl:element name="ul"&gt;
     &lt;xsl:if test="(@class)"&gt;
@@ -1412,8 +1325,7 @@
     &lt;xsl:value-of select="."/&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-         <h2>Figures and Images</h2>
+</code></pre><h2>Figures and Images</h2>
          <p>Figures, captions and the images inside present a few challenges. Because we allow
             authors to set height and width on both figure and the imageg inside we may find situations
             where the figure container is narrower than the image inside.
@@ -1428,8 +1340,7 @@
          <p>The data model for our content allows both figures and images to be used in the document.
             This is so we don't have to insert empty captions to figures just so we can add an
             image... If we don't want a caption we can insert the image directly on our document.
-         </p>
-         <div class="code"><pre><code language="xml">
+         </p><pre><code language="xml">
 &lt;xsl:template match="figure"&gt;
   &lt;xsl:element name="figure"&gt;
     &lt;xsl:if test="(@class)"&gt;
@@ -1527,8 +1438,7 @@
     &lt;/xsl:if&gt;
   &lt;/xsl:element&gt;
 &lt;/xsl:template&gt;
-</code></pre></div>
-      </section>
+</code></pre></section>
       <section data-type="chapter">
          <p class="rh">From XML to PDF: Part 1: Special Transformation</p>
          <h1 id="d2e684">From XML to PDF: Part 1: Special Transformation</h1>
@@ -1540,8 +1450,7 @@
          </p>
          <p>I'm not against XSL-FO but the structure of document is not the easiest or most intuitive.
             An example of XSL-FO looks like this:
-         </p>
-         <div class="code"><pre><code language="xml">&lt;?xml version="1.0" encoding="iso-8859-1"?&gt; (1)
+         </p><pre><code language="xml">&lt;?xml version="1.0" encoding="iso-8859-1"?&gt; (1)
 
     &lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"&gt; (2)
     &lt;fo:layout-master-set&gt; (3)
@@ -1555,8 +1464,7 @@
     &lt;fo:block&gt;Hello, world!&lt;/fo:block&gt; (6)
     &lt;/fo:flow&gt;
     &lt;/fo:page-sequence&gt;
-    &lt;/fo:root&gt;</code></pre></div>
-         <ol>
+    &lt;/fo:root&gt;</code></pre><ol>
             <li>This is an XML declaration. XSL FO (XSLFO) belongs to XML family, so this is obligatory.</li>
             <li>Root element. The obligatory namespace attribute declares the XSL Formatting Objects
                namespace.
@@ -1584,8 +1492,7 @@
          <p>Rather than define a flow of content and then the content CSS Paged Media uses a combination
             of new and existing CSS elements to format the content. For example, to define default
             page size and then add elements to chapter pages looks like this:
-         </p>
-         <div class="code"><pre><code language="ccss">@page {
+         </p><pre><code language="ccss">@page {
     size: 8.5in 11in;
     margin: 0.5in 1in;
     /* Footnote related attributes */
@@ -1604,8 +1511,7 @@
     text-align: center;
     content: element(heading);
     }
-    }</code></pre></div>
-         <p>The only problem with the code above is that there is no native broser support. For
+    }</code></pre><p>The only problem with the code above is that there is no native broser support. For
             our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. In the
             not so distant future we will be able to do this transformation in the browser and
             print the PDF directly. Until then it's a two step process: Modifying the HTML we
@@ -1643,8 +1549,7 @@
             </li>
          </ul>
          <p>Only the templates defined in this stilesheet are overriden</p>
-         <p>The style sheet is shown below (with large comments removed)</p>
-         <div class="code"><pre><code language="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+         <p>The style sheet is shown below (with large comments removed)</p><pre><code language="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
     &lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs"
@@ -1747,8 +1652,7 @@
 
     &lt;xsl:template match="book" mode="toc"/&gt;
     &lt;/xsl:stylesheet&gt;
-</code></pre></div>
-      </section>
+</code></pre></section>
       <section data-type="chapter">
          <p class="rh">From XML to PDF. Part 2: CSS Paged Media</p>
          <h1 id="d2e744">From XML to PDF. Part 2: CSS Paged Media</h1>
@@ -1759,280 +1663,628 @@
       <section data-type="chapter">
          <p class="rh">Task Automation with Grunt</p>
          <h1 id="d2e749">Task Automation with Grunt</h1>
-         <figure width="504px"><img src="images/grund-js-opt.png" alt="Grunt" width="504px" height="276px"><figcaption>Grunt.js, a Javascript task runner</figcaption>
-         </figure>
-         <p><a href="http://gruntjs.com/" label="Grunt.js">Grunt.js</a> is a task runner written in Javascript.
+         # Tools
+
+
+         <p>Because we use XML we can't just dump our code in the browser or the PDF viewer we
+            need to prepare our content for conversion to PDF before we can view it.  There are
+            also front-end web development best practices to follow.
          </p>
-         <div class="code"><pre><code language="javascript">
+         <p>This chapter will discuss tools to accomplish both tasks from one  build file.</p>
+         <h2>What software we need</h2>
+         <p>For this to work you need the following software installed:</p>
+         <ul>
+            <li>Java (version 1.7 or later)</li>
+            <li>Node.js (0.10.35 or later)</li>
+         </ul>
+         <p>Once you have java installed, you can install the following Java package</p>
+         <ul>
+            <li>Saxon 9.0.6.4 for Java</li>
+         </ul>
+         <p>A note about Saxon: OxygenXML comes with a version of Saxon Enterprise Edition. We'll
+            use a different version to make it easier to use outside the editor.
+         </p>
+         <p>Node packages are handled through NPM, the Node Package Manager. On the Node side
+            we need at least the `grunt-cli` package installed globally. TO do so we use this
+            command:
+         </p><pre><code language="bash">
+$ npm install -g grunt-cli
+</code></pre><p>The -g flag will install this globally, as opposed to installing it in the project
+            directory.
+         </p>
+         <p>Now that we have the required sotfware installed we can move ahead and create our
+            configuration files.
+         </p>
+         <h2>Optional: Ruby, SCSS-Lint and SASS</h2>
+         <p>The only external dependencies you need to worry about are Ruby, SCSS-Lint and SASS.
+            Ruby comes installe in most (if not all) Macintosh and Linux systems; an [installer
+            for Windows](http://rubyinstaller.org/) is also available.
+         </p>
+         <p>SASS (syntactically awesome style sheets) are a superset of CSS that brings to the
+            table enhancements to CSS that make life easier for designers and the people who have
+            to create the stylesheets. I've taken advantage of these features to simplify my stylesheets
+            and to save myself from repetitive and tedious tasks.
+         </p>
+         <p>SASS, the main tool, is written in Ruby and is available as a Ruby Gem.</p>
+         <p>To install SASS, open a terminal/command window and type:</p><pre><code language="bash">
+$ gem install sass
+</code></pre><p>Note that on Mac and Linux you may need to run the command as a superuser:</p>
+
+         If you get an error, you probably need to install the gem as an administrator. Try
+         the following command
+
+         <pre><code language="bash">
+$ sudo gem install sass
+</code></pre><p>and enter your password when prompted.</p>
+         <p>SCSS-Lint is a linter for the SCSS flavor of SASS. As with other linters it will detect
+            errors and potential erors in your SCSS style sheets.  As with SASS, SCSSLint is a
+            Ruby Gem that can be installed with the following command:
+         </p><pre><code language="bash">
+$ sudo gem install scss-lint
+</code></pre>
+
+         The same caveat about errors and installing as an administrator apply.
+
+         <blockquote>
+            <p>Ruby, SCSS-Lint and SASS are only necessary if you plan to change the SCSS/SASS files.
+               If you don't you can skip the Ruby install and work directly with the CSS files
+            </p>
+            <p>If you want to peek at the SASS source look at the files under the scss directory.</p>
+         </blockquote>
+         <h2>Installing Node packages</h2>
+         <p>Grunt is a Node.js based task runner. It's a declarative version of Make and similar
+            tools in other languages. Since Grunt and it's associated plugins are Node Packages
+            we need to configure Node.
+         </p>
+         <p>At the root of the project there's a `package.json` file where all the files necessary
+            for the project have already been configured. All that is left is to run the install
+            command.
+         </p><pre><code language="bash">
+$ npm install
+</code></pre><p>This will install all the packages indicated in configuration file and all their dependencies;
+            go get a cup of coffee as this may take a while in slower machines.
+         </p>
+         <p>As it installs the software it'll display a list of what it installed and when it's
+            done you'll have all the packages.
+         </p>
+         <p>The final step of the node installation is to run bower, a front end package manager.
+            It is not configured by default but you can use it to manage packages such as jQuery,
+            Highlight.JS, Polymer web components and others.
+         </p>
+         <h2>Grunt &amp; Front End Development best practices</h2>
+         <p>While developing the XML and XSL for this project, I decided that it was also a good
+            chance to test front end development tools and best practices for styling and general
+            front end development.
+         </p>
+         <p>One of the best known tools for front end development is Grunt. It is a Javascript
+            task runner and it can do pretty much whatever you need to do in your development
+            environment. The fact that Grunt is written in Javascript saves developers from having
+            to learn another language for task management.
+         </p>
+         <p>Grunt has its own configuration file (`Gruntfile.js`) one of which is provided as
+            a model for the project.
+         </p>
+         <p>As currently written the Grunt file provides the following functionality in the assigned
+            tasks. Please note that the tasks with an asterisk have subtasks to perform specific
+            functions. We will discuss the subtasks as we look at each portion of the file and
+            its purpose.
+         </p><pre><code language="bash">
+      autoprefixer  Prefix CSS files. *
+             clean  Clean files and folders. *
+            coffee  Compile CoffeeScript files into JavaScript *
+              copy  Copy files. *
+            jshint  Validate files with JSHint. *
+              sass  Compile Sass to CSS *
+            uglify  Minify files with UglifyJS. *
+             watch  Run predefined tasks whenever watched files change.
+          gh-pages  Publish to gh-pages. *
+    gh-pages-clean  Clean cache dir
+             mkdir  Make directories. *
+          scsslint  Validate `.scss` files with `scss-lint`. *
+             shell  Run shell commands *
+              sftp  Copy files to a (remote) machine running an SSH daemon. *
+           sshexec  Executes a shell command on a remote machine *
+             uncss  Remove unused CSS *
+              lint  Alias for "jshint" task.
+          lint-all  Alias for "scsslint", "jshint" tasks.
+          prep-css  Alias for "scsslint", "sass:dev", "autoprefixer" tasks.
+           prep-js  Alias for "jshint", "uglify" tasks.
+      generate-pdf  Alias for "shell:single", "shell:prince" tasks.
+ generate-pdf-scss  Alias for "scsslint", "sass:dev", "shell:single",
+                    "shell:prince" tasks.
+      generate-all  Alias for "shell" task.
+</code></pre><h2>Setup</h2>
+         <p>The first thing we do is declare two variables (module and require) as global for
+            JSLint and JSHint. Otherwise we'll get errors and it's not essential to declare them
+            before they are used.
+         </p>
+         <p>We then wrap the Gruntfile with a self executing function as a deffensive coding strategy.</p>
+         <p>When concatenating Javascript files there may be some that use strict Javascript and
+            some that don't; With Javascript <a href="http://code.tutsplus.com/tutorials/javascript-hoisting-explained--net-15092" label="vriable hoisting">vriable hoisting</a> the use stric declaration would be placed at the very top of the concatenated file
+            making all the scripts underneat use the strict declaration.
+         </p>
+         <p>The function wrap prevents this by making the use strict declaration local to the
+            file where it was written. None of the other templates will be affected and they will
+            still execute from the master stylesheet. It's not essential for Grunt drivers (Gruntfile.js
+            in our case) but it's always a good habit to get into.
+         </p><pre><code language="javascript">
 /*global module */
 /*global require */
 (function () {
-'use strict';
-module.exports = function (grunt) {
-// require it at the top and pass in the grunt instance
-// it will measure how long things take
-require('time-grunt')(grunt);
+  'use strict';
+  module.exports = function (grunt) {
+    // require it at the top and pass in the grunt instance
+    // it will measure how long things take for performance
+    //testing
+    require('time-grunt')(grunt);
 
-// load-grunt will read the package file and automatically
-// load all our packages configured there.
-// Yay for laziness
-require('load-grunt-tasks')(grunt);
+    // load-grunt will read the package file and automatically
+    // load all our packages configured there.
+    // Yay for laziness
+    require('load-grunt-tasks')(grunt);
+</code></pre><p>The first two elements that work with our content are <em>time-grunt</em> and <em>load-grunt-tasks</em>.
+         </p>
+         <p>Time-grunt provides a breakdown of time and percentage of total execution time for
+            each task performed in this particular Grunt run. THe example below illustrates the
+            result when running multiple tasks.
+         </p><pre><code language="bash">
+Execution Time (2015-02-01 03:43:57 UTC)
+loading tasks      983ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 12%
+scsslint:allFiles   1.1s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 13%
+sass:dev           441ms  ▇▇▇▇▇▇▇▇▇ 5%
+shell:html          1.5s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 18%
+shell:single        1.2s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 14%
+shell:prince        2.9s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 36%
+Total 8.1s
+</code></pre><p>Load-grunt-tasks automates the loading of packages located in the `package.json` configuration
+            file. It's specially good for forgetful people like me whose main mistake when building
+            Grunt-based tool chains is forgetting to load the plugins to use :-).
+         </p>
+         <h2>Javascript</h2><pre><code language="javascript">
+    grunt.initConfig({
 
-grunt.initConfig({
-    </code></pre></div>
-         <div class="code"><pre><code language="javascript">
-// JAVASCRIPT TASKS
-// Hint the grunt file and all files under js/
-// and one directory below
-jshint: {
-  files: ['Gruntfile.js', 'js/{,*/}*.js'],
-  options: {
-    reporter: require('jshint-stylish')
-    // options here to override JSHint defaults
-  }
-},
+      // JAVASCRIPT TASKS
+      // Hint the grunt file and all files under js/
+      // and one directory below
+      jshint: {
+        files: ['Gruntfile.js', 'js/{,*/}*.js'],
+        options: {
+          reporter: require('jshint-stylish')
+            // options here to override JSHint defaults
+        }
+      },
 
-// Takes all the files under js/ and selected files under lib
-// and concatenates them together. I've chosen not to mangle
-// the compressed file
-uglify: {
-  dist: {
-    options: {
-      mangle: false,
-      sourceMap: true,
-    sourceMapName: 'css/script.min.map'
-    },
-    files: {
-      'js/script.min.js': ['js/video.js', 'lib/highlight.pack.js']
-    }
-  }
-},
+      // Takes all the files under js/ and selected files under lib
+      // and concatenates them together. I've chosen not to mangle
+      // the compressed file
+      uglify: {
+        dist: {
+          options: {
+            mangle: false,
+            sourceMap: true,
+            sourceMapName: 'css/script.min.map'
+          },
+          files: {
+            'js/script.min.js': ['js/video.js', 'lib/highlight.pack.js']
+          }
+        }
+      },
+</code></pre><p>JSHint will lint the Gruntfile itself and all files under the js/ directory for errors
+            and potential errors.
+         </p><pre><code language="bash">$ grunt jshint
+Running "jshint:files" (jshint) task
 
-jscs: {
-  options: {
-    'standard': 'Idiomatic'
-  },
-  all: ['js/']
-},
-    </code></pre></div>
-         <div class="code"><pre><code language="javascript">
-// SASS RELATED FILES
-// Converts all the files under scss/ ending with .scss
-// into the equivalent css file on the css/ directory
-sass: {
-  dev: {
-    options: {
-      style: 'expanded'
-    },
-    files: [{
-      expand: true,
-      cwd: 'scss',
-      src: ['*.scss'],
-      dest: 'css',
-      ext: '.css'
-    }]
-  },
-  production: {
-    options: {
-      style: 'compact'
-    },
-    files: [{
-      expand: true,
-      cwd: 'scss',
-      src: ['*.scss'],
-      dest: 'css',
-      ext: '.css'
-    }]
-  }
-},
+Gruntfile.js
+  line 9    col 33  Missing semicolon.
+  line 269  col 6   Missing semicolon.
 
-// This task requires the scss-lint ruby gem to be installed on your system
-// If you choose not to install it, comment out this task and the prep-css
-// and work-lint tasks below
-//
-// I've chosen not to fail on errors or warnings.
-scsslint: {
-  allFiles: [
-    'scss/*.scss',
-    'scss/modules/_mixins.scss',
-    'scss/modules/_variables.scss',
-    'scss/partials/*.scss'
-  ],
-  options: {
-    config: '.scss-lint.yml',
-    force: true,
-    colorizeOutput: true
-  }
-},
-    </code></pre></div>
-         <div class="code"><pre><code language="javascript">
-autoprefixer: {
-  options: {
-    browsers: ['last 2']
-  },
+  ⚠  2 warnings
 
-  files: {
-    expand: true,
-    flatten: true,
-    src: 'scss/*.scss',
-    dest: 'css/'
-  }
-},
+Warning: Task "jshint:files" failed. Use --force to continue.
 
-// CSS TASKS TO RUN AFTER CONVERSION
-// Cleans the CSS based on what's used in the specified files
-// See https://github.com/addyosmani/grunt-uncss for more
-// information
-uncss: {
-  dist: {
-    files: {
-      'css/tidy.css': ['*.html', '!docs.html']
-    }
-  }
-},
-</code></pre></div>
-         <div class="code"><pre><code language="javascript">
-// FILE MANAGEMENT
-// Can't seem to make the copy task create the directory
-// if it doesn't exist so we go to another task to create
-// the fn directory
-mkdir: {
-  build: {
-    options: {
-      create: ['build']
-    }
-  }
-},
-
-// Copy the files from our repository into the build directory
-copy: {
-  build: {
-    files: [{
-      expand: true,
-      src: ['app/**/*'],
-      dest: 'build/'
-    }]
-  }
-},
-
-// Clean the build directory
-clean: {
-  production: ['build/']
-},
-</code></pre></div>
-         <div class="code"><pre><code language="javascript">
-// GH-PAGES TASK
-// Push the specified content into the repositories gh-pages branch
-'gh-pages': {
-  options: {
-    message: 'Content committed from Grunt gh-pages',
-    base: './build/app',
-    dotfiles: true
-  },
-  // These files will get pushed to the `
-  // gh-pages` branch (the default)
-  // We have to specifically remove node_modules
-  src: ['**/*']
-},
-</code></pre></div>
-         <div class="code"><pre><code language="javascript">
-// WATCH TASK
-// Watch for changes on the js and scss files and perform
-// the specified task
-watch: {
-  options: {
-    nospawn: true
-  },
-  // Watch all javascript files and hint them
-  js: {
-    files: ['Gruntfile.js', 'js/{,*/}*.js'],
-    tasks: ['jshint']
-  },
-  sass: {
-    files: ['scss/*.scss'],
-    tasks: ['sass']
-  }
-},
-</code></pre></div>
-         <div class="code"><pre><code language="javascript">
-// COMPILE AND EXECUTE TASKS
-// rather than using Ant, I've settled on Grunt's shell
-// task to run the compilation steps to create HTML and PDF.
-// This reduces teh number of dependecies for our project
-shell: {
-  options: {
-    failOnError: true,
-    stderr: false
-  },
-  html: {
-    command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/book.xsl \
-    docs.xml -o:index.html'
-  },
-  single: {
-    command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/pm-book.xsl \
-    docs.xml -o:docs.html'
-  },
-  prince: {
-    command: 'prince --verbose --javascript docs.html -o docs.pdf'
-  }
+Aborted due to warnings.
+</code></pre><p>Uglify allow us to concatenate our Javascript files and, if we choose to, further
+            reduce the file size by mangling the code (See this [page](http://lisperator.net/uglifyjs/mangle)
+            for an explanation of what mangle is and does). I've chosen not to mangle the code
+            to make it easier to read. May add it as an option for production deployments.
+         </p>
+         <h2>SASS and CSS</h2>
+         <p>As mentioned elsewhere I chose to use the SCSS flavor of SASS because it allows me
+            to do some awesome things with CSS that I wouldn't be able to do with CSS alone.
+         </p>
+         <p>The first task with SASS is convert it to CSS. For this we have two separate tasks.
+            One for development (dev task below) where we pick all the files from the scss directory
+            (the entire files section is equivalent to writing <em>scss/*.scss</em>) and converting them to files with the same name in the css directory.
+         </p><pre><code language="javascript">
+      // SASS RELATED TASKS
+      // Converts all the files under scss/ ending with .scss
+      // into the equivalent css file on the css/ directory
+      sass: {
+        dev: {
+          options: {
+            style: 'expanded'
+          },
+          files: [{
+            expand: true,
+            cwd: 'scss',
+            src: ['*.scss'],
+            dest: 'css',
+            ext: '.css'
+          }]
+        },
+        production: {
+          options: {
+            style: 'compact'
+          },
+          files: [{
+            expand: true,
+            cwd: 'scss',
+            src: ['*.scss'],
+            dest: 'css',
+            ext: '.css'
+          }]
+        }
+      },
+</code></pre><p>There are two similar versions of the task. The development version will produce the
+            format below, which is easier to read and easier to troubleshoot (css-lint, discussed
+            below, tells you what line the error or warning happened in.)
+         </p><pre><code language="css">
+@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+html {
+  font-size: 16px;
+  overflow-y: scroll;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
+body {
+  background-color: #fff;
+  color: #554c4d;
+  color: #554c4d;
+  font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif;
+  font-size: 1em;
+  font-weight: 100;
+  line-height: 1.1;
+  padding-left: 10em;
+  padding-right: 10em;
+}
+</code></pre><p>The production code compresses the output. It deletes all tabs and carriage returns
+            to produce cod elike the one below. It reduces the file size by eliminating spaces,
+            tabs and carriage returns inside the rules, otherwise both versions are equivalent.
+         </p><pre><code language="css">
+@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+html { font-size: 16px; overflow-y: scroll; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
 
-}); // closes initConfig
-</code></pre></div>
-         <div class="code"><pre><code language="javascript">
-// CUSTOM TASKS
-// Usually a combination of one or more tasks defined above
-grunt.task.registerTask(
-  'lint',
-  [
-    'scsslint',
-    'jshint'
-  ]
-);
+body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif; font-size: 1em; font-weight: 100; line-height: 1.1; padding-left: 10em; padding-right: 10em; }
+</code></pre><p>I did consider adding <a href="https://github.com/gruntjs/grunt-contrib-cssmin" label="cssmin">cssmin</a> but decided against it for two reasons:
+         </p>
+         <ul>
+            <li>SASS already concatenates all the files when it imports files from the modules and
+               partials directory so we're only working with one file for each version of the project
+               (html and PDF)
+            </li>
+            <li>The only other file we'd have to add, normalize.css, is a third party library that
+               I'd rather leave along rather than mess with.
+            </li>
+         </ul>
+         <p>The <em>scsslint</em> task is a wrapper for the scss-lint Ruby Gem that must be installed on your system.
+            It warns you of errors and potential errors in your SCSS stylesheets.
+         </p>
+         <p>We've chosen to force it to run when it finds errors. We want the linting tasks to
+            be used as the developer's discretion, there may  be times when vendor prefixes have
+            to be used or where colors have to be defined multiple times to acommodate older browsers.
 
-// Prep CSS starting with SASS, autoprefix et. al
-grunt.task.registerTask(
-  'prep-css',
-  [
-    'scsslint',
-    'sass:dev',
-    'autoprefixer'
-  ]
-);
+         </p><pre><code language="javascript">
+      // I've chosen not to fail on errors or warnings.
+      scsslint: {
+        allFiles: [
+          'scss/*.scss',
+          'scss/modules/_mixins.scss',
+          'scss/modules/_variables.scss',
+          'scss/partials/*.scss'
+        ],
+        options: {
+          config: '.scss-lint.yml',
+          force: true,
+          colorizeOutput: true
+        }
+      },
+</code></pre><p>Grunt's <a href="https://github.com/nDmitry/grunt-autoprefixer" label="autoprefixer">autoprefixer</a> task uses the <a href="http://caniuse.com/" label="CanIUse">CanIUse</a> database to determine if properties need a vendor prefix and add the prefix if they
+            do.
+         </p>
+         <p>This becomes important for older browsers or when vendors drop their prefix for a
+            given property. Rather than having to keep up to date on all vendor prefixed properties
+            you can tell autoprefixer what browsers to test for (last 2 versions in this case)
+            and let it worry about what needs to be prefixed or not.
+         </p><pre><code language="javascript">
+      autoprefixer: {
+        options: {
+          browsers: ['last 2']
+        },
 
-grunt.task.registerTask(
-  'prep-js',
-  [
-    'jshint',
-    'uglify'
-  ]
-);
+        files: {
+          expand: true,
+          flatten: true,
+          src: 'scss/*.scss',
+          dest: 'css/'
+        }
+      },
+</code></pre><p>The last css task is the most complicated one. <a href="https://github.com/addyosmani/grunt-uncss" label="Uncss">Uncss</a> takes out whatever CSS rules are not used in our target HTML files.
+         </p><pre><code language="javascript">
+      // CSS TASKS TO RUN AFTER CONVERSION
+      // Cleans the CSS based on what's used in the specified files
+      // See https://github.com/addyosmani/grunt-uncss for more
+      // information
+      uncss: {
+        dist: {
+          files: {
+            'css/tidy.css': ['*.html', '!docs.html']
+          }
+        }
+      },
+</code></pre><p>This is not a big deal for our workflow as most, if not all, the CSS is designed for
+            the tags and classes we've implemented but it's impossible for the SASS/CSS libraries
+            to grow over time and become bloated.
+         </p>
+         <p>This will also become and issue when you decide to include third part libraries in
+            projects implemented on top of our workflow. By running Uncss on all our HTML files
+            except the file we'll pass to our PDF generator (docs.html) we can be assured that
+            we'll get the smallest css possible.
+         </p>
+         <p>We skip out PDF source html file because I'm not 100% certain that Uncss can work
+            with Paged Media CSS extensions. Better safe than sorry.
+         </p>
+         <h2>Optional tasks</h2>
+         <p>I've also created a set of optional tasks that are commented in the Grunt file but
+            have been uncommented here for readability.
+         </p>
+         <p>The first optional task is a Coffeescript compiler. <a href="http://coffeescript.org/" label="Coffeescript">Coffeescript</a> is a scripting language that provides a set of useful features and that compiles
+            directly to Javascript.
+         </p>
+         <p>I some times use Coffeescript to create scripts and other interactive content so it's
+            important to have the compilation option available.
+         </p><pre><code language="javascript">
+      // OPTIONAL TASKS
+      // Tasks below have been set up but are currently not used.
+      // If you want them, uncomment the corresponding block below
 
-// This task should run last, after all the other tasks are completed
-grunt.task.registerTask(
-  'generate-pdf',
-  [
-    'shell:single',
-    'shell:prince'
-  ]
-);
+      // COFFEESCRIPT
+      // If you want to use coffeescript (http://coffeescript.org/)
+      // instead of vanilla JS, uncoment the block below and change
+      // the cwd value to the locations of your coffee files
+      coffee: {
+        target1: {
+          expand: true,
+          flatten: true,
+          cwd: 'src/',
+          src: ['*.coffee'],
+          dest: 'build/',
+          ext: '.js'
+      },
+</code></pre><p>The following two tasks are for managing file transfers and uploads to different targets.</p>
+         <p>One of the things I love from working on Github is that your project automatically
+            gets an ssl-enabled site for free. <a href="https://pages.github.com/" label="Github Pages">Github Pages</a> work with any kind of static website; Github even offers an automatic site generator
+            as part of our your project site.
+         </p>
+         <p>For the puposes of our workflow validation we'll make a package of our content in
+            a build directory and push it to the gh-pages branch of our repository. We'll look
+            at building our app directory when we look at copying files.
+         </p><pre><code language="javascript">
+      // GH-PAGES TASK
+      // Push the specified content into the repositories gh-pages branch
+      'gh-pages': {
+        options: {
+          message: 'Content committed from Grunt gh-pages',
+          base: './build/app',
+          dotfiles: true
+        },
+        // These files will get pushed to the `
+        // gh-pages` branch (the default)
+        // We have to specifically remove node_modules
+        src: ['**/*']
+      },
+</code></pre><p>There are times when we are not working with Github or pages. In this case we need
+            to FTP or SFTP (encrypted version of FTP) to push files to remote servers. We use
+            an external json file to store our account information. Ideally we'd encrypt the information
+            but until then using the external file is the first option.
+         </p><pre><code language="javascript">
+      //SFTP TASK
+      //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
+      //to store files in a remote SFTP server. Alternative to gh-pages
+      secret: grunt.file.readJSON('secret.json'),
+      sftp: {
+        test: {
+          files: {
+            "./": "*.json"
+          },
+          options: {
+            path: '/tmp/',
+            host: '&lt;%= secret.host %&gt;',
+            username: '&lt;%= secret.username %&gt;',
+            password: '&lt;%= secret.password %&gt;',
+            showProgress: true
+          }
+        }
+      },
+</code></pre><h2>File Management</h2>
+         <p>We've taken a few file management tasks into Grunt to make our lifes easier. The functions
+            are for:
+         </p>
+         <ul>
+            <li>Creating directories</li>
+            <li>Copying files</li>
+            <li>Deleting files and directories</li>
+         </ul>
+         <p>We will use the mkdir and copy tasks to create a build directory and copy all css,
+            js and html files to the build directory. We will then use the gh-pages task (described
+            earlier) to push the content to the repository's gh-pages branches
+         </p><pre><code language="javascript">
+      // FILE MANAGEMENT
+      // Can't seem to make the copy task create the directory
+      // if it doesn't exist so we go to another task to create
+      // the fn directory
+      mkdir: {
+        build: {
+          options: {
+            create: ['build']
+          }
+        }
+      },
 
-grunt.task.registerTask(
-  'generate-all',
-  [
-    'shell'
-  ]
-);
+      // Copy the files from our repository into the build directory
+      copy: {
+        build: {
+          files: [{
+            expand: true,
+            src: ['app/**/*'],
+            dest: 'build/'
+          }]
+        }
+      },
+
+      // Clean the build directory
+      clean: {
+        production: ['build/']
+      },
+</code></pre><h2>Watch task</h2>
+         <p>Rather than type a command over and over again we can set up watchers so that, any
+            time a file of the indicated type changes, we perform specific tasks.
+         </p>
+         <p>As currentlly configured we track Javascript and SASS files.</p>
+         <p>For Javascript files anytime that the Gruntfile or any file under the Javascript directorie
+            we run the JSHint task to make sure we haven't made any mistakes.
+         </p>
+         <p>For our SASS/SCSS files, any files under the scss directory, we run the sass:dev task
+            to translate the files to CSS.
+         </p><pre><code language="javascript">
+      // WATCH TASK
+      // Watch for changes on the js and scss files and perform
+      // the specified task
+      watch: {
+        options: {
+          nospawn: true
+        },
+        // Watch all javascript files and hint them
+        js: {
+          files: ['Gruntfile.js', 'js/{,*/}*.js'],
+          tasks: ['jshint']
+        },
+        sass: {
+          files: ['scss/*.scss'],
+          tasks: ['sass:dev']
+        }
+      },
+</code></pre><h2>Compile and Execute</h2>
+         <p>Rather than using Ant, I've settled on Grunt's shell task to run the compilation steps
+            to create HTML and PDF. This reduces teh number of dependecies for our project and
+            makes it easier to consolidate all the work.
+         </p>
+         <p>We have three different commands:</p>
+         <ul>
+            <li>html will create multiple html files using Saxon, a Java XSLT processor</li>
+            <li>single will create a single html file using Saxon</li>
+            <li>prince will create a PDF based on the single html file using PrinceXML</li>
+         </ul>
+         <p>We make sure that we don't continue if there is an error. Want to make sure that we
+            troubleshoot before we get all the resulting files.
+         </p><pre><code language="javascript">
+      // COMPILE AND EXECUTE TASKS
+      shell: {
+        options: {
+          failOnError: true,
+          stderr: false
+        },
+        html: {
+          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/book.xsl docs.xml -o:index.html'
+        },
+        single: {
+          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/pm-book.xsl docs.xml -o:docs.html'
+        },
+        prince: {
+          command: 'prince --verbose --javascript docs.html -o docs.pdf'
+        }
+      }
 
 
-}; // closes module.exports
+    }); // closes initConfig
+</code></pre><h2>Custom Tasks</h2>
+         <p>The custom task uses one or more of the tasks defined above to accomplish a sequence
+            of tasks.
+         </p>
+         <p>Look at specific tasks defined above for specific definitions.</p><pre><code language="javascript">
+    // CUSTOM TASKS
+    // Usually a combination of one or more tasks defined above
+    grunt.task.registerTask(
+      'lint',
+      [
+        'jshint'
+      ]
+    )
+
+    grunt.task.registerTask(
+      'lint-all',
+      [
+        'scsslint',
+        'jshint'
+      ]
+    );
+
+    // Prep CSS starting with SASS, autoprefix et. al
+    grunt.task.registerTask(
+      'prep-css',
+      [
+        'scsslint',
+        'sass:dev',
+        'autoprefixer'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'prep-js',
+      [
+        'jshint',
+        'uglify'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-pdf',
+      [
+        'shell:single',
+        'shell:prince'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-pdf-scss',
+      [
+        'scsslint',
+        'sass:dev',
+        'shell:single',
+        'shell:prince'
+      ]
+    );
+
+    grunt.task.registerTask(
+      'generate-all',
+      [
+        'shell'
+      ]
+    );
+
+
+  }; // closes module.exports
 }()); // closes the use strict function
-    </code></pre></div>
-      </section>
+</code></pre></section>
       <section data-type="chapter">
          <p class="rh">Things to Do and Further Research</p>
-         <h1 id="d2e779">Things to Do and Further Research</h1>
+         <h1 id="d2e1020">Things to Do and Further Research</h1>
          <p>These are the things I want to look at after finishing mvp.</p>
          <h2>Deep Linking using Emphasis</h2>
          <p>The NYT developed a deep linking library called Emphasis (<a href="https://github.com/NYTimes/Emphasis" label="code">code</a> - <a href="http://open.blogs.nytimes.com/2011/01/11/emphasis-update-and-source/" label="writeup">writeup</a> that would allow us to create links to specific areas of our content.
@@ -2070,7 +2322,7 @@ grunt.task.registerTask(
             and content display such as asides and blockquotes
          </p>
          <h2>Explore implementing a serviceworker solution</h2>
-         <video height="360" width="640" controls>
+         <video height="360" width="640" controls="controls">
             <source src="video/serviceworker.mp4" type="video/mp4"></source>
          </video>
          <p>The core of the proposed offline capabilities is a scoped service worker that will
@@ -2124,7 +2376,7 @@ grunt.task.registerTask(
       </section>
       <section data-type="bibliography">
          <p class="rh">Annotated Bibliography</p>
-         <h1 id="d2e866">Annotated Bibliography</h1>
+         <h1 id="d2e1107">Annotated Bibliography</h1>
          <p>For more information, see: <a href="http://alistapart.com/article/building-books-with-css3" label="Building books with css3">Building books with css3</a></p>
          <p>For another example, see: <a href="https://github.com/oreillymedia/HTMLBook/blob/master/stylesheets/pdf/pdf.css" label="HTMLbook stylesheet to generate pdf">HTMLbook stylesheet to generate pdf</a> which is the basis for this project.
          </p>

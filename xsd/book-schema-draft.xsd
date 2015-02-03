@@ -704,11 +704,11 @@
               Style, Link and Span Elements. 
               
               We use strong and emphasis rather than bold and italics
-              to try and stay in synch with HTML and HTML5. We may add additional tags
-              later in the process.
+              to try and stay in synch with HTML and HTML5. We may add 
+              additional tags later in the process.
               
-              We can use any of these elements inside paragraph in no particular order 
-              0 or more times (no maximum)
+              We can use any of these elements inside paragraph in no 
+              particular order 0 or more times (no maximum)
               
               Researching how to handle nested styles and whether the model below 
               would handle nested children
