@@ -225,15 +225,11 @@ video {
 /* line 88, /Users/carlos/code/xml-workflow/scss/style.scss */
 blockquote {
   color: #222023;
-  font-style: italic;
-  font-weight: 100;
   font-size: 1.5em;
-  margin-top: 1.55em;
-  margin-bottom: 1.5em;
-  margin-left: 2em;
-  padding-left: 0.5; }
+  font-weight: 300;
+  margin: 2em 1.5em; }
 
-/* line 121, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 127, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns2 {
   column-count: 2;
   column-gap: 3em;
@@ -241,15 +237,15 @@ blockquote {
   column-span: none;
   line-height: 1em;
   width: 100%; }
-  /* line 126, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 132, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p:first-of-type {
     border-top: 0;
     margin-top: 0; }
-  /* line 131, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 137, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p + p {
     text-indent: 2em; }
 
-/* line 136, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 142, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns3 {
   column-count: 3;
   column-gap: 10px;
@@ -257,23 +253,23 @@ blockquote {
   column-span: none;
   width: 100%; }
 
-/* line 145, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 151, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='titlepage'] h1, section[data-type='titlepage'] h2 {
   text-align: center; }
-/* line 149, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 155, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='titlepage'] p {
   text-align: left; }
-  /* line 152, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 158, /Users/carlos/code/xml-workflow/scss/style.scss */
   section[data-type='titlepage'] p + p {
     text-indent: 0 !important; }
 
-/* line 160, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 166, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] h1, section[data-type='dedication'] h2 {
   text-align: center; }
-/* line 164, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 170, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] p {
   text-align: left; }
-  /* line 167, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 173, /Users/carlos/code/xml-workflow/scss/style.scss */
   section[data-type='dedication'] p + p {
     text-indent: 0 !important; }
 

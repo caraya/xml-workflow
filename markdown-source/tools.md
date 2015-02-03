@@ -323,7 +323,7 @@ We've chosen to force it to run when it finds errors. We want the linting tasks 
 
 Grunt's [autoprefixer](https://github.com/nDmitry/grunt-autoprefixer) task uses the [CanIUse database](http://caniuse.com/) to determine if properties need a vendor prefix and add the prefix if they do.
 
-This becomes important for older browsers or when vendors drop their prefix for a given property
+This becomes important for older browsers or when vendors drop their prefix for a given property. Rather than having to keep up to date on all vendor prefixed properties you can tell autoprefixer what browsers to test for (last 2 versions in this case) and let it worry about what needs to be prefixed or not. 
 
       autoprefixer: {
         options: {
@@ -337,7 +337,11 @@ This becomes important for older browsers or when vendors drop their prefix for 
           dest: 'css/'
         }
       },
+```
 
+The last css task is the most complicated one. [Uncss](https://github.com/addyosmani/grunt-uncss) takes out whatever CSS rules are not used in our target HTML files. 
+
+```javascript
       // CSS TASKS TO RUN AFTER CONVERSION
       // Cleans the CSS based on what's used in the specified files
       // See https://github.com/addyosmani/grunt-uncss for more
@@ -350,6 +354,21 @@ This becomes important for older browsers or when vendors drop their prefix for 
         }
       },
 ```
+
+This is not a big deal for our workflow as most, if not all, the CSS is designed for the tags and classes we've implemented but it's impossible for the SASS/CSS libraries to grow over time and become bloated.
+
+This will also become and issue when you decide to include third part libraries in projects implemented on top of our workflow. By running Uncss on all our HTML files except the file we'll pass to our PDF generator (docs.html) we can be assured that we'll get the smallest css possible.
+
+We skip out PDF source html file because I'm not 100% certain that Uncss can work with Paged Media CSS extensions. Better safe than sorry. 
+
+
+## Optional tasks
+
+I've also created a set of optional tasks that are commented in the Grunt file but have been uncommented here for readability. 
+
+The first optional task is a Coffeescript compiler. [Coffeescript](http://coffeescript.org/) is a scripting language that provides a set of useful features and that compiles directly to Javascript. 
+
+I some times use Coffeescript to create scripts and other interactive content so it's important to have the compilation option available. 
 
 ```javascript
       // OPTIONAL TASKS
@@ -368,8 +387,16 @@ This becomes important for older browsers or when vendors drop their prefix for 
           src: ['*.coffee'],
           dest: 'build/',
           ext: '.js'
-
       },
+```
+
+The following two tasks are for managing file transfers and uploads to different targets. 
+
+One of the things I love from working on Github is that your project automatically gets an ssl-enabled site for free. [Github Pages](https://pages.github.com/) work with any kind of static website; Github even offers an automatic site generator as part of our your project site. 
+
+For the puposes of our workflow validation we'll make a package of our content in a build directory and push it to the gh-pages branch of our repository. We'll look at building our app directory when we look at copying files.
+
+```javascript
       // GH-PAGES TASK
       // Push the specified content into the repositories gh-pages branch
       'gh-pages': {
@@ -383,15 +410,19 @@ This becomes important for older browsers or when vendors drop their prefix for 
         // We have to specifically remove node_modules
         src: ['**/*']
       },
+```
 
+There are times when we are not working with Github or pages. In this case we need to FTP or SFTP (encrypted version of FTP) to push files to remote servers. We use an external json file to store our account information. Ideally we'd encrypt the information but until then using the external file is the first option. 
+
+```javascript
       //SFTP TASK
       //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
       //to store files in a remote SFTP server. Alternative to gh-pages
-      //secret: grunt.file.readJSON('secret.json'),
+      secret: grunt.file.readJSON('secret.json'),
       sftp: {
         test: {
           files: {
-            "./": "*json"
+            "./": "*.json"
           },
           options: {
             path: '/tmp/',
@@ -403,6 +434,17 @@ This becomes important for older browsers or when vendors drop their prefix for 
         }
       },
 ```
+
+## File Management 
+
+We've taken a few file management tasks into Grunt to make our lifes easier. The functions are for:
+
+* Creating directories
+* Copying files
+* Deleting files and directories
+
+We will use the mkdir and copy tasks to create a build directory and copy all css, js and html files to the build directory. We will then use the gh-pages task (described earlier) to push the content to the repository's gh-pages branches
+
 
 ```javascript
       // FILE MANAGEMENT
@@ -434,21 +476,8 @@ This becomes important for older browsers or when vendors drop their prefix for 
       },
 ```
 
-```javascript
-      // GH-PAGES TASK
-      // Push the specified content into the repositories gh-pages branch
-      'gh-pages': {
-        options: {
-          message: 'Content committed from Grunt gh-pages',
-          base: './build/app',
-          dotfiles: true
-        },
-        // These files will get pushed to the `
-        // gh-pages` branch (the default)
-        // We have to specifically remove node_modules
-        src: ['**/*']
-      },
-```
+## Watch task
+
 
 ```javascript
       // WATCH TASK
@@ -469,6 +498,8 @@ This becomes important for older browsers or when vendors drop their prefix for 
         }
       },
 ```
+
+## Compile and Execute
 
 ```javascript
       // COMPILE AND EXECUTE TASKS
@@ -494,6 +525,8 @@ This becomes important for older browsers or when vendors drop their prefix for 
 
     }); // closes initConfig
 ```
+
+## Custom Tasks
 
 ```javascript
     // CUSTOM TASKS
