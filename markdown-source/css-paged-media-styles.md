@@ -1,6 +1,43 @@
+---
+title: CSS Styles for Paged Media
+category: Technology
+status: draft
+---
+
+# CSS Styles for Paged Media
+
+This is the generated CSS from the SCSS style sheets (see the scss/ directory for the source material.) I've chosen to document the resulting stylesheet here and document the SCSS source in another document to make life simpler for people who don't want to deal with SASS or who want to see what the style sheets look like. 
+
+Typography derived from work done at this URL: [http://bit.ly/1B3Qj5B](http://bit.ly/1B3Qj5B)
+
+The following scale (also using perfect fifth progression) may also help: [http://bit.ly/1Bl4x4v](http://bit.ly/1Bl4x4v)
+
+Feel free to play with these and use them as starting point for your own work :)
+
+The project currently uses these fonts:
+
+* Roboto Slab for headings
+* Roboto for body copy
+* Source Code Pro for code blocks and preformated text
+
+## Font Imports
+
+Even though SCSS Lint throws a fit when I put font imports in a stylesheet because they stop asynchronous operations, I'm doing it to keep the HTML files clean and because we are not loading the CSS on the page, we're just using it to process the PDF file. 
+
+Eventually I'll switch to locally hosted fonts using bulletproof font syntax ([discussed here](http://www.paulirish.com/2009/bulletproof-font-face-implementation-syntax/) and available for use at [Font Squirrel](http://www.fontsquirrel.com/tools/webfont-generator).
+
+At this point we are not dealing with [font subsetting](http://bit.ly/1ul3XBx) but we may in case we need to.
+
+
+```css
 @import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+```
+
+## Defaults
+
+```css
 html {
   overflow-y: scroll;
   -ms-text-size-adjust: 100%;
@@ -9,7 +46,6 @@ html {
 
 body {
   background-color: #fff;
-  color: #554c4d;
   color: #554c4d;
   font-family: 'Roboto Thin', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 1em;
@@ -21,10 +57,7 @@ body {
   widows: 2;
 }
 
-em {
-  font-style: italic;
-  font-weight: 300;
-}
+## Blockquotes, Pullquotes and Marginalia
 
 aside {
   border-bottom: 3px double #ddd;
@@ -128,7 +161,11 @@ blockquote p {
   font-size: 18px;
   font-weight: 400;
 }
+```
 
+## Paragraphs
+
+```css
 p {
   font-size: 1em;
   margin-bottom: 1.3em;
@@ -150,7 +187,11 @@ p + p {
   margin-bottom: -.1em;
   padding-right: .1em;
 }
+```
 
+## Lists
+
+```css
 ul li {
   list-style: square;
 }
@@ -158,7 +199,11 @@ ul li {
 ol li {
   list-style: decimal;
 }
+```
 
+## Figures and captions
+
+```css
 figure {
   counter-increment: figure_count;
   margin-bottom: 1em;
@@ -169,17 +214,22 @@ figure figcaption {
   padding-bottom: 1em;
   padding-top: .2em;
 }
+
 figure figcaption::before {
   content: "Figure " counter(figure_count) ": ";
 }
+```
 
+## Headings
+
+```css
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Roboto Slab', sans-serif;
   font-weight: 400;
   hyphens: none;
   line-height: 1.2;
@@ -210,7 +260,11 @@ h5,
 h6 {
   text-align: inherit;
 }
+```
 
+## Different parts of the book
+
+```css
 section[data-type='bibliography'] p {
   text-align: left;
 }
@@ -236,7 +290,11 @@ section[data-type='dedication'] p {
 section[data-type='dedication'] p + p {
   text-indent: 0 !important;
 }
+```
 
+## Preformatted code blocks
+
+```css
 pre {
   background-color: #efeff2;
   overflow-wrap: break-word;
@@ -249,7 +307,11 @@ pre code {
   line-height: 1.2em;
   page-break-inside: avoid;
 }
+```
 
+## Columns and miscelaneous classes
+
+```css
 .justified {
   text-align: justify;
 }
@@ -293,5 +355,4 @@ pre code {
 .columns3 p:last-of-type {
   margin-bottom: 1.25em;
 }
-
-/*# sourceMappingURL=pm-style.css.map */
+```

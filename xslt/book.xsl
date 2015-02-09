@@ -689,7 +689,7 @@
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:value-of select="."/>
+      <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
 

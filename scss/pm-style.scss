@@ -135,11 +135,7 @@ section[data-type='titlepage'] {
   }
 
   p {
-    text-align: left;
-
-    + p {
-      text-indent: 0 !important;
-    }
+    text-align: center;
   }
 }
 
@@ -158,7 +154,9 @@ section[data-type='dedication'] {
   }
 }
 
+
 pre {
+  background-color: lighten(#c5c5d0, 15); // Remove when highlight.js works
   overflow-wrap: break-word;
   white-space: pre-line !important;
   word-wrap: break-word;

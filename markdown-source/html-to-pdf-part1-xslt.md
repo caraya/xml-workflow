@@ -96,23 +96,6 @@ The first difference in the customization layer is that it imports another style
 We will then override the templates we need in order to get a single file to pass on to Prince or any other CSS Print Processor. 
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  exclude-result-prefixes="xs"
-  version="2.0">
-  <!--
-    XSLT Paged Media Customization Layer
-
-    Makes the necessary changes to the content to work with the Paged Media CSS stylesheet
-  -->
-  <!-- First import the base stylesheet -->
-  <xsl:import href="book.xsl"/>
-
-  <!-- Define the output for this and all document children -->
-  <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8"
-    omit-xml-declaration="yes" />
-
   <!-- Root template matching book -->
   <xsl:template match="book">
     <html>
@@ -167,17 +150,12 @@ We moved elements from the original section templates. We test whether we need t
 
 ## Overriding the section template
 
-In this particular situation we need to:
+Sections are the element type that got the biggest makeover. What we've done:
 
 * Remove filename variable. It's not needed
-* Remove the result document element (it's all one file)
-* Change the test for type attribute so it'll terminate if it fails (type attribute is required)
-* Add the element that will build our running footer (p class="rh") and assign the value of title to it
-* Rework the metadata template so it'll match the spec on the CSS
-
-All other templates remain unchanged and are used from the base stylesheet.
-
-Only the templates defined in this style sheet are overriden or created.
+* Remove the result document element since we are building a single file with all our content
+* Change way we check for the type attribute in sections. It will now terminate with an error if the attribute is not found
+* Add the element that will build our running footer (p class="rh") and assign the value of the secion's title to it
 
 ```xml
   <!-- Override of the section template.-->
@@ -191,7 +169,8 @@ Only the templates defined in this style sheet are overriden or created.
         </xsl:when>
         <xsl:otherwise>
           <xsl:message terminate="yes">
-            Type attribute is required for paged media.Check your section tags for missing type attributes
+            Type attribute is required for paged media. 
+            Check your section tags for missing type attributes
           </xsl:message>
         </xsl:otherwise>
       </xsl:choose>
@@ -205,7 +184,12 @@ Only the templates defined in this style sheet are overriden or created.
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <!-- Running header paragraph -->
+      <!-- 
+        Running header paragraph.  
+        
+        This will be take out of the regular flow of text so 
+        it doesn't matter if we add it or not
+      -->
       <xsl:element name="p">
         <xsl:attribute name="class">rh</xsl:attribute>
         <xsl:value-of select="title"/>
@@ -214,6 +198,10 @@ Only the templates defined in this style sheet are overriden or created.
     </section>
   </xsl:template>
 ```
+
+## Metadata
+
+The Metadata section has been reworked into a new section with the title data-type. We set up the container section and assign title to the data-type attribute. We then apply all children templates.
 
 ```javascript
   <!-- Metadata -->
@@ -225,6 +213,11 @@ Only the templates defined in this style sheet are overriden or created.
   </xsl:template>
 ```
 
+## Titles and tables of content
+
+The table of content is commented for now as I work on improving the content and placement of the table contents in the final document. 
+
+The title element has only one addition. We add an ID attribute created using XPath's generate-id function on the parent section element. 
 
 ```javascript
   <!-- Create Table of Contents ... work in progress -->
@@ -250,3 +243,5 @@ Only the templates defined in this style sheet are overriden or created.
   </xsl:template>
 </xsl:stylesheet>
 ```
+
+With all this in place we can now look to the CSS Paged Media file.

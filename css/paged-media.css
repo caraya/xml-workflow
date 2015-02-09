@@ -40,12 +40,8 @@ body[data-type='book'] {
 
 /* PAGE COUNTERS */
 body[data-type='book'] > div[data-type='part']:first-of-type,
-body[data-type='book'] > section[data-type='chapter']:first-of-type {
-  counter-reset: page
-}
-body[data-type='book'] > section[data-type='chapter']+div[data-type='part'] {
-  counter-reset: none
-}
+body[data-type='book'] > section[data-type='chapter']:first-of-type { counter-reset: page; }
+body[data-type='book'] > section[data-type='chapter']+div[data-type='part'] { counter-reset: none }
 
 /*
  * MATCH THE PARTS OF OUR BOOK FILE TO EACH OF OUR PAGES DEFINED LATER

@@ -138,7 +138,7 @@ By linking to external CSS and Javascript files we can leverage expertise indepe
 
 Furthermore we can reuse our CSS and Javascript on multiple documents.
 
-### Table of contents
+## Table of contents
 
 > The table of content template is under active development and will be different depending on the desired output. I document it here as it is right now but will definitely change as it's further developed.
 
@@ -177,11 +177,11 @@ We leverage XSLT modes that allow us to create templates for the same element to
 ```
 <!-- current location -->
 
-### Metadata and Section
+## Metadata and Section
 
 With these templates in place we can now start writing the major areas of the document, `metadata` and `section`. 
 
-#### Metadata
+### Metadata
 
 The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element using the apply-template XSLT instruction. The template looks like this
 
@@ -193,7 +193,7 @@ The metadata is a container for all the elements inside. As such we just create 
   &lt;/xsl:element>
 &lt;/xsl:template>
 ```
-#### Section
+### Section
 
 The section container on the other hand is a lot more complex because it has a lot of work to do. It is our primary unit for generating files, takes most of the same attributes as the root template and then processes the rest of the content. 
 
@@ -236,17 +236,17 @@ In the body element we see the first of many times we'll conditionally add attri
       &lt;/head>
       &lt;body>
         &lt;section>
-          &lt;xsl:if test="@type">
+          &lt;xsl:if test="string(@type)">
             &lt;xsl:attribute name="data-type">
               &lt;xsl:value-of select="@type"/>
             &lt;/xsl:attribute>
           &lt;/xsl:if>
-          &lt;xsl:if test="(@class)">
+          &lt;xsl:if test="string(@class)">
             &lt;xsl:attribute name="class">
               &lt;xsl:value-of select="@class"/>
             &lt;/xsl:attribute>
           &lt;/xsl:if>
-          &lt;xsl:if test="(@id)">
+          &lt;xsl:if test="string(@id)">
             &lt;xsl:attribute name="id">
               &lt;xsl:value-of select="@id"/>
             &lt;/xsl:attribute>
@@ -258,81 +258,25 @@ In the body element we see the first of many times we'll conditionally add attri
   &lt;/xsl:result-document>
 &lt;/xsl:template>
 ```
-<!-- CURRENT SECTION -->
-### Metadata content
 
+## Metadata content
 
+We process the content of the metadata separate than the structure. we take our primary metadata elements, ISBN and edition and wrap a paragraph tag around them. We can later reuse the element or change its appearance using CSS.
 
-#### Publication information
 ```xml
 &lt;xsl:template match="isbn">
   &lt;p>ISBN: &lt;xsl:value-of select="."/>&lt;/p>
 &lt;/xsl:template>
-```
 
-```xml
 &lt;xsl:template match="edition">
-  &lt;p class="no-margin-left">Edition: &lt;xsl:value-of select="."/>&lt;/p>
+  &lt;p>Edition: &lt;xsl:value-of select="."/>&lt;/p>
 &lt;/xsl:template>
 ```
 
-#### Individuals
+For our groups of one or more people related to the book we do the following:
 
-```xml
-&lt;!-- complex types to create groups of similar person items -->
-&lt;xs:complexType name="person">
-    &lt;xs:annotation>
-        &lt;xs:documentation>
-            Generic element to denote an individual involved in creating the book
-        &lt;/xs:documentation>
-    &lt;/xs:annotation>
-    &lt;xs:sequence>
-        &lt;xs:element name="first-name" type="xs:token"/>
-        &lt;xs:element name="surname" type="xs:token"/>
-    &lt;/xs:sequence>
-    &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
-&lt;/xs:complexType>
+1. For each individual in the group we 
 
-&lt;xs:complexType name="author">
-    &lt;xs:annotation>
-        &lt;xs:documentation>
-            Author person
-        &lt;/xs:documentation>
-    &lt;/xs:annotation>
-    &lt;xs:complexContent>
-        &lt;xs:extension base="person">
-        &lt;/xs:extension>
-    &lt;/xs:complexContent>
-&lt;/xs:complexType>
-
-&lt;xs:complexType name="editor">
-    &lt;xs:annotation>
-        &lt;xs:documentation>extension to person to indicate editor and his/her role&lt;/xs:documentation>
-    &lt;/xs:annotation>
-    &lt;xs:complexContent>
-        &lt;xs:extension base="person">
-            &lt;xs:choice>
-                &lt;xs:element name="type" type="xs:token"/>
-            &lt;/xs:choice>
-        &lt;/xs:extension>
-    &lt;/xs:complexContent>
-&lt;/xs:complexType>
-
-&lt;xs:complexType name="otherRole">
-    &lt;xs:annotation>
-        &lt;xs:documentation>extension to person to accomodate roles other than author and editor&lt;/xs:documentation>
-    &lt;/xs:annotation>
-    &lt;xs:complexContent>
-        &lt;xs:extension base="person">
-            &lt;xs:sequence minOccurs="1" maxOccurs="1">
-                &lt;xs:element name="role" type="xs:token"/>
-            &lt;/xs:sequence>
-        &lt;/xs:extension>
-    &lt;/xs:complexContent>
-&lt;/xs:complexType>
-```
-
-#### People groups
 ```xml
 &lt;xsl:template match="metadata/authors">
   &lt;h2>Authors&lt;/h2>
@@ -377,7 +321,7 @@ In the body element we see the first of many times we'll conditionally add attri
 &lt;/xsl:template>
 ```
 
-#### Titles and headings
+### Titles and headings
 
 Titles and headings use mostly the same code. We've put them in separate templates to make it possible and easier to generate different code for each heading. It's not the same as using CSS where you can declare rules for the same attribute multiple times (with the last one winning); when writing transformations you can only have one per element otherwise you will get an error.
 
@@ -427,7 +371,7 @@ The goal is to create as simple a markup as we can so we can better leverage CSS
 &lt;/xsl:template>
 ```
 
-#### Blockquotes, quotes and asides
+### Blockquotes, quotes and asides
 
 ```xml
 &lt;xsl:template match="blockquote">
@@ -493,7 +437,7 @@ The goal is to create as simple a markup as we can so we can better leverage CSS
 &lt;/xsl:template>
 ```
 
-#### Div and Span
+### Div and Span
 ```xml
 &lt;xsl:template match="div">
   &lt;xsl:element name="div">
@@ -539,7 +483,7 @@ The goal is to create as simple a markup as we can so we can better leverage CSS
   &lt;/xsl:element>
 &lt;/xsl:template>
 ```
-#### Paragraphs
+### Paragraphs
 ```xml
 &lt;xsl:template match="para">
   &lt;xsl:element name="p">
@@ -557,7 +501,7 @@ The goal is to create as simple a markup as we can so we can better leverage CSS
   &lt;/xsl:element>
 &lt;/xsl:template>
 ```
-#### Styles
+### Styles
 
 ```xml
 &lt;xsl:template match="strong">
@@ -577,7 +521,7 @@ The goal is to create as simple a markup as we can so we can better leverage CSS
 &lt;/xsl:template>
 ```
 
-### Links and anchors
+## Links and anchors
 
 One of the 
 
@@ -626,7 +570,7 @@ Not sure if I want to make this an empty element or not
 
 Empty element &lt;anchor name="home"/> appeals to my ease of use paradigm but it may not be as easy to understand for peope who are not familiar with XML empty elements
 
-### Code blocks
+## Code blocks
 
 Code elements create [fenced code blocks](https://help.github.com/articles/github-flavored-markdown/#fenced-code-blocks) like the ones from [Github Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/). 
 
@@ -649,7 +593,7 @@ We highlight our code with [Highlight.js](https://highlightjs.org/).
 &lt;/xsl:template>
 ```
 
-### Lists and list items
+## Lists and list items
 
 When I first conceptualized this project I had designed a single list element and attributes to produce bulleted and numbered lists. This proved to difficult to implement so I went back to two separate elements: `ulist` for bulleted lists and `olist` for  numbered lists. 
 
@@ -705,7 +649,7 @@ Both elements share the `item` element to indicates the items inside the list. A
 &lt;/xsl:template>
 ```
 
-### Figures and Images
+## Figures and Images
 
 Figures, captions and the images inside present a few challenges. Because we allow authors to set height and width on both figure and the imageg inside we may find situations where the figure container is narrower than the image inside. 
 
