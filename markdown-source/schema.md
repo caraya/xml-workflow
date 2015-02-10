@@ -234,7 +234,7 @@ and with the optional attributes it will look like this
 <link class="external" id="ex01" href="http://google.com" label="link to google"></link>
 ```
 
-Once I had the links I figured I need a way to create anchors for internal links that look like this: `&lt;a href="#top">` and expect the target to be formated like this `&lt;<a name="top">`. To accomodate this I created an anchor element to provide the destination for internal links. 
+Once I had the links I figured I need a way to create anchors for internal links that look like this: `&lt;a href="#top">` and expect the target to be formated like this `&lt;<a id="top">`. To accomodate this I created an anchor element to provide the destination for internal links where it is not possible to add the id attribute directly. This element should be seldom used as in most instances we should be able to add the id attribute directly by inserting a span or other container element.
 
 ```xml
 <!-- Named Anchor -->
@@ -243,11 +243,11 @@ Once I had the links I figured I need a way to create anchors for internal links
     <xs:documentation>
       The receiving end of an anchor link within the same document 
       (the link is something like "#test") and the location of the 
-      test anchor has something like name="test"
+      test anchor has something like id="test"
     </xs:documentation>
   </xs:annotation>
   <xs:complexType>
-    <xs:attribute name="name"/>
+    <xs:attributeGroup ref="genericPropertiesGroup" />
   </xs:complexType>
 </xs:element>
 ```
@@ -312,7 +312,9 @@ Type is used in these two elements and in our sections to create data-type and e
 
 Next are images and figures where we borrow from HTML, again, for the name of attribute names and their functionality. We define 3 elements for the image-related tags: `figure`, `figcaption` and the `image` itself. 
 
-`Figure` is the wrapper around a `figcaption` caption and the `image` element itself. The `figcaption` is a text-only element that will contain the caption for the associated image
+`Figure` is the wrapper around a caption element (`figcaption`) and the `image` element itself. The `figcaption` is a text-only element that will contain the caption for the associated image
+
+We allow both figure and image as elements in our model to acommotate images with and without captions. 
 
 ```xml
 !-- Figure and related elements -->

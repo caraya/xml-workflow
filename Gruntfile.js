@@ -91,10 +91,8 @@
         }
       },
 
-
       autoprefixer: {
         options: {
-          // We need to `freeze` browsers versions for testing purposes.
           browsers: ['last 2']
         },
 
@@ -134,7 +132,6 @@
       //    src: ['*.coffee'],
       //    dest: 'build/',
       //    ext: '.js'
-      //
       //},
       // GH-PAGES TASK
       // Push the specified content into the repositories gh-pages branch
@@ -195,20 +192,6 @@
       // Clean the build directory
       clean: {
         production: ['build/']
-      },
-
-      // GH-PAGES TASK
-      // Push the specified content into the repositories gh-pages branch
-      'gh-pages': {
-        options: {
-          message: 'Content committed from Grunt gh-pages',
-          base: './build/app',
-          dotfiles: true
-        },
-        // These files will get pushed to the `
-        // gh-pages` branch (the default)
-        // We have to specifically remove node_modules
-        src: ['**/*']
       },
 
       // WATCH TASK
@@ -296,7 +279,7 @@
     );
 
     grunt.task.registerTask(
-      'generate-pdf-scss',
+      'generate-pdf-all',
       [
         'scsslint',
         'sass:dev',

@@ -26,9 +26,6 @@
         <xsl:element name="title">
           <xsl:value-of select="metadata/title"/>
         </xsl:element>
-        <!-- Load Typekit Font -->
-        <script src="https://use.typekit.net/qcp8nid.js"></script>
-        <script>try{Typekit.load();}catch(e){}</script>
         <!-- Paged Media Styles -->
         <link rel="stylesheet" href="css/pm-style.css" />
         <!--

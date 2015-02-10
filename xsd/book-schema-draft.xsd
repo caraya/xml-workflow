@@ -356,11 +356,14 @@
             <xs:documentation>
                 The receiving end of an anchor link within the same document 
                 (the link is something like "#test") and the location of the 
-                test anchor has something like name="test"
+                test anchor has something like id="test"
+                
+                because we're using IDs each anchor has to be unique and 
+                must contain no whitespaces 
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
-            <xs:attribute name="name"/>
+            <xs:attributeGroup ref="genericPropertiesGroup" />
         </xs:complexType>
     </xs:element>
     
@@ -401,7 +404,7 @@
           </xs:choice>
         </xs:sequence>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
-        <xs:attribute name="type" type="xs:token" use="optional"></xs:attribute>
+        <xs:attribute name="type" type="xs:token" use="optional"/>
       </xs:complexType>
     </xs:element>
     
@@ -440,7 +443,8 @@
           <xs:element ref="span"/>
           <xs:element ref="quote"/>
         </xs:choice>
-        <xs:attributeGroup ref="genericPropertiesGroup"/>
+          <xs:attributeGroup ref="genericPropertiesGroup"/>
+          <xs:attribute name="type" type="xs:token" use="optional"/>
       </xs:complexType>
     </xs:element>
     

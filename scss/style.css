@@ -14,49 +14,36 @@ body {
   background-color: #fff;
   color: #554c4d;
   color: #554c4d;
-  font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Roboto Thin', Georgia, 'Times New Roman', Times, serif;
   font-size: 1em;
   font-weight: 100;
-  line-height: 1.1;
+  line-height: 1.45;
   padding-left: 10em;
   padding-right: 10em; }
 
-/* line 3, /Users/carlos/code/xml-workflow/scss/partials/asides */
-aside .lowlight {
-  opacity: 0.3; }
-  /* line 6, /Users/carlos/code/xml-workflow/scss/partials/asides */
-  aside .lowlight :hover {
-    opacity: 1; }
-
-/* line 13, /Users/carlos/code/xml-workflow/scss/partials/asides */
-aside h3 {
-  padding-left: 20px;
-  text-align: center; }
-
 /* line 6, /Users/carlos/code/xml-workflow/scss/partials/headings */
 h1, h2, h3, h4 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
+  font-family: 'Roboto Slab', sans-serif;
+  font-weight: 700;
   line-height: 1.2;
-  margin: 1.414em 0 0.5em;
-  text-transform: uppercase; }
+  margin: 1.414em 0.5em; }
 
-/* line 16, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 17, /Users/carlos/code/xml-workflow/scss/partials/headings */
 h1 {
-  font-size: 3.157em;
+  font-size: 2.074em;
   margin-top: 0; }
 
-/* line 21, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 22, /Users/carlos/code/xml-workflow/scss/partials/headings */
 h2 {
-  font-size: 2.369em; }
+  font-size: 1.728em; }
 
-/* line 25, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 26, /Users/carlos/code/xml-workflow/scss/partials/headings */
 h3 {
-  font-size: 1.777em; }
+  font-size: 1.44em; }
 
-/* line 29, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 30, /Users/carlos/code/xml-workflow/scss/partials/headings */
 h4 {
-  font-size: 1.333em;
+  font-size: 1.2em;
   text-transform: uppercase; }
 
 /* line 1, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
@@ -69,13 +56,23 @@ aside {
   padding-bottom: 0.5em;
   padding-top: 0.5em;
   width: 100%; }
-  /* line 12, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 13, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  aside h3 {
+    padding-left: 20px;
+    text-align: center; }
+  /* line 18, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   aside .pull {
     margin-bottom: 0.5em;
     margin-left: -20%;
     margin-top: 0.2em; }
+  /* line 26, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  aside .lowlight {
+    opacity: 0.3; }
+    /* line 29, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+    aside .lowlight :hover {
+      opacity: 1; }
 
-/* line 20, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 35, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .opening {
   border-bottom: 3px double #ddd;
   border-top: 3px double #ddd;
@@ -85,7 +82,7 @@ aside {
   padding-top: 2em;
   text-align: center; }
 
-/* line 31, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 46, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes, .content-left {
   font-size: 0.75em;
   margin-left: -230px;
@@ -93,7 +90,7 @@ aside {
   text-align: right;
   width: 230px; }
 
-/* line 40, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 55, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes-right, .content-right {
   font-size: 0.75em;
   margin-left: 760px;
@@ -102,7 +99,7 @@ aside {
   text-align: left;
   width: 230px; }
 
-/* line 49, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 64, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .content-right {
   font-size: 0.75em;
   margin-left: 760px;
@@ -111,26 +108,25 @@ aside {
   text-align: left;
   width: 230px; }
 
-/* line 59, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 74, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .content-right ul, .content-left ul {
   list-style: none; }
 
-/* line 77, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 92, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 blockquote {
-  border-left: 5px solid #ccc;
   color: #222023;
-  font-size: 1.5em;
+  font-size: 1.125em;
   font-style: italic;
   font-weight: 100;
   margin-bottom: 2em;
   margin-left: 4em;
   margin-right: 4em;
   margin-top: 2em; }
-  /* line 88, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 103, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   blockquote p {
     padding-left: 0.5em; }
 
-/* line 96, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 111, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .pullquote {
   border-bottom: 18px solid #000;
   border-top: 18px solid #000;
@@ -142,18 +138,18 @@ blockquote {
   padding: 20px 0;
   position: relative;
   width: 200px; }
-  /* line 108, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 123, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote p {
     color: #00298a;
     font-weight: 700;
     position: relative;
     text-transform: uppercase;
     z-index: 1; }
-  /* line 116, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 131, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote p:last-child {
     line-height: 20px;
     padding-top: 2px; }
-  /* line 121, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 136, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote cite {
     color: #333;
     font-size: 18px;
@@ -214,22 +210,19 @@ figure {
     figure figcaption::before {
       content: 'Figure ' counter(figure_count) ': '; }
 
-/* line 79, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 77, /Users/carlos/code/xml-workflow/scss/style.scss */
 .justified {
   text-align: justify; }
 
-/* line 83, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 82, /Users/carlos/code/xml-workflow/scss/style.scss */
+small, .font-small {
+  font-size: 0.833em; }
+
+/* line 86, /Users/carlos/code/xml-workflow/scss/style.scss */
 video {
   border: 1px solid #c5c5d0; }
 
-/* line 88, /Users/carlos/code/xml-workflow/scss/style.scss */
-blockquote {
-  color: #222023;
-  font-size: 1.5em;
-  font-weight: 300;
-  margin: 2em 1.5em; }
-
-/* line 127, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 94, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns2 {
   column-count: 2;
   column-gap: 3em;
@@ -237,15 +230,15 @@ blockquote {
   column-span: none;
   line-height: 1em;
   width: 100%; }
-  /* line 132, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 99, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p:first-of-type {
     border-top: 0;
     margin-top: 0; }
-  /* line 137, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 104, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p + p {
     text-indent: 2em; }
 
-/* line 142, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 109, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns3 {
   column-count: 3;
   column-gap: 10px;
@@ -253,24 +246,18 @@ blockquote {
   column-span: none;
   width: 100%; }
 
-/* line 151, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 118, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='titlepage'] h1, section[data-type='titlepage'] h2 {
   text-align: center; }
-/* line 155, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 122, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='titlepage'] p {
-  text-align: left; }
-  /* line 158, /Users/carlos/code/xml-workflow/scss/style.scss */
-  section[data-type='titlepage'] p + p {
-    text-indent: 0 !important; }
+  text-indent: 0 !important; }
 
-/* line 166, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 129, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] h1, section[data-type='dedication'] h2 {
   text-align: center; }
-/* line 170, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 133, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] p {
-  text-align: left; }
-  /* line 173, /Users/carlos/code/xml-workflow/scss/style.scss */
-  section[data-type='dedication'] p + p {
-    text-indent: 0 !important; }
+  text-indent: 0 !important; }
 
 /*# sourceMappingURL=style.css.map */

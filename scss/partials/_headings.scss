@@ -4,29 +4,30 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: 'Montserrat', sans-serif;
-  //font-family: 'Roboto Slab', sans-serif;
-  font-weight: 400;
+  //font-family: 'Montserrat', sans-serif;
+  font-family: 'Roboto Slab', sans-serif;
+  font-weight: 700;
   line-height: 1.2;
-  margin: 1.414em 0 .5em;
+  margin: 1.414em .5em;
   // Do I want all headers uppercased?
-  text-transform: uppercase;
+  // text-transform: uppercase;
 }
 
+
 h1 {
-  font-size: 3.157em;
+  font-size: 2.074em;
   margin-top: 0;
 }
 
 h2 {
-  font-size: 2.369em;
+  font-size: 1.728em;
 }
 
 h3 {
-  font-size: 1.777em;
+  font-size: 1.44em;
 }
 
 h4 {
-  font-size: 1.333em;
+  font-size: 1.2em;
   text-transform: uppercase;
 }

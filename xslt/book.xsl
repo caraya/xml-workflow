@@ -42,9 +42,6 @@
           <xsl:value-of select="system-property('xsl:product-version')"/>
         </xsl:attribute>
       </xsl:element>
-      <!-- Load Typekit Font -->
-      <script src="//use.typekit.net/qcp8nid.js"></script>
-      <script>try{Typekit.load();}catch(e){}</script>
       <!-- Load Normalize library -->
       <link rel="stylesheet" href="css/normalize.css"/>
       <link rel="stylesheet" href="css/style.css" />
@@ -132,9 +129,6 @@
     <xsl:result-document href='{$fileName}' format="xhtml-out">
       <html>
         <head>
-          <!-- Load Typekit Font -->
-          <script src="//use.typekit.net/qcp8nid.js"></script>
-          <script>try{Typekit.load();}catch(e){}</script>
           <link rel="stylesheet" href="css/style.css" />
           <!-- Load Normalize library -->
           <link rel="stylesheet" href="css/normalize.css"/>
@@ -620,7 +614,7 @@
     for peope who are not familiar with XML empty elements
   -->
     <xsl:element name="a">
-      <xsl:attribute name="name">
+      <xsl:attribute name="id">
         <xsl:apply-templates/>
       </xsl:attribute>
     </xsl:element>
