@@ -1,5 +1,6 @@
 ---
-title: CSS Styles for Paged Media
+title: XML Workflow: CSS Styles for Paged Media
+date: 2015-02-10
 category: Technology
 status: draft
 ---
@@ -8,9 +9,10 @@ status: draft
 
 This is the generated CSS from the SCSS style sheets (see the scss/ directory for the source material.) I've chosen to document the resulting stylesheet here and document the SCSS source in another document to make life simpler for people who don't want to deal with SASS or who want to see what the style sheets look like. 
 
-Typography derived from work done at this URL: [http://bit.ly/1B3Qj5B](http://bit.ly/1B3Qj5B)
+Typography derived from work done at this URL: [http://bit.ly/16N6Y2Q](http://bit.ly/16N6Y2Q)
 
-The following scale (also using perfect fifth progression) may also help: [http://bit.ly/1Bl4x4v](http://bit.ly/1Bl4x4v)
+The following scale (also using minor third progression) may also help: [http://bit.ly/1DdVbqK](http://bit.ly/1DdVbqK)
+
 
 Feel free to play with these and use them as starting point for your own work :)
 
@@ -37,6 +39,8 @@ At this point we are not dealing with [font subsetting](http://bit.ly/1ul3XBx) b
 
 ## Defaults
 
+Now that we've loaded the fonts
+
 ```css
 html {
   overflow-y: scroll;
@@ -59,32 +63,29 @@ body {
 
 ## Blockquotes, Pullquotes and Marginalia
 
+It's fairly easy to create sidebars in HTML so I've played a lot with pull quotes, blockquotes and asides as a way to move the content around without having to create or use specialized tags.
+
+```css
 aside {
   border-bottom: 3px double #ddd;
   border-top: 3px double #ddd;
   color: #666;
-  font-size: 1.8em;
   line-height: 1.4em;
   padding-bottom: .5em;
   padding-top: .5em;
   width: 100%;
 }
+
 aside .pull {
   margin-bottom: .5em;
   margin-left: -20%;
   margin-top: .2em;
 }
+```
 
-.opening {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
-  font-size: 2em;
-  margin-bottom: 10em;
-  padding-bottom: 2em;
-  padding-top: 2em;
-  text-align: center;
-}
+The `magin-notes*` and `content*` move the content to the corresponding side of the page without having to create specific CSS to do so. The downside is that, as with many things in CSS, you are stuck with the provided values and will have to modify them to suit your needs.
 
+```css
 .margin-notes,
 .content-left {
   font-size: .75em;
@@ -117,7 +118,23 @@ aside .pull {
 .content-left ul {
   list-style: none;
 }
+```
 
+
+
+```css
+.opening {
+  border-bottom: 3px double #ddd;
+  border-top: 3px double #ddd;
+  font-size: 2em;
+  margin-bottom: 10em;
+  padding-bottom: 2em;
+  padding-top: 2em;
+  text-align: center;
+}
+```
+
+```css
 blockquote {
   border-left: 5px solid #ccc;
   color: #222023;

@@ -600,6 +600,7 @@ This model barely begins to scratch the surface of what we can do with our parag
 Like HTML we've chose to create 6 levels of headings although, to be honest, I can't see the need for more than 4. 
 
 We give all links three attributes: `class`, `id` and `align` to hint stylesheets where we want to place the heading (left, right, center)
+
 ```xml
 <!-- Headings -->
 <xs:element name="h1">
@@ -625,15 +626,15 @@ We give all links three attributes: `class`, `id` and `align` to hint stylesheet
 
 <xs:element name="h4">
   <xs:complexType mixed="true">
-      <xs:attributeGroup ref="genericPropertiesGroup"/>
-      <xs:attribute name="align" type="align" use="optional" default="left"/>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="align" type="align" use="optional" default="left"/>
   </xs:complexType>
 </xs:element>
 
 <xs:element name="h5">
   <xs:complexType mixed="true">
-      <xs:attributeGroup ref="genericPropertiesGroup"/>
-      <xs:attribute name="align" type="align" use="optional" default="left"/>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="align" type="align" use="optional" default="left"/>
   </xs:complexType>
 </xs:element>
 
@@ -650,34 +651,21 @@ The metadata section tells us more about the book itself and can be used to buil
 ```xml
 <!-- Metadata element -->
 <xs:element name="metadata">
-    <xs:annotation>
-        <xs:documentation>
-          Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.
-        </xs:documentation>
-    </xs:annotation>
-    <xs:complexType>
-        <xs:sequence>
-            <xs:annotation>
-                <xs:documentation>
-                Metadata sequence using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier
-                
-                We also support paragraphs to add content that is not one of the items listed above
-                </xs:documentation>
-            </xs:annotation>
-            <xs:element name="isbn" type="isbn"/>
-            <xs:element name="edition" type="xs:integer"/>
-            <xs:element name="title" type="token255"/>
-            <xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
-            <xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
-            <!-- 
-                We allow para here to make sure  we can write 
-                text as for the metadata
-            -->
-            <xs:element ref="para"/>
-
-        </xs:sequence>
-    </xs:complexType>
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="isbn" type="isbn"/>
+      <xs:element name="edition" type="xs:integer"/>
+      <xs:element name="title" type="token255"/>
+      <xs:element name="authors" type="authors" minOccurs="1" maxOccurs="unbounded"/>
+      <xs:element name="editors" type="editors" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="otherRoles" type="otherRoles" minOccurs="0" maxOccurs="unbounded"/>
+      <!--
+          We allow para here to make sure  we can write
+          text as part of the metadata
+      -->
+      <xs:element ref="para"/>
+    </xs:sequence>
+  </xs:complexType>
 </xs:element>
 ```
 
@@ -702,7 +690,6 @@ The element inherits `class` and `ID` from genericPropertiesGroup.
 Finally we add the `type` to create data-type and/or epub:type attributes. I chose to make it option and default it to chapter. We want to make it easier for authors to create content; where possible. I'd rather have the wrong value than no value at all.
 
 ```xml
-<!-- Section element -->
 <!-- Section element -->
 <xs:element name="section">
   <xs:complexType mixed="true">
@@ -733,7 +720,7 @@ Finally we add the `type` to create data-type and/or epub:type attributes. I cho
 ```
 Now that we have defined our elements, we'll define the core structure of the document by defining the structure of the `book` element. 
 
-After all the work we've done defininf the content the definition of book is almost anticlimatic. We define the `book` element as the sequence of exactly 1 `metadata` element and 1 or more `section` elements.
+After all the work we've done defining the content the definition of book is almost anticlimatic. We define the `book` element as the sequence of 0 or  1 `metadata` element and 1 or more `section` elements.
 
 As with all our elements we add `class` and `ID` from our genericPropertiesGroup. 
 

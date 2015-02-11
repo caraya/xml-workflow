@@ -1,5 +1,5 @@
 ---
-title: Converting our content to HTML
+title: XML workflows: Converting our content to HTML
 date: 2015-01-13
 category: Technology
 status: draft

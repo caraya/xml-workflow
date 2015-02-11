@@ -60,28 +60,26 @@ aside {
   border-bottom: 3px double #ddd;
   border-top: 3px double #ddd;
   color: #666;
-  font-size: 1.8em;
   line-height: 1.4em;
   padding-bottom: 0.5em;
   padding-top: 0.5em;
   width: 100%; }
-  /* line 13, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 12, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   aside h3 {
-    padding-left: 20px;
     text-align: center; }
-  /* line 18, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 16, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   aside .pull {
     margin-bottom: 0.5em;
     margin-left: -20%;
     margin-top: 0.2em; }
-  /* line 26, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 24, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   aside .lowlight {
     opacity: 0.3; }
-    /* line 29, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+    /* line 27, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
     aside .lowlight :hover {
       opacity: 1; }
 
-/* line 35, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 33, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .opening {
   border-bottom: 3px double #ddd;
   border-top: 3px double #ddd;
@@ -91,7 +89,7 @@ aside {
   padding-top: 2em;
   text-align: center; }
 
-/* line 46, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 44, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes, .content-left {
   font-size: 0.75em;
   margin-left: -230px;
@@ -99,7 +97,7 @@ aside {
   text-align: right;
   width: 230px; }
 
-/* line 55, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 53, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes-right, .content-right {
   font-size: 0.75em;
   margin-left: 760px;
@@ -108,7 +106,7 @@ aside {
   text-align: left;
   width: 230px; }
 
-/* line 64, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 62, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .content-right {
   font-size: 0.75em;
   margin-left: 760px;
@@ -117,11 +115,11 @@ aside {
   text-align: left;
   width: 230px; }
 
-/* line 74, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 72, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .content-right ul, .content-left ul {
   list-style: none; }
 
-/* line 92, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 90, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 blockquote {
   color: #222023;
   font-size: 1.125em;
@@ -131,11 +129,11 @@ blockquote {
   margin-left: 4em;
   margin-right: 4em;
   margin-top: 2em; }
-  /* line 103, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 101, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   blockquote p {
     padding-left: 0.5em; }
 
-/* line 111, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 109, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .pullquote {
   border-bottom: 18px solid #000;
   border-top: 18px solid #000;
@@ -147,18 +145,18 @@ blockquote {
   padding: 20px 0;
   position: relative;
   width: 200px; }
-  /* line 123, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 121, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote p {
     color: #00298a;
     font-weight: 700;
     position: relative;
     text-transform: uppercase;
     z-index: 1; }
-  /* line 131, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 129, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote p:last-child {
     line-height: 20px;
     padding-top: 2px; }
-  /* line 136, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 134, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote cite {
     color: #333;
     font-size: 18px;
