@@ -1,8 +1,8 @@
 aside {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
-  color: #666;
-  line-height: 1.4em;
+  border-bottom: 3px double #222023;
+  border-top: 3px double #222023;
+  color: #403f4e;
+  line-height: 1.5em;
   padding-bottom: .5em;
   padding-top: .5em;
   width: 100%;
@@ -31,59 +31,14 @@ aside {
 }
 
 .opening {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
+  border-bottom: 3px double #000;
+  border-top: 3px double #000;
   font-size: 2em;
   margin-bottom: 10em;
   padding-bottom: 2em;
   padding-top: 2em;
   text-align: center;
 }
-
-.margin-notes,
-.content-left {
-  font-size: .75em;
-  margin-left: -230px;
-  margin-right: 20px;
-  text-align: right;
-  width: 230px;
-}
-
-.margin-notes-right,
-.content-right {
-  font-size: .75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px;
-}
-
-.content-right {
-  font-size: .75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px;
-}
-
-.content-right ul,
-.content-left ul {
-  list-style: none;
-}
-
-// Blockquote styles
-//blockquote {
-//  color: #222023;
-//  font-style: italic;
-//  font-weight: 100;
-//  font-size: 1.5em;
-//  margin-top: 1.55em;
-//  margin-bottom: 1.5em;
-//  margin-left: 2em;
-//  padding-left: 0.5;
-//}
 
 // An alternative blockquote style with a 5 pixel bar
 // on the left side
@@ -93,7 +48,7 @@ blockquote {
   font-size: 1.125em;
   font-style: italic;
   font-weight: 100;
-  margin-bottom: 2em;
+  margin-bottom: 1.2em;
   margin-left: 4em;
   margin-right: 4em;
   margin-top: 2em;
@@ -136,4 +91,42 @@ blockquote {
     font-size: 18px;
     font-weight: 400;
   }
+}
+
+
+.margin-notes,
+.content-left {
+  clear: both;
+  float: left;
+  font-size: .75em;
+  margin: 1em;
+  width: 40%;
+}
+
+.margin-notes-right,
+.content-right {
+  clear: both;
+  float: right;
+  font-size: .75em;
+  margin: 1em;
+  width: 40%;
+}
+
+.margin-notes-right > p:last-of-type,
+.content-right > p:last-of-type {
+  clear: both;
+  float: left;
+}
+
+.margin-notes-left > p:last-of-type,
+.content-left > p:last-of-type {
+  clear: both;
+  float: left;
+
+}
+
+
+.content-right ul,
+.content-left ul {
+  list-style: none;
 }

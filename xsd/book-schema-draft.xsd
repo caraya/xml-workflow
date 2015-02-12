@@ -395,6 +395,7 @@
             <xs:element ref="span"/>
             <xs:element ref="blockquote"/>
             <xs:element ref="video"/>
+            <xs:element ref="aside"/>
             <xs:element ref="h1"/>
             <xs:element ref="h2"/>
             <xs:element ref="h3"/>
@@ -786,49 +787,49 @@
       </xs:complexType>
     </xs:element>
     
-      <xs:element name="quote">
-        <xs:annotation>
-          <xs:documentation>
-            Shorter, inline, quotations
-          </xs:documentation>
-        </xs:annotation>
-        <xs:complexType mixed="true">
-          <xs:attributeGroup ref="genericPropertiesGroup"/>
-        </xs:complexType>
-      </xs:element>
+    <xs:element name="quote">
+    <xs:annotation>
+      <xs:documentation>
+        Shorter, inline, quotations
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+      <xs:attributeGroup ref="genericPropertiesGroup"/>
+    </xs:complexType>
+    </xs:element>
     
-      <xs:element name="aside">
+    <xs:element name="aside">
+    <xs:annotation>
+    <xs:documentation>
+      Asides, smaller pieces of content not directly related to the main text
+    </xs:documentation>
+    </xs:annotation>
+    <xs:complexType mixed="true">
+    <xs:sequence>
       <xs:annotation>
-        <xs:documentation>
-          Asides, smaller pieces of content not directly related to the main text
-        </xs:documentation>
+        <xs:documentation>At least one paragraph </xs:documentation>
       </xs:annotation>
-      <xs:complexType mixed="true">
-        <xs:sequence>
-          <xs:annotation>
-            <xs:documentation>At least one paragraph </xs:documentation>
-          </xs:annotation>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element ref="code"/>
-            <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
-            <xs:element ref="ulist"/>
-            <xs:element ref="olist"/>
-            <xs:element ref="figure"/>
-            <xs:element ref="image"/>
-            <xs:element ref="div"/>
-            <xs:element ref="span"/>
-            <xs:element ref="blockquote"/>
-            <xs:element ref="h1"/>
-            <xs:element ref="h2"/>
-            <xs:element ref="h3"/>
-            <xs:element ref="h4"/>
-            <xs:element ref="h5"/>
-            <xs:element ref="h6"/>
-          </xs:choice>
-        </xs:sequence>
-        <xs:attributeGroup ref="genericPropertiesGroup"/>
-        <xs:attribute name="type" type="xs:token" use="optional"/>
-      </xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="code"/>
+        <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element ref="ulist"/>
+        <xs:element ref="olist"/>
+        <xs:element ref="figure"/>
+        <xs:element ref="image"/>
+        <xs:element ref="div"/>
+        <xs:element ref="span"/>
+        <xs:element ref="blockquote"/>
+        <xs:element ref="h1"/>
+        <xs:element ref="h2"/>
+        <xs:element ref="h3"/>
+        <xs:element ref="h4"/>
+        <xs:element ref="h5"/>
+        <xs:element ref="h6"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="genericPropertiesGroup"/>
+    <xs:attribute name="type" type="xs:token" use="optional"/>
+    </xs:complexType>
     </xs:element>
     
     <!-- Paragraphs -->
@@ -863,6 +864,7 @@
           <xs:element ref="quote"/>
         </xs:choice>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
+        <xs:attribute name="align" type="align" use="optional" default="left"/>
       </xs:complexType>
     </xs:element>
   
@@ -1023,6 +1025,7 @@
                     <xs:element ref="span"/>
                     <xs:element ref="blockquote"/>
                     <xs:element ref="video"/>
+                    <xs:element ref="aside"/>
                     <xs:element ref="h1"/>
                     <xs:element ref="h2"/>
                     <xs:element ref="h3"/>

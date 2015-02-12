@@ -63,7 +63,7 @@ body {
 
 ## Blockquotes, Pullquotes and Marginalia
 
-It's fairly easy to create sidebars in HTML so I've played a lot with pull quotes, blockquotes and asides as a way to move the content around without having to create or use specialized tags.
+It's fairly easy to create sidebars in HTML so I've played a lot with pull quotes, blockquotes and asides as a way to move the content around with basic CSS. We can do further work by tuning the CSS
 
 ```css
 aside {
@@ -121,6 +121,7 @@ The `magin-notes*` and `content*` move the content to the corresponding side of 
 ```
 
 
+The opening class
 
 ```css
 .opening {

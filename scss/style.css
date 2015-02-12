@@ -48,10 +48,10 @@ h4 {
 
 /* line 1, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 aside {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
-  color: #666;
-  line-height: 1.4em;
+  border-bottom: 3px double #222023;
+  border-top: 3px double #222023;
+  color: #403f4e;
+  line-height: 1.5em;
   padding-bottom: 0.5em;
   padding-top: 0.5em;
   width: 100%; }
@@ -72,59 +72,29 @@ aside {
 
 /* line 33, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .opening {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
+  border-bottom: 3px double #000;
+  border-top: 3px double #000;
   font-size: 2em;
   margin-bottom: 10em;
   padding-bottom: 2em;
   padding-top: 2em;
   text-align: center; }
 
-/* line 44, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
-.margin-notes, .content-left {
-  font-size: 0.75em;
-  margin-left: -230px;
-  margin-right: 20px;
-  text-align: right;
-  width: 230px; }
-
-/* line 53, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
-.margin-notes-right, .content-right {
-  font-size: 0.75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px; }
-
-/* line 62, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
-.content-right {
-  font-size: 0.75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px; }
-
-/* line 72, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
-.content-right ul, .content-left ul {
-  list-style: none; }
-
-/* line 90, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 45, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 blockquote {
   color: #222023;
   font-size: 1.125em;
   font-style: italic;
   font-weight: 100;
-  margin-bottom: 2em;
+  margin-bottom: 1.2em;
   margin-left: 4em;
   margin-right: 4em;
   margin-top: 2em; }
-  /* line 101, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 56, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   blockquote p {
     padding-left: 0.5em; }
 
-/* line 109, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 64, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .pullquote {
   border-bottom: 18px solid #000;
   border-top: 18px solid #000;
@@ -136,22 +106,52 @@ blockquote {
   padding: 20px 0;
   position: relative;
   width: 200px; }
-  /* line 121, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 76, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote p {
     color: #00298a;
     font-weight: 700;
     position: relative;
     text-transform: uppercase;
     z-index: 1; }
-  /* line 129, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 84, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote p:last-child {
     line-height: 20px;
     padding-top: 2px; }
-  /* line 134, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 89, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
   .pullquote cite {
     color: #333;
     font-size: 18px;
     font-weight: 400; }
+
+/* line 98, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+.margin-notes, .content-left {
+  clear: both;
+  float: left;
+  font-size: 0.75em;
+  margin: 1em;
+  width: 40%; }
+
+/* line 107, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+.margin-notes-right, .content-right {
+  clear: both;
+  float: right;
+  font-size: 0.75em;
+  margin: 1em;
+  width: 40%; }
+
+/* line 116, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+.margin-notes-right > p:last-of-type, .content-right > p:last-of-type {
+  clear: both;
+  float: left; }
+
+/* line 122, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+.margin-notes-left > p:last-of-type, .content-left > p:last-of-type {
+  clear: both;
+  float: left; }
+
+/* line 130, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+.content-right ul, .content-left ul {
+  list-style: none; }
 
 /* line 1, /Users/carlos/code/xml-workflow/scss/partials/metadata */
 .metadata {
