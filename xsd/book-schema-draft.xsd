@@ -1049,6 +1049,16 @@
         </xs:complexType>
     </xs:element>
 
+    <!-- Testing to see if we really need a separate toc element -->
+    <xs:element name="toc">
+      <xs:annotation>
+        <xs:documentation>
+          Testing to see whether we actually need a toc element. 
+          
+          This is different than an index, we'll work on that next
+        </xs:documentation>
+      </xs:annotation>
+    </xs:element>
     <!-- Base book element -->
     <xs:element name="book">
         <xs:annotation>
@@ -1061,6 +1071,7 @@
             <xs:choice maxOccurs="unbounded">
                 <xs:element ref="anchor" minOccurs="0" maxOccurs="1"/> <!-- To create things like anchors to the beginning of the document -->
                 <xs:element ref="metadata" minOccurs="0" maxOccurs="1"/>
+                <xs:element ref="toc" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>
             </xs:choice>
             <xs:attributeGroup ref="genericPropertiesGroup"/>

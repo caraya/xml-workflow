@@ -21,8 +21,9 @@
 
   <!-- Root template matching book -->
   <xsl:template match="book">
-    <html>
+    <html class="no-js" lang="en">
       <head>
+        <meta charset="utf-8"/>
         <xsl:element name="title">
           <xsl:value-of select="metadata/title"/>
         </xsl:element>
@@ -51,7 +52,6 @@
               <xsl:value-of select="system-property('xsl:product-version')"/>
             </xsl:attribute>
           </xsl:element>
-        <xsl:apply-templates select="/" mode="toc"/>
         <xsl:apply-templates/>
       </body>
     </html>
@@ -115,7 +115,25 @@
   </xsl:template>
 
   <!-- Create Table of Contents ... work in progress -->
-  <xsl:template match="/" mode="toc"/>
+  <xsl:template match="toc">
+    <section data-type="toc">
+      <h1>Table of Contents</h1>
+      <nav>
+        <ol>
+          <xsl:for-each select="//section">
+            <xsl:element name="li">
+              <xsl:element name="a">
+                <xsl:attribute name="href">
+                  <xsl:value-of select="concat('#', generate-id(.))"/>
+                </xsl:attribute>
+                <xsl:value-of select="title"/>
+              </xsl:element>
+            </xsl:element>
+          </xsl:for-each>
+        </ol>
+      </nav>
+    </section>
+  </xsl:template>
 
   <xsl:template match="title">
     <xsl:element name="h1">

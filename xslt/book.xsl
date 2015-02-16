@@ -31,8 +31,9 @@
 
   <!-- Root template, matching / -->
   <xsl:template match="book">
-    <html>
+    <html class="no-js" lang="en">
     <head>
+      <meta charset="utf-8"/>
       <xsl:element name="title">
         <xsl:value-of select="metadata/title"/>
       </xsl:element>
@@ -127,8 +128,9 @@
     <xsl:variable name="fileName" select="concat(@type, (position()-1),'.html')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
     <xsl:result-document href='{$fileName}' format="xhtml-out">
-      <html>
+      <html class="no-js" lang="en">
         <head>
+          <meta charset="utf-8"/>
           <link rel="stylesheet" href="css/style.css" />
           <!-- Load Normalize library -->
           <link rel="stylesheet" href="css/normalize.css"/>
