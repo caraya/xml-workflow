@@ -139,25 +139,35 @@ blockquote p {
 .margin-notes,
 .content-left {
   clear: both;
+  display: block;
   float: left;
   font-size: .75em;
   margin: 1em;
   width: 40%;
+}
+.margin-notes h3,
+.content-left h3 {
+  text-align: center;
 }
 
 .margin-notes-right,
 .content-right {
   clear: both;
+  display: block;
   float: right;
   font-size: .75em;
   margin: 1em;
   width: 40%;
 }
+.margin-notes-right h3,
+.content-right h3 {
+  text-align: center;
+}
 
 .margin-notes-right > p:last-of-type,
 .content-right > p:last-of-type {
   clear: both;
-  float: left;
+  float: right;
 }
 
 .margin-notes-left > p:last-of-type,

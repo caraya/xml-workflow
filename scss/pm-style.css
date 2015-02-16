@@ -132,33 +132,41 @@ blockquote {
     font-size: 18px;
     font-weight: 400; }
 
-/* line 98, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 97, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes, .content-left {
   clear: both;
+  display: block;
   float: left;
   font-size: 0.75em;
   margin: 1em;
   width: 40%; }
+  /* line 105, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  .margin-notes h3, .content-left h3 {
+    text-align: center; }
 
-/* line 107, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 111, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes-right, .content-right {
   clear: both;
+  display: block;
   float: right;
   font-size: 0.75em;
   margin: 1em;
   width: 40%; }
+  /* line 119, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  .margin-notes-right h3, .content-right h3 {
+    text-align: center; }
 
-/* line 116, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 125, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes-right > p:last-of-type, .content-right > p:last-of-type {
   clear: both;
-  float: left; }
+  float: right; }
 
-/* line 122, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 131, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .margin-notes-left > p:last-of-type, .content-left > p:last-of-type {
   clear: both;
   float: left; }
 
-/* line 130, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 139, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
 .content-right ul, .content-left ul {
   list-style: none; }
 

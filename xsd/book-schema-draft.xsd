@@ -794,6 +794,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
+      <xs:attribute name="cite" type="xs:anyURI" use="optional"/>
       <xs:attributeGroup ref="genericPropertiesGroup"/>
     </xs:complexType>
     </xs:element>

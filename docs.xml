@@ -11,13 +11,11 @@
       </author>
     </authors>
   </metadata>
-
   <section type="dedication">
     <title>Thank You</title>
     <para>Thanks to Laura Brady for getting this particular idea started :)
     </para>
   </section>
-
   <section type="preface">
     <title>Background: HTML is the final format</title>
     <para>In researching the technologies and tools that I use when developing digital content I've come across multiple discussions about what's the best way to create HTML for X application (ebooks, web, transforming into other formats and any number of ideas. Some people think that HTML is perfect for everyone to write, regardless of experience and comfort with the technology. We forget that HTML now is very different to HTML as it was originally created.</para>
@@ -133,14 +131,12 @@
     <para>Furthermore, tools like OxygenXML Author (and I would assume other tools in the same category have a visual mode that allow users to write XML content, validated against a schema in a way that is more familiar to people not used to creating content with raw XML tools.</para>
     <para>The issues with xml are similar to those involved in creating HTML. The markup vocabulary requires brackets, attributes have to be enclosed in quotation marks and generall the syntax is as complicated as you make it. However, tools like Oxygen and smilar help alleviate this problem but don't resolve it completely.</para>
     <para>The screenshot below shows OxygenXML Author working in a Docbook 5 document using visual mode.</para>
-
     <figure>
       <anchor />
       <image alt="Visual Editing Using OxygenXML Author" height="177"
         src="images/visual-editing-mode-small.png" width="280" />
       <figcaption>OxygenXML Visual Editor for XML</figcaption>
     </figure>
-
     <para>The positive side is that using XSLT there is no limit to what we can do with our XML content.</para>
     <h3>XML examples</h3>
     <ulist>
@@ -167,7 +163,6 @@
     <para>Keep in mind who your audience and what the target vocabulary you're working towards, it will dictate what your best strategy is. Are these all the solutions; definitely not. Other solutions may appear that fit your needs better than those presented here; I would love to hear if that is the case.</para>
     <para>Striking the balance between author and publisher is a delicate one. I tend to fall on the side of making things easier for authors... The tools can be made to translate basic markup into the desired result with minimal requirements for authors to mark up the content; the same can't necessarily be said about the publisher-first strategy</para>
   </section>
-
   <section type="chapter">
     <title>Introduction</title>
     <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like
@@ -215,22 +210,17 @@
 &lt;/book> </code>
     <para>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</para>
   </section>
-
   <section type="chapter">
     <title>XML Schema</title>
-<div class="content-right">
-  <h3>Test Title</h3>
-
-  <para>Flexitarian VHS food truck tousled tattooed. Cliche Godard polaroid, Vice blog biodiesel try-hard. American Apparel viral umami, plaid kogi fap ethical cred next level slow-carb. Paleo master cleanse freegan, pug cliche vinyl fanny pack sriracha polaroid Portland. Before they sold out Brooklyn iPhone raw denim keffiyeh Kickstarter Thundercats. Meh fanny pack single-origin coffee, semiotics actually street art you probably haven't heard of them cornhole scenester stumptown. Tumblr Carles asymmetrical migas, roof party DIY photo booth occupy kale chips.</para>
-
-  <para>Pour-over YOLO you probably haven't heard of them, literally tattooed 8-bit narwhal meh salvia disrupt small batch forage mumblecore master cleanse. Four loko paleo iPhone, Banksy kale chips meh pork belly jean shorts asymmetrical mustache. Slow-carb yr selvage, skateboard DIY 3 wolf moon 90's hashtag freegan health goth. Small batch meggings selvage, mumblecore bicycle rights normcore Austin banh mi Carles mixtape. Cliche food truck hoodie, meggings salvia American Apparel 8-bit squid Tumblr retro ugh. Bicycle rights salvia Schlitz semiotics Thundercats. PBR Intelligentsia polaroid locavore meggings meditation deep v.</para>
-</div>
-
     <para>The schema is defined from most general to most specific elements. We'll follow the same process to explain what the schema does and how we arrived to the choices we made. </para>
     <para>At the beginning of the schema we define some custom types that will be used throughout the document.</para>
     <para><emphasis>string255</emphasis> is a string that is limited to 255 characters in length. We do this to prevent overtly long strings.
     </para>
-    <para>The second one,
+    <div class="content-right">
+      <h3>Test Title</h3>
+      <para>Flexitarian VHS food truck tousled tattooed. Cliche Godard polaroid, Vice blog biodiesel try-hard. American Apparel viral umami, plaid kogi fap ethical cred next level slow-carb. Paleo master cleanse freegan, pug cliche vinyl fanny pack sriracha polaroid Portland. Before they sold out Brooklyn iPhone raw denim keffiyeh Kickstarter Thundercats. Meh fanny pack single-origin coffee, semiotics actually street art you probably haven't heard of them cornhole scenester stumptown. Tumblr Carles asymmetrical migas, roof party DIY photo booth occupy kale chips.</para>
+      <para>Pour-over YOLO you probably haven't heard of them, literally tattooed 8-bit narwhal meh salvia disrupt small batch forage mumblecore master cleanse. Four loko paleo iPhone, Banksy kale chips meh pork belly jean shorts asymmetrical mustache. Slow-carb yr selvage, skateboard DIY 3 wolf moon 90's hashtag freegan health goth. Small batch meggings selvage, mumblecore bicycle rights normcore Austin banh mi Carles mixtape. Cliche food truck hoodie, meggings salvia American Apparel 8-bit squid Tumblr retro ugh. Bicycle rights salvia Schlitz semiotics Thundercats. PBR Intelligentsia polaroid locavore meggings meditation deep v.</para>
+    </div>    <para>The second one,
       <emphasis>isbn</emphasis> is a regular expression to match 10 digits ISBN numbers. We'll have to modify it to handle ISBN-13 as well as 10.</para>
     <para>The third custom type is an enumeration of all possible values for the
       <emphasis>align</emphasis> attribute acording to CSS and HTML. Rather than manually type each of these we will reference this enumeration and include all its values for "free".</para>
@@ -266,10 +256,8 @@
   &lt;xs:attribute name="class" type="xs:token" use="optional"/>
 &lt;/xs:attributeGroup>
 </code>
-
     <para>The next stage is to define elements to create our
       <emphasis>people</emphasis> types. We create a base person element and then create three role elements based on person. We will use this next to define groups for each role.</para>
-
     <code language="xml"
       > &lt;!-- complex types to create groups of similar
       person items -->
@@ -306,32 +294,26 @@
           &lt;/xs:extension>
         &lt;/xs:complexContent>
       &lt;/xs:complexType> </code>
-
     <para>Two of the derived types add attributes or elements to the base person element to make the generic person more appropriate to their role rather than repeat the content of person each time that an author, editor or other role appear.</para>
     <para>Author is the most straight forward and only wraps person in the author element. </para>
     <para>Editor takes the base person element and adds a `type` child to indicate the type of editor (some that come to mind are acquisition, production and managing.) The editor elements looks like this:</para>
-
     <code language="xml"
       >&lt;editor>
   &lt;first-name>Carlos&lt;/first-name>
   &lt;surname>Araya&lt;/surname>
   &lt;type>Managing&lt;/type>
 &lt;/editor> </code>
-
     <para>OtherRoles takes all other roles that are not author or editor and adds a role element to specify what role they play, for example: Illustrator, Indexer, Research Assistant, among others. The element looks like this:</para>
-
     <code language="xml"
       > &lt;otherRole>
   &lt;first-name>Sherlock&lt;/first-name>
   &lt;surname>Holmes&lt;/surname>
   &lt;role>Researcher&lt;/role>
 &lt;/otherRole> </code>
-
     <para>Next we create wrappers for each group as
       <emphasis>authors</emphasis>,
       <emphasis>editors</emphasis> and
       <emphasis>otherRoles</emphasis> so we can provide easier styling with XSLT and CSS later on.</para>
-
     <code language="xml"
       >&lt;xs:complexType name="authors">
   &lt;xs:annotation>
@@ -371,13 +353,9 @@
     &lt;/xs:extension>
   &lt;/xs:complexContent>
  &lt;/xs:complexType> </code>
-
     <para>We now look at the elements that we can put inside a section. Some of these elements are overtly complex and deliberately so since they have to acommodate a lot of possible parameters.</para>
-
     <para>We'll look at links first as it is the simplest of our content structures. We borrow the <emphasis>href</emphasis> attribute from HTML to indicate the destination for the link and make it required. </para>
-
     <para>We also incoporate a <emphasis>label</emphasis> so we can later build the link and for accessibility purposes. It also uses our `genericPropertiesGroup` attribute set to add class and ID as attributes for our links.</para>
-
     <code language="xml"
       >&lt;xs:element name="link">
   &lt;xs:complexType>
@@ -386,27 +364,20 @@
     &lt;xs:attribute name="label" type="xs:string" use="required"/>
   &lt;/xs:complexType>
 &lt;/xs:element> </code>
-
-
     <para>The link in our resulting book will look like this:</para>
-
     <code language="xml"
       >
       &lt;link href="http://google.com" label="link to google"/>
     </code>
-
     <para>and with the optional attributes it will look like this</para>
-
     <code language="xml"
       >
       &lt;link class="external" id="ex01" href="http://google.com" label="link to google">
     </code>
-
     <para>Once I had the links I figured I need a way to create anchors for internal links that look like this:
       <emphasis>&lt;a href="#top">
       </emphasis> and expect the target to be formated like this
       <emphasis>&lt;a id="top"></emphasis>. To accomodate this I created an anchor element to provide the destination for internal links. </para>
-
     <code language="xml"
       >&lt;!-- Named Anchor -->
 &lt;xs:element name="anchor">
@@ -415,12 +386,10 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
   </code>
-
     <para>As I was working on further ideas for the project I realized that we forgot to create inline and block level containers for the content, important if you're going to style smaller portions of content within a paragraph or witin a section. Taking the names from HTML we define
       <emphasis>section</emphasis> (inline) and
       <emphasis>div</emphasis>
       (block) elements. Div is a secondary section, containing the same model as the section, including additional div containers.</para>
-
     <code language="xml"
       >&lt;xs:element name="div">
   &lt;xs:complexType mixed="true">
@@ -445,11 +414,8 @@
     &lt;xs:attribute name="type"type="xs:token" use="optional"/>
   &lt;/xs:complexType>
 &lt;/xs:element> </code>
-
     <para>Span is an inline element, therefore the model is greatly reduced to only the elements that can be inside a paragraph</para>
-
     <para>Type is used in these two elements and in our sections to create data-type and epub:type attributes. These are used in the Paged Media stylesheet to decide how will the content be formated.</para>
-
     <code language="xml"
       >   &lt;xs:element name="span">
   &lt;xs:complexType mixed="true">
@@ -466,7 +432,6 @@
     &lt;/xs:complexType>
   &lt;/xs:element>
     </code>
-
     <para>Next are images and figures where we borrow from HTML, again, for the name of attribute names and their functionality. We define 3 elements for the image-related tags:
       <emphasis>figure</emphasis>,
       <emphasis>figcaption</emphasis> and the
@@ -515,7 +480,6 @@
       <emphasis>alt</emphasis> attribute indicates alternative text for the image. It is not meant as a full description so we've constrained it to 255 characters.</para>
     <para>
       <emphasis>align</emphasis> uses our align enumeration to indicae the image's alignment. It is not essential to the XML but will be useful to the XSLT stylesheets we'll create later as part of the process.</para>
-
     <code language="xml"
       >&lt;xs:element name="image">
   &lt;xs:complexType>
@@ -533,9 +497,7 @@
       <emphasis>strike</emphasis> and
       <emphasis>underline</emphasis> and their nesting we had to do some juryriging of the elements to tell the schema what children are allowed for each element. The schema look like this:
     </para>
-
     <!-- HERE -->
-
     <code language="xml"
       >&lt;xs:element name="strong">
   &lt;xs:complexType mixed="true">
@@ -577,7 +539,6 @@
     &lt;/xs:choice>
   &lt;/xs:complexType>
 &lt;/xs:element> </code>
-
     <para>The
       <emphasis>emphasis</emphasis> element is the only one that allows the same element to be nested. When nesting emphasis elements they cancel each other</para>
     <para>When I first conceptualized the project I envisioned one element for both numbered and bulleted lists. That proved to difficult to implement and to cumbersome to write so I reverted to having to sepratate lists, one for ordered or numbered lists (
@@ -589,7 +550,6 @@
     </para>
     <para>They inherit class and ID from
       <emphasis>genreicPropertiesGroup</emphasis>.</para>
-
     <code language="xml"
       >&lt;!-- Lists -->
 &lt;xs:element name="ulist">
@@ -615,7 +575,6 @@
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
   &lt;/xs:complexType>
 &lt;/xs:element> </code>
-
     <para>The
       <emphasis>code</emphasis> element wraps code and works as higlighted, fenced code blocks (think Github Flavored Markdown.)</para>
     <para>When using CSS we'll generate a &lt;code>&lt;pre>&lt;/pre>&lt;/code> block with a language attribute that will be formated with Highlight.js (the chosen package will be a part of the project tool chain)</para>
@@ -631,9 +590,7 @@
     &lt;xs:attribute name="language" use="required"/>
   &lt;/xs:complexType>
 &lt;/xs:element> </code>
-
     <para>Another type of element that came up when working on the documentation were aside, blockquotes and quotes. `Blockquote` and `attribution` are for longer block level quotations (more than 4 lines of text) while `quote` is for shorter quotations usually inserted in a paragraph.</para>
-
     <code language="xml"
       >&lt;xs:element name="blockquote">
   &lt;xs:complexType mixed="true">
@@ -660,7 +617,6 @@
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
   &lt;/xs:complexType>
 &lt;/xs:element> </code>
-
     <para>Paragraphs (
       <emphasis>para</emphasis> in our documents) are the essential unit of content for our books. The paragraph is where most content will happen, text, styles and additional elements that we may add as we go along (inline code comes to mind).</para>
     <para>We include 3 different groups of properties in the paragraph declaration: Styles (
@@ -674,7 +630,6 @@
       <emphasis>genericPropertiesGroup</emphasis> (class and id).</para>
     <para>This model barely begins to scratch the surface of what we can do with our paragraph model. I decided to go for simplicity rather than completeness. This will definitely change in future versions of the schema.
     </para>
-
     <code language="xml"
       >&lt;!-- Paragraphs -->
 &lt;xs:element name="para">
@@ -836,7 +791,6 @@
     <para>There are definitely more elements to add like video, audio and others both with equivalent elements in HTML and compound elements based on your needs.
     </para>
   </section>
-
   <section type="chapter">
     <title>From XML to HTML</title>
     <para>One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then use tools like
@@ -1236,7 +1190,6 @@
       &lt;/xsl:attribute> &lt;/xsl:if> &lt;/xsl:element> &lt;/xsl:template>
     </code>
   </section>
-
   <section type="chapter">
     <title>From XML to PDF: Part 1: Special Transformation</title>
     <para> Rather than having to deal with
@@ -1294,11 +1247,8 @@
         content: element(heading);
       }
     } </code>
-
     <para>The only problem with the code above is that there is no native broser support. For our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. In the not so distant future we will be able to do this transformation in the browser and print the PDF directly. Until then it's a two step process: Modifying the HTML we get from the XML file and running the HTML through Prince to get the PDF.</para>
-
     <h2>Modifying the HTML results</h2>
-
     <para>We'll use this opportunity to create an xslt customization layer to make changes only to the templates where we need to.</para>
     <para>We create a customization layer by importing the original stylesheet and making any necessary changes in the new stylesheet. Imported stylesheets have a lower precedence order than the local version so the local version will win if there is conflict.</para>
     <para>Only the templates defined in this stilesheet are overriden. If the template we use is not in this customization layer, the transformation engine will use the template in the base style sheet (book.xsl in this case)
@@ -1319,7 +1269,6 @@
   &lt;!-- Define the output for this and all document children -->
   &lt;xsl:output name="xhtml-out" method="xhtml" indent="yes"
   encoding="UTF-8" omit-xml-declaration="yes" /> </code>
-
     <para>The first difference in the customization layer is that it imports another style sheet (
       <emphasis>book.xsl</emphasis>). We do this to avoid having to copy the entire style sheet and, if we make changes, having to make the changes in multiple places.</para>
     <para>We will then override the templates we need in order to get a single file to pass on to Prince or any other CSS Print Processor.</para>
@@ -1373,16 +1322,11 @@ version="2.0">
     &lt;/body>
   &lt;/html>
 &lt;/xsl:template> </code>
-
     <para>Most of the root template deals with undoing some of the changes we made to create multiple pages.</para>
-
     <para>We've changed the CSS we use to process the content. We use paged-media.css to create the content for our media files, mostly setting up the different pages based on the data-type attribute.</para>
-
     <para>We use pm-styles.css to control the style of our documents specifically for our printed page application. We have to take into account the fact that Highlight.js is not working properly with Prince's Javascript implementation and that there are places where we don't want our paragraphs to be indented at all.</para>
-
     <para>We moved elements from the original section templates. We test whether we need to add the Highlight.JS since we dropped the multipage output.
     </para>
-
     <h2>Overriding the section template</h2>
     <para>Sections are the element type that got the biggest makeover. What we've done:</para>
     <ulist>
@@ -1427,11 +1371,8 @@ version="2.0">
     &lt;xsl:apply-templates/>
     &lt;/section>
   &lt;/xsl:template> </code>
-
     <h2>Metadata</h2>
     <para>The Metadata section has been reworked into a new section with the title data-type. We then apply all children templates.</para>
-
-
     <code language="xml"
       > &lt;!-- Metadata -->
       &lt;xsl:template match="metadata">
@@ -1440,7 +1381,6 @@ version="2.0">
           &lt;xsl:apply-templates/>
         &lt;/xsl:element>
       &lt;/xsl:template> </code>
-
     <h2>Titles and tables of content</h2>
     <para>The table of content is commented for now as I work on improving the content and placement of the table contents in the final document.</para>
     <para>The title element has only one addition. We add an ID attribute created using XPath's generate-id function on the parent section element.
@@ -1470,7 +1410,6 @@ version="2.0">
     <para>With all this in place we can now look to the CSS Paged Media file.
     </para>
   </section>
-
   <section type="chapter">
     <title>HTML To PDF, Part 2: CSS Paged Media</title>
     <para>With the HTML ready, we can no look at the CSS stylesheet to process it into PDF.</para>
@@ -1515,7 +1454,6 @@ version="2.0">
 body[data-type='book'] > div[data-type='part']:first-of-type,
 body[data-type='book'] > section[data-type='chapter']:first-of-type { counter-reset: page; }
 body[data-type='book'] > section[data-type='chapter']+div[data-type='part'] { counter-reset: none }</code>
-
     <h2>Matching content sections to page types</h2>
     <para>The next section of the style sheet is to match the content on our book to pages in our style sheet. </para>
     <para>The book is broken into sections with data-type attributes to indicate the type of content; we match the section[data-type] element to a page type along with some basic style definitions.</para>
@@ -1664,7 +1602,6 @@ section[data-type='colophon'] { page: colophon }
 
 }
 </code>
-
     <para>Now we start working on our chapter pages. The first thing we do is to place our running header content in the bottom middle of the page, regardless of whether it's left or right. </para>
     <code language="css"
       > @page chapter {
@@ -1675,7 +1612,6 @@ section[data-type='colophon'] { page: colophon }
   }
 }</code>
     <para>We next setup a blank page for our chapters and tell the reader that the page was intentionally left blank to prevent confusion</para>
-
     <code language="css"
       >@page chapter:blank { /* Need this to clean up page numbers in titlepage in Prince*/
   @top-center { content: "This page is intentionally left blank" }
@@ -1683,9 +1619,7 @@ section[data-type='colophon'] { page: colophon }
   @bottom-right-corner {content:normal;}
 }
     </code>
-
     <para>Then we number the pages the same way that we did for our front matter except that we use narabic numerals instead of Roman. </para>
-
     <code language="css"
       >@page chapter:right  {
   @bottom-right-corner { content: counter(page) }
@@ -1736,18 +1670,14 @@ section[data-type='colophon'] { page: colophon }
   @bottom-left-corner { content: counter(page) }
   @bottom-right-corner { content: normal }
 }</code>
-
     <h2>Running footer</h2>
-
     <para>We now style the running footer. </para>
-
     <code language="css"
       > p.rh {
   position: running(heading);
   text-align: center;
   font-style: italic;
 } </code>
-
     <h2>Footnotes and cross references</h2>
     <para>Footnotes are tricky, they consist of two parts, the footnote-call and the footnote content itself. I'm still trying to figure out what the correct markup should be for marking up footnotes.</para>
     <para>We've also defined a special class of links that appends a string and the the destination's page number.</para>
@@ -1777,7 +1707,6 @@ a.xref[href]::after {
     content: ' [See page ' target-counter(attr(href), page) ']'
 }
 </code>
-
     <h2>PDF Bookmarks</h2>
     <para>PDF bookmarks allow you to navigate your content form the left side bookmark menu as show in the image below</para>
     <figure>
@@ -1846,7 +1775,6 @@ section[data-type='chapter'] h6 {
     <para>Because we added the stylesheet link directly to the HTML document we can skip declaring it in the conversion itself. This is always a cause of errors and frustratoins for me so I thought I'd save everyone else the hassle.
     </para>
   </section>
-
   <section type="chapter">
     <title>CSS Styles for Paged Media</title>
     <para>This is the generated CSS from the SCSS style sheets (see the scss/ directory for the source material.) I've chosen to document the resulting stylesheet here and document the SCSS source in another document to make life simpler for people who don't want to deal with SASS or who want to see what the style sheets look like.</para>
@@ -1878,13 +1806,10 @@ section[data-type='chapter'] h6 {
       <link
         href="http://bit.ly/1ul3XBx" label="font subsetting"
        />) but we may in case we need to.</para>
-
     <code language="css"
       >@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
       @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
       @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400); </code>
-
-
     <h2>Defaults</h2>
     <code language="css"
       >html {
@@ -1906,8 +1831,6 @@ body {
   padding-right: 10em;
 }
 </code>
-
-
     <h2>Blockquotes, Pullquotes and Marginalia</h2>
     <code language="css"
       >aside .lowlight {
@@ -2023,9 +1946,7 @@ blockquote p {
   font-size: 18px;
   font-weight: 400;
 }</code>
-
     <h2>Paragraphs</h2>
-
     <code language="css"
       >p {
   font-size: 1em;
@@ -2048,7 +1969,6 @@ p + p {
   margin-bottom: -.1em;
   padding-right: .1em;
 }</code>
-
     <h2>Lists</h2>
     <code language="css"
       > ul li {
@@ -2058,8 +1978,6 @@ p + p {
 ol li {
   list-style: decimal;
 } </code>
-
-
     <h2>Figures and captions</h2>
     <code language="css"
       >figure {
@@ -2075,7 +1993,6 @@ figure figcaption {
 figure figcaption::before {
   content: "Figure " counter(figure_count) ": ";
 }</code>
-
     <h2>Headings</h2>
     <code language="css"
       >h1,
@@ -2105,7 +2022,6 @@ h3 {
 h4 {
   font-size: 1.333em;
 }</code>
-
     <h2>Different parts of the book</h2>
     <code language="css"
       >section[data-type='titlepage'] h1,
@@ -2127,7 +2043,6 @@ section[data-type='dedication'] p {
   text-indent: 0 !important;
 }
 </code>
-
     <h2>Preformatted code blocks</h2>
     <code language="css"
       >pre {
@@ -2143,7 +2058,6 @@ pre code {
   page-break-inside: avoid;
 }
 </code>
-
     <h2>Columns and miscelaneous classes</h2>
     <code language="css"
       >.justified {
@@ -2186,62 +2100,39 @@ blockquote {
 }
     </code>
   </section>
-
   <section type="chapter">
     <title>Task Automation with Grunt</title>
-
     <para>Because we use XML we can't just dump our code in the browser or the PDF viewer we need to prepare our content for conversion to PDF before we can view it. There are also front-end web development best practices to follow.</para>
-
     <para>This chapter will discuss tools to accomplish both tasks from one build file.</para>
-
     <h2>What software we need</h2>
     <para>For this to work you need the following software installed:</para>
     <ulist>
       <item>Java (version 1.7 or later)</item>
       <item>Node.js (0.10.35 or later)</item>
     </ulist>
-
     <para>Once you have java installed, you can install the following Java package</para>
-
     <ulist>
       <item>Saxon 9.0.6.4 for Java</item>
     </ulist>
-
     <para>A note about Saxon: OxygenXML comes with a version of Saxon Enterprise Edition. We'll use a different version to make it easier to use outside the editor.</para>
-
     <para>Node packages are handled through NPM, the Node Package Manager. On the Node side we need at least the `grunt-cli` package installed globally. TO do so we use this command:</para>
-
     <code language="bash"> $ npm install -g grunt-cli </code>
-
     <para>The -g flag will install this globally, as opposed to installing it in the project directory.</para>
-
     <para>Now that we have the required sotfware installed we can move ahead and create our configuration files.</para>
-
     <h2>Optional: Ruby, SCSS-Lint and SASS</h2>
-
     <para>The only external dependencies you need to worry about are Ruby, SCSS-Lint and SASS. Ruby comes installe in most (if not all) Macintosh and Linux systems; an <link
         href="http://rubyinstaller.org/) is also available"
         label="installer for Windows" />.</para>
-
     <para>SASS (syntactically awesome style sheets) are a superset of CSS that brings to the table enhancements to CSS that make life easier for designers and the people who have to create the stylesheets. I've taken advantage of these features to simplify my stylesheets and to save myself from repetitive and tedious tasks.</para>
-
     <para>SASS, the main tool, is written in Ruby and is available as a Ruby Gem.</para>
-
     <para>To install SASS, open a terminal/command window and type:</para>
-
     <code language="bash"> $ gem install sass </code>
-
     <para>Note that on Mac and Linux you may need to run the command as a superuser. If you get an error, try the following command:</para>
-
     <code language="bash"> $ sudo gem install sass </code>
-
     <para>and enter your password when prompted.</para>
-
     <para>SCSS-Lint is a linter for the SCSS flavor of SASS. As with other linters it will detect errors and potential erors in your SCSS style sheets. As with SASS, SCSSLint is a Ruby Gem that can be installed with the following command:</para>
     <code language="bash"> $ sudo gem install scss-lint </code>
-
     <para>The same caveat about errors and installing as an administrator apply.</para>
-
     <blockquote>
       <para>Ruby, SCSS-Lint and SASS are only necessary if you plan to change the SCSS/SASS files. If you don't you can skip the Ruby install and work directly with the CSS files</para>
       <para>If you want to peek at the SASS source look at the files under the scss directory.</para>
@@ -2286,7 +2177,6 @@ blockquote {
  generate-pdf-scss  Alias for "scsslint", "sass:dev", "shell:single",
                     "shell:prince" tasks.
       generate-all  Alias for "shell" task.</code>
-
     <h2>Setup</h2>
     <para>The first thing we do is declare two variables (module and require) as global for JSLint and JSHint. Otherwise we'll get errors and it's not essential to declare them before they are used.</para>
     <para>We then wrap the Gruntfile with a self executing function as a deffensive coding strategy.</para>
@@ -2329,7 +2219,6 @@ blockquote {
   shell:prince 2.9s ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 36%
   Total 8.1s </code>
     <para>Load-grunt-tasks automates the loading of packages located in the `package.json` configuration file. It's specially good for forgetful people like me whose main mistake when building Grunt-based tool chains is forgetting to load the plugins to use :-).</para>
-
     <h2>Javascript</h2>
     <code language="javascript"
       >    grunt.initConfig({
@@ -2360,9 +2249,7 @@ blockquote {
           }
         }
       },</code>
-
     <para>JSHint will lint the Gruntfile itself and all files under the js/ directory for errors and potential errors. </para>
-
     <code language="bash"
       >$ grunt jshint
 Running "jshint:files" (jshint) task
@@ -2375,7 +2262,6 @@ Gruntfile.js
 Warning: Task "jshint:files" failed. Use --force to continue.
 Aborted due to warnings. </code>
     <para>Uglify allow us to concatenate our Javascript files and, if we choose to, further reduce the file size by mangling the code (See this [page](http://lisperator.net/uglifyjs/mangle) for an explanation of what mangle is and does). I've chosen not to mangle the code to make it easier to read. May add it as an option for production deployments.</para>
-
     <h2>SASS and CSS</h2>
     <para>As mentioned elsewhere I chose to use the SCSS flavor of SASS because it allows me to do some awesome things with CSS that I wouldn't be able to do with CSS alone. </para>
     <para>The first task with SASS is convert it to CSS. For this we have two separate tasks. One for development (dev task below) where we pick all the files from the scss directory (the entire files section is equivalent to writing
@@ -2512,7 +2398,6 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
     <para>This will also become and issue when you decide to include third part libraries in projects implemented on top of our workflow. By running Uncss on all our HTML files except the file we'll pass to our PDF generator (docs.html) we can be assured that we'll get the smallest css possible.
     </para>
     <para>We skip out PDF source html file because I'm not 100% certain that Uncss can work with Paged Media CSS extensions. Better safe than sorry. </para>
-
     <h2>Optional tasks</h2>
     <para>I've also created a set of optional tasks that are commented in the Grunt file but have been uncommented here for readability. </para>
     <para>The first optional task is a Coffeescript compiler.
@@ -2559,9 +2444,7 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         src: ['**/*']
       },
     </code>
-
     <para>There are times when we are not working with Github or pages. In this case we need to FTP or SFTP (encrypted version of FTP) to push files to remote servers. We use an external json file to store our account information. Ideally we'd encrypt the information but until then using the external file is the first option. </para>
-
     <code language="javascript"
       >       //SFTP TASK
       //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
@@ -2579,7 +2462,6 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
           }
         }
       },</code>
-
     <h2>File Management</h2>
     <para>We've taken a few file management tasks into Grunt to make our lifes easier. The functions are for:</para>
     <ulist>
@@ -2616,7 +2498,6 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
       clean: {
         production: ['build/']
       },</code>
-
     <h2>Watch task</h2>
     <para>Rather than type a command over and over again we can set up watchers so that, any time a file of the indicated type changes, we perform specific tasks. </para>
     <para>As currentlly configured we track Javascript and SASS files.</para>
@@ -2640,7 +2521,6 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
           tasks: ['sass']
         }
       }, </code>
-
     <h2>Compile and Execute</h2>
     <para>Rather than using Ant, I've settled on Grunt's shell task to run the compilation steps to create HTML and PDF. This reduces teh number of dependecies for our project and makes it easier to consolidate all the work.
     </para>
@@ -2676,7 +2556,6 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
 
 
     }); // closes initConfig</code>
-
     <h2>Custom Tasks</h2>
     <para>The custom task uses one or more of the tasks defined above to accomplish a sequence of tasks.</para>
     <para>Look at specific tasks defined above for specific definitions.</para>
@@ -2745,7 +2624,6 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
   }; // closes module.exports
 }()); // closes the use strict function</code>
   </section>
-
   <section type="chapter">
     <title>Things to Do and Further Research</title>
     <para>These are the things I want to look at after finishing mvp.</para>

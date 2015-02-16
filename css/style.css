@@ -13,9 +13,9 @@ body {
   background-color: #fff;
   color: #554c4d;
   color: #554c4d;
-  font-family: 'Roboto Thin', Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Roboto', Georgia, 'Times New Roman', Times, serif;
   font-size: 1em;
-  font-weight: 100;
+  font-weight: 200;
   line-height: 1.45;
   padding-left: 10em;
   padding-right: 10em;
@@ -129,25 +129,35 @@ blockquote p {
 .margin-notes,
 .content-left {
   clear: both;
+  display: block;
   float: left;
   font-size: .75em;
   margin: 1em;
   width: 40%;
+}
+.margin-notes h3,
+.content-left h3 {
+  text-align: center;
 }
 
 .margin-notes-right,
 .content-right {
   clear: both;
+  display: block;
   float: right;
   font-size: .75em;
   margin: 1em;
   width: 40%;
 }
+.margin-notes-right h3,
+.content-right h3 {
+  text-align: center;
+}
 
 .margin-notes-right > p:last-of-type,
 .content-right > p:last-of-type {
   clear: both;
-  float: left;
+  float: right;
 }
 
 .margin-notes-left > p:last-of-type,
