@@ -10,3 +10,4 @@ ideas/
 scss-lint.log
 jscs-report.txt
 xslt/*.html
+config.codekit
