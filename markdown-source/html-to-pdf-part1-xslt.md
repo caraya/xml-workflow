@@ -78,11 +78,6 @@ The style sheet is broken by templates and explained below.
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="xs"
   version="2.0">
-  <!--
-    XSLT Paged Media Customization Layer
-
-    Makes the necessary changes to the content to work with the Paged Media CSS stylesheet
-  -->
   <!-- First import the base stylesheet -->
   <xsl:import href="book.xsl"/>
 
@@ -213,16 +208,40 @@ The Metadata section has been reworked into a new section with the title data-ty
   </xsl:template>
 ```
 
-## Titles and tables of content
+## Table of contents
+
+The table of content creates anchor links (a href='#id') to the title h1 tags we create in the step below. We can do it this way because XSLT guarantees that all calls to generate-id for a given element (in this case the section/title elements) will return the same value for a given execution.
+
+```javascript
+<!-- Create Table of Contents ... work in progress -->
+<xsl:template match="toc">
+  <section data-type="toc">
+    <h1>Table of Contents</h1>
+    <nav>
+      <ol>
+        <xsl:for-each select="//section">
+          <xsl:element name="li">
+            <xsl:element name="a">
+              <xsl:attribute name="href">
+                <xsl:value-of select="concat('#', generate-id(.))"/>
+              </xsl:attribute>
+              <xsl:value-of select="title"/>
+            </xsl:element>
+          </xsl:element>
+        </xsl:for-each>
+      </ol>
+    </nav>
+  </section>
+</xsl:template>
+```
+
+## Titles
 
 The table of content is commented for now as I work on improving the content and placement of the table contents in the final document. 
 
 The title element has only one addition. We add an ID attribute created using XPath's generate-id function on the parent section element. 
 
 ```javascript
-  <!-- Create Table of Contents ... work in progress -->
-  <xsl:template match="/" mode="toc"/>
-
   <xsl:template match="title">
     <xsl:element name="h1">
       <xsl:attribute name="id">
