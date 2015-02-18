@@ -309,7 +309,7 @@ a.xref[href]::after {
 
 PDF bookmarks allow you to navigate your content form the left side bookmark menu as show in the image below
 
-<img src="images/pdf-bookmarks.png"/>
+![PDF Bookmarks](http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/pdf-bookmarks.png)
 
 For each heading level we do the following things for both Antenna House and PrinceXML:
 

@@ -198,7 +198,7 @@ Sections are the element type that got the biggest makeover. What we've done:
 
 The Metadata section has been reworked into a new section with the title data-type. We set up the container section and assign title to the data-type attribute. We then apply all children templates.
 
-```javascript
+```xml
   <!-- Metadata -->
   <xsl:template match="metadata">
     <xsl:element name="section">
@@ -212,7 +212,7 @@ The Metadata section has been reworked into a new section with the title data-ty
 
 The table of content creates anchor links (a href='#id') to the title h1 tags we create in the step below. We can do it this way because XSLT guarantees that all calls to generate-id for a given element (in this case the section/title elements) will return the same value for a given execution.
 
-```javascript
+```xml
 <!-- Create Table of Contents ... work in progress -->
 <xsl:template match="toc">
   <section data-type="toc">
@@ -241,7 +241,7 @@ The table of content is commented for now as I work on improving the content and
 
 The title element has only one addition. We add an ID attribute created using XPath's generate-id function on the parent section element. 
 
-```javascript
+```xml
   <xsl:template match="title">
     <xsl:element name="h1">
       <xsl:attribute name="id">
