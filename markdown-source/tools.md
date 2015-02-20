@@ -140,7 +140,7 @@ The function wrap prevents this by making the use strict declaration local to th
 
 ## Setup
 
-[code language='javascript']
+```javascript
 /*global module */
 /*global require */
 (function () {
@@ -155,7 +155,7 @@ The function wrap prevents this by making the use strict declaration local to th
     // load all our packages configured there.
     // Yay for laziness
     require('load-grunt-tasks')(grunt);
-[/code]
+```
 
 The first two elements that work with our content are `time-grunt` and `load-grunt-tasks`.
 
@@ -176,7 +176,7 @@ Load-grunt-tasks automates the loading of packages located in the `package.json`
 
 ## Javascript
 
-[code language='javascript']
+```javascript
     grunt.initConfig({
 
       // JAVASCRIPT TASKS
@@ -205,7 +205,7 @@ Load-grunt-tasks automates the loading of packages located in the `package.json`
           }
         }
       },
-[/code]
+```
 
 
 JSHint will lint the Gruntfile itself and all files under the js/ directory for errors and potential errors. 
@@ -233,7 +233,7 @@ As mentioned elsewhere I chose to use the SCSS flavor of SASS because it allows 
 
 The first task with SASS is convert it to CSS. For this we have two separate tasks. One for development (dev task below) where we pick all the files from the scss directory (the entire files section is equivalent to writing `scss/*.scss`) and converting them to files with the same name in the css directory. 
 
-[code language='javascript']
+```javascript
       // SASS RELATED TASKS
       // Converts all the files under scss/ ending with .scss
       // into the equivalent css file on the css/ directory
@@ -263,7 +263,7 @@ The first task with SASS is convert it to CSS. For this we have two separate tas
           }]
         }
       },
-[/code]
+```
 
 There are two similar versions of the task. The development version will produce the format below, which is easier to read and easier to troubleshoot (css-lint, discussed below, tells you what line the error or warning happened in.)
 
@@ -314,7 +314,7 @@ The `scsslint` task is a wrapper for the scss-lint Ruby Gem that must be install
 
 We've chosen to force it to run when it finds errors. We want the linting tasks to be used as the developer's discretion, there may  be times when vendor prefixes have to be used or where colors have to be defined multiple times to acommodate older browsers. 
 
-[code language='javascript']
+```javascript
       // I've chosen not to fail on errors or warnings.
       scsslint: {
         allFiles: [
@@ -329,7 +329,7 @@ We've chosen to force it to run when it finds errors. We want the linting tasks 
           colorizeOutput: true
         }
       },
-[/code]
+```
 
 Grunt's [autoprefixer](https://github.com/nDmitry/grunt-autoprefixer) task uses the [CanIUse database](http://caniuse.com/) to determine if properties need a vendor prefix and add the prefix if they do.
 
@@ -351,7 +351,7 @@ This becomes important for older browsers or when vendors drop their prefix for 
 
 The last css task is the most complicated one. [Uncss](https://github.com/addyosmani/grunt-uncss) takes out whatever CSS rules are not used in our target HTML files. 
 
-[code language='javascript']
+```javascript
       // CSS TASKS TO RUN AFTER CONVERSION
       // Cleans the CSS based on what's used in the specified files
       // See https://github.com/addyosmani/grunt-uncss for more
@@ -363,7 +363,7 @@ The last css task is the most complicated one. [Uncss](https://github.com/addyos
           }
         }
       },
-[/code]
+```
 
 This is not a big deal for our workflow as most, if not all, the CSS is designed for the tags and classes we've implemented but it's impossible for the SASS/CSS libraries to grow over time and become bloated.
 
@@ -380,7 +380,7 @@ The first optional task is a Coffeescript compiler. [Coffeescript](http://coffee
 
 I some times use Coffeescript to create scripts and other interactive content so it's important to have the compilation option available. 
 
-[code language='javascript']
+```javascript
       // OPTIONAL TASKS
       // Tasks below have been set up but are currently not used.
       // If you want them, uncomment the corresponding block below
@@ -398,7 +398,7 @@ I some times use Coffeescript to create scripts and other interactive content so
           dest: 'build/',
           ext: '.js'
       },
-[/code]
+```
 
 The following two tasks are for managing file transfers and uploads to different targets. 
 
@@ -406,7 +406,7 @@ One of the things I love from working on Github is that your project automatical
 
 For the puposes of our workflow validation we'll make a package of our content in a build directory and push it to the gh-pages branch of our repository. We'll look at building our app directory when we look at copying files.
 
-[code language='javascript']
+```javascript
       // GH-PAGES TASK
       // Push the specified content into the repository's gh-pages branch
       'gh-pages': {
@@ -420,11 +420,11 @@ For the puposes of our workflow validation we'll make a package of our content i
         // We have to specifically remove node_modules
         src: ['**/*']
       },
-[/code]
+```
 
 There are times when we are not working with Github or pages. In this case we need to FTP or SFTP (encrypted version of FTP) to push files to remote servers. We use an external json file to store our account information. Ideally we'd encrypt the information but until then using the external file is the first option. 
 
-[code language='javascript']
+```javascript
       //SFTP TASK
       //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
       //to store files in a remote SFTP server. Alternative to gh-pages
@@ -443,7 +443,7 @@ There are times when we are not working with Github or pages. In this case we ne
           }
         }
       },
-[/code]
+```
 
 ## File Management 
 
@@ -456,7 +456,7 @@ We've taken a few file management tasks into Grunt to make our lifes easier. The
 We will use the mkdir and copy tasks to create a build directory and copy all css, js and html files to the build directory. We will then use the gh-pages task (described earlier) to push the content to the repository's gh-pages branches
 
 
-[code language='javascript']
+```javascript
       // FILE MANAGEMENT
       // Can't seem to make the copy task create the directory
       // if it doesn't exist so we go to another task to create
@@ -484,7 +484,7 @@ We will use the mkdir and copy tasks to create a build directory and copy all cs
       clean: {
         production: ['build/']
       },
-[/code]
+```
 
 ## Watch task
 
@@ -496,7 +496,7 @@ For Javascript files anytime that the Gruntfile or any file under the Javascript
 
 For our SASS/SCSS files, any files under the scss directory, we run the sass:dev task to translate the files to CSS. 
 
-[code language='javascript']
+```javascript
       // WATCH TASK
       // Watch for changes on the js and scss files and perform
       // the specified task
@@ -514,7 +514,7 @@ For our SASS/SCSS files, any files under the scss directory, we run the sass:dev
           tasks: ['sass:dev']
         }
       },
-[/code]
+```
 
 ## Compile and Execute
 
@@ -528,7 +528,7 @@ We have three different commands:
 
 We make sure that we don't continue if there is an error. Want to make sure that we troubleshoot before we get all the resulting files.
 
-[code language='javascript']
+```javascript
       // COMPILE AND EXECUTE TASKS
       shell: {
         options: {
@@ -548,7 +548,7 @@ We make sure that we don't continue if there is an error. Want to make sure that
 
 
     }); // closes initConfig
-[/code]
+```
 
 ## Custom Tasks
 
@@ -556,7 +556,7 @@ The custom task uses one or more of the tasks defined above to accomplish a sequ
 
 Look at specific tasks defined above for specific definitions.
 
-[code language='javascript']
+```javascript
     // CUSTOM TASKS
     // Usually a combination of one or more tasks defined above
     grunt.task.registerTask(
@@ -620,4 +620,4 @@ Look at specific tasks defined above for specific definitions.
 
   }; // closes module.exports
 }()); // closes the use strict function
-[/code]
+```
