@@ -245,7 +245,7 @@ Rather than use pseudo elements (`:first-line` and `:first-letter`) we use class
 
 ## Lists
 
-The only thing we do for list and list items is to indicate what type of list we'll
+The only thing we do for list and list items is to indicate what type of list we'll use as our default square for unordered list and Arabic decimals for our numbered lists.
 
 ```css
 ul li {
@@ -258,6 +258,10 @@ ol li {
 ```
 
 ## Figures and captions
+
+The only interesting aspect of the CSS we use for figures is the counter. The `figure figcaption::before` selector creates automatic text that is inserted before each caption. This text is the string "Figure", the value of our figure counter and the string ": ".
+
+This makes it easier to insert figures without having to change the captions for all figures after the one we inserted. The figure counter is reset for every chapter. I'm researching ways to get the figure numbering across chapters.
 
 ```css
 figure {
@@ -278,6 +282,10 @@ figure figcaption::before {
 
 ## Headings
 
+Headings are configured in two parts. The first one sets common attributes to all headings: `font-family`, `font-weight`, `hyphes`, `line-height`, margins and `text-transform`.
+
+It's this attribute that needs a little more discussion. Using text-transform we make all headings uppercase without having to write them that way
+
 ```css
 h1,
 h2,
@@ -292,7 +300,11 @@ h6 {
   margin: 1.414em 0 .5em;
   text-transform: uppercase;
 }
+```
 
+In the second part of our heading styles we work on rules that only apply to one heading at a time. Things such as size and specific attributes (like removing the top margin on the h1 elements) need to be handled need to be handled individually
+
+```css
 h1 {
   font-size: 3.157em;
   margin-top: 0;
@@ -308,7 +320,6 @@ h3 {
 
 h4 {
   font-size: 1.333em;
-  text-transform: uppercase;
 }
 
 h4,
@@ -320,6 +331,12 @@ h6 {
 
 ## Different parts of the book
 
+There are certains aspects of the book that need different formatting from our defaults.
+
+We use the element[attribute=name] syntax to identify which section we want to work with and then tell it the element within the section that we want to change.
+
+For example, in the bibliography (a section with the `data-type='bibliography` attribute) we want all paragraphs to be left aligned and all paragraphs to have no margin (basicallwe we are undoing the indentation for paragraphs with sibling paragraphs within the bibliography section)
+
 ```css
 section[data-type='bibliography'] p {
   text-align: left;
@@ -327,7 +344,11 @@ section[data-type='bibliography'] p {
 section[data-type='bibliography'] p + p {
   text-indent: 0 !important;
 }
+```
 
+The same logic applies to the other sections that we're customizing. We tell it what type of section we are working with and what element inside that sectin we want to change.
+
+```css
 section[data-type='titlepage'] h1,
 section[data-type='titlepage'] h2,
 section[data-type='titlepage'] p {
@@ -348,9 +369,12 @@ section[data-type='dedication'] p + p {
 
 ## Preformatted code blocks
 
+A lot of what I write is technical and requires code examples. We take a two pronged approach to the fenced code blocks.
+
+We format some aspects our content (wrap, font-family, size, line height and wether to do page breaks inside the content) locally and hand off syntax highlighting to [highlight.js](https://highlightjs.org/) with a style to mark the content differently.
+
 ```css
 pre {
-  background-color: #efeff2;
   overflow-wrap: break-word;
   white-space: pre-line !important;
   word-wrap: break-word;
@@ -363,7 +387,12 @@ pre code {
 }
 ```
 
-## Columns and miscelaneous classes
+## Miscelaneous classes
+
+Rather than for people to justify text we provide a class to make it so. I normally justify at the div or section level but it's not always necessary or desirable.
+
+
+Code will be used in a future iteration of the code to highlight inline snippets (think of it as an inline version of the &lt;pre>&lt;code> tag combination)
 
 ```css
 .justified {
@@ -374,7 +403,13 @@ pre code {
   background-color: #e6e6e7;
   opacity: .75;
 }
+```
 
+## Columns
+
+The last portion of the stylesheet deals with columns. I've set up 2 set of rules for 2 and 3 column with similar attributes. In the SCSS source these are created with a column mixin.
+
+```css
 .columns2 {
   column-count: 2;
   column-gap: 3em;
