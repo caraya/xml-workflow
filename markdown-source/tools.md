@@ -1,6 +1,15 @@
+---
+title: XML Workflows: Tools and dependecies
+date: 2015-02-10
+category: Technology
+status: draft
+---
+
 # Tools
 
-Because we use XML we can't just dump our code in the browser or the PDF viewer we need to prepare our content for conversion to PDF before we can view it.  There are also front-end web development best practices to follow.
+Because we use XML we can't just dump our code in the browser or the PDF viewer and expect it to appear just like HTML content.
+
+We need to prepare our content for conversion to PDF before we can view it.  There are also front-end web development best practices to follow.
 
 This chapter will discuss tools to accomplish both tasks from one  build file.
 
@@ -149,16 +158,16 @@ The function wrap prevents this by making the use strict declaration local to th
 ```
 The first two elements that work with our content are `time-grunt` and `load-grunt-tasks`.
 
-Time-grunt provides a breakdown of time and percentage of total execution time for each task performed in this particular Grunt run. THe example below illustrates the result when running multiple tasks.
+Time-grunt provides a breakdown of time and percentage of total execution time for each task performed in this particular Grunt run. The example below illustrates the result when running multiple tasks (bars reduced in length for formatting.)
 
 ```bash
 Execution Time (2015-02-01 03:43:57 UTC)
 loading tasks      983ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 12%
 scsslint:allFiles   1.1s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 13%
 sass:dev           441ms  ▇▇▇▇▇▇▇▇▇ 5%
-shell:html          1.5s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 18%
+shell:html          1.5s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 18%
 shell:single        1.2s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 14%
-shell:prince        2.9s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 36%
+shell:prince        2.9s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 36%
 Total 8.1s
 ```
 
@@ -398,7 +407,7 @@ For the puposes of our workflow validation we'll make a package of our content i
 
 ```javascript
       // GH-PAGES TASK
-      // Push the specified content into the repositories gh-pages branch
+      // Push the specified content into the repository's gh-pages branch
       'gh-pages': {
         options: {
           message: 'Content committed from Grunt gh-pages',

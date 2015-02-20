@@ -39,7 +39,7 @@ At this point we are not dealing with [font subsetting](http://bit.ly/1ul3XBx) b
 
 ## Defaults
 
-Now that we've loaded the fonts
+Now that we've loaded the fonts we can create our defaults for the document.  The `html` element defines vertical overflow and text size adjustment for Safari and Windows browsers.
 
 ```css
 html {
@@ -47,11 +47,23 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
+```
 
+The `body` selector will handle most of the base formatting for the the document.
+
+The selector sets up the following aspects of the page:
+
+* background and font color
+* font family, size and weight
+* line height
+* left and right padding (overrides the base document's padding)
+* orphans and widows
+
+```css
 body {
   background-color: #fff;
   color: #554c4d;
-  font-family: 'Roboto Thin', 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 1em;
   font-weight: 100;
   line-height: 1.1;
@@ -121,7 +133,7 @@ The `magin-notes*` and `content*` move the content to the corresponding side of 
 ```
 
 
-The opening class
+The opening class style creates a large distinguishing block container for opening text. This is useful when you have a summary paragraph at the beginning of your document or some other opening piece of text to go at the top of your document
 
 ```css
 .opening {
@@ -134,6 +146,8 @@ The opening class
   text-align: center;
 }
 ```
+
+Blockquotes present the enclosed text in larger italic font with a solid bar to the left of the content.  Because the font is larger I've added
 
 ```css
 blockquote {
@@ -150,48 +164,70 @@ blockquote {
 blockquote p {
   padding-left: .5em;
 }
+```
 
+The pullquote classes were modeled after an ESPN article and look something like this:
+
+![example pullquote](http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/example-pullquote.png)
+
+The original was hardcoded to pixels. Where possible I've changed the values to em to provide a more responsive
+
+```css
 .pullquote {
   border-bottom: 18px solid #000;
   border-top: 18px solid #000;
-  font-size: 36px;
+  font-size: 2.25em;
   font-weight: 700;
   letter-spacing: -.02em;
-  line-height: 38px;
-  margin-right: 100px;
-  padding: 20px 0;
+  line-height: 2.125em;
+  margin-right: 2.5em;
+  padding: 1.25em 0;
   position: relative;
   width: 200px;
 }
 .pullquote p {
   color: #00298a;
   font-weight: 700;
-  position: relative;
   text-transform: uppercase;
   z-index: 1;
 }
 .pullquote p:last-child {
-  line-height: 20px;
+  line-height: 1.25em;
   padding-top: 2px;
 }
 .pullquote cite {
   color: #333;
-  font-size: 18px;
+  font-size: 1.125em;
   font-weight: 400;
 }
 ```
 
 ## Paragraphs
 
+The paragraph selector creates the default paragraph formatting with a size of 1em (equivalent to 16 pixels) and a line height of 1.3 em (20.8 pixels)
+
 ```css
 p {
   font-size: 1em;
   margin-bottom: 1.3em;
 }
+```
+
+To indent all paragraphs but the first we use the sibling selector we indent all paragraphs that are the next sibling of another paragraph element (that is: the next child of the same parent).
+
+The first paragraph doesn't have a paragraph sibling so the indent doesn't happen but all other paragraphs are indented
+
+
+
+```css
 p + p {
   text-indent: 2em;
 }
+```
 
+Rather than use pseudo elements (`:first-line` and `:first-letter`) we use classes to give authors the option to use these elements.
+
+```css
 .first-line {
   font-size: 1.1em;
   text-indent: 0;
@@ -208,6 +244,8 @@ p + p {
 ```
 
 ## Lists
+
+The only thing we do for list and list items is to indicate what type of list we'll
 
 ```css
 ul li {
@@ -291,9 +329,7 @@ section[data-type='bibliography'] p + p {
 }
 
 section[data-type='titlepage'] h1,
-section[data-type='titlepage'] h2 {
-  text-align: center;
-}
+section[data-type='titlepage'] h2,
 section[data-type='titlepage'] p {
   text-align: center;
 }

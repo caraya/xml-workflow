@@ -1,11 +1,10 @@
 ---
 title: XML workflows: Converting our content to HTML
-date: 2015-01-13
+date: 2015-02-11
 category: Technology
 status: draft
 ---
 # Converting our content to HTML
-
 One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then use tools like [PrinceXML](http://www.princexml.com) or [AntenaHouse](http://www.antennahouse.com) we'll convert the HTML/CSS files to PDF
 
 ## Why HTML
@@ -772,13 +771,13 @@ Both elements share the `item` element to indicates the items inside the list. A
 >***-  4.4.11 The figure element, Berjon et al. 2013***
 
 
-Figures, captions and the images inside present a few challenges. Because we allow authors to set height and width on both figure and the imageg inside we may find situations where the figure container is narrower than the image inside. 
+Figures, captions and the images inside present a few challenges. Because we allow authors to set height and width on both figure and the image inside we may find situations where the figure container is narrower than the image inside.
 
-To avoid this issue we test whether the figure width value is smaller than the width of the image inside. If it is, we use the width of the image as the width of the figure, ootherwise we use the width of the image inside. 
+To avoid this issue we test whether the figure width value is smaller than the width of the image inside. If it is, we use the width of the image as the width of the figure, otherwise we use the width of the image inside.
 
 We do the same thing for height in order to avoid squished images of captions that draw over the image because it's too small. If the height of the figure is smaller than the height of the image we use the height of the image, otherwise we use the height of the figure element.
 
-For both height and width we concatenate the attribute value with the string 'px' to make sure that it works in both straight CSS and with Prince andother CSS PDF generators
+For both height and width we concatenate the attribute value with the string 'px' to make sure that it works in both straight CSS and with Prince and other CSS PDF generators
 
 Alignments can be different, it is possible to have a right-aligned image to live inside a centered container.
 
