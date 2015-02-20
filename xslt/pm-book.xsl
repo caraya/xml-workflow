@@ -37,12 +37,14 @@
               Use highlight.js and docco style
         -->
         <link rel="stylesheet" href="css/styles/railscasts.css" />
+        <!-- We add object-key-polyfill to see if it fixes an issue with Prince.xml -->
+        <script src="js/object-key-polyfill.js"/>
         <!-- Load highlight.js -->
-        <script src="lib/highlight.pack.js"></script>
+        <script src="lib/highlight.pack.js"/>
         <script>
           hljs.initHighlightingOnLoad();
         </script>
-        <!-- <script src="js/script.js"></script> -->
+        <!-- <script src="js/script.js"/> -->
       </head>
       <body>
         <xsl:attribute name="data-type">book</xsl:attribute>
