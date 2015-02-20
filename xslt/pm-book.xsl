@@ -36,8 +36,8 @@
         <!--
               Use highlight.js and docco style
         -->
-        <link rel="stylesheet" href="css/styles/railscasts.css" />
-        <!-- We add object-key-polyfill to see if it fixes an issue with Prince.xml -->
+        <link rel="stylesheet" href="css/styles/codepen-embed.css" />
+        <!-- We add object-key-polyfill to fix an issue with PrinceXML -->
         <script src="js/object-key-polyfill.js"/>
         <!-- Load highlight.js -->
         <script src="lib/highlight.pack.js"/>
