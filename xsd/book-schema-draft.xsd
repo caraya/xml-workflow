@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 
@@ -217,7 +218,15 @@
             <xs:enumeration value="justify"/>
         </xs:restriction>
     </xs:simpleType>
-    
+
+    <xs:element name="language" type="xs:language">
+        <xs:annotation>
+            <xs:documentation>
+                book primary language or language for specific sections of the book
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
     <xs:attributeGroup name="genericPropertiesGroup">
         <xs:attribute name="id" type="xs:ID" use="optional">
             <xs:annotation>
@@ -239,11 +248,40 @@
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="first-name" type="xs:token"/>
-            <xs:element name="surname" type="xs:token"/>
+            <xs:element name="first-name" type="xs:string"/>
+            <xs:element name="surname" type="xs:string"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID" use="optional"/>
     </xs:complexType>
+
+    <xs:complexType name="organization">
+        <xs:annotation>
+            <xs:documentation>
+                Base organization structure to create corporate authors/editors and other places where an organization can take the place of a person
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name='name' type="xs:string"/>
+        </xs:all>
+    </xs:complexType>
+    
+    <xs:element name="address">
+        <xs:annotation>
+            <xs:documentation>
+                Complex type for address
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="recipient" type="xs:string"/>
+                <xs:element name="street" type="xs:string"/>
+                <xs:element name="city" type="xs:string"/>
+                <xs:element name="state" type="xs:string"/>
+                <xs:element name="postcode" type="xs:string"/>
+                <xs:element name="country" type="xs:token"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
     
     <xs:complexType name="author">
         <xs:annotation>
@@ -252,8 +290,7 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexContent>
-            <xs:extension base="person">
-            </xs:extension>
+            <xs:extension base="person"/>
         </xs:complexContent>
     </xs:complexType>
     
@@ -283,6 +320,20 @@
         </xs:complexContent>
     </xs:complexType>
 
+    <xs:element name="publisher">
+        <xs:annotation>
+            <xs:documentation>
+                Derived from organization
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:all>
+                <xs:element name="name" type="organization"/>
+                <xs:element ref="address"/>
+            </xs:all>
+            <xs:attributeGroup ref="genericPropertiesGroup"/>
+        </xs:complexType>
+    </xs:element>
     <!-- Wrappers around complext types --> 
     <xs:element name="authors">
         <xs:annotation>
@@ -322,7 +373,58 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    
+    <xs:element name="releaseinfo">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="para"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="copyright">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="para"/>
+            </xs:choice>
+        </xs:complexType>        
+    </xs:element>
+    
+    <xs:element name="legalnotice">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="para"/>
+            </xs:choice>
+        </xs:complexType>        
+    </xs:element>
+    
+    <xs:element name="pubdate" type="xs:date"/>
+    
+    <xs:element name="revision">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="para"/>
+            </xs:choice>
+        </xs:complexType>          
 
+    </xs:element>
+
+    <xs:element name="revhistory">
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="revision"/>
+            </xs:sequence>
+        </xs:complexType>        
+    </xs:element>
+
+    <xs:element name="abstract">
+        <xs:complexType mixed="true">
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="para"/>
+            </xs:choice>
+        </xs:complexType>          
+    </xs:element>
+    
     <!-- Links -->
     <xs:element name="link">
         <xs:annotation>
@@ -380,10 +482,8 @@
         </xs:annotation>
       <xs:complexType mixed="true">
         <xs:sequence>
-          <xs:annotation>
-            <xs:documentation>A title and at least one paragraph </xs:documentation>
-          </xs:annotation>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="language"/>
             <xs:element ref="anchor"/>
             <xs:element ref="code"/>
             <xs:element ref="para"/>
@@ -436,6 +536,7 @@
               would handle nested children
             </xs:documentation>
           </xs:annotation>
+          <xs:element ref="language"/>
           <xs:element ref="strong"/>
           <xs:element ref="emphasis"/>
           <xs:element ref="underline"/>
@@ -779,6 +880,7 @@
       </xs:annotation>
       <xs:complexType mixed="true">
         <xs:choice maxOccurs="unbounded">
+            <xs:element ref="language" minOccurs="0"/>
           <xs:element ref="anchor"/>
           <xs:element ref="attribution"/>
           <xs:element ref="para"/>
@@ -794,6 +896,9 @@
       </xs:documentation>
     </xs:annotation>
     <xs:complexType mixed="true">
+      <xs:all>
+          <xs:element ref="language"/>
+      </xs:all>
       <xs:attribute name="cite" type="xs:anyURI" use="optional"/>
       <xs:attributeGroup ref="genericPropertiesGroup"/>
     </xs:complexType>
@@ -856,6 +961,7 @@
               would handle nested children
             </xs:documentation>
           </xs:annotation>
+          <xs:element ref="language"/>          
           <xs:element ref="strong"/>
           <xs:element ref="emphasis"/>
           <xs:element ref="underline"/>
@@ -989,11 +1095,18 @@
                     <xs:documentation>Metadata choice using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier</xs:documentation>
                 </xs:annotation>
                 <xs:element name="isbn" type="ISBN-type10"/>
-                <xs:element name="edition" type="xs:nonNegativeInteger"/>
-                <xs:element name="title" type="token255"/>
+                <xs:element name="edition" type="xs:string"/>
                 <xs:element ref="authors"/>
                 <xs:element ref="editors"/>
                 <xs:element ref="otherRoles"/>
+                <xs:element ref="publisher"/>
+                <xs:element ref="releaseinfo"/>
+                <xs:element ref="copyright"/>
+                <xs:element ref="legalnotice"/>
+                <xs:element name="title" type="xs:string"/>
+                <xs:element name="subtitle" type="xs:string"/>
+                <xs:element ref="language"/>
+                <xs:element ref="revhistory" minOccurs="0"/>
                 <!-- 
                     We allow para here to make sure  we can write 
                     text as for the metadata

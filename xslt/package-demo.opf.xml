@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<package unique-identifier="pub-identifier" version="3.0" xml:lang="en" xmlns="http://www.idpf.org/2007/opf"
+  xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/">
+  <metadata>
+    <dc:identifier id="pub-identifier">urn:isbn:9781449328030</dc:identifier>
+    <dc:title id="pub-title">Accessible EPUB 3</dc:title>
+    <dc:language id="pub-language">en</dc:language>
+    <dc:date>2012-02-20</dc:date>
+    <meta property="dcterms:modified">2012-10-24T15:30:00Z</meta>
+    <dc:creator id="pub-creator12">Matt Garrish</dc:creator>
+    <dc:contributor>O’Reilly Production Services</dc:contributor>
+    <dc:contributor>David Futato</dc:contributor>
+    <dc:contributor>Robert Romano</dc:contributor>
+    <dc:contributor>Brian Sawyer</dc:contributor>
+    <dc:contributor>Dan Fauxsmith</dc:contributor>
+    <dc:contributor>Karen Montgomery</dc:contributor>
+    <dc:publisher>O’Reilly Media, Inc.</dc:publisher>
+    <dc:rights>Copyright © 2012 O’Reilly Media, Inc</dc:rights>
+  </metadata>
+  <manifest>
+    <item href="bk01-toc.xhtml" id="htmltoc" media-type="application/xhtml+xml" properties="nav" />
+    <item href="css/epub.css" id="epub-css" media-type="text/css" />
+    <item href="css/synth.css" id="epub-tss-css" media-type="text/css" />
+    <item href="cover.xhtml" id="cover" media-type="application/xhtml+xml" />
+    <item href="covers/9781449328030_lrg.jpg" id="cover-image" media-type="image/jpeg" properties="cover-image" />
+    <item href="index.xhtml" id="id-id2442754" media-type="application/xhtml+xml" />
+    <item href="pr01.xhtml" id="id-id2632344" media-type="application/xhtml+xml" />
+    <item href="pr01s02.xhtml" id="id-id2604743" media-type="application/xhtml+xml" />
+    <item href="pr01s03.xhtml" id="id-id2629773" media-type="application/xhtml+xml" />
+    <item href="pr01s04.xhtml" id="id-id2620395" media-type="application/xhtml+xml" />
+    <item href="pr01s05.xhtml" id="id-id2638681" media-type="application/xhtml+xml" />
+    <item href="ch01.xhtml" id="id-id2611884" media-type="application/xhtml+xml" />
+    <item href="ch01s02.xhtml" id="id-id2627310" media-type="application/xhtml+xml" />
+    <item href="ch02.xhtml" id="id-id2635343" media-type="application/xhtml+xml" />
+    <item href="ch02s02.xhtml" id="id-id2622654" media-type="application/xhtml+xml" />
+    <item href="ch02s03.xhtml" id="id-id2624850" media-type="application/xhtml+xml" />
+    <item href="ch03.xhtml" id="id-id2640702" media-type="application/xhtml+xml" />
+    <item href="ch03s02.xhtml" id="id-id2641220" media-type="application/xhtml+xml" />
+    <item href="ch03s03.xhtml" id="id-id2642385" media-type="application/xhtml+xml" />
+    <item href="ch03s04.xhtml" id="id-id2644001" media-type="application/xhtml+xml" />
+    <item href="ch03s05.xhtml" id="id-id2644238" media-type="application/xhtml+xml" />
+    <item href="ch03s06.xhtml" id="id-id2645594" media-type="application/xhtml+xml" />
+    <item href="ch04.xhtml" id="id-id2645682" media-type="application/xhtml+xml" />
+    <item href="co01.xhtml" id="id-id2645862" media-type="application/xhtml+xml" />
+    <item href="images/web/epub3_0401.png" id="id2670620" media-type="image/png" />
+    <item href="spi-ad.xhtml" id="spi_ad" media-type="application/xhtml+xml" />
+    <item href="images/spi_global_ad.png" id="spi_global_ad" media-type="image/png" />
+    <item href="fonts/UbuntuMono-B.ttf" id="epub.embedded.font.1" media-type="application/vnd.ms-opentype" />
+    <item href="fonts/UbuntuMono-BI.ttf" id="epub.embedded.font.2" media-type="application/vnd.ms-opentype" />
+    <item href="fonts/UbuntuMono-R.ttf" id="epub.embedded.font.3" media-type="application/vnd.ms-opentype" />
+    <item href="fonts/UbuntuMono-RI.ttf" id="epub.embedded.font.4" media-type="application/vnd.ms-opentype" />
+    <item href="fonts/FreeSerif.otf" id="epub.embedded.font.5" media-type="application/vnd.ms-opentype" />
+    <item href="fonts/FreeSansBold.otf" id="epub.embedded.font.6" media-type="application/vnd.ms-opentype" />
+    <item href="lexicon/en.pls" id="pls-en" media-type="application/pls+xml" />
+    <item href="lexicon/fr.pls" id="pls-fr" media-type="application/pls+xml" />
+  </manifest>
+  <spine>
+    <itemref idref="cover" linear="no" />
+    <itemref idref="spi_ad" />
+    <itemref idref="id-id2442754" />
+    <itemref idref="htmltoc" linear="yes" />
+    <itemref idref="id-id2632344" />
+    <itemref idref="id-id2604743" />
+    <itemref idref="id-id2629773" />
+    <itemref idref="id-id2620395" />
+    <itemref idref="id-id2638681" />
+    <itemref idref="id-id2611884" />
+    <itemref idref="id-id2627310" />
+    <itemref idref="id-id2635343" />
+    <itemref idref="id-id2622654" />
+    <itemref idref="id-id2624850" />
+    <itemref idref="id-id2640702" />
+    <itemref idref="id-id2641220" />
+    <itemref idref="id-id2642385" />
+    <itemref idref="id-id2644001" />
+    <itemref idref="id-id2644238" />
+    <itemref idref="id-id2645594" />
+    <itemref idref="id-id2645682" />
+    <itemref idref="id-id2645862" />
+  </spine>
+</package>

@@ -116,55 +116,57 @@
         }
       },
 
-      // OPTIONAL TASKS
-      // Tasks below have been set up but are currently not used.
-      // If you want them, uncomment the corresponding block below
-
-      // COFFEESCRIPT
-      // If you want to use coffeescript (http://coffeescript.org/)
-      // instead of vanilla JS, uncoment the block below and change
-      // the cwd value to the locations of your coffee files
-      // coffee: {
-      //  target1: {
-      //    expand: true,
-      //    flatten: true,
-      //    cwd: 'src/',
-      //    src: ['*.coffee'],
-      //    dest: 'build/',
-      //    ext: '.js'
-      //},
-      // GH-PAGES TASK
-      // Push the specified content into the repositories gh-pages branch
-      //'gh-pages': {
-      //  options: {
-      //    message: 'Content committed from Grunt gh-pages',
-      //    base: './build/app',
-      //    dotfiles: true
-      //  },
-      //  // These files will get pushed to the `
-      //  // gh-pages` branch (the default)
-      //  // We have to specifically remove node_modules
-      //  src: ['**/*']
-      //},
+      //      // OPTIONAL TASKS
+      //      // Tasks below have been set up but are currently not used.
+      //      // If you want them, uncomment the corresponding block below
       //
-      //SFTP TASK
-      //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
-      //to store files in a remote SFTP server. Alternative to gh-pages
-      //secret: grunt.file.readJSON('secret.json'),
-      //sftp: {
-      //  test: {
-      //    files: {
-      //      "./": "*json"
-      //    },
-      //    options: {
-      //      path: '/tmp/',
-      //      host: '<%= secret.host %>',
-      //      username: '<%= secret.username %>',
-      //      password: '<%= secret.password %>',
-      //      showProgress: true
-      //    }
-      //  }
-      //},
+      //      // COFFEESCRIPT
+      //      // If you want to use coffeescript (http://coffeescript.org/)
+      //      // instead of vanilla JS, uncoment the block below and change
+      //      // the cwd value to the locations of your coffee files
+      //      coffee: {
+      //        target1: {
+      //          expand: true,
+      //          flatten: true,
+      //          cwd: 'src/',
+      //          src: ['*.coffee'],
+      //          dest: 'build/',
+      //          ext: '.js'
+      //        }
+      //      },
+
+      //      // GH-PAGES TASK
+      //      // Push the specified content into the repositories gh-pages branch
+      //      'gh-pages': {
+      //        options: {
+      //          message: 'Content committed from Grunt gh-pages',
+      //          base: './build/app',
+      //          dotfiles: true
+      //        },
+      //          // These files will get pushed to the `
+      //          // gh-pages` branch (the default)
+      //          // We have to specifically remove node_modules
+      //        src: ['**/*']
+      //      },
+
+      //      //SFTP TASK
+      //      // Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
+      //      // to store files in a remote SFTP server. Alternative to gh-pages
+      //      // secret: grunt.file.readJSON('secret.json'),
+      //      sftp: {
+      //        test: {
+      //          files: {
+      //            "./": "*json"
+      //          },
+      //          options: {
+      //            path: '/tmp/',
+      //            host: '<%= secret.host %>',
+      //            username: '<%= secret.username %>',
+      //            password: '<%= secret.password %>',
+      //            showProgress: true
+      //          }
+      //        }
+      //      },
 
       // FILE MANAGEMENT
       // Can't seem to make the copy task create the directory
@@ -173,25 +175,46 @@
       mkdir: {
         build: {
           options: {
-            create: ['build']
+            create: ['app']
           }
         }
       },
 
-      // Copy the files from our repository into the build directory
+      // Copy the files from our repository into the app directory
+      // have to figure out a way to have grunt copy stuff only
+      // if specific directories exist and are not empty
       copy: {
-        build: {
+        html: {
           files: [{
             expand: true,
-            src: ['app/**/*'],
-            dest: 'build/'
+            src: [
+              'css/**/*',
+              'lib/**/*',
+              'js/**/*',
+              'images/**/*',
+              '**/*.html'
+            ],
+            dest: 'app/'
+          }]
+        },
+        epub: {
+          files: [{
+            expand: true,
+            src: [
+              'css/**/*',
+              'lib/**/*',
+              'js/**/*',
+              'images/**/*',
+              '**/*.html'
+            ],
+            dest: 'content/OEBPS'
           }]
         }
       },
 
       // Clean the build directory
       clean: {
-        production: ['build/']
+        all: ['app/']
       },
 
       // WATCH TASK
@@ -214,19 +237,39 @@
 
       // COMPILE AND EXECUTE TASKS
       // rather than using Ant, I've settled on Grunt's shell
-      // task to run the compilation steps to create HTML and PDF.
-      // This reduces teh number of dependecies for our project
+      // task to run the compilation steps to create content files.
+      // This reduces the number of dependecies for our project
+      //
+      // Since we're using an EXpath extension function for Saxon
+      // we need to set up a classpath to generate epub. Trying to
+      // figure out if another task is needed or if I want to
+      // add the classpath direction to the shell command (which
+      // makes the shell task brittle and breaks the 'do one thing
+      // well principle)
+      //
+      // This will also change the way we call saxon as we can't just use the jar file with classpath
+      //
+      // Also see issue #20 on waffle/Github for discussion on
+      // parameterizing this so we don't have to make manual changes
+      // here and make them in the package.json file instead
       shell: {
         options: {
           failOnError: true,
           stderr: false
         },
+
         html: {
-          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/book.xsl docs.xml -o:index.html'
+          command: 'java -cp "jlib/*" net.sf.saxon.Transform -xsl:xslt/book.xsl docs.xml -o:index.html'
         },
+
         single: {
-          command: 'java -jar /usr/local/java/saxon.jar -xsl:xslt/pm-book.xsl docs.xml -o:docs.html'
+          command: 'java -cp "jlib/*" net.sf.saxon.Transform -xsl:xslt/pm-book.xsl docs.xml -o:docs.html'
         },
+
+        epub: {
+          command: 'java -cp "jlib/*" net.sf.saxon.Transform -xsl:xslt/epub-ebook.xsl docs.xml -o:index.xhtml'
+        },
+
         prince: {
           command: 'prince --verbose --javascript docs.html -o docs.pdf'
         }

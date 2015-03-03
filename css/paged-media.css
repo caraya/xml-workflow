@@ -255,25 +255,25 @@ section[data-type='chapter'] h1 {
   -ah-bookmark-state: open;
   -ah-bookmark-label: content();
   prince-bookmark-level: 1;
-  prince-bookmark-state: closed;
+  prince-bookmark-state: open;
   prince-bookmark-label: content();
 }
 
 section[data-type='chapter'] h2 {
   -ah-bookmark-level: 2;
-  -ah-bookmark-state: closed;
+  -ah-bookmark-state: open;
   -ah-bookmark-label: content();
   prince-bookmark-level: 2;
-  prince-bookmark-state: closed;
+  prince-bookmark-state: open;
   prince-bookmark-label: content();
 }
 
 section[data-type='chapter'] h3 {
   -ah-bookmark-level: 3;
-  -ah-bookmark-state: closed;
+  -ah-bookmark-state: open;
   -ah-bookmark-label: content();
   prince-bookmark-level: 3;
-  prince-bookmark-state: closed;
+  prince-bookmark-state: open;
   prince-bookmark-label: content();
 }
 

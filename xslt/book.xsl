@@ -184,7 +184,7 @@
   </xsl:template>
 
   <!-- PEOPLE GROUPS -->
-  <xsl:template match="metadata/authors">
+  <xsl:template match="authors">
       <xsl:for-each select="author">
         <h2 class="author">
           <xsl:value-of select="first-name"/>
@@ -195,7 +195,7 @@
 
   </xsl:template>
 
-  <xsl:template match="metadata/editors">
+  <xsl:template match="editors">
     <h2>Editorial Team</h2>
     <ul class="no-bullet">
       <xsl:for-each select="editor">
@@ -209,7 +209,7 @@
     </ul>
   </xsl:template>
 
-  <xsl:template match="metadata/otherRoles">
+  <xsl:template match="otherRoles">
     <h2>Production team</h2>
     <ul class="no-bullet">
       <xsl:for-each select="otherRole">
@@ -223,6 +223,85 @@
       </xsl:for-each>
     </ul>
   </xsl:template>
+
+  <xsl:template match="publisher">
+    <xsl:element name="div">
+      <xsl:if test="string(@class)">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@class"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="string(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:element name="p">
+        <xsl:value-of select="name"/>
+        <xsl:apply-templates select="address"/>
+      </xsl:element>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="address">
+    <xsl:element name="div">
+      <xsl:attribute name="class" select="'address'"/>
+      <xsl:element name="p">
+        <xsl:value-of select="recipient"/>
+      </xsl:element>
+      <xsl:element name="p">
+        <xsl:value-of select="street"/>
+      </xsl:element>
+      <xsl:element name="p">
+        <xsl:value-of select="city"/>
+      </xsl:element>
+      <xsl:element name="p">
+        <xsl:value-of select="state"/>
+      </xsl:element>
+      <xsl:element name="p">
+        <xsl:value-of select="postcode"/>
+      </xsl:element>
+      <xsl:element name="p">
+        <xsl:value-of select="country"/>
+      </xsl:element>
+    </xsl:element>
+  </xsl:template>
+
+  <!-- Kludge to test whether this works or not -->
+  <xsl:template match="releaseinfo | copyright | legalnotice | pubdate">
+    <xsl:message terminate="no">
+      <xsl:value-of select="name()"/> content model reduced during development.
+      We may have to expand elements to individual templates
+    </xsl:message>
+    <xsl:element name="p">
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="abstract">
+    <xsl:element name="div">
+      <xsl:attribute name="class" select="'abstract'"/>
+      <xsl:apply-templates/>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="revhistory">
+    <xsl:element name="div">
+      <xsl:attribute name="class" select="'revhistory'"></xsl:attribute>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="revision">
+    <xsl:message terminate="no">
+      <xsl:value-of select="name()"/> needs an expanded model.
+      Reduced to single paragraph for testing
+    </xsl:message>
+    <xsl:element name="p">
+      <xsl:attribute name="class" select="'revision'"/>
+      <xsl:value-of select="."/>
+    </xsl:element>
+  </xsl:template>
+
 
   <!-- Headings -->
   <!--
