@@ -4,14 +4,37 @@ category: Technology
 status: draft
 ---
 
-# XML Schema
+# The XML Schema
+
+> This version of the documentation is based on commit 542178fb21 to the Github repository. Any differences between this document and the repository should be resolved in favor of the repository (repo is always right)
+
+The idea behind the schema is to create as clean a document as possible. The base document uses classes and IDs to avoid having to add styles directy to the document and leaving all the styling to CSS. There are 2 exceptions for addresses (discussed when we look at the XML to XHTML conversion.)
+
+We cover all the content for the schema but will only detail the things I belive are important to understand the choices I made and why the schema was created this way.
+
+
+## Why a schema
+
+There are many ways to define a schema. There is the original [XML Schema](http://www.w3.org/XML/Schema) from W3C, there is RelaxNG initially developed by OASIS in a [technical committee](https://www.oasis-open.org/committees/relax-ng/) and [Schematron](http://www.schematron.com/) defined as an ISO standard.
+
+With all these choices why did I stick with Schema?
+
+* It's the most widely supported
+* It can be converted to RelaxNG or Schematron (an experimental conversion to RelaxNG is available in the rng directory of the repository)
+
+## Schema definition
+
+```xml
 &lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;xs:schema
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
+```
 
+
+```xml
     &lt;!-- Simple types to use in the content -->
     &lt;xs:simpleType name="token255">
         &lt;xs:annotation>
@@ -76,7 +99,9 @@ status: draft
             &lt;/xs:annotation>
         &lt;/xs:attribute>
     &lt;/xs:attributeGroup>
+```
 
+```xml
     &lt;!-- complex types to create groups of similar person items -->
     &lt;xs:complexType name="person">
         &lt;xs:annotation>
@@ -171,6 +196,9 @@ status: draft
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
+
+```xml
     &lt;!-- Wrappers around complext types -->
     &lt;xs:element name="authors">
         &lt;xs:annotation>
@@ -210,7 +238,9 @@ status: draft
             &lt;/xs:sequence>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;xs:element name="releaseinfo">
         &lt;xs:complexType mixed="true">
             &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -243,7 +273,6 @@ status: draft
                 &lt;xs:element ref="para"/>
             &lt;/xs:choice>
         &lt;/xs:complexType>
-
     &lt;/xs:element>
 
     &lt;xs:element name="revhistory">
@@ -261,7 +290,9 @@ status: draft
             &lt;/xs:choice>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Links -->
     &lt;xs:element name="link">
         &lt;xs:annotation>
@@ -305,7 +336,9 @@ status: draft
             &lt;xs:attributeGroup ref="genericPropertiesGroup" />
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Div and Span elements -->
     &lt;xs:element name="div">
         &lt;xs:annotation>
@@ -386,7 +419,9 @@ status: draft
           &lt;xs:attribute name="type" type="xs:token" use="optional"/>
       &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Figure and related elements -->
     &lt;!--
         The schema accepts both images and figures as children of section to accomodate
@@ -488,7 +523,9 @@ status: draft
             &lt;/xs:attribute>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Video and multimedia -->
     &lt;xs:element name="video">
       &lt;xs:complexType mixed="true">
@@ -534,7 +571,9 @@ status: draft
         &lt;xs:anyAttribute/> &lt;!-- Not sure hot to handle the deafult attribute -->
       &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Style elements -->
     &lt;xs:element name="strong">
         &lt;xs:annotation>
@@ -554,14 +593,6 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="emphasis">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                The emphasis element can have 0 or more children chosen form: strong, emphasis, underline and span
-
-                Nested emphasis elements ARE allowed. Emphasis inside emphasis cancels out and displays as normal text
-
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
                 &lt;xs:element ref="strong"/>
@@ -573,12 +604,6 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="underline">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                The underline element can have 0 or more children chosen form: strong, emphasis, underline and span
-
-                Nested underline elements are not allowed
-            &lt;/xs:documentation>
         &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -590,13 +615,6 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="strike">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                The strike element can have 0 or more children chosen form: strong, emphasis, underline and span
-
-                Nested strike elements are not allowed.
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
                 &lt;xs:element ref="strong"/>
@@ -605,7 +623,9 @@ status: draft
             &lt;/xs:choice>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```
     &lt;!-- Lists -->
     &lt;xs:element name="ulist">
         &lt;xs:annotation>
@@ -642,21 +662,6 @@ status: draft
     &lt;xs:element name="item">
       &lt;xs:complexType mixed="true">
         &lt;xs:choice  minOccurs="0" maxOccurs="unbounded">
-          &lt;xs:annotation>
-            &lt;xs:documentation>
-              Style, Link and Span Elements.
-
-              We use strong and emphasis rather than bold and italics
-              to try and stay in synch with HTML and HTML5. We may add
-              additional tags later in the process.
-
-              We can use any of these elements inside paragraph in no
-              particular order 0 or more times (no maximum)
-
-              Researching how to handle nested styles and whether the model below
-              would handle nested children
-            &lt;/xs:documentation>
-          &lt;/xs:annotation>
           &lt;xs:element ref="strong"/>
           &lt;xs:element ref="emphasis"/>
           &lt;xs:element ref="underline"/>
@@ -668,23 +673,11 @@ status: draft
         &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
       &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Fenced code blocks -->
     &lt;xs:element name="code">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Code is used to generate fenced code blocks (see Github rendered markdown code
-                for an idea of how I want this to look).
-
-                When using CSS we'll generate a &lt;code>&lt;pre>&lt;/pre>&lt;/code> block with a language
-                attribute that will be formated with Highlight.js (the chosen package will be
-                a part of the tool chain)
-
-                Because of the intended use, the language attribute is required.
-
-                Class and ID (from genericPropertiesGroup) are optional
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:sequence minOccurs="0" maxOccurs="1">
               &lt;xs:element ref="anchor"/>
@@ -693,7 +686,9 @@ status: draft
             &lt;xs:attribute name="language" use="required"/>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Blockquotes, asides and marginalia -->
     &lt;xs:element name="attribution">
       &lt;xs:annotation>
@@ -774,7 +769,10 @@ status: draft
     &lt;xs:attribute name="type" type="xs:token" use="optional"/>
     &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+
+```xml
     &lt;!-- Paragraphs -->
     &lt;xs:element name="para">
       &lt;xs:annotation>
@@ -811,20 +809,12 @@ status: draft
         &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
       &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+
+```xml
     &lt;!-- Headings -->
     &lt;xs:element name="h1">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Level 1 heading. Name taken form html
-
-                The element has the following attributes:
-
-                * Class
-                * ID
-                * Align (center, left, right)
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
             &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
@@ -832,17 +822,6 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="h2">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Level 3 heading. Name taken form html
-
-                The element has the following attributes:
-
-                * Class
-                * ID
-                * Align (center, left, right)
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
             &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
@@ -850,17 +829,6 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="h3">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Level 3 heading. Name taken form html
-
-                The element has the following attributes:
-
-                * Class
-                * ID
-                * Align (center, left, right)
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
             &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
@@ -868,17 +836,6 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="h4">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Level 4 heading. Name taken form html
-
-                The element has the following attributes:
-
-                * Class
-                * ID
-                * Align (center, left, right)
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
             &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
@@ -886,17 +843,6 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="h5">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Level 5 heading. Name taken form html
-
-                The element has the following attributes:
-
-                * Class
-                * ID
-                * Align (center, left, right)
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
             &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
@@ -904,33 +850,20 @@ status: draft
     &lt;/xs:element>
 
     &lt;xs:element name="h6">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Level 6 heading. Name taken form html
-
-                The element has the following attributes:
-
-                * Class
-                * ID
-                * Align (center, left, right)
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
             &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+
+
+```xml
     &lt;!-- Metadata element -->
     &lt;xs:element name="metadata">
-        &lt;xs:annotation>
-            &lt;xs:documentation>Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.&lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType>
             &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>Metadata choice using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier&lt;/xs:documentation>
-                &lt;/xs:annotation>
                 &lt;xs:element name="isbn" type="ISBN-type10"/>
                 &lt;xs:element name="edition" type="xs:string"/>
                 &lt;xs:element ref="authors"/>
@@ -952,17 +885,15 @@ status: draft
             &lt;/xs:choice>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+
+
+```xml
     &lt;!-- Section element -->
     &lt;xs:element name="section">
-        &lt;xs:annotation>
-            &lt;xs:documentation>section structure&lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:sequence>
-                &lt;xs:annotation>
-                    &lt;xs:documentation>A title and at least one paragraph &lt;/xs:documentation>
-                &lt;/xs:annotation>
                 &lt;xs:element name="title" type="xs:token" minOccurs="0" maxOccurs="1"/>
                 &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
                     &lt;xs:element ref="anchor"/>
@@ -987,28 +918,23 @@ status: draft
             &lt;/xs:sequence>
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
             &lt;xs:attribute name="type" type="xs:token" use="optional" default="chapter">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        The type or role for the paragraph asn in data-role or epub:type.
-
-                        We make it optional but provide a default of chapter to make it
-                        easier to add.
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
             &lt;/xs:attribute>
         &lt;/xs:complexType>
     &lt;/xs:element>
+```
 
+```xml
     &lt;!-- Testing to see if we really need a separate toc element -->
     &lt;xs:element name="toc">
       &lt;xs:annotation>
         &lt;xs:documentation>
-          Testing to see whether we actually need a toc element.
-
-          This is different than an index, we'll work on that next
+          Placeholder for generated table of contents
         &lt;/xs:documentation>
       &lt;/xs:annotation>
     &lt;/xs:element>
+```
+
+```xml
     &lt;!-- Base book element -->
     &lt;xs:element name="book">
         &lt;xs:annotation>
@@ -1028,3 +954,4 @@ status: draft
         &lt;/xs:complexType>
     &lt;/xs:element>
 &lt;/xs:schema>
+```

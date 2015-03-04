@@ -36,7 +36,7 @@
         <!--
               Use highlight.js and docco style
         -->
-        <link rel="stylesheet" href="css/styles/codepen-embed.css" />
+        <link rel="stylesheet" href="css/styles/docco.css" />
         <!-- We add object-key-polyfill to fix an issue with PrinceXML -->
         <script src="js/object-key-polyfill.js"/>
         <!-- Load highlight.js -->

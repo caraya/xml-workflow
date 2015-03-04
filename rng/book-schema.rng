@@ -1,0 +1,1445 @@
+<grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes" xmlns="http://relaxng.org/ns/structure/1.0"
+  xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <!-- Simple types to use in the content -->
+  <define name="token255">
+    <a:documentation>
+            Defines a token of no more than 255 characters
+        </a:documentation>
+    <data type="token">
+      <param name="maxLength">255</param>
+    </data>
+  </define>
+
+  <define name="ISBN-type10">
+    <a:documentation>
+            
+                A much longer and tedious type definition available at http://xfront.com/isbn.html
+                
+                It includes country specific ISBN derivations
+            
+        </a:documentation>
+    <data type="string">
+      <param name="pattern">0-[0-1][0-9]-\d{6}-[0-9x]</param>
+      <param name="pattern">0\s[0-1][0-9]\s\d{6}\s[0-9x]</param>
+      <param name="pattern">0-[2-6][0-9]{2}-\d{5}-[0-9x]</param>
+      <param name="pattern">0\s[2-6][0-9]{2}\s\d{5}\s[0-9x]</param>
+      <param name="pattern">0-(7[0-9]{3}|8[0-4][0-9]{2})-\d{4}-[0-9x]</param>
+      <param name="pattern">0\s(7[0-9]{3}|8[0-4][0-9]{2})\s\d{4}\s[0-9x]</param>
+      <param name="pattern">0-8[5-9][0-9]{3}-\d{3}-[0-9x]</param>
+      <param name="pattern">0\s8[5-9][0-9]{3}\s\d{3}\s[0-9x]</param>
+      <param name="pattern">0-9[0-4][0-9]{4}-\d{2}-[0-9x]</param>
+      <param name="pattern">0\s9[0-4][0-9]{4}\s\d{2}\s[0-9x]</param>
+      <param name="pattern">0-9[5-9][0-9]{5}-\d-[0-9x]</param>
+      <param name="pattern">0\s9[5-9][0-9]{5}\s\d\s[0-9x]</param>
+      <param name="pattern">1-(55[0-9]{3}|[6-7][0-9]{4}|8[0-6][0-8][0-9]{2}|869[0-7][0-9])-\d{3}-[0-9x]</param>
+      <param name="pattern">1\s(55[0-9]{3}|[6-7][0-9]{4}|8[0-6][0-8][0-9]{2}|869[0-7][0-9])\s\d{3}\s[0-9x]</param>
+      <param name="pattern">1-(8698[0-9]{2}|8[7-9][0-9]{4}|9[0-8][0-9]{4}|99[0-8][0-9]{3})-\d{2}-[0-9x]</param>
+      <param name="pattern">1\s(8698[0-9]{2}|8[7-9][0-9]{4}|9[0-8][0-9]{4}|99[0-8][0-9]{3})\s\d{2}\s[0-9x]</param>
+      <param name="pattern">1-999[0-9]{4}-\d-[0-9x]</param>
+      <param name="pattern">1\s999[0-9]{4}\s\d\s[0-9x]</param>
+    </data>
+  </define>
+
+  <define name="align">
+    <a:documentation>
+            Attribute ennumeration for elements that can be aligned
+        </a:documentation>
+    <choice>
+      <value>left</value>
+      <value>center</value>
+      <value>right</value>
+      <value>justify</value>
+    </choice>
+  </define>
+
+  <start combine="choice">
+    <ref name="language" />
+  </start>
+  <define name="language">
+    <element name="language">
+      <data type="language">
+        <a:documentation>
+            
+                book primary language or language for specific sections of the book
+            
+        </a:documentation>
+      </data>
+    </element>
+  </define>
+
+  <define name="genericPropertiesGroup">
+    <optional>
+      <attribute name="id">
+        <data type="ID">
+          <a:documentation>
+                ID for the paragraph if any
+            </a:documentation>
+        </data>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="class">
+        <data type="token">
+          <a:documentation>
+                Class for the paragraph if any
+            </a:documentation>
+        </data>
+      </attribute>
+    </optional>
+  </define>
+
+  <!-- complex types to create groups of similar person items -->
+  <define name="person">
+    <a:documentation>
+            
+                Generic element to denote an individual involved in creating the book
+            
+        </a:documentation>
+
+    <element name="first-name">
+      <data type="string" />
+    </element>
+    <element name="surname">
+      <data type="string" />
+    </element>
+
+    <optional>
+      <attribute name="id">
+        <data type="ID" />
+      </attribute>
+    </optional>
+  </define>
+
+  <define name="organization">
+    <a:documentation>
+            
+                Base organization structure to create corporate authors/editors and other places where an organization can take the place of a person
+            
+        </a:documentation>
+    <interleave>
+      <optional>
+        <element name="name">
+          <data type="string" />
+        </element>
+      </optional>
+    </interleave>
+  </define>
+
+  <start combine="choice">
+    <ref name="address" />
+  </start>
+  <define name="address">
+    <element name="address">
+      <a:documentation>
+            
+                Complex type for address
+            
+        </a:documentation>
+
+
+      <element name="recipient">
+        <data type="string" />
+      </element>
+      <element name="street">
+        <data type="string" />
+      </element>
+      <element name="city">
+        <data type="string" />
+      </element>
+      <element name="state">
+        <data type="string" />
+      </element>
+      <element name="postcode">
+        <data type="string" />
+      </element>
+      <element name="country">
+        <data type="token" />
+      </element>
+
+
+    </element>
+  </define>
+
+  <define name="author">
+    <a:documentation>
+            
+                Author person
+            
+        </a:documentation>
+
+    <ref name="person" />
+
+  </define>
+
+  <define name="editor">
+    <a:documentation>
+            extension to person to indicate editor and his/her role
+        </a:documentation>
+
+    <ref name="person" />
+    <choice>
+      <element name="type">
+        <data type="token" />
+      </element>
+    </choice>
+
+
+  </define>
+
+  <define name="otherRole">
+    <a:documentation>
+            extension to person to accomodate roles other than author and editor
+        </a:documentation>
+
+    <ref name="person" />
+
+    <element name="role">
+      <data type="token" />
+    </element>
+
+
+
+  </define>
+
+  <start combine="choice">
+    <ref name="publisher" />
+  </start>
+  <define name="publisher">
+    <element name="publisher">
+      <a:documentation>
+            
+                Derived from organization
+            
+        </a:documentation>
+
+      <interleave>
+        <optional>
+          <element name="name">
+            <ref name="organization" />
+          </element>
+        </optional>
+        <optional>
+          <ref name="address" />
+        </optional>
+      </interleave>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+  <!-- Wrappers around complext types -->
+  <start combine="choice">
+    <ref name="authors" />
+  </start>
+  <define name="authors">
+    <element name="authors">
+      <a:documentation>
+            
+                One or more authors
+            
+        </a:documentation>
+
+      <oneOrMore>
+        <choice>
+          <element name="author">
+            <ref name="author" />
+          </element>
+        </choice>
+      </oneOrMore>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="editors" />
+  </start>
+  <define name="editors">
+    <element name="editors">
+      <a:documentation>
+            
+                One or more editors
+            
+        </a:documentation>
+
+
+      <element name="editor">
+        <ref name="editor" />
+      </element>
+
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="otherRoles" />
+  </start>
+  <define name="otherRoles">
+    <element name="otherRoles">
+      <a:documentation>
+            
+                One or more people in other roles
+            
+        </a:documentation>
+
+
+      <element name="otherRole">
+        <ref name="otherRole" />
+      </element>
+
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="releaseinfo" />
+  </start>
+  <define name="releaseinfo">
+    <element name="releaseinfo">
+
+      <oneOrMore>
+        <choice>
+          <ref name="para" />
+        </choice>
+      </oneOrMore>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="copyright" />
+  </start>
+  <define name="copyright">
+    <element name="copyright">
+
+      <oneOrMore>
+        <choice>
+          <ref name="para" />
+        </choice>
+      </oneOrMore>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="legalnotice" />
+  </start>
+  <define name="legalnotice">
+    <element name="legalnotice">
+
+      <oneOrMore>
+        <choice>
+          <ref name="para" />
+        </choice>
+      </oneOrMore>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="pubdate" />
+  </start>
+  <define name="pubdate">
+    <element name="pubdate">
+      <data type="date" />
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="revision" />
+  </start>
+  <define name="revision">
+    <element name="revision">
+
+      <oneOrMore>
+        <choice>
+          <ref name="para" />
+        </choice>
+      </oneOrMore>
+
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="revhistory" />
+  </start>
+  <define name="revhistory">
+    <element name="revhistory">
+
+
+      <ref name="revision" />
+
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="abstract" />
+  </start>
+  <define name="abstract">
+    <element name="abstract">
+
+      <oneOrMore>
+        <choice>
+          <ref name="para" />
+        </choice>
+      </oneOrMore>
+
+    </element>
+  </define>
+
+  <!-- Links -->
+  <start combine="choice">
+    <ref name="link" />
+  </start>
+  <define name="link">
+    <element name="link">
+      <a:documentation>
+            
+                links... 
+                
+                What's the difference between supporting IRI and URI
+                other than URI are supposed to work only with ASCII characters
+            
+        </a:documentation>
+
+      <ref name="genericPropertiesGroup" />
+      <attribute name="href">
+        <data type="anyURI">
+          <a:documentation>
+                    
+                        Link destination. Attribute is required
+                    
+                </a:documentation>
+        </data>
+      </attribute>
+      <attribute name="label">
+        <data type="token">
+          <a:documentation>
+                    Text provided for accessibility
+                </a:documentation>
+        </data>
+      </attribute>
+
+    </element>
+  </define>
+
+  <!-- Named Anchor -->
+  <start combine="choice">
+    <ref name="anchor" />
+  </start>
+  <define name="anchor">
+    <element name="anchor">
+      <a:documentation>
+            
+                The receiving end of an anchor link within the same document 
+                (the link is something like "#test") and the location of the 
+                test anchor has something like id="test"
+                
+                because we're using IDs each anchor has to be unique and 
+                must contain no whitespaces 
+            
+        </a:documentation>
+
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <!-- Div and Span elements -->
+  <start combine="choice">
+    <ref name="div" />
+  </start>
+  <define name="div">
+    <element name="div">
+      <a:documentation>
+            
+                Allows for block level content using div
+                
+                class and id attributes from genericPropertiesGroup
+                
+                type is use to create data-type and/or epub:type annotations
+            
+        </a:documentation>
+
+
+      <zeroOrMore>
+        <choice>
+          <ref name="language" />
+          <ref name="anchor" />
+          <ref name="code" />
+          <ref name="para" />
+          <ref name="ulist" />
+          <ref name="olist" />
+          <ref name="figure" />
+          <ref name="image" />
+          <ref name="div" />
+          <ref name="span" />
+          <ref name="blockquote" />
+          <ref name="video" />
+          <ref name="aside" />
+          <ref name="h1" />
+          <ref name="h2" />
+          <ref name="h3" />
+          <ref name="h4" />
+          <ref name="h5" />
+          <ref name="h6" />
+        </choice>
+      </zeroOrMore>
+
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="type">
+          <data type="token" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="span" />
+  </start>
+  <define name="span">
+    <element name="span">
+      <a:documentation>
+            
+                Allows for inline content using span
+                
+                class and id attributes from genericPropertiesGroup
+                
+                type is use to create data-type and/or epub:type annotations
+            
+        </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <a:documentation>
+            
+              Style, Link and Span Elements. 
+              
+              We use strong and emphasis rather than bold and italics
+              to try and stay in synch with HTML and HTML5. We may add additional tags
+              later in the process.
+              
+              We can use any of these elements inside paragraph in no particular order 
+              0 or more times (no maximum)
+              
+              Researching how to handle nested styles and whether the model below 
+              would handle nested children
+            
+          </a:documentation>
+          <ref name="language" />
+          <ref name="strong" />
+          <ref name="emphasis" />
+          <ref name="underline" />
+          <ref name="strike" />
+          <ref name="link" />
+          <ref name="span" />
+          <ref name="quote" />
+        </choice>
+      </zeroOrMore>
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="type">
+          <data type="token" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <!-- Figure and related elements -->
+  <!-- 
+        The schema accepts both images and figures as children of section to accomodate 
+        images with and without captions
+    -->
+  <start combine="choice">
+    <ref name="figure" />
+  </start>
+  <define name="figure">
+    <element name="figure">
+      <a:documentation>
+            
+                Figure is a wrapper for an image and a caption. 
+                
+                Because we accept either 
+                figure or image as part of our content model we keep most of the attributes 
+                on the image and duplicate those that are needed in the figure element.
+                
+                Unlike the image all attributes of figure are optional
+            
+        </a:documentation>
+
+      <interleave>
+        <optional>
+          <ref name="anchor" />
+        </optional>
+        <optional>
+          <ref name="image" />
+        </optional>
+        <optional>
+          <ref name="figcaption" />
+        </optional>
+      </interleave>
+      <optional>
+        <attribute name="height">
+          <data type="nonNegativeInteger">
+            <a:documentation>
+                
+                  Height for the image expressed as a positive integer
+                
+              </a:documentation>
+          </data>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="width">
+          <data type="nonNegativeInteger">
+            <a:documentation>
+                
+                  Width for the image expressed as a positive integer
+                
+              </a:documentation>
+          </data>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+          <a:documentation>
+                
+                  Optional alignment
+                
+              </a:documentation>
+        </attribute>
+      </optional>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="figcaption" />
+  </start>
+  <define name="figcaption">
+    <element name="figcaption">
+      <a:documentation>
+            
+                caption for the image in the figure. Because it's only used as
+                a child of figure, we don't need to assign attributes to it
+            
+        </a:documentation>
+      <oneOrMore>
+        <ref name="para" />
+      </oneOrMore>
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="image" />
+  </start>
+  <define name="image">
+    <element name="image">
+      <a:documentation>
+            image and image-related attributes
+        </a:documentation>
+
+      <ref name="genericPropertiesGroup" />
+      <attribute name="src">
+        <data type="token">
+          <a:documentation>
+                    
+                        Source for the image. We may want to create a restriction 
+                        to account for both local and remote addresses
+                    
+                </a:documentation>
+        </data>
+      </attribute>
+      <attribute name="height">
+        <data type="nonNegativeInteger">
+          <a:documentation>
+                    
+                        Height for the image expressed as a positive integer
+                    
+                </a:documentation>
+        </data>
+      </attribute>
+      <attribute name="width">
+        <data type="nonNegativeInteger">
+          <a:documentation>
+                    
+                        Width for the image expressed as a positive integer
+                    
+                </a:documentation>
+        </data>
+      </attribute>
+      <attribute name="alt">
+        <ref name="token255" />
+        <a:documentation>
+                    
+                        Alternate text contstained to 255 characters
+                    
+                </a:documentation>
+      </attribute>
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+          <a:documentation>
+                    
+                        Optional alignment
+                    
+                </a:documentation>
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <!-- Video and multimedia -->
+  <start combine="choice">
+    <ref name="video" />
+  </start>
+  <define name="video">
+    <element name="video">
+
+      <oneOrMore>
+        <choice>
+          <ref name="source" />
+          <ref name="track" />
+        </choice>
+      </oneOrMore>
+      <optional>
+        <attribute name="height">
+          <data type="nonNegativeInteger" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="width">
+          <data type="nonNegativeInteger" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="controls">
+          <data type="string" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="poster">
+          <data type="anyURI" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="autoplay">
+          <data type="string" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="preload" ns_1:defaultValue="none"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <data type="string" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="loop">
+          <data type="string" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="muted">
+          <data type="string" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="source" />
+  </start>
+  <define name="source">
+    <element name="source">
+      <a:documentation>
+        
+          Source track for video, can be used instead of the src attribute in the video itself
+        
+      </a:documentation>
+
+      <attribute name="src">
+        <data type="string" />
+      </attribute>
+      <optional>
+        <attribute name="type">
+          <data type="string" />
+        </attribute>
+      </optional>
+      <!-- There's got to be more attributes -->
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="track" />
+  </start>
+  <define name="track">
+    <element name="track">
+      <a:documentation>
+        
+          VTT track for accessibility and additional payloads
+        
+      </a:documentation>
+
+      <attribute name="src">
+        <data type="string" />
+      </attribute>
+      <attribute name="label">
+        <data type="string" />
+      </attribute>
+      <optional>
+        <attribute name="kind">
+          <data type="string" />
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="srclang">
+          <data type="string" />
+        </attribute>
+      </optional>
+    </element>
+  </define>
+
+  <!-- Style elements -->
+  <start combine="choice">
+    <ref name="strong" />
+  </start>
+  <define name="strong">
+    <element name="strong">
+      <a:documentation>
+            
+                The strong element can have 0 or more children chosen form: emphasis, underline and span
+                
+                Nested strong elements are not allowed
+            
+        </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <ref name="emphasis" />
+          <ref name="underline" />
+          <ref name="strike" />
+        </choice>
+      </zeroOrMore>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="emphasis" />
+  </start>
+  <define name="emphasis">
+    <element name="emphasis">
+      <a:documentation>
+            
+                The emphasis element can have 0 or more children chosen form: strong, emphasis, underline and span
+                
+                Nested emphasis elements ARE allowed. Emphasis inside emphasis cancels out and displays as normal text
+
+            
+        </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <ref name="strong" />
+          <ref name="emphasis" />
+          <ref name="underline" />
+          <ref name="strike" />
+        </choice>
+      </zeroOrMore>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="underline" />
+  </start>
+  <define name="underline">
+    <element name="underline">
+      <a:documentation>
+            
+                The underline element can have 0 or more children chosen form: strong, emphasis, underline and span
+                
+                Nested underline elements are not allowed
+            
+        </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <ref name="strong" />
+          <ref name="emphasis" />
+          <ref name="strike" />
+        </choice>
+      </zeroOrMore>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="strike" />
+  </start>
+  <define name="strike">
+    <element name="strike">
+      <a:documentation>
+            
+                The strike element can have 0 or more children chosen form: strong, emphasis, underline and span
+                
+                Nested strike elements are not allowed.
+            
+        </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <ref name="strong" />
+          <ref name="emphasis" />
+          <ref name="underline" />
+        </choice>
+      </zeroOrMore>
+
+    </element>
+  </define>
+
+  <!-- Lists -->
+  <start combine="choice">
+    <ref name="ulist" />
+  </start>
+  <define name="ulist">
+    <element name="ulist">
+      <a:documentation>
+            
+                Unordered list
+            
+        </a:documentation>
+
+      <oneOrMore>
+        <choice>
+          <ref name="item" />
+          <ref name="olist" />
+          <ref name="ulist" />
+        </choice>
+      </oneOrMore>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="olist" />
+  </start>
+  <define name="olist">
+    <element name="olist">
+      <a:documentation>
+            
+                Ordered list
+            
+        </a:documentation>
+
+      <oneOrMore>
+        <choice>
+          <ref name="item" />
+          <ref name="olist" />
+          <ref name="ulist" />
+        </choice>
+      </oneOrMore>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="item" />
+  </start>
+  <define name="item">
+    <element name="item">
+
+      <zeroOrMore>
+        <choice>
+          <a:documentation>            
+              Style, Link and Span Elements. 
+              
+              We use strong and emphasis rather than bold and italics to try and stay in synch with HTML and HTML5. We may add additional tags later in the process.
+              We can use any of these elements inside paragraph in no particular order 0 or more times (no maximum)
+              
+              Researching how to handle nested styles and whether the model below  would handle nested children           
+          </a:documentation>
+          <ref name="strong" />
+          <ref name="emphasis" />
+          <ref name="underline" />
+          <ref name="strike" />
+          <ref name="link" />
+          <ref name="span" />
+          <ref name="quote" />
+        </choice>
+      </zeroOrMore>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <!-- Fenced code blocks -->
+  <start combine="choice">
+    <ref name="code" />
+  </start>
+  <define name="code">
+    <element name="code">
+      <a:documentation>
+            
+                Code is used to generate fenced code blocks (see Github rendered markdown code 
+                for an idea of how I want this to look). 
+                
+                When using CSS we'll generate a <code
+          xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+          <pre />
+        </code> block with a language 
+                attribute that will be formated with Highlight.js (the chosen package will be 
+                a part of the tool chain)
+                
+                Because of the intended use, the language attribute is required. 
+                
+                Class and ID (from genericPropertiesGroup) are optional
+            
+        </a:documentation>
+
+
+      <ref name="anchor" />
+
+      <ref name="genericPropertiesGroup" />
+      <attribute name="language" />
+
+    </element>
+  </define>
+
+  <!-- Blockquotes, asides and marginalia -->
+  <start combine="choice">
+    <ref name="attribution" />
+  </start>
+  <define name="attribution">
+    <element name="attribution">
+      <a:documentation>
+        
+          Who said it
+        
+      </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <ref name="para" />
+        </choice>
+      </zeroOrMore>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="blockquote" />
+  </start>
+  <define name="blockquote">
+    <element name="blockquote">
+      <a:documentation>
+        
+          We use blockquote for longer, block level, quotations
+        
+      </a:documentation>
+
+      <oneOrMore>
+        <choice>
+          <optional>
+            <ref name="language" />
+          </optional>
+          <ref name="anchor" />
+          <ref name="attribution" />
+          <ref name="para" />
+        </choice>
+      </oneOrMore>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="quote" />
+  </start>
+  <define name="quote">
+    <element name="quote">
+      <a:documentation>
+      
+        Shorter, inline, quotations
+      
+    </a:documentation>
+
+      <interleave>
+        <optional>
+          <ref name="language" />
+        </optional>
+      </interleave>
+      <optional>
+        <attribute name="cite">
+          <data type="anyURI" />
+        </attribute>
+      </optional>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="aside" />
+  </start>
+  <define name="aside">
+    <element name="aside">
+      <a:documentation>
+    
+      Asides, smaller pieces of content not directly related to the main text
+    
+    </a:documentation>
+
+
+      <a:documentation>
+        At least one paragraph 
+      </a:documentation>
+      <zeroOrMore>
+        <choice>
+          <ref name="code" />
+          <oneOrMore>
+            <ref name="para" />
+          </oneOrMore>
+          <ref name="ulist" />
+          <ref name="olist" />
+          <ref name="figure" />
+          <ref name="image" />
+          <ref name="div" />
+          <ref name="span" />
+          <ref name="blockquote" />
+          <ref name="h1" />
+          <ref name="h2" />
+          <ref name="h3" />
+          <ref name="h4" />
+          <ref name="h5" />
+          <ref name="h6" />
+        </choice>
+      </zeroOrMore>
+
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="type">
+          <data type="token" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <!-- Paragraphs -->
+  <start combine="choice">
+    <ref name="para" />
+  </start>
+  <define name="para">
+    <element name="para">
+      <a:documentation>
+        Para is the essential text content element. It'll get hairy because we
+          have a lot of possible attributes we can use on it
+      </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <a:documentation>
+            
+              Style, Link and Span Elements. 
+              
+              We use strong and emphasis rather than bold and italics
+              to try and stay in synch with HTML and HTML5. We may add additional tags
+              later in the process.
+              
+              We can use any of these elements inside paragraph in no particular order 
+              0 or more times (no maximum)
+              
+              Researching how to handle nested styles and whether the model below 
+              would handle nested children
+            
+          </a:documentation>
+          <ref name="language" />
+          <ref name="strong" />
+          <ref name="emphasis" />
+          <ref name="underline" />
+          <ref name="strike" />
+          <ref name="link" />
+          <ref name="span" />
+          <ref name="quote" />
+        </choice>
+      </zeroOrMore>
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <!-- Headings -->
+  <start combine="choice">
+    <ref name="h1" />
+  </start>
+  <define name="h1">
+    <element name="h1">
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+        </attribute>
+      </optional>
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="h2" />
+  </start>
+  <define name="h2">
+    <element name="h2">
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="h3" />
+  </start>
+  <define name="h3">
+    <element name="h3">
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="h4" />
+  </start>
+  <define name="h4">
+    <element name="h4">
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="h5" />
+  </start>
+  <define name="h5">
+    <element name="h5">
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <start combine="choice">
+    <ref name="h6" />
+  </start>
+  <define name="h6">
+    <element name="h6">
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="align" ns_1:defaultValue="left"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <ref name="align" />
+        </attribute>
+      </optional>
+    </element>
+  </define>
+
+  <!-- Metadata element -->
+  <start combine="choice">
+    <ref name="metadata" />
+  </start>
+  <define name="metadata">
+    <element name="metadata">
+      <a:documentation>
+            Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.
+        </a:documentation>
+
+      <zeroOrMore>
+        <choice>
+          <a:documentation>
+                    Metadata choice using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier
+                </a:documentation>
+          <element name="isbn">
+            <ref name="ISBN-type10" />
+          </element>
+          <element name="edition">
+            <data type="string" />
+          </element>
+          <ref name="authors" />
+          <ref name="editors" />
+          <ref name="otherRoles" />
+          <ref name="publisher" />
+          <ref name="releaseinfo" />
+          <ref name="copyright" />
+          <ref name="legalnotice" />
+          <element name="title">
+            <data type="string" />
+          </element>
+          <element name="subtitle">
+            <data type="string" />
+          </element>
+          <ref name="language" />
+          <optional>
+            <ref name="revhistory" />
+          </optional>
+          <!-- 
+                    We allow para here to make sure  we can write 
+                    text as for the metadata
+                -->
+          <ref name="para" />
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+
+  <!-- Section element -->
+  <start combine="choice">
+    <ref name="section" />
+  </start>
+  <define name="section">
+    <element name="section">
+      <a:documentation>
+            section structure
+        </a:documentation>
+
+      <a:documentation>
+        A title and at least one paragraph 
+      </a:documentation>
+        <element name="title">
+          <data type="token" />
+        </element>
+      <zeroOrMore>
+        <choice>
+          <ref name="anchor" />
+          <ref name="code" />
+          <oneOrMore>
+            <ref name="para" />
+          </oneOrMore>
+          <ref name="ulist" />
+          <ref name="olist" />
+          <ref name="figure" />
+          <ref name="image" />
+          <ref name="div" />
+          <ref name="span" />
+          <ref name="blockquote" />
+          <ref name="video" />
+          <ref name="aside" />
+          <ref name="h1" />
+          <ref name="h2" />
+          <ref name="h3" />
+          <ref name="h4" />
+          <ref name="h5" />
+          <ref name="h6" />
+        </choice>
+      </zeroOrMore>
+
+      <ref name="genericPropertiesGroup" />
+      <optional>
+        <attribute name="type" ns_1:defaultValue="chapter"
+          xmlns:ns_1="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <data type="token">
+            <a:documentation>
+                    
+                        The type or role for the paragraph asn in data-role or epub:type. 
+                        
+                        We make it optional but provide a default of chapter to make it 
+                        easier to add.
+                    
+                </a:documentation>
+          </data>
+        </attribute>
+      </optional>
+
+    </element>
+  </define>
+
+  <!-- Testing to see if we really need a separate toc element -->
+  <start combine="choice">
+    <ref name="toc" />
+  </start>
+  <define name="toc">
+    <element name="toc">
+      <a:documentation>
+        
+          Testing to see whether we actually need a toc element. 
+          
+          This is different than an index, we'll work on that next
+        
+      </a:documentation>
+      <empty />
+    </element>
+  </define>
+  <!-- Base book element -->
+  <start combine="choice">
+    <ref name="book" />
+  </start>
+  <define name="book">
+    <element name="book">
+      <a:documentation>
+            The main book element and it's children
+        </a:documentation>
+
+      <a:documentation>
+                A sequence of one metadata section followed by 1 or more sections
+            </a:documentation>
+      <oneOrMore>
+        <choice>
+          <optional>
+            <ref name="anchor" />
+          </optional>
+          <!-- To create things like anchors to the beginning of the document -->
+          <optional>
+            <ref name="metadata" />
+          </optional>
+          <optional>
+            <ref name="toc" />
+          </optional>
+          <oneOrMore>
+            <ref name="section" />
+          </oneOrMore>
+        </choice>
+      </oneOrMore>
+      <ref name="genericPropertiesGroup" />
+
+    </element>
+  </define>
+</grammar>

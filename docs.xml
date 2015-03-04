@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
   <metadata>
     <title>XML workflow documentation</title>
 
@@ -42,14 +41,13 @@
        />is a text to (X)HTML conversion tool designed for writers. It refers both to the syntax used in the Markdown text files and the applications used to perform the conversion.</para>
     <para>Markdown language was created in 2004 by John Gruber with the goal of allowing people "to write using an easy-to-read, easy-to-write plain text format, and optionally convert it to structurally valid XHTML (or HTML)" (
       <link
-        href="http://daringfireball.net/projects/markdown/"
-        label="http://daringfireball.net/projects/markdown/" />)</para>
+        href="http://daringfireball.net/projects/markdown/" label="http://daringfireball.net/projects/markdown/"
+       />)</para>
     <para>The language was designed to be readable as-is, without all the additional tags and attributes that makes it possible to covert markdown to languages like SGML, XML and HTML. Markdown is a formatting syntax for text that can be read by humans and can be easily converted to HTML.
     </para>
     <para>The original implementation of Markdown is
       <link
-        href="http://search.cpan.org/~sekimura/Text-Markdown-Discount-0.11/xt/MarkdownXS.pl"
-        label="markdown.pl"
+        href="http://search.cpan.org/~sekimura/Text-Markdown-Discount-0.11/xt/MarkdownXS.pl" label="markdown.pl"
        />and has been implemented in several other languages as applications (Ruby Gems, NodeJS modules and Python packages). All versions of Markdown are distributed under open source licenses and are included or available as a plugin for, several content-management systems and text editors.</para>
     <para>Sites such as GitHub, Reddit, Diaspora, Stack Overflow, OpenStreetMap, and SourceForge use variants of Markdown to facilitate content creation and discussion between users.</para>
     <para>The biggest weakness of Markdown is the lack of a unified standard. The original Markdown language hasn't been really supported since it was released in 2004 and all new version of Markdown, both parser and language specification have introduced not wholy compatible changes to Markdown. The lack of standard is also Markdown’s biggest strength. It means you can, like Github did, implement your own extensions to the Markdown syntax to acommodate your needs.</para>
@@ -58,8 +56,8 @@
     <h3>Example Markdown document</h3>
     <ulist>
       <item>
-        <link href="http://daringfireball.net/projects/markdown/index.text"
-          label="Markdown example form daringfireball" />
+        <link href="http://daringfireball.net/projects/markdown/index.text" label="Markdown example form daringfireball"
+         />
       </item>
     </ulist>
     <h2>Asciidoctor</h2>
@@ -100,25 +98,24 @@
        /> that I decided to take a second look at HTMLbook and its ecosystem.</para>
     <para>Conceptually HTMLbook is very simple; it combines a subset of HTML5, the semantic structure of ePub documents and other IDPF specifications to create a flavor of HTML 5 that is designed specifically for publishing. There are also stylesheets that will allow you to convert Markdown and other text formats into HTMLbook (see
       <link
-        href="https://github.com/oreillymedia/htmlbook.js" label="Markdown to HTMLBook"
-         /> and
-      <link href="https://github.com/oreillymedia/asciidoctor-htmlbook/"
-        label="AsciiDoc to HTMLBook (via AsciiDoctor)" />)</para>
+        href="https://github.com/oreillymedia/htmlbook.js" label="Markdown to HTMLBook" /> and
+      <link
+        href="https://github.com/oreillymedia/asciidoctor-htmlbook/" label="AsciiDoc to HTMLBook (via AsciiDoctor)"
+       />)</para>
     <para>If you use Atlas (O'Reilly's authoring and publishing platform) you don't have to worry about markup as the content is created visually. The challenges begin when implementing this vocabulary outside the Atlas environment.
     </para>
     <para>The project comes with a set of stylesheets to convert HTMLbook content to ePub, MOBI and PDF. The intriguing thing about the stylesheets is that they use CSS Paged Media stylesheets in conjunction with third party tools such as
       <link
         href="http://www.antennahouse.com" label="AntennaHouse" /> or
-      <link
-        href="http://www.princexml.com/" label="PrinceXML" />.</para>
+      <link href="http://www.princexml.com/"
+        label="PrinceXML" />.</para>
     <para>The open source solutions offer permisive licenses that allow modification and integration into other products without requiring you to release your project under the same license like GPL and LGPL.</para>
     <para>As with any solution that advocates creating HTML directly I have my reservations. In HTML formating in general and specialized formats like HTMLbooks in particular, the learning curve may be too steep for independent authors to use for creating content.</para>
     <para>The user must learn not only the required HTML5 syntax but also the details regarding ePub semantic structure attributes and the other standards needed to create ePub books. While I understand that technologies such as this are not meant for independent authors or for poeple who are not comfortable or familiar with HTML but the learning curve may still be too steep for most users.</para>
     <h3>Example HTMLbook document</h3>
     <ulist>
       <item>
-        <link
-          href="https://github.com/oreillymedia/HTMLBook/blob/master/samples/alices_adventures_in_wonderland.html"
+        <link href="https://github.com/oreillymedia/HTMLBook/blob/master/samples/alices_adventures_in_wonderland.html"
           label="Alice Adventures in Wonderland marked as HTMLbook" />
       </item>
     </ulist>
@@ -130,8 +127,8 @@
     <para>The screenshot below shows OxygenXML Author working in a Docbook 5 document using visual mode.</para>
     <figure>
       <anchor />
-      <image alt="Visual Editing Using OxygenXML Author" height="177"
-        src="images/visual-editing-mode-small.png" width="280" />
+      <image alt="Visual Editing Using OxygenXML Author" height="177" src="images/visual-editing-mode-small.png"
+        width="280" />
       <figcaption>OxygenXML Visual Editor for XML</figcaption>
     </figure>
     <para>The positive side is that using XSLT there is no limit to what we can do with our XML content.</para>
@@ -142,8 +139,7 @@
           label="Sample Chapter marked as Docbook" />
       </item>
       <item>
-        <link href="http://docsouth.unc.edu/southlit/poe/poe.xml"
-          label="Tales by Edgar Allan Poe, marked as TEI" />
+        <link href="http://docsouth.unc.edu/southlit/poe/poe.xml" label="Tales by Edgar Allan Poe, marked as TEI" />
       </item>
       <item>
         <link
@@ -160,184 +156,44 @@
     <para>Striking the balance between author and publisher is a delicate one. I tend to fall on the side of making things easier for authors... The tools can be made to translate basic markup into the desired result with minimal requirements for authors to mark up the content; the same can't necessarily be said about the publisher-first strategy</para>
   </section>
   <section type="chapter">
-    <h1>Background: HTML is the final product</h1>
-
-    <para>In researching the technologies and tools that I use when developing digital content I've come across multiple discussions about what's the best way to create HTML for X application (ebooks, web, transforming into other formats and any number of ideas. Some people think that HTML is perfect for everyone to write, regardless of experience and comfort with the technology.  We forget that HTML now is very different to HTML as it was originally created.</para>
-
-    <blockquote>
-      <para>HTML —which is short for HyperText Markup Language— is the official language of the World Wide Web and was first conceived in 1990. HTML is a product of SGML (Standard Generalized Markup Language) which is a complex, technical specification describing markup languages, especially those used in electronic document exchange, document management, and document publishing. HTML was originally created to allow those who were not specialized in SGML to publish and exchange scientific and other technical documents. HTML especially facilitated this exchange by incorporating the ability to link documents electronically using hyperlinks.</para>
-
-      <para>From <link href="http://www.ironspider.ca/webdesign101/htmlhistory.htm"
-          label="http://www.ironspider.ca/webdesign101/htmlhistory.htm" /></para>
-    </blockquote>
-
-    <para>The biggest issue, in my opinion, is that HTML has become a lot more complicated than the initial design. Creating HTML content (particularly when used in conjunction with CSS frameworks like Bootstrap or Zurb or with applications that use additional semantic elements like ePub) takes a lot more than just knowing markup to code them correctly. It takes knowledge of the document structure, the semantics needed for the content or the applications we are creating and the restrictions and schemas that we need to use so that the content will pass validation.</para>
-
-    <para>This article presents 4 different approaches to creating HTML. Two of them use HTML directly but target it as the final output for transformations and templating engines; the other two use markup like HTML without requiring strict HTML conformance. I've made these selections for two reasons:</para>
-
-    <ulist>
-      <item>People who are not profesionals should not have to learn all the details of creating an ePub3 table of content or know the classes to add to elements to create a Bootsrap or Foundation layout grid</item>
-      <item>It makes it easier for developers and designers to build the layout for the content without having to worry about the content itself; we can play with layout and content organization in parallel with content creation and, if we need to make any further changes, we just run our compilation process again</item>
-    </ulist>
-
-    <h2>Markdown</h2>
-
-    <para>Perhaps the simplest solution when moving content from text to HTML is Markdown.</para>
-
-    <para><link href="http://daringfireball.net/projects/markdown/" label="Markdown"
-       /> is a text to (X)HTML conversion tool designed for writers. It refers both to the syntax used in the Markdown text files and the applications used to perform the conversion.</para>
-
-    <para>Markdown language was created in 2004 by John Gruber with the goal of allowing people "to write using an easy-to-read, easy-to-write plain text format, and optionally convert it to structurally valid XHTML (or HTML)" (<link
-        href="http://daringfireball.net/projects/markdown/"
-        label="http://daringfireball.net/projects/markdown/" />)</para>
-
-    <para>The language was designed to be readable as-is, without all the additional tags and attributes that makes it possible to covert markdown to languages like SGML, XML and HTML. Markdown is a formatting syntax for text that can be read by humans and can be easily converted to HTML.</para>
-
-    <para>The original implementation of Markdown is <link
-        href="http://search.cpan.org/~sekimura/Text-Markdown-Discount-0.11/xt/MarkdownXS.pl"
-        label="markdown.pl"
-       /> and has been implemented in several other languages as applications (Ruby Gems, NodeJS modules and Python packages). All versions of Markdown are distributed under open source licenses and are included or available as a plugin for, several content-management systems and text editors.</para>
-
-    <para>Sites such as GitHub, Reddit, Diaspora, Stack Overflow, OpenStreetMap, and SourceForge use variants of Markdown to facilitate content creation and discussion between users.</para>
-
-    <para>The biggest weakness of Markdown is the lack of a unified standard. The original Markdown language hasn't been really supported since it was released in 2004 and all new version of Markdown, both parser and language specification have introduced not wholy compatible changes to Markdown.  The lack of standard is also Markdown’s biggest strength. It means you can, like Github did, implement  your own extensions to the Markdown syntax to acommodate your needs.</para>
-
-    <para>Markdown is not easy to learn but once your fingers get used to the way we type the different elements it becomes much easier to work with as it is nothing more than inserting specific characters in a specific order to obtain the desired effect. Once you train yourself, it is also easy to read without having to convert it to HTML or any other language.</para>
-
-    <para>Most modern text editors have support for Markdown either as part of the default installation or through plugins.</para>
-
-    <h3>Example Markdown document</h3>
-
-    <ulist>
-      <item>
-        <link href="http://daringfireball.net/projects/markdown/index.text"
-          label="Markdown example form daringfireball" />
-      </item>
-    </ulist>
-
-    <h2>Asciidoctor</h2>
-
-    <para>I only discovered Asciidoctor recently, while researching O'Reilly Media's publishing toolchains. It caught my attention because of it's structure, the expresiveness of the markup without being HTML like HTMLbook and the extensibility of the templating system that it uses behind the scenes.</para>
-
-    <para>Asciidoctor has both a command line interface (CLI) and an API. The CLI is a drop-in replacement for the <emphasis>asciidoc</emphasis> command from the Standard python distribution. This means that you have a command line tool <emphasis>asciidoctor</emphasis> that will allow you to convert your marked documents without having to resort to a full blown application.</para>
-
-    <para>Syntax-wise, Asciidoctor is progressively more complex as you implement more advanced features. In the first example below no tables are used, for example. Tables are used in the second and thirs examples both as data tables and for layout.</para>
-
-    <para>The <link href="http://asciidoctor.org/docs/" label="documentation"
-       /> provides more detailed instructions for the desired markup.</para>
-
-    <h3>Example Asciidoc documents</h3>
-
-    <ulist>
-      <item>
-        <link
-          href="https://raw.githubusercontent.com/asciidoctor/asciidoctor-documentation/master/infrastructure-goals-planning.adoc"
-          label="Asciidoctor planning document" />
-      </item>
-      <item>
-        <link
-          href="https://raw.githubusercontent.com/asciidoctor/asciidoctor.org/master/docs/asciidoc-asciidoctor-diffs-table.adoc"
-          label="Comparison of Asciidoctor and AsciiDoc Features" />
-      </item>
-      <item>
-        <link
-          href="https://raw.githubusercontent.com/asciidoctor/asciidoctor.org/master/docs/_includes/apply-theme.adoc"
-          label="Applying Custom Themes" />
-      </item>
-    </ulist>
-
-    <h2>HTMLBook</h2>
-
-    <para>O'Reilly Media has developed several new tools to get content from authors to readers. Atlas is their authoring tool, a web based application that allows you to create content they developed HTMLbook, a subset of HTML geared towards authoring and multi format publishing.</para>
-
-    <para>Given O'Reilly's history and association with open source publishing tools (they were an early adopter and promoter of Docbook and still use it for some of their publications) I found HTMLbook intriguing but not something to look at right away, as with many things you leave for later it fell off my radar.</para>
-
-    <para>It wasn't until I saw Sanders Kleinfeld's (O'Reilly Media Director of Publishing Technologies)  [presentation at IDPF Book World conference](http://www.slideshare.net/sanderskleinfeld/open-source-forpubsslideshare) that I decided to take a second look at HTMLbook and its ecosystem.</para>
-
-    <para>Conceptually HTMLbook is very simple; it combines a subset of HTML5, the semantic structure of ePub documents and other IDPF specifications to create a flavor of HTML 5 that is designed specifically for publishing. There are also stylesheets that will allow you to convert Markdown and other text formats into HTMLbook (see <link
-        href="https://github.com/oreillymedia/htmlbook.js" label="Markdown to HTMLBook"
-         />) and  <link href="AsciiDoc to HTMLBook (via AsciiDoctor)"
-        label="https://github.com/oreillymedia/asciidoctor-htmlbook/" />.)</para>
-
-    <para>If you use Atlas (O'Reilly's authoring and publishing platform) you don't have to worry about markup as the content is created visually. The challenges begin when implementing this vocabulary outside the Atlas environment.</para>
-
-    <para>The project comes with a set of stylesheets to convert HTMLbook content to ePub, MOBI and PDF. The intriguing thing about the stylesheets is that they use CSS Paged Media stylesheets in conjunction with third party tools such as  <link
-        href="http://www.antennahouse.com" label="AntennaHouse" /> or <link
-        href="http://www.princexml.com/" label="PrinceXML" />.</para>
-
-    <para>As with any solution that advocates creating HTML directly I have my reservations. In HTML formating in general and specialized formats like HTMLbooks in particular, the learning curve may be too steep for independent authors to use for creating content.</para>
-
-    <para>The user must learn not only the required HTML5 syntax but also the details regarding ePub semantic structure attributes and the other standards needed to create ePub books. While I understand that technologies such as this are not meant for independent authors or for poeple who are not comfortable or familiar with HTML but the learning curve may still be too steep for most users.</para>
-
-    <h3>Example HTMLbook document</h3>
-
-    <ulist>
-      <item><link
-          href="https://github.com/oreillymedia/HTMLBook/blob/master/samples/alices_adventures_in_wonderland.html"
-          label="Alice Adventures in Wonderland marked as HTMLbook" />]</item>
-    </ulist>
-
-    <h2>XML / XSLT</h2>
-
-    <para>Perhaps the oldest solutions in the book to create HTML without actually creating HTML are XML-based. Docbook, TEI and DITA all have stylesheets that will take the XML content and convert it to HTML, PDF, ePub and other more esoteric formats.</para>
-
-    <para>In addition to stylesheets already available developers can create their own to adress specific needs.</para>
-
-    <para>Furthermore, tools like OxygenXML Author (and I would assume other tools in the same category have a visual mode that allow users to write XML content, validated against a schema in a way that is more familiar to people not used to creating content with raw XML tools.</para>
-
-    <para>The issues with xml are similar to those involved in creating HTML. The markup vocabulary requires brackets, attributes have to be enclosed in quotation marks and generall the syntax is as complicated as you make it. However, tools like Oxygen and smilar help alleviate this problem but don't resolve it completely.</para>
-
-    <para>The screenshot below shows OxygenXML Author working in a Docbook 5 document using visual mode.</para>
-
-    <image alt="Visual Editing Using OxygenXML Author" height="400"
-      src="images/visual-editing-mode-small.png" width="250" />
-
-    <para>The positive side is that using XSLT there is no limit to what we can do with our XML content.</para>
-
-    <h3>XML examples</h3>
-
-    <ulist>
-      <item>
-        <link href="https://github.com/oreillymedia/docbook_samples/blob/master/ch01.xml"
-          label="Sample Chapter marked as Docbook" />
-      </item>
-      <item>
-        <link href="http://docsouth.unc.edu/southlit/poe/poe.xml"
-          label="Tales by Edgar Allan Poe, marked as TEI" />
-      </item>
-      <item>
-        <link
-          href="http://sourceforge.net/p/dita2indesign/code/HEAD/tree/trunk/dita_gutenberg_samples/dita_src/20000_leagues/chapters/d2e10630.xml"
-          label="Chapter from 20000 Leagues Under the Sea, marked as DITA" />
-      </item>
-    </ulist>
-
-    <h2>Conclusion</h2>
-
-    <para>After exploring a selection of HTML conversion options the question becomes <strong><emphasis>which one is best?</emphasis></strong></para>
-
-    <para>The answer is <strong><emphasis>it depends.</emphasis></strong></para>
-
-    <para>The best way to see how can these text-based tools can be incorporated is to ask yourself how much work you want to do in the backend versus how much work do you want you authors to do when creating the content. This is where the value of specialists in digital formats and publishing becomes essential, we can work with clients in providing the best solution to meet their needs.</para>
-
-    <para>Keep in mind who your audience and what the target vocabulary you're working towards, it will dictate what your best strategy is. Are these all the solutions; definitely not.  Other solutions may appear that fit your needs better than those presented here; I would love to hear if that is the case.</para>
-
-    <para>Striking the balance between author and publisher is a delicate one. I tend to fall on the side of making things easier for authors... The tools can be made to translate basic markup into the desired result with minimal requirements for authors to mark up the content; the same can't necessarily be said about the publisher-first strategy</para>
-  </section>
-
-  <section type="chapter">
     <title>Introduction</title>
-    <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like <link
-        href="http://docbook.org" label="Docbook"
-       /> are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</para>
+
+  <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like [Docbook](http://docbook.org) are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</para>
 
     <para>By creating our own markup vocabulary we can be as expressive as we need to be without adding additional complexity for writers and users and without adding unecessary complexity for the developers building the tools to interact with the markup.</para>
 
+    <para>It has been suggested that <link href="http://johnmacfarlane.net/pandoc/" label="Pandoc"/> may be a better alternative than rolling your own markup and style sheet sets. While Pandoc is a very powerful tool it tries to do too much for too many. According to the website, Pandoc supports:</para>
+
+    <ulist>
+      <item>HTML formats: XHTML, HTML5, and HTML slide shows using <link href="http://www.w3.org/Talks/Tools/Slidy" label="Slidy"/>, <link href="http://lab.hakim.se/reveal-js/" label="reveal.js"/>, <link href="http://goessner.net/articles/slideous/" label="Slideous"/>, <link href="http://meyerweb.com/eric/tools/s5/" label="S5"/>, or <link href="http://paulrouget.com/dzslides/" label="DZSlides"/>.</item>
+      <item>Word processor formats: Microsoft Word <link href="http://www.microsoft.com/interop/openup/openxml/default.aspx" label="docx"/>, OpenOffice/LibreOffice <link href="http://en.wikipedia.org/wiki/OpenDocument" label="ODT"/>, <link href="http://opendocument.xml.org/" label="OpenDocument XML"/></item>
+      <item>Ebooks: <link href="http://en.wikipedia.org/wiki/EPUB" label="EPUB"/> version 2 or 3, <link href="http://www.fictionbook.org/index.php/Eng:XML_Schema_Fictionbook_2.1" label="FictionBook2"/></item>
+      <item>Documentation formats: <link href="http://www.docbook.org/" label="DocBook"/>, <link href="http://www.gnu.org/software/texinfo/" label="GNU TexInfo"/>, <link href="http://www.gnu.org/software/groff/groff.html" label="Groff man"/> pages, <link href="http://www.haskell.org/haddock/doc/html/ch03s08.html" label="Haddock markup"/></item>
+      <item>Page layout formats: <link href="https://www.adobe.com/content/dam/Adobe/en/devnet/indesign/cs55-docs/IDML/idml-specification.pdf" label="InDesign ICML"/></item>
+      <item>Outline formats: <link href="http://dev.opml.org/spec2.html" label="OPML"/></item>
+      <item>TeX formats: <link href="http://www.latex-project.org/" label="LaTeX"/>, <link href="http://www.pragma-ade.nl/" label="ConTeXt"/>, LaTeX Beamer slides</item>
+      <item><link href="http://en.wikipedia.org/wiki/Portable_Document_Format" label="PDF"/> via LaTeX</item>
+      <item>Lightweight markup formats: <link href="http://daringfireball.net/projects/markdown/" label="Markdown"/>, <link href="http://docutils.sourceforge.net/docs/ref/rst/introduction.html" label="reStructuredText"/>, <link href="http://www.methods.co.nz/asciidoc/" label="AsciiDoc"/>, <link href="http://www.mediawiki.org/wiki/Help:Formatting" label="MediaWiki markup"/>, <link href="https://www.dokuwiki.org/wiki:syntax" label="DokuWiki markup"/>, Emacs <link href="http://orgmode.org" label="Org-Mode"/>, <link href="http://redcloth.org/textile" label="Textile"/></item>
+      <item>Custom formats: custom writers can be written in <link href="http://www.lua.org" label="lua"/>.</item>
+    </ulist>
+
+    <para>My problems with Pandoc are:</para>
+
+    <ulist>
+      <item>You can only convert your content to PDF if you have LaTex installed. Even a minimal LaTex library requires a fairly large install</item>
+      <item>LaTex installs are different for Macintosh, Windows and Linux. This makes a uniform support system impossible</item>
+      <item>If you want to add custom formats you have to do so in Lua. I'd rather not learn another programming language just for one project</item>
+    </ulist>
+
     <h2>Why create our own markup</h2>
 
-    <para>I have a few answers to that question:</para>
+    <para>Rather than figure out how to use someone else tool for this proof of concept I've decided to build my own markup vocabulary and explore XML, XSL and CSS as the tools to create HTML and print-ready content.</para>
 
-    <para>In creating your own xml-based markup you enforce separation of content and style. The XML document provides the basic content of the document and the hints to use elsewhere. XSLT stylesheets allow you to structure the base document and associated hints into any number of formats (for the purposes of this document we'll concentrate on XHTML, PDF created through Paged Media CSS and ePub)</para>
+    <para>Using XSL and CSS to manipulate XML content reduces the number of external dependencies. As it stands right now, the project depends on <link href="http://www.saxonica.com/welcome/welcome.xml" label="Saxon"/> to convert XML to HTML and <link href="http://www.princexml.com/" label="PrinceXML"/></para>
+
+    <para>In creating your own xml-based markup you enforce separation of content and style. The XML document provides the basic content of the document and the hints to use elsewhere. XSLT stylesheets allow you to structure the base document and associated hints into any number of formats (for the purposes of this document we'll concentrate on XHTML, PDF created through Paged Media CSS and PDF created using XSL formatting Objects)</para>
+
+    <para>It reduces the ammount of external code that we have to adapt in order to acomplish a given task.</para>
 
     <para>Creating a domain specific markup vocabulary allows you think about structure and complexity for yourself as the editor/typesetter and for your authors. It makes you think about elements and attributes and which one is better for the given experience you want and what, if any, restrictions you want to impose on your makeup.</para>
 
@@ -347,24 +203,33 @@
 
     <para>For the purpose of this project we'll define a set of resources that work with a book structure like the one below:</para>
 
-    <code language="xml"
-      >&lt;book>
-  &lt;metadata>
-    &lt;title>The adventures of SHerlock Holmes&lt;/title>
+    <code language="xml">&lt;book&gt;
+  &lt;metadata&gt;
+    &lt;title&gt;The adventures of SHerlock Holmes&lt;/title&gt;
 
-    &lt;author>
-      &lt;first-name>Arthur&lt;/first-name>
-      &lt;surname>Connan Doyle&lt;/surname>
-    &lt;/author>
-  &lt;/metadata>
+    &lt;author&gt;
+      &lt;first-name&gt;Arthur&lt;/first-name&gt;
+      &lt;surname&gt;Connan Doyle&lt;/surname&gt;
+    &lt;/author&gt;
+  &lt;/metadata&gt;
 
-  &lt;section type="chapter">
-    &lt;para>Lorem Ipsum&lt;/para>
-    &lt;para>Lorem Ipsum&lt;/para>
-  &lt;/section>
-&lt;/book>
+  &lt;section type="chapter"&gt;
+    &lt;para&gt;Lorem Ipsum&lt;/para&gt;
+    &lt;para&gt;Lorem Ipsum&lt;/para&gt;
+  &lt;/section&gt;
+&lt;/book&gt;
     </code>
 
     <para>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</para>
   </section>
+  <section type="chapter">
+  <title>The XML Schema</title>
+
+   <blockquote>
+       <para>This version of the documentation is based on commit 542178fb21 to the Github repository. Any differences between this document and the repository should be resolved in favor of the repository (repo is always right)</para>
+   </blockquote>
+  </section>
+
+
+
 </book>
