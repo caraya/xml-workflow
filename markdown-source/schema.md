@@ -22,7 +22,12 @@ With all these choices why did I stick with Schema?
 * It's the most widely supported
 * It can be converted to RelaxNG or Schematron (an experimental conversion to RelaxNG is available in the rng directory of the repository)
 
-## Schema definition
+
+You can work with either the Schema or RelaxNG version. This document will refer to the Schema.
+
+## Getting started
+
+As with all XML document the schema needs to define the XML Prologue (`&lt;?xml version="1.0" encoding="UTF-8"?>`), the root element (`&lt;xs:schema`), the namespaces we'll use for the project and the default forms for elements (`elementFormDefault="qualified"`) and attributes (`attributeFormDefault="unqualified"`)
 
 ```xml
 &lt;?xml version="1.0" encoding="UTF-8"?>
@@ -33,323 +38,296 @@ With all these choices why did I stick with Schema?
     attributeFormDefault="unqualified">
 ```
 
+Form defaults refer to whether we need to add the namespace prefix to our default elements. To avoid confusion I've chosen to add namespace prefixes to all our elements (using `xs:` as the namespace prefix for the schema name space.) Doing that for attributes is unnecessary; it may not always be the case.
+
+We begin the actual work in the schema by defining some basic types that will be the basis of elements and complex types later in the schema.
+
+Most of the simeType elements are created by restriction. We base the element in one of the default Schema data types.
+
+For example: token255 is based on the toke schema element and is restricted to a maximum length of 255 characters. When this length is not enough we can use strings or other data types.
 
 ```xml
-    &lt;!-- Simple types to use in the content -->
-    &lt;xs:simpleType name="token255">
-        &lt;xs:annotation>
-            &lt;xs:documentation>Defines a token of no more than 255 characters&lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:restriction base="xs:token">
-            &lt;xs:maxLength value="255"/>
-        &lt;/xs:restriction>
-    &lt;/xs:simpleType>
-
-    &lt;xs:simpleType name="ISBN-type10">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                A much longer and tedious type definition available at http://xfront.com/isbn.html
-
-                It includes country specific ISBN derivations
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:restriction base="xs:string">
-            &lt;xs:pattern value="0-[0-1][0-9]-\d{6}-[0-9x]">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        group/country ID = 0 (hyphen after the 1st digit)
-                        Publisher ID = 00...19 (hyphen after the 3rd digit)
-                        Block size = 1,000,000 (requires 6 digits)
-                        check digit is 0-9 or 'x'
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:pattern>
-        &lt;/xs:restriction>
-    &lt;/xs:simpleType>
-
-    &lt;xs:simpleType name="align">
-        &lt;xs:annotation>
-            &lt;xs:documentation>Attribute ennumeration for elements that can be aligned&lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:restriction base="xs:token">
-            &lt;xs:enumeration value="left"/>
-            &lt;xs:enumeration value="center"/>
-            &lt;xs:enumeration value="right"/>
-            &lt;xs:enumeration value="justify"/>
-        &lt;/xs:restriction>
-    &lt;/xs:simpleType>
-
-    &lt;xs:element name="language" type="xs:language">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                book primary language or language for specific sections of the book
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-    &lt;/xs:element>
-
-    &lt;xs:attributeGroup name="genericPropertiesGroup">
-        &lt;xs:attribute name="id" type="xs:ID" use="optional">
-            &lt;xs:annotation>
-                &lt;xs:documentation>ID for the paragraph if any&lt;/xs:documentation>
-            &lt;/xs:annotation>
-        &lt;/xs:attribute>
-        &lt;xs:attribute name="class" type="xs:token" use="optional">
-            &lt;xs:annotation>
-                &lt;xs:documentation>Class for the paragraph if any&lt;/xs:documentation>
-            &lt;/xs:annotation>
-        &lt;/xs:attribute>
-    &lt;/xs:attributeGroup>
+&lt;!-- Simple types to use in the content -->
+&lt;xs:simpleType name="token255">
+  &lt;xs:restriction base="xs:token">
+    &lt;xs:maxLength value="255"/>
+  &lt;/xs:restriction>
+&lt;/xs:simpleType>
 ```
+ISBN-type10 uses string as its base and creates a regular expression to match the format of [ISBN](http://www.isbn.org/) codes used to identify books worldwide.
+
+The ISBN element only matches one format. There are many formats that could match an ISBN record depending on where the book was published and which country it was registered in. There is a simple type element for ISBN numbers worldwide available at [XFront](http://xfront.com/isbn.html). The code can be incorporated to the schema at a later time.
 
 ```xml
-    &lt;!-- complex types to create groups of similar person items -->
-    &lt;xs:complexType name="person">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Generic element to denote an individual involved in creating the book
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:sequence>
-            &lt;xs:element name="first-name" type="xs:string"/>
-            &lt;xs:element name="surname" type="xs:string"/>
-        &lt;/xs:sequence>
-        &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
-    &lt;/xs:complexType>
-
-    &lt;xs:complexType name="organization">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Base organization structure to create corporate authors/editors and other places where an organization can take the place of a person
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:all>
-            &lt;xs:element name='name' type="xs:string"/>
-        &lt;/xs:all>
-    &lt;/xs:complexType>
-    
-    &lt;xs:element name="address">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Complex type for address
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexType>
-            &lt;xs:sequence>
-                &lt;xs:element name="recipient" type="xs:string"/>
-                &lt;xs:element name="street" type="xs:string"/>
-                &lt;xs:element name="city" type="xs:string"/>
-                &lt;xs:element name="state" type="xs:string"/>
-                &lt;xs:element name="postcode" type="xs:string"/>
-                &lt;xs:element name="country" type="xs:token"/>
-            &lt;/xs:sequence>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:complexType name="author">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Author person
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexContent>
-            &lt;xs:extension base="person"/>
-        &lt;/xs:complexContent>
-    &lt;/xs:complexType>
-
-    &lt;xs:complexType name="editor">
-        &lt;xs:annotation>
-            &lt;xs:documentation>extension to person to indicate editor and his/her role&lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexContent>
-            &lt;xs:extension base="person">
-                &lt;xs:choice>
-                    &lt;xs:element name="type" type="xs:token"/>
-                &lt;/xs:choice>
-            &lt;/xs:extension>
-        &lt;/xs:complexContent>
-    &lt;/xs:complexType>
-
-    &lt;xs:complexType name="otherRole">
-        &lt;xs:annotation>
-            &lt;xs:documentation>extension to person to accomodate roles other than author and editor&lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexContent>
-            &lt;xs:extension base="person">
-                &lt;xs:sequence minOccurs="1" maxOccurs="1">
-                    &lt;xs:element name="role" type="xs:token"/>
-                &lt;/xs:sequence>
-            &lt;/xs:extension>
-        &lt;/xs:complexContent>
-    &lt;/xs:complexType>
-
-    &lt;xs:element name="publisher">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Derived from organization
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexType mixed="true">
-            &lt;xs:all>
-                &lt;xs:element name="name" type="organization"/>
-                &lt;xs:element ref="address"/>
-            &lt;/xs:all>
-            &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
+&lt;xs:simpleType name="ISBN-type10">
+  &lt;xs:restriction base="xs:string">
+    &lt;xs:pattern value="0-[0-1][0-9]-\d{6}-[0-9x]"/>
+  &lt;/xs:restriction>
+&lt;/xs:simpleType>
 ```
+
+the align simple type is an enumeration. We list all the possible values for align attribute so we can reference them later without having to type them all the time.
 
 ```xml
-    &lt;!-- Wrappers around complext types -->
-    &lt;xs:element name="authors">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                One or more authors
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexType mixed="true">
-            &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
-                &lt;xs:element name="author" type="author"/>
-            &lt;/xs:choice>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:element name="editors">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                One or more editors
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexType mixed="true">
-            &lt;xs:sequence minOccurs="0" maxOccurs="unbounded">
-                &lt;xs:element name="editor" type="editor"/>
-            &lt;/xs:sequence>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:element name="otherRoles">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                One or more people in other roles
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-        &lt;xs:complexType mixed="true">
-            &lt;xs:sequence minOccurs="0" maxOccurs="unbounded">
-                &lt;xs:element name="otherRole" type="otherRole">&lt;/xs:element>
-            &lt;/xs:sequence>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
+&lt;xs:simpleType name="align">
+  &lt;xs:restriction base="xs:token">
+    &lt;xs:enumeration value="left"/>
+    &lt;xs:enumeration value="center"/>
+    &lt;xs:enumeration value="right"/>
+    &lt;xs:enumeration value="justify"/>
+  &lt;/xs:restriction>
+&lt;/xs:simpleType>
 ```
+
+Languages are handled using an element types as the language primitive (`xs:language`.) We can use it anywhere in the schema where we are allowed to use children elements.
+
+Another possibility is to convert it to an attribute and move it to the generic properties attribute group discussed below.
 
 ```xml
-    &lt;xs:element name="releaseinfo">
-        &lt;xs:complexType mixed="true">
-            &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
-                &lt;xs:element ref="para"/>
-            &lt;/xs:choice>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:element name="copyright">
-        &lt;xs:complexType mixed="true">
-            &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
-                &lt;xs:element ref="para"/>
-            &lt;/xs:choice>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:element name="legalnotice">
-        &lt;xs:complexType mixed="true">
-            &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
-                &lt;xs:element ref="para"/>
-            &lt;/xs:choice>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:element name="pubdate" type="xs:date"/>
-
-    &lt;xs:element name="revision">
-        &lt;xs:complexType mixed="true">
-            &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
-                &lt;xs:element ref="para"/>
-            &lt;/xs:choice>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:element name="revhistory">
-        &lt;xs:complexType mixed="true">
-            &lt;xs:sequence minOccurs="1" maxOccurs="unbounded">
-                &lt;xs:element ref="revision"/>
-            &lt;/xs:sequence>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
-
-    &lt;xs:element name="abstract">
-        &lt;xs:complexType mixed="true">
-            &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
-                &lt;xs:element ref="para"/>
-            &lt;/xs:choice>
-        &lt;/xs:complexType>
-    &lt;/xs:element>
+&lt;xs:element name="language" type="xs:language"/>
 ```
+
+The attribute group element adds all the attributs with one statement. As it currently set up, it adds id and class attributes to the elements it's been added to. A future enhancement may be to add the language element as an attribute.
+
+```xml
+&lt;xs:attributeGroup name="genericPropertiesGroup">
+  &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
+  &lt;xs:attribute name="class" type="xs:token" use="optional"/>
+&lt;/xs:attributeGroup>
+```
+
+## Organization and children
+
+
+Initially there was no organization element until the question came up: *What happens when an author is not a person but a company or group?*
+
+We keep the organization element as generic as possible to make sure we can use it in different instances. The only thing we know we'll need is the organization's name... everything else can be added when we build elements on top of organization (like publisher, discussed below.)
+
+Address is one of those additional elements we add to organization. Addresses are string based and use the U.S. model.
+
+Finally we build a publisher element by putting together our organization and address elements. Notice how the complex type and the element are called differently.
+
+```xml
+&lt;xs:complexType name="organization">
+  &lt;xs:all>
+    &lt;xs:element name='name' type="xs:string"/>
+  &lt;/xs:all>
+&lt;/xs:complexType>
+
+&lt;xs:element name="address">
+  &lt;xs:complexType>
+    &lt;xs:sequence>
+      &lt;xs:element name="recipient" type="xs:string"/>
+      &lt;xs:element name="street" type="xs:string"/>
+      &lt;xs:element name="city" type="xs:string"/>
+      &lt;xs:element name="state" type="xs:string"/>
+      &lt;xs:element name="postcode" type="xs:string"/>
+      &lt;xs:element name="country" type="xs:token"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+
+&lt;xs:element name="publisher">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:all>
+      &lt;xs:element name="name" type="organization"/>
+      &lt;xs:element ref="address"/>
+    &lt;/xs:all>
+    &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+```
+
+
+## Person and children elements
+
+We now move to define individuals and their roles.
+
+The base class is person where we define a first-name and surname. We'll use this to create the roles for our different users with additional elements and attributes where necessary.
+
+```xml
+&lt;!-- complex types to create groups of similar person items -->
+&lt;xs:complexType name="person">
+  &lt;xs:sequence>
+    &lt;xs:element name="first-name" type="xs:string"/>
+    &lt;xs:element name="surname" type="xs:string"/>
+  &lt;/xs:sequence>
+&lt;/xs:complexType>
+```
+
+Author, editor and otherRole use person as the base and then add additional elements to expand the person based on the type of editor (for the editor element) or the role they play in the book (for otherRole.)
+
+During initial develpment I thought I'd just only work with plural elements (authors, editors and otherRoles) but soon realized that it took a lot of flexibility out of the schema since there may be other places where we need this information. For example, we may have an edited volume where each chapter has one or more authors.
+
+So we have individual author (directly based on person), editor (with a `type` attribute to indicate what kind of editor the person is) and otherRole (for roles other than editor we use this with the `role` attribute)
+
+```xml
+&lt;xs:complexType name="author">
+  &lt;xs:complexContent>
+    &lt;xs:extension base="person"/>
+  &lt;/xs:complexContent>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="editor">
+  &lt;xs:complexContent>
+    &lt;xs:extension base="person">
+      &lt;xs:choice>
+        &lt;xs:element name="type" type="xs:string"/>
+      &lt;/xs:choice>
+    &lt;/xs:extension>
+  &lt;/xs:complexContent>
+&lt;/xs:complexType>
+
+&lt;xs:complexType name="otherRole">
+  &lt;xs:complexContent>
+    &lt;xs:extension base="person">
+      &lt;xs:sequence minOccurs="1" maxOccurs="1">
+        &lt;xs:element name="role" type="xs:string"/>
+      &lt;/xs:sequence>
+    &lt;/xs:extension>
+  &lt;/xs:complexContent>
+&lt;/xs:complexType>
+```
+
+With individual roles created we can now create elements for multiple individuals.
+
+Authors can have 1 or more author elements. At least 1 author is required for the document to validate, whether we choose to use it or not. Remember that the transformation (using XSLT) doesn't have to use all the elements on the XML source.
+
+Editors and otherRoles wrap around individual elements (editor and otherRole) to provide an easier way to work with them in XSLT later on.
+
+Also note that we require 0 or more instances of the base type, rather than 1. This is my way of making the element optional: either we have zero, one or more than one children.
+
+```xml
+&lt;!-- Wrappers around complext types -->
+&lt;xs:element name="authors">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
+      &lt;xs:element name="author" type="author"/>
+    &lt;/xs:choice>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+
+&lt;xs:element name="editors">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:sequence minOccurs="0" maxOccurs="unbounded">
+      &lt;xs:element name="editor" type="editor"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+
+&lt;xs:element name="otherRoles">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:sequence minOccurs="0" maxOccurs="unbounded">
+      &lt;xs:element name="otherRole" type="otherRole"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+```
+
+## Metadata and publishing information
+
+In order to acommodate publishing information, we add multiple publishing related elements to account for publishing and publishing related information.
+
+Most of these elements (except pubdate) are made of 1 or more paragraphs.
+
+```xml
+&lt;xs:element name="releaseinfo">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
+      &lt;xs:element ref="para"/>
+    &lt;/xs:choice>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+
+&lt;xs:element name="copyright">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
+      &lt;xs:element ref="para"/>
+    &lt;/xs:choice>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+
+&lt;xs:element name="legalnotice">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
+      &lt;xs:element ref="para"/>
+    &lt;/xs:choice>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+
+&lt;xs:element name="abstract">
+  &lt;xs:complexType mixed="true">
+      &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
+          &lt;xs:element ref="para"/>
+      &lt;/xs:choice>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+```
+
+
+The date is different as it's based on the date schema type which in turn it's based on the [ISO 8601](http://www.wikiwand.com/en/ISO_8601) standard.
+
+An example of a valid ISO 8601 date is: `2015-02-28`
+
+This is also the standard that handles time so, in theory, we could build a date/time structure including a date formated like the example above plus time and timezone offset but, unless we're required to we will avoid that much level of detail.
+
+```xml
+&lt;xs:element name="pubdate" type="xs:date"/>
+```
+
+The idea behind revision and revhistory is to provide an accountability chain for the publication's history. We can have one or more paragraphs where we outline the following information:
+
+* Revision number
+* Date
+* Author's name
+* Revision description/notes
+
+In a future release we'll make these elements explicit. Until then paragraphs seem a flexible enouh solution
+
+```xml
+&lt;xs:element name="revision">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
+      &lt;xs:element ref="para"/>
+    &lt;/xs:choice>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+
+&lt;xs:element name="revhistory">
+  &lt;xs:complexType mixed="true">
+    &lt;xs:sequence minOccurs="1" maxOccurs="unbounded">
+      &lt;xs:element ref="revision"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+&lt;/xs:element>
+```
+
+## Links and related elements
 
 ```xml
     &lt;!-- Links -->
     &lt;xs:element name="link">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                links...
-
-                What's the difference between supporting IRI and URI
-                other than URI are supposed to work only with ASCII characters
-            &lt;/xs:documentation>
         &lt;/xs:annotation>
         &lt;xs:complexType>
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
-            &lt;xs:attribute name="href" type="xs:anyURI" use="required">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        Link destination. Attribute is required
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:attribute>
-            &lt;xs:attribute name="label" type="xs:token" use="required">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>Text provided for accessibility&lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:attribute>
+            &lt;xs:attribute name="href" type="xs:anyURI" use="required"/>
+            &lt;xs:attribute name="label" type="xs:token" use="required"/>
         &lt;/xs:complexType>
     &lt;/xs:element>
 
     &lt;!-- Named Anchor -->
     &lt;xs:element name="anchor">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                The receiving end of an anchor link within the same document
-                (the link is something like "#test") and the location of the
-                test anchor has something like id="test"
-
-                because we're using IDs each anchor has to be unique and
-                must contain no whitespaces
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType>
             &lt;xs:attributeGroup ref="genericPropertiesGroup" />
         &lt;/xs:complexType>
     &lt;/xs:element>
 ```
 
+## Div and span
+
 ```xml
     &lt;!-- Div and Span elements -->
     &lt;xs:element name="div">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Allows for block level content using div
-
-                class and id attributes from genericPropertiesGroup
-
-                type is use to create data-type and/or epub:type annotations
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
       &lt;xs:complexType mixed="true">
         &lt;xs:sequence>
           &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -391,22 +369,7 @@ With all these choices why did I stick with Schema?
         &lt;/xs:annotation>
       &lt;xs:complexType mixed="true">
         &lt;xs:choice  minOccurs="0" maxOccurs="unbounded">
-          &lt;xs:annotation>
-            &lt;xs:documentation>
-              Style, Link and Span Elements.
-
-              We use strong and emphasis rather than bold and italics
-              to try and stay in synch with HTML and HTML5. We may add additional tags
-              later in the process.
-
-              We can use any of these elements inside paragraph in no particular order
-              0 or more times (no maximum)
-
-              Researching how to handle nested styles and whether the model below
-              would handle nested children
-            &lt;/xs:documentation>
-          &lt;/xs:annotation>
-          &lt;xs:element ref="language"/>
+         &lt;xs:element ref="language"/>
           &lt;xs:element ref="strong"/>
           &lt;xs:element ref="emphasis"/>
           &lt;xs:element ref="underline"/>
@@ -421,109 +384,43 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
+## Figure and image
+
 ```xml
     &lt;!-- Figure and related elements -->
     &lt;!--
-        The schema accepts both images and figures as children of section to accomodate
-        images with and without captions
+        The schema accepts both images and figures as children of section to
+        accomodate images with and without captions
     -->
     &lt;xs:element name="figure">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Figure is a wrapper for an image and a caption.
-
-                Because we accept either
-                figure or image as part of our content model we keep most of the attributes
-                on the image and duplicate those that are needed in the figure element.
-
-                Unlike the image all attributes of figure are optional
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:all>
                 &lt;xs:element ref="anchor"/>
                 &lt;xs:element ref="image"/>
                 &lt;xs:element ref="figcaption"/>
             &lt;/xs:all>
-            &lt;xs:attribute name="height" type="xs:nonNegativeInteger" use="optional">
-              &lt;xs:annotation>
-                &lt;xs:documentation>
-                  Height for the image expressed as a positive integer
-                &lt;/xs:documentation>
-              &lt;/xs:annotation>
-            &lt;/xs:attribute>
-            &lt;xs:attribute name="width" type="xs:nonNegativeInteger" use="optional">
-              &lt;xs:annotation>
-                &lt;xs:documentation>
-                  Width for the image expressed as a positive integer
-                &lt;/xs:documentation>
-              &lt;/xs:annotation>
-            &lt;/xs:attribute>
-            &lt;xs:attribute name="align" type="align" use="optional" default="left">
-              &lt;xs:annotation>
-                &lt;xs:documentation>
-                  Optional alignment
-                &lt;/xs:documentation>
-              &lt;/xs:annotation>
-            &lt;/xs:attribute>
+            &lt;xs:attribute name="height" type="xs:nonNegativeInteger" use="optional"/>
+            &lt;xs:attribute name="width" type="xs:nonNegativeInteger" use="optional"/>
+            &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
           &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
         &lt;/xs:complexType>
     &lt;/xs:element>
 
-    &lt;xs:element name="figcaption">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                caption for the image in the figure. Because it's only used as
-                a child of figure, we don't need to assign attributes to it
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
-    &lt;/xs:element>
+    &lt;xs:element name="figcaption"/>
 
     &lt;xs:element name="image">
-        &lt;xs:annotation>
-            &lt;xs:documentation>image and image-related attributes&lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType>
             &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
-            &lt;xs:attribute name="src" type="xs:token" use="required">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        Source for the image. We may want to create a restriction
-                        to account for both local and remote addresses
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:attribute>
-            &lt;xs:attribute name="height" type="xs:nonNegativeInteger" use="required">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        Height for the image expressed as a positive integer
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:attribute>
-            &lt;xs:attribute name="width" type="xs:nonNegativeInteger" use="required">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        Width for the image expressed as a positive integer
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:attribute>
-            &lt;xs:attribute name="alt" type="token255" use="required">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        Alternate text contstained to 255 characters
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:attribute>
-            &lt;xs:attribute name="align" type="align" use="optional" default="left">
-                &lt;xs:annotation>
-                    &lt;xs:documentation>
-                        Optional alignment
-                    &lt;/xs:documentation>
-                &lt;/xs:annotation>
-            &lt;/xs:attribute>
+            &lt;xs:attribute name="src" type="xs:token" use="required"/>
+            &lt;xs:attribute name="height" type="xs:nonNegativeInteger" use="required"/>
+            &lt;xs:attribute name="width" type="xs:nonNegativeInteger" use="required"/>
+            &lt;xs:attribute name="alt" type="token255" use="required"/>
+            &lt;xs:attribute name="align" type="align" use="optional" default="left"/>
         &lt;/xs:complexType>
     &lt;/xs:element>
 ```
+
+## Video
 
 ```xml
     &lt;!-- Video and multimedia -->
@@ -545,33 +442,23 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 
     &lt;xs:element name="source">
-      &lt;xs:annotation>
-        &lt;xs:documentation>
-          Source track for video, can be used instead of the src attribute in the video itself
-        &lt;/xs:documentation>
-      &lt;/xs:annotation>
       &lt;xs:complexType>
         &lt;xs:attribute name="src" type='xs:string' use="required"/>
         &lt;xs:attribute name="type" type='xs:string' use="optional"/>
-        &lt;xs:anyAttribute/>&lt;!-- There's got to be more attributes -->
       &lt;/xs:complexType>
     &lt;/xs:element>
 
     &lt;xs:element name="track">
-      &lt;xs:annotation>
-        &lt;xs:documentation>
-          VTT track for accessibility and additional payloads
-        &lt;/xs:documentation>
-      &lt;/xs:annotation>
       &lt;xs:complexType>
         &lt;xs:attribute name="src" type='xs:string' use="required"/>
         &lt;xs:attribute name="label" type='xs:string' use="required"/>
         &lt;xs:attribute name="kind" type='xs:string'/>
         &lt;xs:attribute name="srclang" type='xs:string' default='en'/>
-        &lt;xs:anyAttribute/> &lt;!-- Not sure hot to handle the deafult attribute -->
       &lt;/xs:complexType>
     &lt;/xs:element>
 ```
+
+## Styles
 
 ```xml
     &lt;!-- Style elements -->
@@ -625,14 +512,11 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
+## Lists
+
 ```
     &lt;!-- Lists -->
     &lt;xs:element name="ulist">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Unordered list
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
               &lt;xs:element ref="item"/>
@@ -644,11 +528,6 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 
     &lt;xs:element name="olist">
-        &lt;xs:annotation>
-            &lt;xs:documentation>
-                Ordered list
-            &lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
             &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
                 &lt;xs:element ref="item"/>
@@ -675,6 +554,8 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
+## Fenced code blocks
+
 ```xml
     &lt;!-- Fenced code blocks -->
     &lt;xs:element name="code">
@@ -687,6 +568,8 @@ With all these choices why did I stick with Schema?
         &lt;/xs:complexType>
     &lt;/xs:element>
 ```
+
+## Blockquotes, asides and marginalia
 
 ```xml
     &lt;!-- Blockquotes, asides and marginalia -->
@@ -771,31 +654,13 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
+## Paragraphs
 
 ```xml
     &lt;!-- Paragraphs -->
     &lt;xs:element name="para">
-      &lt;xs:annotation>
-        &lt;xs:documentation>Para is the essential text content element. It'll get hairy because we
-          have a lot of possible attributes we can use on it&lt;/xs:documentation>
-      &lt;/xs:annotation>
       &lt;xs:complexType mixed="true">
         &lt;xs:choice  minOccurs="0" maxOccurs="unbounded">
-          &lt;xs:annotation>
-            &lt;xs:documentation>
-              Style, Link and Span Elements.
-
-              We use strong and emphasis rather than bold and italics
-              to try and stay in synch with HTML and HTML5. We may add additional tags
-              later in the process.
-
-              We can use any of these elements inside paragraph in no particular order
-              0 or more times (no maximum)
-
-              Researching how to handle nested styles and whether the model below
-              would handle nested children
-            &lt;/xs:documentation>
-          &lt;/xs:annotation>
           &lt;xs:element ref="language"/>
           &lt;xs:element ref="strong"/>
           &lt;xs:element ref="emphasis"/>
@@ -811,6 +676,7 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
+## Headings
 
 ```xml
     &lt;!-- Headings -->
@@ -857,7 +723,7 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
-
+## Metadata element
 
 ```xml
     &lt;!-- Metadata element -->
@@ -887,7 +753,7 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
-
+## Section element
 
 ```xml
     &lt;!-- Section element -->
@@ -923,6 +789,8 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
+## Table of  contents placeholder
+
 ```xml
     &lt;!-- Testing to see if we really need a separate toc element -->
     &lt;xs:element name="toc">
@@ -934,18 +802,13 @@ With all these choices why did I stick with Schema?
     &lt;/xs:element>
 ```
 
+## Puting it al together: The book element
+
 ```xml
     &lt;!-- Base book element -->
     &lt;xs:element name="book">
-        &lt;xs:annotation>
-            &lt;xs:documentation>The main book element and it's children&lt;/xs:documentation>
-        &lt;/xs:annotation>
         &lt;xs:complexType mixed="true">
-            &lt;xs:annotation>
-                &lt;xs:documentation>A sequence of one metadata section followed by 1 or more sections&lt;/xs:documentation>
-            &lt;/xs:annotation>
             &lt;xs:choice maxOccurs="unbounded">
-                &lt;xs:element ref="anchor" minOccurs="0" maxOccurs="1"/> &lt;!-- To create things like anchors to the beginning of the document -->
                 &lt;xs:element ref="metadata" minOccurs="0" maxOccurs="1"/>
                 &lt;xs:element ref="toc" minOccurs="0" maxOccurs="1"/>
                 &lt;xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>
