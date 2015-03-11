@@ -5,16 +5,13 @@
 <xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:epub="http://www.idpf.org/2007/opf" exclude-result-prefixes="dc epub"
+  xmlns:epub="http://www.idpf.org/2007/opf"
   xml:lang="en-US"
   version="2.0">
-  <!-- Preserve whitespace from the elements below -->
-  <xsl:preserve-space elements="code"/>
-  <!-- Strip whitespace from the listed elements -->
-  <xsl:strip-space elements="*"/>
   <!-- Define the output for this and all document children -->
-  <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
-
+  <xsl:output name="xhtml-out" method="xhtml" indent="no" encoding="UTF-8" omit-xml-declaration="yes" />
+  <xsl:strip-space elements="*"/>
+  <xsl:preserve-space elements="pre code"/>
   <!--
     Default template taken from http://bit.ly/1sXqIL8
 
@@ -47,22 +44,12 @@
       <link rel="stylesheet" href="css/normalize.css"/>
       <link rel="stylesheet" href="css/style.css" />
       <xsl:if test="code">
-        <!--
-           Use highlight.js and docco style
-        -->
-        <link rel="stylesheet" href="css/styles/railscasts.css" />
-        <!-- Load highlight.js -->
-        <script src="lib/highlight.pack.js"></script>
+        <script src="js/object-key-polyfill.js"/>
+        <script src="lib/highlight.pack.js"/>
         <script>
-          hljs.initHighlightingOnLoad();
+          hljs.initHighlighting();
         </script>
       </xsl:if>
-      <!--
-          Comment this out for now. It'll become relevant when we add video
-          <script src="js/script.js"></script>
-
-          Working on figuring out why the js/video.js doesn't work on desktop
-      -->
     </head>
     <body>
       <xsl:apply-templates select="/" mode="toc"/>
@@ -72,18 +59,6 @@
   </xsl:template>
 
   <xsl:template match="/" mode="toc">
-    <!--
-    <xsl:for-each-group select="section" group-by="@type">
-    <tr>
-      <td><xsl:value-of select="position()"/></td>
-      <td><xsl:value-of select="@country"/></td>
-      <td>
-        <xsl:value-of select="current-group()/@name" separator=", "/>
-      </td>
-      <td><xsl:value-of select="sum(current-group()/@pop)"/></td>
-    </tr>
-  </xsl:for-each-group>
-    -->
     <xsl:result-document href='toc.html' format="xhtml-out">
       <html>
         <head>
@@ -138,7 +113,7 @@
             <!--
               Use highlight.js and github style
             -->
-            <link rel="stylesheet" href="css/styles/railscasts.css" />
+            <link rel="stylesheet" href="css/styles/github.css" />
             <!-- Load highlight.js -->
             <script src="lib/highlight.pack.js"></script>
             <script>
@@ -203,7 +178,7 @@
           <xsl:value-of select="first-name"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="surname"/>
-          <xsl:value-of select="concat(' - ', type, ' ', 'editor')"></xsl:value-of>
+          <xsl:value-of select="concat(' - ', type, ' ', 'editor')"/>
         </li>
       </xsl:for-each>
     </ul>
@@ -226,79 +201,79 @@
 
   <xsl:template match="publisher">
     <xsl:element name="div">
-      <xsl:if test="string(@class)">
-        <xsl:attribute name="class">
-          <xsl:value-of select="@class"/>
-        </xsl:attribute>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="string(@class)">
+          <xsl:attribute name="class" select="@class"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="class" select="'publisher'"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:if test="string(@id)">
         <xsl:attribute name="id">
           <xsl:value-of select="@id"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:element name="p">
         <xsl:value-of select="name"/>
         <xsl:apply-templates select="address"/>
-      </xsl:element>
     </xsl:element>
   </xsl:template>
 
   <xsl:template match="address">
     <xsl:element name="div">
-      <xsl:attribute name="class" select="'address'"/>
-      <xsl:element name="p">
-        <xsl:value-of select="recipient"/>
-      </xsl:element>
-      <xsl:element name="p">
-        <xsl:value-of select="street"/>
-      </xsl:element>
-      <xsl:element name="p">
-        <xsl:value-of select="city"/>
-      </xsl:element>
-      <xsl:element name="p">
-        <xsl:value-of select="state"/>
-      </xsl:element>
-      <xsl:element name="p">
-        <xsl:value-of select="postcode"/>
-      </xsl:element>
-      <xsl:element name="p">
-        <xsl:value-of select="country"/>
-      </xsl:element>
+      <xsl:choose>
+        <xsl:when test="string(@class)">
+          <xsl:attribute name="class" select="@class"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="class" select="'address'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:element name="p"><xsl:value-of select="recipient"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="street"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="city"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="state"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="postcode"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="country"/></xsl:element>
     </xsl:element>
   </xsl:template>
 
-  <!-- Kludge to test whether this works or not -->
-  <xsl:template match="releaseinfo | copyright | legalnotice | pubdate">
-    <xsl:message terminate="no">
-      <xsl:value-of select="name()"/> content model reduced during development.
-      We may have to expand elements to individual templates
-    </xsl:message>
-    <xsl:element name="p">
-      <xsl:value-of select="."/>
-    </xsl:element>
-  </xsl:template>
-
-  <xsl:template match="abstract">
+  <xsl:template match="releaseinfo | copyright | legalnotice | pubdate | abstract">
     <xsl:element name="div">
-      <xsl:attribute name="class" select="'abstract'"/>
+      <xsl:choose>
+        <xsl:when test="string(@class)">
+          <xsl:attribute name="class" select="@class"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="class" select="name()"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
 
+
   <xsl:template match="revhistory">
     <xsl:element name="div">
-      <xsl:attribute name="class" select="'revhistory'"></xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="string(@class)">
+          <xsl:attribute name="class" select="@class"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="class" select="'revhistory'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:value-of select="revision"/>
     </xsl:element>
   </xsl:template>
 
   <xsl:template match="revision">
-    <xsl:message terminate="no">
-      <xsl:value-of select="name()"/> needs an expanded model.
-      Reduced to single paragraph for testing
-    </xsl:message>
-    <xsl:element name="p">
+    <xsl:element name="div">
       <xsl:attribute name="class" select="'revision'"/>
-      <xsl:value-of select="."/>
+      <p><xsl:value-of select="revnumber"/></p>
+      <p><xsl:value-of select="pubdate"/></p>
+      <p><xsl:value-of select="authorinitials"/></p>
+      <p><xsl:value-of select="revnotes"/></p>
     </xsl:element>
   </xsl:template>
 
@@ -686,20 +661,9 @@
       </xsl:element>
   </xsl:template>
 
-  <xsl:template match="anchor">
-    <!--
-    Not sure if I want to make this an empty element or not
-
-    Empty element <anchor name="home"/> appeals to my ease
-    of use paradigm but it may not be as easy to understand
-    for peope who are not familiar with XML empty elements
+  <!--
+    The anchor element has been removed as unnecessary
   -->
-    <xsl:element name="a">
-      <xsl:attribute name="id">
-        <xsl:apply-templates/>
-      </xsl:attribute>
-    </xsl:element>
-  </xsl:template>
 
   <!-- FENCED CODE FRAGMENTS -->
   <!--
@@ -709,15 +673,15 @@
     When highlight.js works we can remove the exta wrapper
   -->
   <xsl:template match="code">
-     <xsl:element name="pre">
-      <xsl:element name="code">
-        <xsl:attribute name="language">
-          <xsl:value-of select="@language"/>
+     <pre>
+       <code>
+        <xsl:attribute name="class">
+          <xsl:value-of select="concat(@language, ' ', 'hljs')"/>
         </xsl:attribute>
         <xsl:value-of select="."/>
-      </xsl:element>
-    </xsl:element>
-  </xsl:template>
+     </code>
+   </pre>
+ </xsl:template>
 
   <!-- LIST AND LIST ITEMS -->
   <xsl:template match="ulist">

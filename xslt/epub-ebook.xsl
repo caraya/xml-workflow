@@ -34,13 +34,13 @@
   <xsl:variable name="html.ext" select="'.xhtml'"/>
   <!-- XHTML OUTPUT DIRECTORY -->
   <xsl:variable name="epub.oebps.dir" select="'OEBPS'"/>
-  <xsl:param name="epub.version">3.0</xsl:param>
+  <xsl:param name="epub.version" select="'3.0'"/>
   <!-- INCLUDE NCX IN PACKAGE FOR BACKWARDS COMPATIBILITY? -->
   <xsl:param name="epub.include.ncx" select="0"/>
   <!-- NAME OF PACKAGE.OPF File -->
   <xsl:param name="epub.package.filename" select="'package.opf'"/>
   <xsl:param name="epub.full.package.path" select="concat($epub.oebps.dir, $epub.package.filename)" />
-  <xsl:param name="epub.cover.filename" select="concat('cover', '.xhtml')"/>
+  <xsl:param name="epub.cover.filename" select="'cover.xhtml'"/>
   <!-- names of id attributes used in package files -->
   <xsl:param name="epub.meta.identifier.id">meta-identifier</xsl:param>
   <xsl:param name="epub.dc.identifier.id">pub-identifier</xsl:param>
@@ -69,7 +69,7 @@
 
   <xsl:template name="generate.cover">
     <xsl:result-document href='cover.xhtml' format="xhtml-out">
-      <xsl:message terminate="yes">
+      <xsl:message terminate="no">
         <xsl:text>Generate cover template is not complete. eBook will not pass validation</xsl:text>
       </xsl:message>
     </xsl:result-document>
@@ -77,7 +77,7 @@
 
   <!-- When called this will generate the mimetype file. I hope in the right format :-) -->
   <xsl:template name="generate.mime">
-    <xsl:result-document href='concat("$oebps.package.dir", "$epub.oebps.dir", "mimetype")' format="text-out">
+    <xsl:result-document href='concat("$oebps.package.dir/", "$epub.oebps.dir/", "mimetype")' format="text-out">
       <xsl:text>application/epub+zip</xsl:text>
     </xsl:result-document>
   </xsl:template>
@@ -104,7 +104,7 @@
   <!-- USE THE MODEL ABOVE TO CREATE THE OTHER FILES IN THE META-INF DIRECTORY IF NEEDED-->
 
   <xsl:template name="generate.package.opf">
-    <xsl:result-document href="$epub.full.package.path">
+    <xsl:result-document href="{$epub.full.package.path}">
       <xsl:element name="package" xml:lang="en" namespace="http://www.idpf.org/2007/opf">
         <xsl:attribute name="version" select="3.0"/>
         <xsl:attribute name="unique-identifier" select="$epub.dc.identifier.id"/>
@@ -156,7 +156,7 @@
         </xsl:element>
 
         <manifet>
-          <xsl:for-each select="file:list('../content/OEBPS', recursive='true')">
+          <xsl:for-each select="file:list('OEBPS', recursive='true')">
             <item>
               <xsl:attribute name="href" select="."/>
             </item>
@@ -299,7 +299,7 @@
                 <xsl:element name="li">
                   <xsl:element name="a">
                     <xsl:attribute name="href">
-                      <xsl:value-of select="concat(@type, position(),'.html')"/>
+                      <xsl:value-of select="concat(@type, position(),'.xhtml')"/>
                     </xsl:attribute>
                     <xsl:value-of select="title"/>
                   </xsl:element>
@@ -315,9 +315,6 @@
 
   <!-- Metadata -->
   <xsl:template match="metadata">
-    <xsl:call-template name="generate.cover"/>
-    <xsl:call-template name="generate.meta-inf"/>
-    <xsl:call-template name="generate.mime"/>
     <xsl:call-template name="generate.package.opf"/>
 
     <xsl:element name="section">

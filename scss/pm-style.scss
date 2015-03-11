@@ -117,9 +117,7 @@ section[data-type='dedication'] {
   }
 }
 
-
 pre {
-  background-color: lighten(#c5c5d0, 15); // Remove when highlight.js works
   overflow-wrap: break-word;
   white-space: pre-line !important;
   word-wrap: break-word;
@@ -128,7 +126,6 @@ pre {
     font-family: 'Source Code Pro', monospace;
     font-size: 1em;
     line-height: 1.2em;
-    page-break-inside: avoid;
   }
 }
 
@@ -136,11 +133,6 @@ pre {
   text-align: justify;
 }
 
-// Temporary until I can get highlight.js to work
-.code {
-  background-color: adjust-hue(desaturate(lighten($grey, 11), 10), 360);
-  opacity: .75;
-}
 
 // The classes below use the column-attribs mixin defined in _columns.scss
 // to create 2 and 3-column layouts. These classes are meant as starting points,

@@ -2,14 +2,13 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="xs"
+  xml:lang="en"
   version="2.0">
-  <!--
-    XSLT Paged Media Customization Layer
 
-    Makes the necessary changes to the content to work with the Paged Media CSS stylesheet
-  -->
-  <!-- First import the base stylesheet -->
   <xsl:import href="book.xsl"/>
+
+  <xsl:strip-space elements="*"/>
+  <xsl:preserve-space elements="*:pre *:code"/>
 
   <!-- Define the output for this and all document children -->
   <xsl:output
@@ -24,36 +23,30 @@
     <html class="no-js" lang="en">
       <head>
         <meta charset="utf-8"/>
+        <xsl:element name="meta">
+          <xsl:attribute name="generator">
+            <xsl:value-of select="system-property('xsl:product-name')"/>
+            <xsl:value-of select="system-property('xsl:product-version')"/>
+          </xsl:attribute>
+        </xsl:element>
         <xsl:element name="title">
           <xsl:value-of select="metadata/title"/>
         </xsl:element>
         <!-- Paged Media Styles -->
         <link rel="stylesheet" href="css/pm-style.css" />
-        <!--
-          Load Paged Media definitions just so I won't forget it again
-        -->
         <link rel="stylesheet" href="css/paged-media.css"/>
-        <!--
-              Use highlight.js and docco style
-        -->
-        <link rel="stylesheet" href="css/styles/docco.css" />
+        <link rel="stylesheet" href="css/styles/github.css" />
         <!-- We add object-key-polyfill to fix an issue with PrinceXML -->
         <script src="js/object-key-polyfill.js"/>
-        <!-- Load highlight.js -->
+        <!-- Load and initialize highlight.js -->
         <script src="lib/highlight.pack.js"/>
         <script>
-          hljs.initHighlightingOnLoad();
+          hljs.initHighlighting();
         </script>
         <!-- <script src="js/script.js"/> -->
       </head>
       <body>
         <xsl:attribute name="data-type">book</xsl:attribute>
-          <xsl:element name="meta">
-            <xsl:attribute name="generator">
-              <xsl:value-of select="system-property('xsl:product-name')"/>
-              <xsl:value-of select="system-property('xsl:product-version')"/>
-            </xsl:attribute>
-          </xsl:element>
         <xsl:apply-templates/>
       </body>
     </html>
@@ -85,7 +78,8 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:message terminate="yes">
-            Type attribute is required for paged media.Check your section tags for missing type attributes
+            Type attribute is required for paged media.
+            Check your section tags for missing type attributes
           </xsl:message>
         </xsl:otherwise>
       </xsl:choose>
@@ -103,7 +97,7 @@
       <xsl:element name="p">
         <xsl:attribute name="class">rh</xsl:attribute>
         <xsl:value-of select="title"/>
-      </xsl:element> <!-- closses rh class -->
+      </xsl:element>
       <xsl:apply-templates/>
     </section>
   </xsl:template>
@@ -152,14 +146,7 @@
           <xsl:value-of select="@class"/>
         </xsl:attribute>
       </xsl:if>
-      <!--
-      <xsl:if test="string(@id)">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:if>
-      -->
       <xsl:value-of select="."/>
-    </xsl:element> <!-- closes h1 -->
+    </xsl:element>
   </xsl:template>
 </xsl:stylesheet>

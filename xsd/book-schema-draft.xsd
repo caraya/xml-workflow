@@ -4,14 +4,20 @@
     xmlns:dc="http://purl.org/dc/elements/1.1/"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
-
+    
     <!-- Simple types to use in the content -->
-    <xs:simpleType name="token255">
+    <xs:simpleType name="string255">
         <xs:annotation>
-            <xs:documentation>Defines a token of no more than 255 characters</xs:documentation>
+            <xs:documentation>Defines a token of no more than quote255 characters</xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:token">
+        <xs:restriction base="xs:string">
             <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="codeString">
+        <xs:restriction base="xs:string">
+            <xs:whiteSpace value="preserve"/>
         </xs:restriction>
     </xs:simpleType>
 
@@ -211,7 +217,7 @@
         <xs:annotation>
             <xs:documentation>Attribute ennumeration for elements that can be aligned</xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:token">
+        <xs:restriction base="xs:NMTOKEN">
             <xs:enumeration value="left"/>
             <xs:enumeration value="center"/>
             <xs:enumeration value="right"/>
@@ -233,9 +239,11 @@
                 <xs:documentation>ID for the paragraph if any</xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="class" type="xs:token" use="optional">
+        <xs:attribute name="class" type="xs:string" use="optional">
             <xs:annotation>
-                <xs:documentation>Class for the paragraph if any</xs:documentation>
+                <xs:documentation>
+                    Class or classes for the paragraph if any
+                </xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:attributeGroup> 
@@ -328,7 +336,7 @@
         </xs:annotation>
         <xs:complexType mixed="true">
             <xs:all>
-                <xs:element name="name" type="organization"/>
+                <xs:element name="pubname" type="organization"/>
                 <xs:element ref="address"/>
             </xs:all>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
@@ -399,23 +407,6 @@
     </xs:element>
     
     <xs:element name="pubdate" type="xs:date"/>
-    
-    <xs:element name="revision">
-        <xs:complexType mixed="true">
-            <xs:choice minOccurs="1" maxOccurs="unbounded">
-                <xs:element ref="para"/>
-            </xs:choice>
-        </xs:complexType>          
-
-    </xs:element>
-
-    <xs:element name="revhistory">
-        <xs:complexType mixed="true">
-            <xs:sequence minOccurs="1" maxOccurs="unbounded">
-                <xs:element ref="revision"/>
-            </xs:sequence>
-        </xs:complexType>        
-    </xs:element>
 
     <xs:element name="abstract">
         <xs:complexType mixed="true">
@@ -425,16 +416,29 @@
         </xs:complexType>          
     </xs:element>
     
+    <!-- REVISION AND REVHISTORY -->
+    <xs:element name="revision">
+        <xs:complexType mixed="true">
+            <xs:all>
+                <xs:element name="revnumber" type="xs:string"/>
+                <xs:element ref="pubdate"/>
+                <xs:element name="authorinitials" type="string255"/>
+                <xs:element name="revnotes" type="string255"/>
+            </xs:all>
+        </xs:complexType>          
+        
+    </xs:element>
+    
+    <xs:element name="revhistory">
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="revision"/>
+            </xs:sequence>
+        </xs:complexType>        
+    </xs:element>
+
     <!-- Links -->
     <xs:element name="link">
-        <xs:annotation>
-            <xs:documentation>
-                links... 
-                
-                What's the difference between supporting IRI and URI
-                other than URI are supposed to work only with ASCII characters
-            </xs:documentation>
-        </xs:annotation>
         <xs:complexType>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
             <xs:attribute name="href" type="xs:anyURI" use="required">
@@ -452,22 +456,10 @@
         </xs:complexType>
     </xs:element>
     
-    <!-- Named Anchor -->
-    <xs:element name="anchor">
-        <xs:annotation>
-            <xs:documentation>
-                The receiving end of an anchor link within the same document 
-                (the link is something like "#test") and the location of the 
-                test anchor has something like id="test"
-                
-                because we're using IDs each anchor has to be unique and 
-                must contain no whitespaces 
-            </xs:documentation>
-        </xs:annotation>
-        <xs:complexType>
-            <xs:attributeGroup ref="genericPropertiesGroup" />
-        </xs:complexType>
-    </xs:element>
+    <!-- 
+        Named Anchor has been removed since all elements where we would use 
+        the anchor can be given IDs.
+    -->
     
     <!-- Div and Span elements -->
     <xs:element name="div">
@@ -484,7 +476,6 @@
         <xs:sequence>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element ref="language"/>
-            <xs:element ref="anchor"/>
             <xs:element ref="code"/>
             <xs:element ref="para"/>
             <xs:element ref="ulist"/>
@@ -569,7 +560,6 @@
         </xs:annotation>
         <xs:complexType mixed="true">
             <xs:all>
-                <xs:element ref="anchor"/>
                 <xs:element ref="image"/>
                 <xs:element ref="figcaption"/>
             </xs:all>
@@ -605,6 +595,11 @@
                 a child of figure, we don't need to assign attributes to it
             </xs:documentation>
         </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="para"/>
+            </xs:sequence>
+        </xs:complexType>
     </xs:element>
 
     <xs:element name="image">
@@ -635,7 +630,7 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>            
-            <xs:attribute name="alt" type="token255" use="required">
+            <xs:attribute name="alt" type="string255" use="required">
                 <xs:annotation>
                     <xs:documentation>
                         Alternate text contstained to 255 characters
@@ -655,9 +650,9 @@
     <!-- Video and multimedia -->
     <xs:element name="video">
       <xs:complexType mixed="true">
-        <xs:choice minOccurs="1" maxOccurs="unbounded">
-          <xs:element ref="source"/>
-          <xs:element ref="track"/>
+        <xs:choice>
+          <xs:element ref="source" minOccurs="1" maxOccurs="unbounded"/>
+          <xs:element ref="track" minOccurs="0" maxOccurs="unbounded"/>
         </xs:choice>
         <xs:attribute name="height" type="xs:nonNegativeInteger"/>
         <xs:attribute name="width" type="xs:nonNegativeInteger"/>
@@ -678,7 +673,7 @@
       </xs:annotation>
       <xs:complexType>
         <xs:attribute name="src" type='xs:string' use="required"/>
-        <xs:attribute name="type" type='xs:string' use="optional"/>
+        <xs:attribute name="type" type='xs:string'/>
         <xs:anyAttribute/><!-- There's got to be more attributes -->
       </xs:complexType>
     </xs:element>
@@ -839,7 +834,7 @@
                 Code is used to generate fenced code blocks (see Github rendered markdown code 
                 for an idea of how I want this to look). 
                 
-                When using CSS we'll generate a <code><pre></pre></code> block with a language 
+                When using CSS we'll generate a <pre><code></code></pre> block with a language 
                 attribute that will be formated with Highlight.js (the chosen package will be 
                 a part of the tool chain)
                 
@@ -849,9 +844,6 @@
             </xs:documentation>
         </xs:annotation>
         <xs:complexType mixed="true">
-            <xs:sequence minOccurs="0" maxOccurs="1">
-              <xs:element ref="anchor"/>
-            </xs:sequence>
             <xs:attributeGroup ref="genericPropertiesGroup"/>
             <xs:attribute name="language" use="required"/>
         </xs:complexType>
@@ -865,7 +857,7 @@
         </xs:documentation>
       </xs:annotation>
       <xs:complexType mixed="true">
-        <xs:choice  minOccurs="0" maxOccurs="unbounded">
+        <xs:choice  minOccurs="1" maxOccurs="unbounded">
           <xs:element ref="para"/>
         </xs:choice>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
@@ -879,12 +871,11 @@
         </xs:documentation>
       </xs:annotation>
       <xs:complexType mixed="true">
-        <xs:choice maxOccurs="unbounded">
-            <xs:element ref="language" minOccurs="0"/>
-          <xs:element ref="anchor"/>
-          <xs:element ref="attribution"/>
-          <xs:element ref="para"/>
-        </xs:choice>
+        <xs:sequence >
+          <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
+          <xs:element ref="attribution" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="language" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
         <xs:attributeGroup ref="genericPropertiesGroup"/>
       </xs:complexType>
     </xs:element>
@@ -1087,13 +1078,10 @@
     <!-- Metadata element -->
     <xs:element name="metadata">
         <xs:annotation>
-            <xs:documentation>Metadata section of the content. Still debating whether to move it inside section or leave it as a separate part.</xs:documentation>
+            <xs:documentation>Metadata section of the content.</xs:documentation>
         </xs:annotation>
         <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:annotation>
-                    <xs:documentation>Metadata choice using ISBN, Edition, Title, Authors, Editors and Other Roles defined using simple and complex type definitions defined earlier</xs:documentation>
-                </xs:annotation>
                 <xs:element name="isbn" type="ISBN-type10"/>
                 <xs:element name="edition" type="xs:string"/>
                 <xs:element ref="authors"/>
@@ -1126,9 +1114,8 @@
                 <xs:annotation>
                     <xs:documentation>A title and at least one paragraph </xs:documentation>
                 </xs:annotation>
-                <xs:element name="title" type="xs:token" minOccurs="0" maxOccurs="1"/>
+                <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 <xs:choice minOccurs="0" maxOccurs="unbounded">
-                    <xs:element ref="anchor"/>
                     <xs:element ref="code"/>
                     <xs:element ref="para" minOccurs="1" maxOccurs="unbounded"/>
                     <xs:element ref="ulist"/>
@@ -1162,16 +1149,15 @@
         </xs:complexType>
     </xs:element>
 
-    <!-- Testing to see if we really need a separate toc element -->
+    <!-- place holder for generated toc element -->
     <xs:element name="toc">
       <xs:annotation>
         <xs:documentation>
-          Testing to see whether we actually need a toc element. 
-          
-          This is different than an index, we'll work on that next
+            place holder for generated toc element
         </xs:documentation>
       </xs:annotation>
     </xs:element>
+    
     <!-- Base book element -->
     <xs:element name="book">
         <xs:annotation>
@@ -1182,7 +1168,6 @@
                 <xs:documentation>A sequence of one metadata section followed by 1 or more sections</xs:documentation>
             </xs:annotation>
             <xs:choice maxOccurs="unbounded">
-                <xs:element ref="anchor" minOccurs="0" maxOccurs="1"/> <!-- To create things like anchors to the beginning of the document -->
                 <xs:element ref="metadata" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="toc" minOccurs="0" maxOccurs="1"/>
                 <xs:element ref="section" minOccurs="1" maxOccurs="unbounded"/>

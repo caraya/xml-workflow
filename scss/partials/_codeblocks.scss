@@ -1,16 +1,14 @@
 pre {
+  white-space: pre-line;
+  width: 100%;
+
+code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 1em;
+  line-height: 1.2em;
   overflow-wrap: break-word;
   tab-size: 2;
-  white-space: pre-line !important;
   width: 100%;
   word-wrap: break-word;
-
-  code {
-    font-family: 'Source Code Pro', monospace;
-    font-size: 1em;
-    line-height: 1.2em;
-    tab-size: 2;
-    white-space: pre;
-    width: 100%;
   }
 }

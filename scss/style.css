@@ -21,56 +21,56 @@ body {
   padding-left: 10em;
   padding-right: 10em; }
 
-/* line 6, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 6, /Users/carlos/code/xml-workflow/scss/partials/_headings.scss */
 h1, h2, h3, h4 {
   font-family: 'Roboto Slab', sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  margin: 1.414em 0.5em; }
+  margin: 1.414em .5em; }
 
-/* line 17, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 17, /Users/carlos/code/xml-workflow/scss/partials/_headings.scss */
 h1 {
   font-size: 2.074em;
   margin-top: 0; }
 
-/* line 22, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 22, /Users/carlos/code/xml-workflow/scss/partials/_headings.scss */
 h2 {
   font-size: 1.728em; }
 
-/* line 26, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 26, /Users/carlos/code/xml-workflow/scss/partials/_headings.scss */
 h3 {
   font-size: 1.44em; }
 
-/* line 30, /Users/carlos/code/xml-workflow/scss/partials/headings */
+/* line 30, /Users/carlos/code/xml-workflow/scss/partials/_headings.scss */
 h4 {
   font-size: 1.2em;
   text-transform: uppercase; }
 
-/* line 1, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 aside {
   border-bottom: 3px double #222023;
   border-top: 3px double #222023;
   color: #403f4e;
   line-height: 1.5em;
-  padding-bottom: 0.5em;
-  padding-top: 0.5em;
+  padding-bottom: .5em;
+  padding-top: .5em;
   width: 100%; }
-  /* line 12, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 12, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   aside h3 {
     text-align: center; }
-  /* line 16, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 16, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   aside .pull {
-    margin-bottom: 0.5em;
+    margin-bottom: .5em;
     margin-left: -20%;
-    margin-top: 0.2em; }
-  /* line 24, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+    margin-top: .2em; }
+  /* line 24, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   aside .lowlight {
-    opacity: 0.3; }
-    /* line 27, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+    opacity: .3; }
+    /* line 27, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
     aside .lowlight :hover {
       opacity: 1; }
 
-/* line 33, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 33, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 .opening {
   border-bottom: 3px double #000;
   border-top: 3px double #000;
@@ -80,139 +80,138 @@ aside {
   padding-top: 2em;
   text-align: center; }
 
-/* line 45, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 45, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 blockquote {
+  border-left: 5px solid #ccc;
   color: #222023;
-  font-size: 1.125em;
-  font-style: italic;
   font-weight: 100;
   margin-bottom: 1.2em;
   margin-left: 4em;
   margin-right: 4em;
   margin-top: 2em; }
-  /* line 56, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 56, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   blockquote p {
-    padding-left: 0.5em; }
+    padding-left: 1em; }
 
-/* line 64, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 64, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 .pullquote {
   border-bottom: 18px solid #000;
   border-top: 18px solid #000;
   font-size: 36px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -.02em;
   line-height: 38px;
   margin-right: 100px;
   padding: 20px 0;
   position: relative;
   width: 200px; }
-  /* line 76, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 76, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   .pullquote p {
     color: #00298a;
     font-weight: 700;
     position: relative;
     text-transform: uppercase;
     z-index: 1; }
-  /* line 84, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 84, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   .pullquote p:last-child {
     line-height: 20px;
     padding-top: 2px; }
-  /* line 89, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 89, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   .pullquote cite {
     color: #333;
     font-size: 18px;
     font-weight: 400; }
 
-/* line 97, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 97, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 .margin-notes, .content-left {
   clear: both;
   display: block;
   float: left;
-  font-size: 0.75em;
+  font-size: .75em;
   margin: 1em;
   width: 40%; }
-  /* line 105, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 105, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   .margin-notes h3, .content-left h3 {
     text-align: center; }
 
-/* line 111, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 111, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 .margin-notes-right, .content-right {
   clear: both;
   display: block;
   float: right;
-  font-size: 0.75em;
+  font-size: .75em;
   margin: 1em;
   width: 40%; }
-  /* line 119, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+  /* line 119, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
   .margin-notes-right h3, .content-right h3 {
     text-align: center; }
 
-/* line 125, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 125, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 .margin-notes-right > p:last-of-type, .content-right > p:last-of-type {
   clear: both;
   float: right; }
 
-/* line 131, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 131, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 .margin-notes-left > p:last-of-type, .content-left > p:last-of-type {
   clear: both;
   float: left; }
 
-/* line 139, /Users/carlos/code/xml-workflow/scss/partials/marginalia */
+/* line 139, /Users/carlos/code/xml-workflow/scss/partials/_marginalia.scss */
 .content-right ul, .content-left ul {
   list-style: none; }
 
-/* line 1, /Users/carlos/code/xml-workflow/scss/partials/metadata */
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_metadata.scss */
 .metadata {
   padding-left: 2rem;
   padding-right: 2rem; }
-  /* line 5, /Users/carlos/code/xml-workflow/scss/partials/metadata */
+  /* line 5, /Users/carlos/code/xml-workflow/scss/partials/_metadata.scss */
   .metadata li {
     list-style-type: none; }
-  /* line 9, /Users/carlos/code/xml-workflow/scss/partials/metadata */
+  /* line 9, /Users/carlos/code/xml-workflow/scss/partials/_metadata.scss */
   .metadata p + p {
     margin-left: -2em; }
 
-/* line 2, /Users/carlos/code/xml-workflow/scss/partials/paragraphs */
+/* line 2, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs.scss */
 p {
   font-size: 1em;
   margin-bottom: 1.3em; }
-  /* line 6, /Users/carlos/code/xml-workflow/scss/partials/paragraphs */
+  /* line 6, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs.scss */
   p + p {
     text-indent: 2em; }
 
-/* line 16, /Users/carlos/code/xml-workflow/scss/partials/paragraphs */
+/* line 16, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs.scss */
 .first-line {
   font-size: 1.1em;
   text-indent: 0;
   text-transform: uppercase; }
 
-/* line 27, /Users/carlos/code/xml-workflow/scss/partials/paragraphs */
+/* line 27, /Users/carlos/code/xml-workflow/scss/partials/_paragraphs.scss */
 .first-letter {
   float: left;
   font-size: 7em;
-  line-height: 0.8em;
-  margin-bottom: -0.1em;
-  padding-right: 0.1em; }
+  line-height: .8em;
+  margin-bottom: -.1em;
+  padding-right: .1em; }
 
-/* line 1, /Users/carlos/code/xml-workflow/scss/partials/lists */
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_lists.scss */
 ul li {
   list-style: square; }
 
-/* line 5, /Users/carlos/code/xml-workflow/scss/partials/lists */
+/* line 5, /Users/carlos/code/xml-workflow/scss/partials/_lists.scss */
 ol li {
   list-style: decimal; }
 
-/* line 1, /Users/carlos/code/xml-workflow/scss/partials/images */
+/* line 1, /Users/carlos/code/xml-workflow/scss/partials/_images.scss */
 figure {
   counter-increment: figure_count;
   margin-bottom: 1em;
   margin-top: 1em; }
-  /* line 7, /Users/carlos/code/xml-workflow/scss/partials/images */
+  /* line 7, /Users/carlos/code/xml-workflow/scss/partials/_images.scss */
   figure figcaption {
     font-weight: 700;
     padding-bottom: 1em;
-    padding-top: 0.2em; }
-    /* line 12, /Users/carlos/code/xml-workflow/scss/partials/images */
+    padding-top: .2em; }
+    /* line 12, /Users/carlos/code/xml-workflow/scss/partials/_images.scss */
     figure figcaption::before {
       content: 'Figure ' counter(figure_count) ': '; }
 
@@ -222,7 +221,7 @@ figure {
 
 /* line 82, /Users/carlos/code/xml-workflow/scss/style.scss */
 small, .font-small {
-  font-size: 0.833em; }
+  font-size: .833em; }
 
 /* line 86, /Users/carlos/code/xml-workflow/scss/style.scss */
 video {

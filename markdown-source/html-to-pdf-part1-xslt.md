@@ -95,39 +95,33 @@ We will then override the templates we need in order to get a single file to pas
   <xsl:template match="book">
     <html>
       <head>
+        <meta charset="utf-8"/>
         <xsl:element name="title">
           <xsl:value-of select="metadata/title"/>
+        </xsl:element>
+        <xsl:element name="meta">
+          <xsl:attribute name="generator">
+            <xsl:value-of select="system-property('xsl:product-name')"/>
+            <xsl:value-of select="system-property('xsl:product-version')"/>
+          </xsl:attribute>
         </xsl:element>
         <!-- Load Typekit Font -->
         <script src="https://use.typekit.net/qcp8nid.js"></script>
         <script>try{Typekit.load();}catch(e){}</script>
         <!-- Paged Media Styles -->
         <link rel="stylesheet" href="css/pm-style.css" />
-        <!--
-          Load Paged Media definitions just so I won't forget it again
-        -->
+        <!-- Paged Media Definitions -->
         <link rel="stylesheet" href="css/paged-media.css"/>
-        <!--
-              Use highlight.js and style
-        -->
         <xsl:if test="(code)">
-          <link rel="stylesheet" href="css/styles/railscasts.css" />
-          <!-- Load highlight.js -->
+        <link rel="stylesheet" href="css/styles/railscasts.css" />
           <script src="lib/highlight.pack.js"></script>
           <script>
             hljs.initHighlightingOnLoad();
           </script>
         </xsl:if>
-        <!-- <script src="js/script.js"></script> -->
       </head>
       <body>
         <xsl:attribute name="data-type">book</xsl:attribute>
-          <xsl:element name="meta">
-            <xsl:attribute name="generator">
-              <xsl:value-of select="system-property('xsl:product-name')"/>
-              <xsl:value-of select="system-property('xsl:product-version')"/>
-            </xsl:attribute>
-          </xsl:element>
         <xsl:apply-templates select="/" mode="toc"/>
         <xsl:apply-templates/>
       </body>
@@ -180,15 +174,13 @@ Sections are the element type that got the biggest makeover. What we've done:
         </xsl:attribute>
       </xsl:if>
       <!-- 
-        Running header paragraph.  
-        
-        This will be take out of the regular flow of text so 
-        it doesn't matter if we add it or not
+        Running header paragraph.
       -->
       <xsl:element name="p">
         <xsl:attribute name="class">rh</xsl:attribute>
         <xsl:value-of select="title"/>
       </xsl:element> <!-- closses rh class -->
+
       <xsl:apply-templates/>
     </section>
   </xsl:template>
@@ -197,6 +189,8 @@ Sections are the element type that got the biggest makeover. What we've done:
 ## Metadata
 
 The Metadata section has been reworked into a new section with the title data-type. We set up the container section and assign title to the data-type attribute. We then apply all children templates.
+
+It is important to note that we've increased the number of children inside metadata so we'll have to be careful in making sure that we're using only one page for the title and another for the rest of the metadata if needed.
 
 ```xml
   <!-- Metadata -->

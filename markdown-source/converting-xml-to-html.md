@@ -82,7 +82,6 @@ Now to our root templates. The first one is the entry point to our document. It 
 3. In the body we 'apply' the templates that match the content inside our document (more on this later)
 
 ```xml
-<!-- Root template, matching / -->
 <xsl:template match="book">
   <html>
   <head>
@@ -95,21 +94,8 @@ Now to our root templates. The first one is the entry point to our document. It 
         <xsl:value-of select="system-property('xsl:product-version')"/>
       </xsl:attribute>
     </xsl:element>
-    <xsl:element name="meta">
-      <xsl:attribute name="vendor">
-        <xsl:value-of select="system-property('xsl:vendor-url')" />
-      </xsl:attribute>
-    </xsl:element>
-    <xsl:element name="meta">
-      <xsl:attribute name="vendor-URL">
-        <xsl:value-of select="system-property('xsl:vendor-url')" />
-      </xsl:attribute>
-    </xsl:element>
     <link rel="stylesheet" href="css/style.css" />
     <xsl:if test="(code)">
-      <!--
-            Use highlight.js and docco style
-          -->
       <link rel="stylesheet" href="css/styles/docco.css" />
       <!-- Load highlight.js -->
       <script src="lib/highlight.pack.js"></script>
@@ -117,10 +103,6 @@ Now to our root templates. The first one is the entry point to our document. It 
         hljs.initHighlightingOnLoad();
       </script>
     </xsl:if>
-    <!--
-      Comment this out for now. It'll become relevant when we add video
-      <script src="js/script.js"></script>
-    -->
   </head>
   <body>
     <xsl:apply-templates/>
@@ -141,39 +123,51 @@ Furthermore we can reuse our CSS and JavaScript on multiple documents.
 
 ## Table of contents
 
-> The table of content template is under active development and will be different depending on the desired output. I document it here as it is right now but will definitely change as it's further developed.
-
 There is a second template matching the root element of our document to create a table of content. At first thought this looks like the wrong approach 
 
 We leverage XSLT modes that allow us to create templates for the same element to perform different tasks. In `toc mode` we want the root template to do the following:
 
-1. Create the section and nav and ol elements
-2. Add the title for the table of contents
-3. For each section element that is a child of root create these elements
+1. Create the document that will hold the table of content
+2. Build the HTML document
+3. Create the sectiion and assign its data-type attribute
+4. Add the title for the table of contents
+5. For each section element that is a child of root create these elements
     1. The `li` element
     2. The a element with the corresponding href element
-    3. The value of the href element (a concatenation of the section's type attribute, the position within the document and the .html string)
-    4. The title of the section as the 'clickable' portion of the link
+    3. The href attribute
+    4. The value of the href attribute (a concatenation of the section's type attribute, the position within the document and the .html string)
+    5. The title of the section as the 'clickable' portion of the link
 
 ```xml
 <xsl:template match="/" mode="toc">
-  <section data-type="toc"> (1)
-    <nav class="toc"> (1)
-      <h2>Table of Contents</h2>
-      <ol>
-        <xsl:for-each select="book/section">
-          <xsl:element name="li"> (3.1)
-            <xsl:element name="a"> (3.2)
-              <xsl:attribute name="href"> (3.2)
-                <xsl:value-of select="concat((@type), position(),'.html')"/> (3.3)
-              </xsl:attribute>
-              <xsl:value-of select="title"/> (3.4)
-            </xsl:element>
-          </xsl:element>
-        </xsl:for-each>
-      </ol>
-    </nav>
-  </section>
+  <xsl:result-document href='toc.html' format="xhtml-out"> (1)
+    <html> (2)
+      <head>
+        <link rel="stylesheet" href="css/style.css" />
+        <!-- Load Normalize library -->
+        <link rel="stylesheet" href="css/normalize.css"/>
+      </head>
+      <body>
+        <section data-type="toc"> (3)
+          <h2>Table of Contents</h2> (4)
+          <nav>
+            <ol>
+              <xsl:for-each select="//section"> (5)
+                <xsl:element name="li"> (5.1)
+                  <xsl:element name="a"> (5.2)
+                    <xsl:attribute name="href"> (5.3)
+                      <xsl:value-of select="concat(@type, position(),'.html')"/> (5.4)
+                    </xsl:attribute>
+                    <xsl:value-of select="title"/> (5.5)
+                  </xsl:element>
+                </xsl:element>
+              </xsl:for-each>
+            </ol>
+          </nav>
+        </section>
+      </body>
+    </html>
+  </xsl:result-document>
 </xsl:template>
 ```
 
@@ -183,12 +177,12 @@ With these templates in place we can now start writing the major areas of the do
 
 ### Metadata
 
-The metadata is a container for all the elements inside. As such we just create the div that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element using the apply-template XSLT instruction. The template looks like this
+The metadata is a container for all the elements inside. As such we just create the section that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element using the apply-template XSLT instruction. The template looks like this
 
 ```xml
 <xsl:template match="metadata">
-  <xsl:element name="div">
-    <xsl:attribute name="class">metadata</xsl:attribute>
+  <xsl:element name="section">
+    <xsl:attribute name="data-type" select="'metadata'"/>
     <xsl:apply-templates/>
   </xsl:element>
 </xsl:template>
@@ -259,15 +253,100 @@ For the section we conditionally add attributes to the element. We use only add 
 
 ## Metadata content
 
-We process the content of the metadata separate than the structure. We take our primary metadata elements, ISBN and edition and wrap a paragraph tag around them. We can later reuse the element or change its appearance using CSS.
+Since the style sheets were oginally written I've added more content to the metadata element to acommodate different publishing requirements. The first additional element I've added is publisher, an organization or person that has a name (pubname element) and an address (modeled after a United States address)
+
+Most of the metadata templates use two conditional statements. The first one tests to see if the author gave the element a class attribute. If there is one, we use that as the value of the class attribute, otherwise we assign a default value based on the element name or its function.
+
+The second test is simple. If there is an ID attribute use it as the value for the ID attribute, otherwise leave it blank.
+
+I coded it this way because of the difference in using classes versus ID values.
+
+Unless you're using the IDs to structure your content there is no real reason to use IDs instead of classes. The consensus is to avoid IDs as much as possible as explained in the [CSSLint rule that disallows IDs in selectors](https://github.com/CSSLint/csslint/wiki/Disallow-IDs-in-selectors)
+
+With two different classes I'm also giving content creators the flexibility of either using the default CSS (or no CSS at all) or create their own CSS for the metadata element, the choice is yours.
 
 ```xml
-<xsl:template match="isbn">
-  <p>ISBN: <xsl:value-of select="."/></p>
+  <xsl:template match="publisher">
+    <xsl:element name="div">
+      <xsl:choose>
+        <xsl:when test="string(@class)">
+          <xsl:attribute name="class" select="@class"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="class" select="'publisher'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:if test="string(@id)">
+        <xsl:attribute name="id">
+          <xsl:value-of select="@id"/>
+        </xsl:attribute>
+      </xsl:if>
+        <xsl:value-of select="name"/>
+        <xsl:apply-templates select="address"/>
+    </xsl:element>
+  </xsl:template>
+```
+
+Right now the address is a list of paragraphs with the information of the children elements. We may change the structure to a single paragraphy with span elements to indicate where each child element happens. I'm not 100% sure which way is better.
+
+```xml
+  <xsl:template match="address">
+    <xsl:element name="div">
+      <xsl:choose>
+        <xsl:when test="string(@class)">
+          <xsl:attribute name="class" select="@class"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="class" select="'address'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:element name="p"><xsl:value-of select="recipient"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="street"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="city"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="state"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="postcode"/></xsl:element>
+      <xsl:element name="p"><xsl:value-of select="country"/></xsl:element>
+    </xsl:element>
+  </xsl:template>
+```
+
+These elements: releaseinfo, copyright, legal notice, pubdate and abstract share a similar structure so, instead of creating one template we match all of them and we do a little magic. We replace the class name in the otherwise clause and use the name() xpath expression that will match the name of the element that matched the template.
+
+<xsl:template match="releaseinfo | copyright | legalnotice | pubdate | abstract">
+  <xsl:element name="div">
+    <xsl:choose>
+      <xsl:when test="string(@class)">
+        <xsl:attribute name="class" select="@class"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="class" select="name()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:apply-templates/>
+  </xsl:element>
+</xsl:template>
+```
+
+The revhistory and revisions attribute provides a way to do authority and change tracking. I'm still working on these templates. As they are right now they are paragraphs inside a div inside another div holding the full history.
+
+Normally I'd consider using a table but want to explore outer options before I do so.
+
+```xml
+<xsl:template match="revhistory">
+  <xsl:element name="div">
+    <xsl:attribute name="class" select="'revhistory'"/>
+    <xsl:value-of select="revision"/>
+  </xsl:element>
 </xsl:template>
 
-<xsl:template match="edition">
-  <p>Edition: <xsl:value-of select="."/></p>
+<xsl:template match="revision">
+  <xsl:element name="div">
+    <xsl:attribute name="class" select="'revision'"/>
+    <p><xsl:value-of select="revnumber"/></p>
+    <p><xsl:value-of select="pubdate"/></p>
+    <p><xsl:value-of select="authorinitials"/></p>
+    <p><xsl:value-of select="revnotes"/></p>
+  </xsl:element>
 </xsl:template>
 ```
 
@@ -295,7 +374,11 @@ For editors and other roles we do the same thing
     </xsl:for-each>
   </ul>
 </xsl:template>
+```
 
+Editors are person elements with an additional role attached to the name as a concatenation of the string -, the type attribute and the string editor.
+
+```xml
 <xsl:template match="metadata/editors">
   <h2>Editorial Team</h2>
   <ul class="no-bullet">
@@ -304,11 +387,14 @@ For editors and other roles we do the same thing
         <xsl:value-of select="first-name"/>
         <xsl:text> </xsl:text>
         <xsl:value-of select="surname"/>
-        <xsl:value-of select="concat(' - ', type, ' ', 'editor')"></xsl:value-of>
+        <xsl:value-of select="concat(' - ', type, ' ', 'editor')"/>
       </li>
     </xsl:for-each>
   </ul>
 </xsl:template>
+```
+
+
 
 <xsl:template match="metadata/otherRoles">
   <h2>Production team</h2>
@@ -330,7 +416,7 @@ For editors and other roles we do the same thing
 
 Headings are primarily used to create sections of content. We use the same heading levels as HTML with the addition of a `title` tag that also maps to a level 1 heading. We've put `title` and `h1` in separate templates to make it possible and easier to generate different code for each heading.
 
-Working with XSLT is not the same as using CSS where you can declare rules for the same attribute multiple times (with the last one winning); when writing transformations you can only have one per element otherwise you will get an error (there are exceptions to the rule but let's not worry about that just yet.)
+Working with XSLT is not the same as using CSS where you can declare rules for the same attribute multiple times (with the last one winning); when writing transformations you can only have one per element otherwise you will get an error or a different result to the one you expected.
 
 According to the spec:
 
@@ -781,8 +867,6 @@ For both height and width we concatenate the attribute value with the string 'px
 
 Alignments can be different, it is possible to have a right-aligned image to live inside a centered container.
 
-The data model for our content allows both figures and images to be used in the document. This is so we don't have to insert empty captions to figures just so we can add an image. If we don't want a caption we can insert the image directly on our document.
-
 Contrary to the HTML specification we use figure only to display images. We have a specialized template to address code blocks for program listings and can create additional elements
 
 ```xml
@@ -835,7 +919,10 @@ Contrary to the HTML specification we use figure only to display images. We have
 <xsl:template match="figcaption">
   <figcaption><xsl:apply-templates/></figcaption>
 </xsl:template>
+```
+The data model for our content allows both figures and images to be used in the document. This is so we don't have to insert empty captions to figures just so we can add an image. If we don't want a caption we can insert the image directly on our document.
 
+```xml
 <xsl:template match="image">
   <xsl:element name="img">
     <xsl:attribute name="src">

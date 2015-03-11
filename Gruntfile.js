@@ -19,10 +19,10 @@
       // Hint the grunt file and all files under js/
       // and one directory below
       jshint: {
-        files: ['Gruntfile.js', 'js/{,*/}*.js'],
+        files:[ 'Gruntfile.js', 'js/{,*/}*.js'],
         options: {
           reporter: require('jshint-stylish')
-            // options here to override JSHint defaults
+          // options here to override JSHint defaults
         }
       },
 
@@ -37,7 +37,7 @@
             sourceMapName: 'css/script.min.map'
           },
           files: {
-            'js/script.min.js': ['js/video.js', 'lib/highlight.pack.js']
+            'js/script.min.js':[ 'js/video.js', 'lib/highlight.pack.js']
           }
         }
       },
@@ -50,10 +50,10 @@
           options: {
             style: 'expanded'
           },
-          files: [{
+          files:[ {
             expand: true,
             cwd: 'scss',
-            src: ['*.scss'],
+            src:[ '*.scss'],
             dest: 'css',
             ext: '.css'
           }]
@@ -62,10 +62,10 @@
           options: {
             style: 'compact'
           },
-          files: [{
+          files:[ {
             expand: true,
             cwd: 'scss',
-            src: ['*.scss'],
+            src:[ '*.scss'],
             dest: 'css',
             ext: '.css'
           }]
@@ -78,12 +78,11 @@
       //
       // I've chosen not to fail on errors or warnings.
       scsslint: {
-        allFiles: [
-          'scss/*.scss',
-          'scss/modules/_mixins.scss',
-          'scss/modules/_variables.scss',
-          'scss/partials/*.scss'
-        ],
+        allFiles:[
+        'scss/*.scss',
+        'scss/modules/_mixins.scss',
+        'scss/modules/_variables.scss',
+        'scss/partials/*.scss'],
         options: {
           config: '.scss-lint.yml',
           force: true,
@@ -93,7 +92,7 @@
 
       autoprefixer: {
         options: {
-          browsers: ['last 2']
+          browsers:[ 'last 2']
         },
 
         files: {
@@ -111,7 +110,7 @@
       uncss: {
         dist: {
           files: {
-            'css/tidy.css': ['*.html', '!docs.html']
+            'css/tidy.css':[ '*.html', '!docs.html']
           }
         }
       },
@@ -175,7 +174,7 @@
       mkdir: {
         build: {
           options: {
-            create: ['app']
+            create:[ 'app']
           }
         }
       },
@@ -185,28 +184,26 @@
       // if specific directories exist and are not empty
       copy: {
         html: {
-          files: [{
+          files:[ {
             expand: true,
-            src: [
-              'css/**/*',
-              'lib/**/*',
-              'js/**/*',
-              'images/**/*',
-              '**/*.html'
-            ],
+            src:[
+            'css/**/*',
+            'lib/**/*',
+            'js/**/*',
+            'images/**/*',
+            '**/*.html'],
             dest: 'app/'
           }]
         },
         epub: {
-          files: [{
+          files:[ {
             expand: true,
-            src: [
-              'css/**/*',
-              'lib/**/*',
-              'js/**/*',
-              'images/**/*',
-              '**/*.html'
-            ],
+            src:[
+            'css/**/*',
+            'lib/**/*',
+            'js/**/*',
+            'images/**/*',
+            '**/*.html'],
             dest: 'content/OEBPS'
           }]
         }
@@ -214,7 +211,7 @@
 
       // Clean the build directory
       clean: {
-        all: ['app/']
+        all:[ 'app/']
       },
 
       // WATCH TASK
@@ -226,12 +223,12 @@
         },
         // Watch all javascript files and hint them
         js: {
-          files: ['Gruntfile.js', 'js/{,*/}*.js'],
-          tasks: ['jshint']
+          files:[ 'Gruntfile.js', 'js/{,*/}*.js'],
+          tasks:[ 'jshint']
         },
         sass: {
-          files: ['scss/*.scss'],
-          tasks: ['sass']
+          files:[ 'scss/*.scss'],
+          tasks:[ 'sass']
         }
       },
 
@@ -266,78 +263,53 @@
           command: 'java -cp "jlib/*" net.sf.saxon.Transform -xsl:xslt/pm-book.xsl docs.xml -o:docs.html'
         },
 
-        epub: {
-          command: 'java -cp "jlib/*" net.sf.saxon.Transform -xsl:xslt/epub-ebook.xsl docs.xml -o:index.xhtml'
-        },
-
         prince: {
           command: 'prince --verbose --javascript docs.html -o docs.pdf'
         }
       }
-
-
-    }); // closes initConfig
+    });
+    // closes initConfig
 
     // CUSTOM TASKS
     // Usually a combination of one or more tasks defined above
     grunt.task.registerTask(
-      'lint',
-      [
-        'jshint'
-      ]
-    );
+    'lint',[
+    'jshint']);
 
     grunt.task.registerTask(
-      'lint-all',
-      [
-        'scsslint',
-        'jshint'
-      ]
-    );
+    'lint-all',[
+    'scsslint',
+    'jshint']);
 
     // Prep CSS starting with SASS, autoprefix et. al
     grunt.task.registerTask(
-      'prep-css',
-      [
-        'scsslint',
-        'sass:dev',
-        'autoprefixer'
-      ]
-    );
+    'prep-css',[
+    'scsslint',
+    'sass:dev',
+    'autoprefixer']);
 
     grunt.task.registerTask(
-      'prep-js',
-      [
-        'jshint',
-        'uglify'
-      ]
-    );
+    'prep-js',[
+    'jshint',
+    'uglify']);
 
     grunt.task.registerTask(
-      'generate-pdf',
-      [
-        'shell:single',
-        'shell:prince'
-      ]
-    );
+    'generate-pdf',[
+    'shell:single',
+    'shell:prince']);
 
     grunt.task.registerTask(
-      'generate-pdf-all',
-      [
-        'scsslint',
-        'sass:dev',
-        'shell:single',
-        'shell:prince'
-      ]
-    );
+    'generate-pdf-all',[
+    'scsslint',
+    'sass:dev',
+    'shell:single',
+    'shell:prince']);
 
     grunt.task.registerTask(
-      'generate-all',
-      [
-        'shell'
-      ]
-    );
-
-
-  }; // closes module.exports
-}()); // closes the use strict function
+    'generate-all',[
+    'shell']);
+  };
+  // closes module.exports
+}
+());
+// closes the use strict function
