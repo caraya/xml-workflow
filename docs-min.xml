@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
+  <metadata>
+    <title>XML workflow documentation</title>
+
+    <authors>
+      <author>
+        <first-name>Carlos</first-name>
+        <surname>Araya</surname>
+      </author>
+    </authors>
+  </metadata>
+  <toc />
+  <section type="chapter">
+    <title>Converting to ePub</title>
+
+    <blockquote>
+      <para>This chapter is a draft! This style sheet is under development</para>
+    </blockquote>
+
+    <para>Perhaps the most ambitious part of the proof of concept is to convert the XML content to an ePub book that would pass epubcheck validation. To accomplish this we'll create another customization layer to acommodate the special syntax and additional content needed to create the ePub 3 package.</para>
+
+    <para>This is more complicated than the creation of the single file for generating PDF. The epub specification is more complex and requires a lot more auxiliary files and directories with very specific formatting. I wonder if some of them need to be XML files at all.</para>
+
+    <para>Take the <emphasis>package.opf</emphasis>, for example. As portable as XML is and as many XML parsers are there in the wild, it would work much better if we do the same code in JSON, YAML, or other similar formats.</para>
+
+    <para />
+  </section>
+</book>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<book
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
   <metadata>
     <title>XML workflow documentation</title>
@@ -12,7 +11,7 @@
       </author>
     </authors>
   </metadata>
-  <toc />
+<!--  <toc />-->
   <section type="dedication">
     <title>Thank You</title>
     <para>Thanks to Laura Brady for getting this particular idea started :)
@@ -170,15 +169,11 @@
   </section>
   <section type="chapter">
     <title>Introduction</title>
-
     <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like [Docbook](http://docbook.org) are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</para>
-
     <para>By creating our own markup vocabulary we can be as expressive as we need to be without adding additional complexity for writers and users and without adding unecessary complexity for the developers building the tools to interact with the markup.</para>
-
     <para>It has been suggested that <link
         href="http://johnmacfarlane.net/pandoc/" label="Pandoc"
        /> may be a better alternative than rolling your own markup and style sheet sets. While Pandoc is a very powerful tool it tries to do too much for too many. According to the website, Pandoc supports:</para>
-
     <ulist>
       <item>HTML formats: XHTML, HTML5, and HTML slide shows using <link
           href="http://www.w3.org/Talks/Tools/Slidy" label="Slidy" />, <link
@@ -227,36 +222,24 @@
       <item>Custom formats: custom writers can be written in <link
           href="http://www.lua.org" label="lua" />.</item>
     </ulist>
-
     <para>My problems with Pandoc are:</para>
-
     <ulist>
       <item>You can only convert your content to PDF if you have LaTex installed. Even a minimal LaTex library requires a fairly large install</item>
       <item>LaTex installs are different for Macintosh, Windows and Linux. This makes a uniform support system impossible</item>
       <item>If you want to add custom formats you have to do so in Lua. I'd rather not learn another programming language just for one project</item>
     </ulist>
-
     <h2>Why create our own markup</h2>
-
     <para>Rather than figure out how to use someone else tool for this proof of concept I've decided to build my own markup vocabulary and explore XML, XSL and CSS as the tools to create HTML and print-ready content.</para>
-
     <para>Using XSL and CSS to manipulate XML content reduces the number of external dependencies. As it stands right now, the project depends on <link
         href="http://www.saxonica.com/welcome/welcome.xml" label="Saxon"
          /> to convert XML to HTML and <link href="http://www.princexml.com/"
         label="PrinceXML" /></para>
-
     <para>In creating your own xml-based markup you enforce separation of content and style. The XML document provides the basic content of the document and the hints to use elsewhere. XSLT stylesheets allow you to structure the base document and associated hints into any number of formats (for the purposes of this document we'll concentrate on XHTML, PDF created through Paged Media CSS and PDF created using XSL formatting Objects)</para>
-
     <para>It reduces the ammount of external code that we have to adapt in order to acomplish a given task.</para>
-
     <para>Creating a domain specific markup vocabulary allows you think about structure and complexity for yourself as the editor/typesetter and for your authors. It makes you think about elements and attributes and which one is better for the given experience you want and what, if any, restrictions you want to impose on your makeup.</para>
-
     <para>By creating our own vocabulary we make it easier for authors to write clean and simple content. XML provides a host of validation tools to enforce the structure and format of the XML document.</para>
-
     <h2>Options for defining the markup</h2>
-
     <para>For the purpose of this project we'll define a set of resources that work with a book structure like the one below:</para>
-
     <code language="xml">&lt;book&gt;
   &lt;metadata&gt;
     &lt;title&gt;The adventures of SHerlock Holmes&lt;/title&gt;
@@ -273,23 +256,16 @@
   &lt;/section&gt;
 &lt;/book&gt;
     </code>
-
     <para>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</para>
   </section>
   <section type="chapter">
     <title>The XML Schema</title>
-
     <blockquote>
       <para>This version of the documentation is based on commit 542178fb21 to the Github repository. Any differences between this document and the repository should be resolved in favor of the repository (repo is always right)</para>
     </blockquote>
-
     <para>The idea behind the schema is to create as clean a document as possible. The base document uses classes and IDs to avoid having to add styles directy to the document and leaving all the styling to CSS. There are 2 exceptions for addresses (discussed when we look at the XML to XHTML conversion.)</para>
-
     <para>We cover all the content for the schema but will only detail the things I belive are important to understand the choices I made and why the schema was created this way.</para>
-
-
     <h2>Why a schema</h2>
-
     <para>There are many ways to define a schema. There is the original <link
         href="http://www.w3.org/XML/Schema" label="XML Schema"
          /> from W3C, there is RelaxNG developed by OASIS in a <link
@@ -297,22 +273,15 @@
         label="technical committee" /> and <link
         href="http://www.schematron.com/" label="Schematron"
        /> defined as an ISO standard.</para>
-
     <para>With all these choices why did I stick with Schema?</para>
-
     <ulist>
       <item>It's the most widely supported</item>
       <item>It can be converted to RelaxNG or Schematron (an experimental conversion to RelaxNG is available in the rng directory of the repository)</item>
     </ulist>
-
     <para>You can work with either the Schema or RelaxNG version. This document will refer to the Schema.</para>
-
     <h2>Getting started</h2>
-
     <para>As with all XML document the schema needs to define the XML Prologue (<emphasis>&lt;?xml version="1.0" encoding="UTF-8"?></emphasis>), the root element (<emphasis>&lt;xs:schema</emphasis>), the namespaces we'll use for the project and the default forms for elements (<emphasis>elementFormDefault="qualified"</emphasis>) and attributes (<emphasis>attributeFormDefault="unqualified"</emphasis>`)</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;xs:schema
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -320,15 +289,10 @@
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
 </code>
-
     <para>Form defaults refer to whether we need to add the namespace prefix to our default elements. To avoid confusion I've chosen to add namespace prefixes to all our elements (using `xs:` as the namespace prefix for the schema name space.) Doing that for attributes is unnecessary; it may not always be the case.</para>
-
     <para>We begin the actual work in the schema by defining some basic types that will be the basis of elements and complex types later in the schema.</para>
-
     <para>Most of the simeType elements are created by restriction. We base the element in one of the default Schema data types.</para>
-
     <para>For example: token255 is based on the toke schema element and is restricted to a maximum length of 255 characters. When this length is not enough we can use strings or other data types.</para>
-
     <code language="xml">&lt;!-- Simple types to use in the content -->
 &lt;xs:simpleType name="token255">
   &lt;xs:restriction base="xs:token">
@@ -336,28 +300,21 @@
   &lt;/xs:restriction>
 &lt;/xs:simpleType>
     </code>
-
     <para>ISBN-type10 uses string as its base and creates a regular expression to match the format of <link
         href="http://www.isbn.org/" label="ISBN"
        /> codes used to identify books worldwide.</para>
-
     <para>The ISBN element only matches one format. There are many formats that could match an ISBN record depending on where the book was published and which country it was registered in. There is a simple type element for ISBN numbers worldwide available at <link
         href="http://xfront.com/isbn.html" label="XFront"
        />. The code can be incorporated to the schema at a later time.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:simpleType name="ISBN-type10">
   &lt;xs:restriction base="xs:string">
     &lt;xs:pattern value="0-[0-1][0-9]-\d{6}-[0-9x]"/>
   &lt;/xs:restriction>
 &lt;/xs:simpleType>
 </code>
-
     <para>The align simple type is an enumeration. We list all the possible values for align attribute so we can reference them later without having to type them all the time.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:simpleType name="align">
   &lt;xs:restriction base="xs:token">
     &lt;xs:enumeration value="left"/>
@@ -367,39 +324,24 @@
   &lt;/xs:restriction>
 &lt;/xs:simpleType>
 </code>
-
     <para>Languages are handled using an element types as the language primitive (<emphasis>xs:language</emphasis>.) We can use it anywhere in the schema where we are allowed to use children elements.</para>
-
     <para>Another possibility is to convert it to an attribute and move it to the generic properties attribute group discussed below.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="language" type="xs:language"/>
 </code>
-
     <para>The attribute group element adds all the attributs with one statement. As it currently set up, it adds id and class attributes to the elements it's been added to. A future enhancement may be to add the language element as an attribute.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:attributeGroup name="genericPropertiesGroup">
   &lt;xs:attribute name="id" type="xs:ID" use="optional"/>
   &lt;xs:attribute name="class" type="xs:token" use="optional"/>
 &lt;/xs:attributeGroup>
 </code>
-
     <h2>Organization and children</h2>
-
-
     <para>Initially there was no organization element until the question came up: <strong>What happens when an author is not a person but a company or group?</strong></para>
-
     <para>We keep the organization element as generic as possible to make sure we can use it in different instances. The only thing we know we'll need is the organization's name... everything else can be added when we build elements on top of organization (like publisher, discussed below.)</para>
-
     <para>Address is one of those additional elements we add to organization. Addresses are string based and use the U.S. model.</para>
-
     <para>Finally we build a publisher element by putting together our organization and address elements. Notice how the complex type and the element are called differently.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:complexType name="organization">
   &lt;xs:all>
     &lt;xs:element name='name' type="xs:string"/>
@@ -429,16 +371,10 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
-
     <h2>Person and children elements</h2>
-
     <para>We now move to define individuals and their roles.</para>
-
     <para>The base class is person where we define a first-name and surname. We'll use this to create the roles for our different users with additional elements and attributes where necessary.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- complex types to create groups of similar person items -->
 &lt;xs:complexType name="person">
   &lt;xs:sequence>
@@ -447,15 +383,10 @@
   &lt;/xs:sequence>
 &lt;/xs:complexType>
 </code>
-
     <para>Author, editor and otherRole use person as the base and then add additional elements to expand the person based on the type of editor (for the editor element) or the role they play in the book (for otherRole.)</para>
-
     <para>During initial develpment I thought I'd just only work with plural elements (authors, editors and otherRoles) but soon realized that it took a lot of flexibility out of the schema since there may be other places where we need this information. For example, we may have an edited volume where each chapter has one or more authors.</para>
-
     <para>So we have individual author (directly based on person), editor (with a <emphasis>type</emphasis> attribute to indicate what kind of editor the person is) and otherRole (for roles other than editor we use this with the <emphasis>role</emphasis> attribute.)</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:complexType name="author">
   &lt;xs:complexContent>
     &lt;xs:extension base="person"/>
@@ -482,17 +413,11 @@
   &lt;/xs:complexContent>
 &lt;/xs:complexType>
 </code>
-
     <para>With individual roles created we can now create elements for multiple individuals.</para>
-
     <para>Authors can have 1 or more author elements. At least 1 author is required for the document to validate, whether we choose to use it or not. Remember that the transformation (using XSLT) doesn't have to use all the elements on the XML source.</para>
-
     <para>Editors and otherRoles wrap around individual elements (editor and otherRole) to provide an easier way to work with them in XSLT later on.</para>
-
     <para>Also note that we require 0 or more instances of the base type, rather than 1. This is my way of making the element optional: either we have zero, one or more than one children.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Wrappers around complext types -->
 &lt;xs:element name="authors">
   &lt;xs:complexType mixed="true">
@@ -518,15 +443,10 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>Metadata and publishing information</para>
-
     <para>In order to acommodate publishing information, we add multiple publishing related elements to account for publishing and publishing related information.</para>
-
     <para>Most of these elements (except pubdate) are made of 1 or more paragraphs.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="releaseinfo">
   &lt;xs:complexType mixed="true">
     &lt;xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -559,32 +479,23 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>The date is different as it's based on the date schema type which in turn it's based on the <link
         href="http://www.wikiwand.com/en/ISO_8601" label="ISO 8601"
        /> standard.</para>
-
     <para>An example of a valid ISO 8601 date is: <emphasis>2015-02-28</emphasis></para>
-
     <para>This is also the standard that handles time so, in theory, we could build a date/time structure including a date formated like the example above plus time and timezone offset but, unless we're required to we will avoid that much level of detail.</para>
-
     <code language="xml">
 &lt;xs:element name="pubdate" type="xs:date"/>
 </code>
-
     <para>The idea behind revision and revhistory is to provide an accountability chain for the publication's history. We can have one or more paragraphs where we outline the following information:</para>
-
     <ulist>
       <item>Revision number (cast as a string)</item>
       <item>Date (using the pubdate element defined earlier)</item>
       <item>Author's initials (short 255 character string)</item>
       <item>Revision description/notes (short 255 character string)</item>
     </ulist>
-
     <para>The revhistory element is a set of one or more revisions. We'll use XSLT to put them in na div tag or inside a table structure.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="revision">
   &lt;xs:complexType mixed="true">
     &lt;xs:all>
@@ -604,18 +515,13 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Links and related elements</h2>
-
     <para>Links are essential to the web. They allow us to connect our content to other elements inside and outside the pages we create. We add class and ID from `genericPropertiesGroup` and two new elements:</para>
-
     <ulist>
       <item><emphasis>href</emphasis> indicates the URL (local or relative) we are linking to</item>
       <item><emphasis>label</emphasis> used as the text of the link and also the label attribute created for accessibility</item>
     </ulist>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Links -->
 &lt;xs:element name="link">
   &lt;xs:complexType>
@@ -625,38 +531,26 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h3>About the xs:anyURI data type</h3>
-
     <blockquote>
       <para>Some information and examples for this section taken from <link
           href="http://www.datypic.com/sc/xsd/t-xsd_anyURI.html"
           label="http://www.datypic.com/sc/xsd/t-xsd_anyURI.html" /></para>
     </blockquote>
-
     <para>Unti I used the value xs:anyURI I wasn't sure what it did and how much work it would actually save me. I thought it was just another name for URLs but they are much more and the amount of work they save is significant.</para>
-
     <para>URI (uniform resource indicator) are a superset of the web's URL. There are two main types of URIs: absolute and relative.</para>
-
     <para>Absolute URIs provide the entire context for locating the resources, such as <strong>http://datypic.com/prod.html</strong>.</para>
-
     <para>Relative URIs are specified as the difference from a base URI, such as <strong>../prod.html</strong>. It is also possible to specify a fragment identifier, using the # character, such as <strong>../prod.html#shirt</strong>. Note that when relative URI references are used as values of xsd:anyURI there is no attempt made to track the base of the URI.</para>
-
     <para>The three previous examples happen to be HTTP URLs (Uniform Resource Locators), but URIs also encompass URLs of other schemes (e.g., FTP, gopher, telnet), as well as URNs (Uniform Resource Names). URIs doen't have to exist to be valid; there is no need for a resource to live at http://datypic.com/prod.html for the URI pointing to it to validate.</para>
-
     <para>URIs require that some characters be escaped with their hexadecimal Unicode code point preceded by the % character. This includes non-ASCII characters and some ASCII characters, namely control characters, spaces, and the following characters (unless they are used as deliimiters in the URI): &lt;>#%{}|\^`. For example, **../édition.html** must be represented instead as **../%C3%A9dition.html**, with the é escaped as %C3%A9. However, the anyURI type will accept these characters either escaped or unescaped. With the exception of the characters % and #, it will assume that unescaped characters are intended to be escaped when used in an actual URI, although the schema processor will do nothing to alter them. It is valid for an anyURI value to contain a space, but this practice is strongly discouraged. Spaces should instead be escaped using %20.</para>
-
     <para>The schema processor is not required to parse the contents of an xsd:anyURI value to determine whether it is valid according to any particular URI scheme. Since the bare minimum rules for valid URI references are fairly generic, the schema processor will accept most character strings, including an empty value. The only values that are not accepted are ones that make inappropriate use of reserved characters, such as ones that contain multiple # characters or have % characters that are not followed by two hexadecimal digits.</para>
-
     <para>For more information on URIs, see <link
         href="https://www.ietf.org/rfc/rfc2396.txt"
         label="RFC 2396, Uniform Resource Identifiers (URI): Generic Syntax"
        />.</para>
-
     <para>
       <strong>Valid URI matching xs:anyURI</strong>
     </para>
-
     <ulist>
       <item>http://datypic.com <strong>absolute URI (also a URL)</strong></item>
       <item>mailto:info@datypic.com <strong>absolute URI</strong></item>
@@ -667,19 +561,12 @@
       <item>urn:example:org <strong>URN</strong></item>
       <item>an empty value is allowed</item>
     </ulist>
-
     <h2>Div and span</h2>
-
     <para>Div and Span are subcontainers for block level elements (div) and inline elements (span). As containers I have to decide what elements are allowed as children and that's not always easy; any time we add a new element to the schema we have to decide if we're using it as a block element (that can be used inside a div) and/or an inline element (and whether that inline element can be used inside a span.)</para>
-
     <para>The only special thing about div and span is the additional attribute type. We use type to build <emphasis>data-type</emphasis> and <emphasis>epub:type</emphasis> attributes. ePub and Edupub have lists of allowed values for the attribute and it's a good starting point for work with Javascript or additional functionality.</para>
-
     <para>Div is a subsection of our section elements. Most of the elements that we can add to a section are also valid inside a div, including other div elements.</para>
-
     <para>Span is used mostly to hold styles that apply to part of a paragraph and can be nested to build more elaborate effects and styles using class and id attributes.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="div">
   &lt;xs:complexType mixed="true">
     &lt;xs:sequence>
@@ -727,13 +614,9 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Figure and image</h2>
-
     <para>Figure and image are the two ways the schema provides for working with images. Rather than make several elements and attributes optional and make the image elements brittle we allow both a figure element with caption and image children and an image without caption.</para>
-
     <para>Most of the time I will use the figure/caption/image combination to give a numbering schema when performing the transformations.</para>
-
     <code language="xml">&lt;xs:element name="figure">
   &lt;xs:complexType mixed="true">
     &lt;xs:all>
@@ -747,11 +630,8 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>Captions are made of a single paragraph with all the children available to paragraphs elsewhere. This way we can add links and styles to the captions.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="figcaption">
   &lt;xs:complexType>
     &lt;xs:sequence>
@@ -760,11 +640,8 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>One last thing to note about figures and images: Since figure and image have the same attributes we can combine them in different combinations. For example: we can have a left centered figure and caption with a right-aligned image inside.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="image">
   &lt;xs:complexType>
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
@@ -776,26 +653,17 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Video</h2>
-
     <para>Video is a rather complex subject. According to the <link
         href="http://www.w3.org/html/wg/drafts/html/master/semantics.html#the-video-element"
         label="specification"
        /> there are two ways to create video elements. I've chosen to adopt the multi-source element rather than a single src attribute to the video tag itself.</para>
-
     <para>We use two children element: source and track.</para>
-
     <para>The <emphasis>source</emphasis> element is for the actual video content. The element contains two attributes: <emphasis>src</emphasis> indicates the location of the video source. <emphasis>Type</emphasis> indicates the mimetype of the video and, optionally the codecs that were used to encode the video. This is particularly important with MP4 video as there are muliple "profiles" that may or may not be supported in all devices.</para>
-
     <para>At least one of source element is required.</para>
-
     <para>The track element is used to provide additional information to the video using the [VTT community specification](http://dev.w3.org/html5/webvtt/). You can use VTT to provide captioning and subtitles in multiple languages allowing the user to decide what language and what type of track they want to use with the video.</para>
-
     <para>There are other uses for VTT tracks discussed in the HTML5 video captioning article listed in resources.</para>
-
     <h3>Attributes for video tag</h3>
-
     <ulist>
       <item>width — Horizontal dimension</item>
       <item>height — Vertical dimension</item>
@@ -806,9 +674,7 @@
       <item>muted — Whether to mute the media resource by default</item>
       <item>controls — Show user agent controls</item>
     </ulist>
-
     <h3>Additional Resources</h3>
-
     <ulist>
       <item>
         <link
@@ -828,10 +694,7 @@
           label="HTML5 video captioning using VTT"
          /> discusses captioning video using VTT tracks</item>
     </ulist>
-
-
-    <code language="xml"
-      >
+    <code language="xml">
     &lt;!-- Video and multimedia -->
     &lt;xs:element name="video">
       &lt;xs:complexType mixed="true">
@@ -866,13 +729,9 @@
       &lt;/xs:complexType>
     &lt;/xs:element>
 </code>
-
     <h2>Styles</h2>
-
     <para>Styles are hints for the transformation engine to apply rules and classes to the enclosed elements. We allow for nested styles by indetifying what styles can nest inside each of our four basic styles.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Style elements -->
 &lt;xs:element name="strong">
   &lt;xs:complexType mixed="true">
@@ -905,11 +764,8 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>Emphasis is the only style that can be nested in itself. The idea is that if an emphasis element is nested inside another emphasis it will display as normal text.</para>
-
-    <code language="xml"
-      >&lt;xs:element name="emphasis">
+    <code language="xml">&lt;xs:element name="emphasis">
   &lt;xs:complexType mixed="true">
     &lt;xs:choice minOccurs="0" maxOccurs="unbounded">
       &lt;xs:element ref="strong"/>
@@ -920,15 +776,10 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Lists</h2>
-
     <para>When I originally conceived the schema I had only one list element that, based on a type attribute, would generate the correct type of list (numbered or bulleted.) as I was implementing this I trealized it was too brittle and hard to work with and hard to maintain.</para>
-
     <para>So I broke the element into two separate list elements; one for bulleted (<emphasis>ulist</emphasis>) and one for numbered (<emphasis>olist</emphasis>) lists. They can also nest other list elements (of either tupe) inside.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Lists -->
 &lt;xs:element name="ulist">
   &lt;xs:complexType mixed="true">
@@ -952,10 +803,8 @@
 &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>They share a common <emphasis>item</emphasis> element that contains a reduced subset of the paragraph element content. We don't want a full paragraph in each item because they'll mess up the display when we convert them to HTML or PDF. We do want the ability to style the content, link or provide span and quotes elements.</para>
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="item">
   &lt;xs:complexType mixed="true">
     &lt;xs:choice  minOccurs="0" maxOccurs="unbounded">
@@ -971,17 +820,12 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Fenced code blocks</h2>
-
     <para>I love the way Github displays fenced code blocks and wanted to get my HTML and, if possible, the PDF generated from XML to look similar to it. After researching the issue I found out code highlighting libraries for the web. The one I chose (<link
         href="https://highlightjs.org/" label="highlight.js"
        />) also works with PrinceXML (with some extra work.)</para>
-
     <para>The schema defines the container for the code, the XSLT transformations, discussed in a later chapter, add the appropriate HTML tags and scripts to highlight the code and PrinceXML will honor the code highlight in the HTML and display it in the resulting PDF.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
     &lt;!-- Fenced code blocks -->
     &lt;xs:element name="code">
         &lt;xs:complexType mixed="true">
@@ -990,24 +834,17 @@
         &lt;/xs:complexType>
     &lt;/xs:element>
 </code>
-
     <h2>Blockquotes, asides and marginalia</h2>
-
     <blockquote>
       <para>Element descriptions taken from the <link
           href="HTML5 nightly specification"
           label="http://www.w3.org/html/wg/drafts/html/master/semantics.html"
          /></para>
     </blockquote>
-
     <para>Blockquotes, asides and quotes provide related or parenthetical content.</para>
-
     <para>The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a footer or cite element, and optionally with in-line changes such as annotations and abbreviations.</para>
-
     <para>Attribution provides a way to give credit for the quote.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Blockquotes, asides and marginalia -->
 &lt;xs:element name="attribution">
   &lt;xs:complexType mixed="true">
@@ -1030,13 +867,9 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>The aside element represents a section of a page that consists of content that is tangentially related to the content around the aside element, and which could be considered separate from that content. Such sections are often represented as sidebars in printed typography. It can be used for typographical effects like pull quotes or sidebars, for advertising, for groups of nav elements, and for other content that is considered separate from the main content of the page.</para>
-
     <para>It's not appropriate to use the aside element just for parentheticals, since those are part of the main flow of the document.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="aside">
   &lt;xs:complexType mixed="true">
     &lt;xs:sequence>
@@ -1063,17 +896,11 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>The quote element represents some inline content quoted from another source.</para>
-
     <para>Content inside a quote element must be quoted from another source, whose address, if it has one, may be cited in the cite attribute. The source may be fictional, as when quoting characters in a novel or screenplay.</para>
-
     <para>If the cite attribute is present, it must be a valid URL potentially surrounded by spaces. To obtain the corresponding citation link, the value of the attribute must be resolved relative to the element. User agents may allow users to follow such citation links, but they are primarily intended for private use (e.g. by server-side scripts collecting statistics about a site's use of quotations), not for readers.</para>
-
     <para>The quote element must not be used in place of quotation marks that do not represent quotes; for example, it is inappropriate to use the quote element for marking up sarcastic statements.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="quote">
   &lt;xs:complexType mixed="true">
     &lt;xs:all>
@@ -1084,15 +911,10 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Paragraphs</h2>
-
     <para>The paragraph is our main unit of content and where we do most, if not all, our inline styling of elements (indicated by what children elements are allowed to the paragraph)</para>
-
     <para>In addition to the genericPropertiesGroup attributes, we also use align to control the horizontal alignment of the paragraph. This is useful when the paragraph is inside an attribution and I'd like the attribution to be right aligned while keeping the paragraph aligned to the left.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="para">
   &lt;xs:complexType mixed="true">
     &lt;xs:choice  minOccurs="0" maxOccurs="unbounded">
@@ -1110,13 +932,9 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Headings</h2>
-
     <para>Headins should be self explainatory. They are used to indicate headings and structure in the document. While we only show the level 1 heading, the other levels (h2 thought h6) share the same structure.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="h1">
   &lt;xs:complexType mixed="true">
     &lt;xs:attributeGroup ref="genericPropertiesGroup"/>
@@ -1124,17 +942,11 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Metadata element</h2>
-
     <para>The metadata element contains all the elements for our publication that are not content. Information such as copyright, legal notices, publisher, author and staff information.</para>
-
     <para>I placed it in a separate element rather than incorporate it in a section with the appropriate type because keeping it separate makes it easier to transfor and pick the order and the types of elements we'll use for each type of document we generate.</para>
-
     <para>Having a separate metadata element makes it easier to add or take away elements as needed.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Metadata element -->
 &lt;xs:element name="metadata">
   &lt;xs:complexType>
@@ -1157,17 +969,12 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Section element</h2>
     <para>Sections are the primary container for our documents. It is at this level that we will create separate files when I start looking at multiple output.</para>
-
     <para>I also use the <emphasis>type</emphasis> attribute here to indicate the type of section it is. The default value for it is chapter since it's the one I use most often.  I've been thinking whether I want to create an enumeration of all the different values for type (based on epub and edupub profiles) to make it easier to create (oXygen gives me a list of all possible values for type and it currently only shows the default.)</para>
-
     <para>Other than the title element, defined as a string schema type, all other elements reference reference other elements in the schema.</para>
-
     <para>It derives class and id from our genericPropertiesGroup and the type attribute.</para>
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Section element -->
 &lt;xs:element name="section">
   &lt;xs:complexType mixed="true">
@@ -1199,26 +1006,17 @@
   &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <h2>Table of contents placeholder</h2>
-
     <para>Even though we're generating the table of contents in the transformation stage of the process I still need an element to tell the script where to place the generated table of contents.</para>
-
     <para>Since this is a placeholder element we don't assign attributes or children elements.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- place holder for generated toc element -->
 &lt;xs:element name="toc"/>
 </code>
-
     <h2>Puting it al together: The book element</h2>
     <para>The last thing to do is to put the structure of the book together. As currently outlined, the structure is metadata, followed by the table of contents placeholder and 1 or more sections where only 1 section element is required.</para>
-
     <para>The idea for making 1 section required and nothing else is that, sometimes, we're writing something quick where I don't really want metadata information or a table of contents. Since the section element already has a title I can get away with using only that for the document.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Base book element -->
 &lt;xs:element name="book">
   &lt;xs:complexType mixed="true">
@@ -1235,20 +1033,14 @@
   </section>
   <section type="chapter">
     <title>Converting XML content to HTML</title>
-
     <para>One of the biggest advantages of working with XML is that we can convert the abstract tags into other markups. For the purposes of this project we'll convert the XML created to match the schema we just created to HTML and then use tools like <link
         href="http://www.princexml.com" label="PrinceXML" /> or <link
         href="http://www.antennahouse.com" label="AntenaHouse"
        /> we'll convert the HTML/CSS files to PDF</para>
-
     <h2>Why HTML</h2>
-
     <para>HTML is the default format for the web and for most web/html based content such as ePub and Kindle. As such it makes a perfect candidate to explore how to generate it programmatically from a single source file.</para>
-
     <para>HTML will also act as our source for using CSS paged media to create PDF content.</para>
-
     <h2>Why PDF</h2>
-
     <para>Rather than having to deal with <link
         href="http://www.w3.org/TR/2006/REC-xsl11-20061205/" label="XSL-FO"
          />, another XML based vocabulary to create PDF content, we'll use XSLT to create another HTML file and process it with <link
@@ -1256,26 +1048,19 @@
          /> and the companion <link href="http://www.w3.org/TR/css-gcpm-3/"
         label="Generated Content for Paged Media"
        /> specifications to create PDF content.</para>
-
     <para>Where there is a direct equivalent between our mode and the <link
         href="http://www.w3.org/html/wg/drafts/html/master/sections.html"
         label="HTML5.1 nightly specification"
        /> I've quoted the relevant section of the HTML5 spec as a reference and as a rationale of why I've done things the way I did.</para>
-
     <para>In this document we'll concentrate on the XSLT to HTML conversion and will defer converting HTML to PDF to a later article.</para>
-
     <h1>Creating our conversion style sheets</h1>
-
     <para>To convert our XML into other formats we will use XSL Transformations (also known as XSLT) <link
         href="http://www.w3.org/TR/xslt" label="version 2"
          /> (a W3C standard) and <link href="http://www.w3.org/TR/xslt-30/"
         label="version 3"
        /> (a W3C last call draft recommendation) where appropriate.</para>
-
     <para>XSLT is a functional language designed to transform XML into other markup vocabularies. It defines template rules that match elements in your source document and processing them to convert them to the target vocabulary. </para>
-
     <para>In the XSLT template below, we do the following:</para>
-
     <olist>
       <item>Declare the file as an XML document</item>
       <item>Define the root element of the style sheet (xsl:stylesheet)</item>
@@ -1284,10 +1069,7 @@
       <item>Create the default output we'll use for the main document and all generated pages (discussed later)</item>
       <item>Create a default template to warn us if we missed anything</item>
     </olist>
-
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;?xml version="1.0" ?>
 &lt;!-- Define stylesheet root and namespaces we'll work with -->
 &lt;xsl:stylesheet
@@ -1312,20 +1094,15 @@
   &lt;/xsl:template>
 &lt;/xsl:stylesheet>
 </code>
-
     <para>This is a lot of work before we start creating our XSLT content. But it's worth doing the work up front. We'll see what are the advantages of doing it this way as we move down the style sheet.</para>
-
     <para>Now to our root templates. The first one is the entry point to our document. It performs the following tasks:</para>
-
     <olist>
       <item>Match the root element to create the skeleton for our HTML content</item>
       <item>We include the name and version of our XSLT processor as a meta element</item>
       <item>In the title we insert the value of the <emphasis>metadata/title</emphasis> element</item>
       <item>In the body we <emphasis>apply</emphasis> the templates that match the content inside our document (more on this later)</item>
     </olist>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="book">
   &lt;html>
   &lt;head>
@@ -1355,23 +1132,14 @@
   &lt;/html>
 &lt;/xsl:template>
 </code>
-
     <para>We could build the CSS style sheet and JavaScript files as part of our root template but we chose not to.</para>
-
     <para>Working with the style sheet as part of the XSLT style sheet allows the XSLT stylesheet designer to embed the style and parametrize the stylesheet, thus making the stylesheet customizable from the command line.</para>
-
     <para>For all advantages, this method ties the styles for the project to the XSLT stylesheet and requires the XSLT stylesheet designer to remain involved in all CSS and JavaScript updates.</para>
-
     <para>By linking to external CSS and JavaScript files we can leverage expertise independent of the Schema and XSLT style sheets. Book designers can work on the CSS, UX and experience designers can work on JavaScript and other CSS areas, book designers can work on the Paged Media style sheets and authors can just write.</para>
-
     <para>Furthermore we can reuse our CSS and JavaScript on multiple documents.</para>
-
     <h2>Table of contents</h2>
-
     <para>There is a second template matching the root element of our document to create a table of content. At first thought this looks like the wrong approach </para>
-
     <para>We leverage XSLT modes that allow us to create templates for the same element to perform different tasks. In <emphasis>toc mode</emphasis> we want the root template to do the following:</para>
-
     <olist>
       <item>Create the document that will hold the table of content</item>
       <item>Build the HTML document</item>
@@ -1386,9 +1154,7 @@
         <item>The title of the section as the 'clickable' portion of the link</item>
       </olist>
     </olist>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="/" mode="toc">
   &lt;xsl:result-document href='toc.html' format="xhtml-out"> (1)
     &lt;html> (2)
@@ -1420,17 +1186,11 @@
   &lt;/xsl:result-document>
 &lt;/xsl:template>
 </code>
-
     <h2>Metadata and Section</h2>
-
     <para>With these templates in place we can now start writing the major areas of the document, <emphasis>metadata</emphasis> and <emphasis>section</emphasis>. </para>
-
     <h3>Metadata</h3>
-
     <para>The metadata is a container for all the elements inside. As such we just create the section that will hold the content and call `xsl:apply-templates` to process the children inside the metadata element using the apply-template XSLT instruction. The template looks like this</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="metadata">
   &lt;xsl:element name="section">
     &lt;xsl:attribute name="data-type" select="'metadata'"/>
@@ -1438,29 +1198,19 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <h3>Section</h3>
-
     <para>The section template, on the other hand, is more complex because it has a lot of work to do. It is our primary unit for generating content fifiles, takes most of the same attributes as the root template and then processes the rest of the content.</para>
-
     <para>Inside the template we first create a vairable to hold the name of the file we'll generate. The file name is a concatenation of the following elements:</para>
-
     <ulist>
       <item>The type attribute</item>
       <item>The position in the document</item>
       <item>the string ".html"</item>
     </ulist>
-
     <para>The result-document element takes two parameters: the value of the file name variable we just defined and the xhtml-out format we defined at the top of the document. The XHTML format may look like overkill right now but it makes sense when we consider moving the generated content to ePub or other fomats where strict XHTML conformance is a requirement. </para>
-
     <para>We start generating the skeleton of the page, we add the default style sheet and  do the first conditional test of the document. Don't want to add stylesheets to the page unless they are needed so we test if there is a code element on the page and only add highlight.js related stylesheets and scripts.</para>
-
     <para>In the body element we add a section element, the main wrapper for our content.</para>
-
     <para>For the section we conditionally add attributes to the element. We use only add a data-type attribute to body if there is a type attribute in the source document. We do the same thing for id and class.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="section">
   &lt;!-- Variable to create section file names -->
   &lt;xsl:variable name="fileName" select="concat((@type), (position()-1),'.html')"/>
@@ -1502,25 +1252,16 @@
   &lt;/xsl:result-document>
 &lt;/xsl:template>
 </code>
-
     <h2>Metadata content</h2>
-
     <para>Since the style sheets were oginally written I've added more content to the metadata element to acommodate different publishing requirements. The first additional element I've added is publisher, an organization or person that has a name (pubname element) and an address (modeled after a United States address)</para>
-
     <para>Most of the metadata templates use two conditional statements. The first one tests to see if the author gave the element a class attribute. If there is one, we use that as the value of the class attribute, otherwise we assign a default value based on the element name or its function.</para>
-
     <para>The second test is simple. If there is an ID attribute use it as the value for the ID attribute, otherwise leave it blank. </para>
-
     <para>I coded it this way because of the difference in using classes versus ID values. </para>
-
     <para>Unless you're using the IDs to structure your content there is no real reason to use IDs instead of classes. The consensus is to avoid IDs as much as possible as explained in the <link
         href="https://github.com/CSSLint/csslint/wiki/Disallow-IDs-in-selectors"
         label="CSSLint rule that disallows IDs in selectors" /></para>
-
     <para>With two different classes I'm also giving content creators the flexibility of either using the default CSS (or no CSS at all) or create their own CSS for the metadata element, the choice is yours.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
   &lt;xsl:template match="publisher">
     &lt;xsl:element name="div">
       &lt;xsl:choose>
@@ -1541,11 +1282,8 @@
     &lt;/xsl:element>
   &lt;/xsl:template>
 </code>
-
     <para>Right now the address is a list of paragraphs with the information of the children elements. We may change the structure to a single paragraphy with span elements to indicate where each child element happens. I'm not 100% sure which way is better.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
   &lt;xsl:template match="address">
     &lt;xsl:element name="div">
       &lt;xsl:choose>
@@ -1565,11 +1303,8 @@
     &lt;/xsl:element>
   &lt;/xsl:template>
 </code>
-
     <para>These elements: releaseinfo, copyright, legal notice, pubdate and abstract share a similar structure so, instead of creating one template we match all of them and we do a little magic. We replace the class name in the otherwise clause and use the name() xpath expression that will match the name of the element that matched the template.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
   &lt;xsl:template match="releaseinfo | copyright | legalnotice | pubdate | abstract">
   &lt;xsl:element name="div">
     &lt;xsl:choose>
@@ -1584,13 +1319,9 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <para>The revhistory and revisions attribute provides a way to do authority and change tracking. I'm still working on these templates. As they are right now they are paragraphs inside a div inside another div holding the full history.</para>
-
     <para>Normally I'd consider using a table but want to explore other options before I do so.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="revhistory">
   &lt;xsl:element name="div">
     &lt;xsl:attribute name="class" select="'revhistory'"/>
@@ -1608,24 +1339,18 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <para>For authors we do the following:</para>
-
     <olist>
       <item>For each individual in the group we take the first name and the surname</item>
       <item>Wrap the name around an li element to build an unnumbered list. We can style the list with CSS later</item>
     </olist>
-
     <para>For editors and other roles we do the same thing</para>
-
     <olist>
       <item>For each individual in the group we take the first name and the surname</item>
       <item>We concatenate the type/role to create a full title (production editor for example)</item>
       <item>Wrap the name and the title with an li element that we can style with CSS later</item>
     </olist>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="metadata/authors">
   &lt;h2>Authors&lt;/h2>
   &lt;ul>
@@ -1639,9 +1364,7 @@
   &lt;/ul>
 &lt;/xsl:template>
 </code>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="metadata/editors">
   &lt;h2>Editorial Team&lt;/h2>
   &lt;ul class="no-bullet">
@@ -1656,9 +1379,7 @@
   &lt;/ul>
 &lt;/xsl:template>
 </code>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="metadata/otherRoles">
   &lt;h2>Production team&lt;/h2>
   &lt;ul class="no-bullet">
@@ -1674,28 +1395,18 @@
   &lt;/ul>
 &lt;/xsl:template>
 </code>
-
     <h3>Titles and headings</h3>
-
-
     <para>Headings are primarily used to create sections of content. We use the same heading levels as HTML with the addition of a <emphasis>title</emphasis> tag that also maps to a level 1 heading. We've put <emphasis>title</emphasis> and <emphasis>h1</emphasis> in separate templates to make it possible and easier to generate different code for each heading.</para>
-
     <para>Working with XSLT is not the same as using CSS where you can declare rules for the same attribute multiple times (with the last one winning); when writing transformations you can only have one per element otherwise you will get an error or a different result to the one you expected.</para>
-
     <para>According to the spec:</para>
-
     <blockquote>
       <para>These elements [h1 to h6] represent headings for their sections.</para>
-
       <para>The semantics and meaning of these elements are defined in the section on headings and sections.</para>
-
       <para>These elements have a rank given by the number in their name. The h1 element is said to have the highest rank, the h6 element has the lowest rank, and two elements with the same name have equal rank.</para>
-
       <para>h1–h6 elements must not be used to markup subheadings, subtitles, alternative titles and taglines unless intended to be the heading for a new section or subsection. Instead use the markup patterns in the <link
           href="http://www.w3.org/html/wg/drafts/html/master/common-idioms.html#common-idioms"
           label="Common idioms without dedicated elements"
          /> section of the specification.</para>
-
       <attribution>
         <para>
           <strong>
@@ -1703,16 +1414,10 @@
           </strong>
         </para>
       </attribution>
-
-
     </blockquote>
-
     <para>All elements have the same attribute set: align, class and id.</para>
-
     <para>The remaining headings, h2 through h6, all have the same attributes and the templates are structured the same way.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="title ">
   &lt;xsl:element name="h1">
     &lt;xsl:if test="@align">
@@ -1734,15 +1439,11 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <h3>Blockquotes, quotes and asides</h3>
-
     <para>Blockquotes, asides and quotes provide sidebar-like content on our document. According to the W3C:</para>
-
     <blockquote>
       <para>The blockquote element represents content that is quoted from another source, *optionally* with a citation which must be within a footer or cite element, and *optionally* with in-line changes such as annotations and abbreviations.</para>
       <para>Content inside a blockquote other than citations and in-line changes *must* be quoted from another source, whose address, if it has one, *may* be cited in the cite attribute. [emphasis mine]</para>
-
       <attribution>
         <para>
           <strong>
@@ -1751,9 +1452,7 @@
         </para>
       </attribution>
     </blockquote>
-
     <para>The cite HTML provides attribution to the blockquote it is used in. To prevent confusion and to make it's meaning clear the document model uses the <emphasis>attribution</emphasis> tag instead, their purpose is identical and during the transformation the attribution will become a <emphasis>cite</emphasis> element. According to spec:</para>
-
     <blockquote>
       <para>The cite element represents a reference to a creative work. It must include the title of the work or the name of the author (person, people or organization) or an URL reference, which may be in an abbreviated form as per the conventions used for the addition of citation metadata.</para>
       <para>
@@ -1762,10 +1461,7 @@
         </strong>
       </para>
     </blockquote>
-
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="blockquote">
   &lt;xsl:element name="blockquote">
     &lt;xsl:if test="(@class)">
@@ -1799,31 +1495,21 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <para>The <emphasis>q</emphasis> element is the inline equivalent to `blockquote` and has been replaced in our markup by the <emphasis>quote</emphasis> element. As stated in the HTML5 specification:</para>
-
     <blockquote>
       <para>The q element represents some phrasing content quoted from another source.</para>
-
       <para>Quotation punctuation (such as quotation marks) that is quoting the contents of the element must not appear immediately before, after, or inside q elements; they will be inserted into the rendering by the user agent.</para>
-
       <para>Content inside a q element must be quoted from another source, whose address, if it has one, may be cited in the cite attribute. The source may be fictional, as when quoting characters in a novel or screenplay.</para>
-
       <para>If the cite attribute is present, it must be a valid URL potentially surrounded by spaces. To obtain the corresponding citation link, the value of the attribute must be resolved relative to the element. User agents may allow users to follow such citation links, but they are primarily intended for private use (e.g. by server-side scripts collecting statistics about a site's use of quotations), not for readers.</para>
-
       <para>The q element must not be used in place of quotation marks that do not represent quotes; for example, it is inappropriate to use the q element for marking up sarcastic statements.</para>
-
       <para>The use of q elements to mark up quotations is entirely optional; using explicit quotation punctuation without q elements is just as correct.</para>
-
       <para>
         <strong>
           <emphasis>- 4.5.7 The q element, Berjon et al. 2013</emphasis>
         </strong>
       </para>
     </blockquote>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xs:element name="quote">
 &lt;xs:complexType mixed="true">
   &lt;xs:attribute name="cite" type="xs:anyURI" use="optional"/>
@@ -1831,16 +1517,11 @@
 &lt;/xs:complexType>
 &lt;/xs:element>
 </code>
-
     <para>Asides are primarily used for content realted to the main flow of the document. I use it mostly for notes indirectly related to the main content, for example, to explain that there are other ways to generate Schemas apart from W3C's Schema. It is good to know this but it won't change the information in the main content flow.</para>
-
     <para>Per Spec:</para>
-
     <blockquote>
       <para>The aside element represents a section of a page that consists of content that is tangentially related to the content around the aside element, and which could be considered separate from that content. Such sections are often represented as sidebars in printed typography.</para>
-
       <para>The element can be used for typographical effects like pull quotes or sidebars, for advertising, for groups of nav elements, and for other content that is considered separate from the main content of the page.</para>
-
       <attribution>
         <para>
           <strong>
@@ -1849,10 +1530,7 @@
         </para>
       </attribution>
     </blockquote>
-
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="aside">
   &lt;aside>
     &lt;xsl:if test="type">
@@ -1874,20 +1552,12 @@
   &lt;/aside>
 &lt;/xsl:template>
 </code>
-
     <h3>Div and Span</h3>
-
     <para>div and span elements are neutral, they don't have meaning on their onw but they can get their meaning from attributes such as <emphasis>class</emphasis>, <emphasis>data-*</emphasis>, and <emphasis>id</emphasis>. Divs are meant as block level elements and siblings or children to sections where `span` is used inline, like a child to our <emphasis>para</emphasis> elements.</para>
-
-
     <para>According to the specification:</para>
-
     <blockquote>
-
       <para>The div element has no special meaning at all. It represents its children. It can be used with the class, lang, and title attributes to mark up semantics common to a group of consecutive elements.</para>
-
       <para>Authors are strongly encouraged to view the div element as an element of last resort, for when no other element is suitable. Use of more appropriate elements instead of the div element leads to better accessibility for readers and easier maintainability for authors.</para>
-
       <attribution>
         <para>
           <strong>
@@ -1896,10 +1566,7 @@
         </para>
       </attribution>
     </blockquote>
-
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="div">
   &lt;xsl:element name="div">
     &lt;xsl:if test="@align">
@@ -1921,14 +1588,10 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <para>The span element on its own is meaningless. We can give it meaning with the attributes we pass to it. We can give it a class or id for CSS styling or a type to generate semantic meaning for the contained text.</para>
-
     <para>When we start working on an ePub implementation we can also add the epub:type attribute to create an even more detailed semantic map of our content.</para>
-
     <blockquote>
       <para>The span element doesn't mean anything on its own, but can be useful when used together with the global attributes, e.g. class, lang, or dir. It represents its children.</para>
-
       <attribution>
         <para>
           <strong>
@@ -1937,10 +1600,7 @@
         </para>
       </attribution>
     </blockquote>
-
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="span">
   &lt;xsl:element name="span">
     &lt;xsl:if test="@type">
@@ -1962,13 +1622,9 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <h3>Paragraphs</h3>
-
     <para>The paragraph is our basic unit of content. Paragraphs are usually represented as blocks of text but they can be styled anyway we choose with the proper CSS.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="para">
   &lt;xsl:element name="p">
     &lt;xsl:if test="(@class)">
@@ -1985,57 +1641,37 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <h3>Styles</h3>
-
     <para>Styles are used to indicate typograhical styles such as strong, emphsis, strikethrough and underline.</para>
-
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="strong">
   &lt;strong>&lt;xsl:apply-templates />&lt;/strong>
 &lt;/xsl:template>
 </code>
-
     <para>Since we're working with print and visual media only we use only <emphasis>strong</emphasis> to indicate bold elements. I've never understood how do strong and <emphasis>b</emphasis> work in screen and printed pages or in screen displays.</para>
     <para>May have to implement <emphasis>b</emphasis> when developing the accessibility component for the document schema.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="emphasis">
   &lt;em>&lt;xsl:apply-templates/>&lt;/em>
 &lt;/xsl:template>
 </code>
-
     <para>As with strong, I've decided to only use <emphasis>emphasis</emphasis> to indicate italics and save `<emphasis>i</emphasis>` for a future revision when, and if, it becomes necessary. </para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="strike">
   &lt;strike>&lt;xsl:apply-templates/>&lt;/strike>
 &lt;/xsl:template>
 </code>
-
     <para>Although the strikethrough element has been deprecated in the HTML5 standard, it's still worth having as it can also be the target for CSS that accomplishes the same goal.</para>
-
     <para>The CSS way is to assign a <emphasis>text-decoration: line-through</emphasis> instruction to the strike selector.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="underline">
   &lt;u>&lt;xsl:apply-templates/>&lt;/u>
 &lt;/xsl:template>
 </code>
-
     <para>While there is a <emphasis>u</emphasis> element it has different semantics than underline. Like strike the correct way to do it is with CSS; in this case using `text-decoration: underlike` for the chosen element.</para>
-
     <h2>Links</h2>
-
     <para>Links are the essence of the web. They allow you to navigate within the document you're in or move to external documents. I've taken shortcuts and made the label attribute (used for accessibility) and the content of the link the same text. This reduced the ammount of typing we have to do but run the risk of becoming too inflexible.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="link">
   &lt;xsl:element name="a">
     &lt;xsl:if test="(@class)">
@@ -2058,34 +1694,25 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <para>When working with links there are times when we want to link to sections within the same document or to specific sections in another document or to specific sections inside a paragraph or to a figure. To do this we need anchors that will resolve to the following HTML:</para>
-
     <code language="html">
 &lt;a id="#target">&lt;a>
 </code>
-
     <para>Since all our structural elements can have an id, it's better to target the id in the element rather than create a separate element to link to. Because we have the facilitie to accomplish the same task I've removed the anchor element from the document model.</para>
-
     <h2>Code blocks</h2>
-
     <para>Code elements create <link
         href="https://help.github.com/articles/github-flavored-markdown/#fenced-code-blocks"
         label="fenced code blocks" /> like the ones from <link
         href="https://help.github.com/articles/github-flavored-markdown/"
         label="Github Flavored Markdown" />. </para>
-
     <para>We use <link
         href="https://www.google.com/fonts/specimen/Source+Code+Pro"
         label="Adobe Source Code Pro"
        /> font. It's a clean and readable font designed specifically for source code display.</para>
-
     <para>We highlight our code with <link href="https://highlightjs.org/"
         label="Highlight.js"
        />. This makes the class attribute mandatory as we need it to tell highlight.js what syntax library to use</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="code">
   &lt;xsl:element name="pre">
     &lt;xsl:element name="code">
@@ -2097,15 +1724,10 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <h2>Lists and list items</h2>
-
     <para>When I first conceptualized this project I had designed a single list element and attributes to produce bulleted and numbered lists. This proved to difficult to implement so I went back to two separate elements: <emphasis>ulist</emphasis> for bulleted lists and <emphasis>olist</emphasis> for  numbered lists. </para>
-
     <para>Both elements share the <emphasis>item</emphasis> element to indicates the items inside the list. At least one item is required a list.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="ulist">
   &lt;xsl:element name="ul">
     &lt;xsl:if test="string(@class)">
@@ -2154,17 +1776,12 @@
   &lt;/xsl:element>
 &lt;/xsl:template>
 </code>
-
     <para />
-
     <h2>Figures and Images</h2>
     <blockquote>
       <para>The figure element represents some flow content, optionally with a caption, that is self-contained (like a complete sentence) and is typically referenced as a single unit from the main flow of the document.</para>
-
       <para>The element can thus be used to annotate illustrations, diagrams, photos, code listings, etc.</para>
-
       <para>A figure element's contents are part of the surrounding flow. If the purpose of the page is to display the figure, for example a photograph on an image sharing site, the figure and figcaption elements can be used to explicitly provide a caption for that figure. For content that is only tangentially related, or that serves a separate purpose than the surrounding flow, the aside element should be used (and can itself wrap a figure). For example, a pull quote that repeats content from an article would be more appropriate in an aside than in a figure, because it isn't part of the content, it's a repetition of the content for the purposes of enticing readers or highlighting key topics.</para>
-
       <attribution>
         <para>
           <strong>
@@ -2173,21 +1790,13 @@
         </para>
       </attribution>
     </blockquote>
-
     <para>Figures, captions and the images inside present a few challenges. Because we allow authors to set height and width on both figure and the image inside we may find situations where the figure container is narrower than the image inside.</para>
-
     <para>To avoid this issue we test whether the figure width value is smaller than the width of the image inside. If it is, we use the width of the image as the width of the figure, otherwise we use the width of the image inside.</para>
-
     <para>We do the same thing for height in order to avoid squished images of captions that draw over the image because it's too small. If the height of the figure is smaller than the height of the image we use the height of the image, otherwise we use the height of the figure element.</para>
-
     <para>For both height and width we concatenate the attribute value with the string 'px' to make sure that it works in both straight CSS and with Prince and other CSS PDF generators</para>
-
     <para>Alignments can be different, it is possible to have a right-aligned image to live inside a centered container.</para>
-
     <para>Contrary to the HTML specification we use figure only to display images. We have a specialized template to address code blocks for program listings and can create additional elements</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="figure">
   &lt;xsl:element name="figure">
     &lt;xsl:if test="string(@class)">
@@ -2238,11 +1847,8 @@
   &lt;figcaption>&lt;xsl:apply-templates/>&lt;/figcaption>
 &lt;/xsl:template>
 </code>
-
     <para>The data model for our content allows both figures and images to be used in the document. This is so we don't have to insert empty captions to figures just so we can add an image. If we don't want a caption we can insert the image directly on our document.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="image">
   &lt;xsl:element name="img">
     &lt;xsl:attribute name="src">
@@ -2282,7 +1888,6 @@
   </section>
   <section type="chapter">
     <title>From XML to PDF: Part 1: Special Transformation</title>
-
     <para>Rather than having to deal with <link
         href="http://www.w3.org/TR/2006/REC-xsl11-20061205/" label="XSL-FO"
          />, another XML based vocabulary to create PDF content, we'll use XSLT to create another HTML file and process it with <link
@@ -2290,11 +1895,8 @@
          /> and the companion <link href="http://www.w3.org/TR/css-gcpm-3/"
         label="Generated Content for Paged Media"
        /> specifications to create PDF content.</para>
-
     <para>I'm not against XSL-FO but the structure of document is not the easiest or most intuitive. An example of XSL-FO looks like this:</para>
-
-    <code language="xml"
-      >&lt;?xml version="1.0" encoding="iso-8859-1"?> (1)
+    <code language="xml">&lt;?xml version="1.0" encoding="iso-8859-1"?> (1)
 
   &lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"> (2)
     &lt;fo:layout-master-set> (3)
@@ -2310,7 +1912,6 @@
     &lt;/fo:page-sequence>
   &lt;/fo:root>
     </code>
-
     <olist>
       <item>This is an XML declaration. XSL FO (XSLFO) belongs to XML family, so this is obligatory</item>
       <item>Root element. The obligatory namespace attribute declares the XSL Formatting Objects namespace</item>
@@ -2319,11 +1920,8 @@
       <item>Flow. This is the container object for all user text in the document. Everything contained in the flow will be formatted into regions on pages generated inside the page sequence. Flow name links the flow to a specific region on the page (defined in the page master); in our example, it is the body region</item>
       <item>Block. This object roughly corresponds to `&lt;div>` in HTML, and normally includes a paragraph of text. I need it here, because text cannot be placed directly into a flow.</item>
     </olist>
-
     <para>Rather than define a flow of content and then the content CSS Paged Media uses a combination of new and existing CSS elements to format the content. For example, to define default page size and then add elements to chapter pages looks like this:</para>
-
-    <code language="css"
-      >
+    <code language="css">
 @page {
   size: 8.5in 11in;
   margin: 0.5in 1in;
@@ -2346,21 +1944,13 @@
   }
 }
     </code>
-
     <para>The only problem with the code above is that there is no native broser support. For our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. In the not so distant future we will be able to do this transformation in the browser and print the PDF directly. Until then it's a two step process: Modifying the HTML we get from the XML file and running the HTML through Prince to get the PDF.</para>
-
     <h2>Modifying the HTML results</h2>
-
     <para>I'll use this opportunity to create an xslt customization layer to make changes only to the templates where we need to.</para>
-
     <para>We create a customization layer by importing the original stylesheet and making any necessary changes in the new stylesheet. Imported stylesheets have a lower precedence order than the local version so the local version will win if there is conflict.</para>
-
     <para>Only the templates defined in this stilesheet are overriden. If the template we use is not in this customization layer, the transformation engine will use the template in the base style sheet (book.xsl in this case)</para>
-
     <para>The style sheet is broken by templates and explained below.</para>
-
-    <code language="xml"
-      >&lt;?xml version="1.0" encoding="UTF-8"?>
+    <code language="xml">&lt;?xml version="1.0" encoding="UTF-8"?>
   &lt;xsl:stylesheet
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs"
@@ -2372,13 +1962,9 @@
       &lt;xsl:output name="xhtml-out" method="xhtml"
       indent="yes" encoding="UTF-8" omit-xml-declaration="yes" />
     </code>
-
     <para>The first difference in the customization layer is that it imports another style sheet (<emphasis>book.xsl</emphasis>). We do this to avoid having to copy the entire style sheet and, if we make changes, having to make the changes in multiple places.</para>
-
     <para>We will then override the templates we need in order to get a single file to pass on to Prince or any other CSS Print Processor.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="book">
 &lt;html>
   &lt;head>
@@ -2417,28 +2003,19 @@
 &lt;/html>
 &lt;/xsl:template>
     </code>
-
     <para>Most of the root template deals with undoing some of the changes we made to create multiple pages.</para>
-
     <para>I've changed the CSS we use to process the content. We use paged-media.css to create the content for our media files, mostly  setting up the different pages based on the data-type attribute.</para>
-
     <para>We use pm-styles.css to control the style of our documents specifically for our printed page application. We have to take into account the fact that Highlight.js is not working properly with Prince's Javascript implementation and that there are places where we don't want our paragraphs to be indented at all.</para>
-
     <para>We moved elements from the original section templates. We test whether we need to add the Highlight.JS since we dropped the multipage output.</para>
-
     <h2>Overriding the section template</h2>
-
     <para>Sections are the element type that got the biggest makeover. What we've done:</para>
-
     <olist>
       <item>Remove filename variable. It's not needed</item>
       <item>Remove the result document element since we are building a single file with all our content</item>
       <item>Change way we check for the type attribute in sections. It will now terminate with an error if the attribute is not found</item>
       <item>Add the element that will build our running footer (p class="rh") and assign the value of the secion's title to it</item>
     </olist>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Override of the section template.-->
 &lt;xsl:template match="section">
   &lt;section>
@@ -2479,15 +2056,10 @@
   &lt;/section>
 &lt;/xsl:template>
     </code>
-
     <h2>Metadata</h2>
-
     <para>The Metadata section has been reworked into a new section with the title data-type. We set up the container section and assign title to the data-type attribute. We then apply all children templates.</para>
-
     <para>It is important to note that we've increased the number of children inside metadata so we'll have to be careful in making sure that we're using only one page for the title and another for the rest of the metadata if needed.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;!-- Metadata -->
 &lt;xsl:template match="metadata">
 &lt;xsl:element name="section">
@@ -2496,15 +2068,10 @@
 &lt;/xsl:element>
 &lt;/xsl:template>
     </code>
-
     <h2>Table of contents</h2>
-
     <para>The table of content creates anchor links (a href='#id') to the title h1 tags we create in the step below. We can do it this way because XSLT guarantees that all calls to generate-id for a given element (in this case the section/title elements) will return the same value for a given execution.</para>
-
     <para>This code depends on the empty toc placeholder element to place it. If the element is not present then the table of contents will be placed at the end of the document.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="toc">
   &lt;section data-type="toc">
     &lt;h1>Table of Contents&lt;/h1>
@@ -2525,13 +2092,9 @@
   &lt;/section>
 &lt;/xsl:template>
     </code>
-
     <h2>Titles</h2>
-
     <para>The title element has only one addition. We add an ID attribute created using XPath's generate-id function on the parent section element.</para>
-
-    <code language="xml"
-      >
+    <code language="xml">
 &lt;xsl:template match="title">
   &lt;xsl:element name="h1">
     &lt;xsl:attribute name="id">
@@ -2555,22 +2118,15 @@
 &lt;/xsl:template>
 &lt;/xsl:stylesheet>
     </code>
-
     <para>With all this in place we can now look to the CSS Paged Media file.</para>
   </section>
   <section type="chapter">
     <title>From XML to PDF Part 2: CSS Paged Media</title>
-
     <para>With the HTML ready, we can no look at the CSS stylesheet to process it into PDF.</para>
-
     <para>The extensions, pseudo elements and attributes we use are all part of the CSS Paged Media or Generated Content for Paged Media specifications. Where appropriate I've translated them to work on both PDF and HTML.</para>
-
     <h2>Book defaults</h2>
-
     <para>The first step in creating the default structure for the book using <emphasis>@page</emphasis> at-element.</para>
-
     <para>Our base definition does the following:</para>
-
     <olist>
       <item>Size the page to letter (8.5 by 11 inches), width first</item>
       <item>Use CSS notation for margins. In this case the top and bottom margin are 0.5 inches and left and right are 1 inch</item>
@@ -2583,9 +2139,7 @@
         <item>Make the height as tall as necessary</item>
       </olist>
     </olist>
-
-    <code language="css"
-      >
+    <code language="css">
 /* STEP 1: DEFINE THE DEFAULT PAGE */
 @page {
   size: 8.5in 11in; (1)
@@ -2600,32 +2154,20 @@
     }
   }
 </code>
-
     <para>In later sections we'll create named page templates and associate them to different portions of our written content.</para>
-
     <h2>Page counters</h2>
-
     <para>We define two conditions under which we reset the page counter: When we have a book followed by a part and when we have a book followed by the a first chapter.</para>
-
     <para>We do <strong>not</strong> reset the content when the path if from book to chapter to part.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 body[data-type='book'] > div[data-type='part']:first-of-type,
 body[data-type='book'] > section[data-type='chapter']:first-of-type { counter-reset: page; }
 body[data-type='book'] > section[data-type='chapter']+div[data-type='part'] { counter-reset: none }
 </code>
-
     <h2>Matching content sections to page types</h2>
-
     <para>The next section of the style sheet is to match the content on our book to pages in our style sheet.</para>
-
     <para>The book is broken into sections with data-type attributes to indicate the type of content; we match the section[data-type] element to a page type along with some basic style definitions.</para>
-
     <para>We will further define the types of pages later in the style sheet.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 /* Title Page*/
 section[data-type='titlepage'] { page: titlepage }
 
@@ -2681,15 +2223,10 @@ section[data-type='index'] { page: index }
 /* Colophon */
 section[data-type='colophon'] { page: colophon }
 </code>
-
     <h2>Front matter formatting</h2>
-
     <para>For each page of front matter contnt (toc, foreword and preface) we define two pages: left and right. We do it this way to acommodate facing pages with numbers on ooposite sides (for two sided printout)</para>
-
     <para>For the front matter we chose to use Roman numerals on the bottom of the page</para>
-
-    <code language="css"
-      >
+    <code language="css">
 /* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
 @page toc:right {
   @bottom-right-corner { content: counter(page, lower-roman) }
@@ -2725,15 +2262,10 @@ section[data-type='colophon'] { page: colophon }
   @bottom-left-corner { content: normal }
 }
 </code>
-
     <h2>Pages formatting</h2>
-
     <para>We use the same system we used in the front matter to do a few things with our content.</para>
-
     <para>We first remove page numbering from the title page and dedication by setting the numbering on both bottom corners to normal.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 /* Common Content Page Numbering  in Arabic numerals 1... 199 */
 @page titlepage{ /* Need this to clean up page numbers in titlepage in Prince*/
   margin-top: 18em;
@@ -2749,11 +2281,8 @@ section[data-type='colophon'] { page: colophon }
 
 }
 </code>
-
     <para>Now we start working on our chapter pages. The first thing we do is to place our running header content in the bottom middle of the page, regardless of whether it's left or right.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 @page chapter {
   @bottom-center {
     vertical-align: middle;
@@ -2762,22 +2291,16 @@ section[data-type='colophon'] { page: colophon }
   }
 }
 </code>
-
     <para>We next setup a blank page for our chapters and tell the reader that the page was intentionally left blank to prevent confusion</para>
-
-    <code language="css"
-      >
+    <code language="css">
 @page chapter:blank { /* Need this to clean up page numbers in titlepage in Prince*/
   @top-center { content: "This page is intentionally left blank" }
   @bottom-left-corner { content: normal;}
   @bottom-right-corner {content:normal;}
 }
 </code>
-
     <para>Then we number the pages the same way that we did for our front matter except that we use narabic numerals instead of Roman.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 @page chapter:right  {
   @bottom-right-corner { content: counter(page) }
   @bottom-left-corner { content: normal }
@@ -2828,28 +2351,19 @@ section[data-type='colophon'] { page: colophon }
   @bottom-right-corner { content: normal }
 }
 </code>
-
     <h2>Running footer</h2>
-
     <para>We now style the running footer. This is the same footer that we creataed when converting the XML to HTML.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 p.rh {
   position: running(heading);
   text-align: center;
   font-style: italic;
 }
 </code>
-
     <h2>Footnotes and cross references</h2>
-
     <para>Footnotes are tricky, they consist of two parts, the footnote-call and the footnote content itself. I'm still trying to figure out what the correct markup should be for marking up footnotes.</para>
-
     <para>We've also defined a special class of links that appends a string and the  the destination's page number.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 /* Footnotes */
 span.footnote {
   float: footnote;
@@ -2875,11 +2389,8 @@ a.xref[href]::after {
     content: ' [See page ' target-counter(attr(href), page) ']'
 }
 </code>
-
     <h2>PDF Bookmarks</h2>
-
     <para>PDF bookmarks allow you to navigate your content form the left side bookmark menu as show in the image below</para>
-
     <figure>
       <image alt="PDF Bookmarks" height="352"
         src="http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/pdf-bookmarks.png"
@@ -2888,19 +2399,14 @@ a.xref[href]::after {
         <para>Exam ple of PDF Bookmarks</para>
       </figcaption>
     </figure>
-
     <para>For each heading level we do the following things for both Antenna House and PrinceXML:</para>
-
     <ulist>
       <item>Set up the bookmark level</item>
       <item>Set up whether it's open or closed</item>
       <item>Set up the label for the bookmark</item>
     </ulist>
-
     <para>Only heading 1, 2 and 3 are set up, level 4, 5 and 6 are only set up as bookmarks only.</para>
-
-    <code language="css"
-      >
+    <code language="css">
 section[data-type='chapter'] h1 {
   -ah-bookmark-level: 1;
   -ah-bookmark-state: open;
@@ -2943,17 +2449,12 @@ section[data-type='chapter'] h6 {
   prince-bookmark-level: 6;
 }
 </code>
-
     <h2>Running PrinceXML</h2>
-
     <para>Once we have the HTML file ready we can run it through PrinceXML to get our PDF using CSS stylesheet for Paged Media we discussed above. The command to run the conversion for a book.html file is:</para>
-
     <code language="bash">
 $ prince --verbose book.html test-book.pdf
 </code>
-
     <para>Because we added the stylesheet link directly to the HTML document we can skip declaring it in the conversion itself. This is always a cause of errors and frustratoins for me so I thought I'd save everyone else the hassle.</para>
-
   </section>
   <section type="chapter">
     <title>From XML to PDF Part 3: CSS Styles for Paged Media</title>
@@ -2980,16 +2481,14 @@ $ prince --verbose book.html test-book.pdf
     <para>At this point we are not dealing with <link
         href="http://bit.ly/1ul3XBx" label="font subsetting"
        /> but we may in case we need to depending on the font licensing or file size.</para>
-    <code language="css"
-      >
+    <code language="css">
 @import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
 @import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
 </code>
     <h2>Defaults</h2>
     <para>Now that we've loaded the fonts we can create our defaults for the document.  The `html` element defines vertical overflow and text size adjustment for Safari and Windows browsers.</para>
-    <code language="css"
-      >
+    <code language="css">
 html {
   overflow-y: scroll;
   -ms-text-size-adjust: 100%;
@@ -3005,8 +2504,7 @@ html {
       <item>left and right padding (overrides the base document's padding)</item>
       <item>orphans and widows</item>
     </ulist>
-    <code language="css"
-      >
+    <code language="css">
 body {
   background-color: #fff;
   color: #554c4d;
@@ -3022,8 +2520,7 @@ body {
 </code>
     <h2>Blockquotes, Pullquotes and Marginalia</h2>
     <para>It's fairly easy to create sidebars in HTML so I've played a lot with pull quotes, blockquotes and asides as a way to move the content around with basic CSS. We can do further work by tuning the CSS</para>
-    <code language="css"
-      >
+    <code language="css">
 aside {
   border-bottom: 3px double #ddd;
   border-top: 3px double #ddd;
@@ -3041,8 +2538,7 @@ aside .pull {
 }
 </code>
     <para>The <emphasis>magin-notes*</emphasis> and <emphasis>content*</emphasis> move the content to the corresponding side of the page without having to create specific CSS to do so. The downside is that, as with many things in CSS, you are stuck with the provided values and will have to modify them to suit your needs.</para>
-    <code language="css"
-      >
+    <code language="css">
 .margin-notes,
 .content-left {
   font-size: .75em;
@@ -3077,8 +2573,7 @@ aside .pull {
 }
 </code>
     <para>The opening class style creates a large distinguishing block container for opening text. This is useful when you have a summary paragraph at the beginning of your document or some other opening piece of text to go at the top of your document</para>
-    <code language="css"
-      >
+    <code language="css">
 .opening {
   border-bottom: 3px double #ddd;
   border-top: 3px double #ddd;
@@ -3090,8 +2585,7 @@ aside .pull {
 }
 </code>
     <para>Blockquotes present the enclosed text in larger italic font with a solid bar to the left of the content.  Because the font is larger I've added a little extra padding to the paragraphs inside the blockquote</para>
-    <code language="css"
-      >
+    <code language="css">
 blockquote {
   border-left: 5px solid #ccc;
   color: #222023;
@@ -3108,17 +2602,16 @@ blockquote p {
 }
 </code>
     <para>The pullquote classes were modeled after an ESPN article and look something like this:</para>
-
     <figure>
-      <image src="http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/example-pullquote.png" height="297" width="800" alt="example pullquote"/>
+      <image alt="example pullquote" height="297"
+        src="http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/example-pullquote.png"
+        width="800" />
       <figcaption>
         <para>Example pullquote</para>
       </figcaption>
     </figure>
-
-<para>The original was hardcoded to pixels. Where possible I've changed the values to em to provide a more responsive</para>
-    <code language="css"
-      >
+    <para>The original was hardcoded to pixels. Where possible I've changed the values to em to provide a more responsive</para>
+    <code language="css">
 .pullquote {
   border-bottom: 18px solid #000;
   border-top: 18px solid #000;
@@ -3149,8 +2642,7 @@ blockquote p {
 </code>
     <h2>Paragraphs</h2>
     <para>The paragraph selector creates the default paragraph formatting with a size of 1em (equivalent to 16 pixels) and a line height of 1.3 em (20.8 pixels)</para>
-    <code language="css"
-      >
+    <code language="css">
 p {
   font-size: 1em;
   margin-bottom: 1.3em;
@@ -3164,8 +2656,7 @@ p + p {
 }
 </code>
     <para>Rather than use pseudo elements (<emphasis>:first-line</emphasis> and <emphasis>:first-letter</emphasis>) we use classes to give authors the option to use these elements.</para>
-    <code language="css"
-      >
+    <code language="css">
 .first-line {
   font-size: 1.1em;
   text-indent: 0;
@@ -3182,8 +2673,7 @@ p + p {
 </code>
     <h2>Lists</h2>
     <para>The only thing we do for list and list items is to indicate what type of list we'll use as our default square for unordered list and Arabic decimals for our numbered lists.</para>
-    <code language="css"
-      >
+    <code language="css">
 ul li {
   list-style: square;
 }
@@ -3195,8 +2685,7 @@ ol li {
     <h2>Figures and captions</h2>
     <para>The only interesting aspect of the CSS we use for figures is the counter. The <emphasis>figure figcaption::before</emphasis> selector creates automatic text that is inserted before each caption. This text is the string "Figure", the value of our figure counter and the string ": ".</para>
     <para>This makes it easier to insert figures without having to change the captions for all figures after the one we inserted. The figure counter is reset for every chapter. I'm researching ways to get the figure numbering across chapters.</para>
-    <code language="css"
-      >
+    <code language="css">
 figure {
   counter-increment: figure_count;
   margin-bottom: 1em;
@@ -3215,8 +2704,7 @@ figure figcaption::before {
     <h2>Headings</h2>
     <para>Headings are configured in two parts. The first one sets common attributes to all headings: <emphasis>font-family</emphasis>, <emphasis>font-weight</emphasis>, <emphasis>hyphens</emphasis>, <emphasis>line-height</emphasis>, margins and <emphasis>text-transform</emphasis>.</para>
     <para>It's this attribute that needs a little more discussion. Using text-transform we make all headings uppercase without having to write them that way</para>
-    <code language="css"
-      >
+    <code language="css">
 h1,
 h2,
 h3,
@@ -3232,8 +2720,7 @@ h6 {
 }
 </code>
     <para>In the second part of our heading styles we work on rules that only apply to one heading at a time. Things such as size and specific attributes (like removing the top margin on the h1 elements) need to be handled need to be handled individually</para>
-    <code language="css"
-      >
+    <code language="css">
 h1 {
   font-size: 3.157em;
   margin-top: 0;
@@ -3261,8 +2748,7 @@ h6 {
     <para>There are certains aspects of the book that need different formatting from our defaults.</para>
     <para>We use the element[attribute=name] syntax to identify which section we want to work with and then tell it the element within the section that we want to change.</para>
     <para>For example, in the bibliography (a section with the <emphasis>data-type='bibliography</emphasis> attribute) we want all paragraphs to be left aligned and all paragraphs to have no margin (basicallwe we are undoing the indentation for paragraphs with sibling paragraphs within the bibliography section)</para>
-    <code language="css"
-      >
+    <code language="css">
 section[data-type='bibliography'] p {
   text-align: left;
 }
@@ -3271,8 +2757,7 @@ section[data-type='bibliography'] p + p {
 }
 </code>
     <para>The same logic applies to the other sections that we're customizing. We tell it what type of section we are working with and what element inside that sectin we want to change.</para>
-    <code language="css"
-      >
+    <code language="css">
 section[data-type='titlepage'] h1,
 section[data-type='titlepage'] h2,
 section[data-type='titlepage'] p {
@@ -3295,8 +2780,7 @@ section[data-type='dedication'] p + p {
     <para>We format some aspects our content (wrap, font-family, size, line height and wether to do page breaks inside the content) locally and hand off syntax highlighting to <link
         href="https://highlightjs.org/" label="highlight.js"
        /> with a style to mark the content differently.</para>
-    <code language="css"
-      >
+    <code language="css">
 pre {
   overflow-wrap: break-word;
   white-space: pre-line !important;
@@ -3312,8 +2796,7 @@ pre code {
     <h2>Miscelaneous classes</h2>
     <para>Rather than for people to justify text we provide a class to make it so. I normally justify at the div or section level but it's not always necessary or desirable.</para>
     <para>Code will be used in a future iteration of the code to highlight inline snippets (think of it as an inline version of the &lt;pre>&lt;code> tag combination)</para>
-    <code language="css"
-      >
+    <code language="css">
 .justified {
   text-align: justify;
 }
@@ -3321,8 +2804,7 @@ pre code {
 </code>
     <h2>Columns</h2>
     <para>The last portion of the stylesheet deals with columns. I've set up 2 set of rules for 2 and 3 column with similar attributes. In the SCSS source these are created with a column mixin.</para>
-    <code language="css"
-      >
+    <code language="css">
 .columns2 {
   column-count: 2;
   column-gap: 3em;
@@ -3361,39 +2843,26 @@ pre code {
   </section>
   <section type="chapter">
     <title>Converting to ePub</title>
-
     <blockquote>
       <para>This chapter is a draft! This style sheet is under development</para>
     </blockquote>
-
     <para>Perhaps the most ambitious part of the proof of concept is to convert the XML content to an ePub book that would pass epubcheck validation. To accomplish this we'll create another customization layer to acommodate the special syntax and additional content needed to create the ePub 3 package.</para>
-
     <para>This is more complicated than the creation of the single file for generating PDF. The epub specification is more complex and requires a lot more auxiliary files and directories with very specific formatting. I wonder if some of them need to be XML files at all.</para>
-
     <para>Take the <emphasis>package.opf</emphasis>, for example. As portable as XML is and as many XML parsers are there in the wild, it would work much better if we do the same code in JSON, YAML, or other similar formats.</para>
-
-    <para></para>
+    <para />
   </section>
   <section type="chapter">
     <title>Tools and dependencies</title>
-
     <para>Because we use XML we can't just dump our code in the browser or the PDF viewer and expect it to appear just like HTML content.</para>
-
     <para>We need to prepare our content for conversion to PDF before we can view it.  There are also front-end web development best practices to follow.</para>
-
     <para>This chapter will discuss tools to accomplish both tasks from one  build file.</para>
-
     <h2>What software we need</h2>
-
     <para>For this to work you need the following software installed:</para>
-
     <ulist>
       <item>Java (version 1.7 or later)</item>
       <item>Node.js (0.10.35 or later)</item>
     </ulist>
-
     <para>Once you have java installed, you can install the following Java package</para>
-
     <ulist>
       <item>
         <link
@@ -3401,91 +2870,56 @@ pre code {
           label="Saxon" /> (9.0.6.4 for Java)
   </item>
     </ulist>
-
     <para>A note about Saxon for OxygenXML users: OxygenXML comes with a version of Saxon Enterprise Edition. We'll use a different version to make it easier to use outside the editor.</para>
-
     <para>Node packages are handled through NPM, the Node Package Manager. On the Node side we need at least the <emphasis>grunt-cli</emphasis> package installed globally. TO do so we use this command:</para>
-
     <code language="bash">
 $ npm install -g grunt-cli
 </code>
-
     <para>The -g flag will install this globally, as opposed to installing it in the project directory.</para>
-
     <para>Now that we have the required sotfware installed we can move ahead and create our configuration files.</para>
-
     <h2>Optional: Ruby, SCSS-Lint and SASS</h2>
-
     <para>The only external dependencies you need to worry about are Ruby, SCSS-Lint and SASS. Ruby comes installe in most (if not all) Macintosh and Linux systems; an <link
         href="http://rubyinstaller.org/" label="installer for Windows"
        /> is also available.</para>
-
     <para>SASS (syntactically awesome style sheets) are a superset of CSS that brings to the table enhancements to CSS that make life easier for designers and the people who have to create the stylesheets. I've taken advantage of these features to simplify my stylesheets and to save myself from repetitive and tedious tasks.</para>
-
     <para>SASS, the main tool, is written in Ruby and is available as a Ruby Gem.</para>
-
     <para>To install SASS, open a terminal/command window and type:</para>
-
     <code language="bash">
 $ gem install sass
 </code>
-
     <para>Note that on Mac and Linux you may need to run the command as a superuser:</para>
-
     <code language="bash">
 $ gem install sass
 </code>
-
     <para>If you get an error, you probably need to install the gem as an administrator. Try the following command</para>
-
     <code language="bash">
 $ sudo gem install sass
 </code>
-
     <para>And enter your password when prompted.</para>
-
     <para>SCSS-Lint is a linter for the SCSS flavor of SASS. As with other linters it will detect errors and potential erors in your SCSS style sheets.  As with SASS, SCSSLint is a Ruby Gem that can be installed with the following command:</para>
-
     <code language="bash">
 $ sudo gem install scss-lint
 </code>
-
     <para>The same caveat about errors and installing as an administrator apply.</para>
-
     <blockquote>
       <para>>Ruby, SCSS-Lint and SASS are only necessary if you plan to change the SCSS/SASS files. If you don't you can skip the Ruby install and work directly with the CSS files</para>
-
       <para>If you want to peek at the SASS source look at the files under the scss directory.</para>
     </blockquote>
-
     <h2>Installing Node packages</h2>
-
     <para>Grunt is a Node.js based task runner. It's a declarative version of Make and similar tools in other languages. Since Grunt and it's associated plugins are Node Packages we need to configure Node.</para>
-
     <para>At the root of the project there's a <emphasis>package.json</emphasis> file where all the files necessary for the project have already been configured. All that is left is to run the install command.</para>
-
     <code language="bash">
 npm install
 </code>
-
     <para>This will install all the packages indicated in configuration file and all their dependencies; go get a cup of coffee as this may take a while in slower machines.</para>
-
     <para>As it installs the software it'll display a list of what it installed and when it's done you'll have all the packages.</para>
-
     <para>The final step of the node installation is to run bower, a front end package manager. It is not configured by default but you can use it to manage packages such as jQuery, Highlight.JS, Polymer web components and others.</para>
-
     <h2>Grunt and Front End Development best practices</h2>
-
     <para>While developing the XML and XSL for this project, I decided that it was also a good chance to test front end development tools and best practices for styling and general front end development.</para>
-
     <para>One of the best known tools for front end development is Grunt. It is a Javascript task runner and it can do pretty much whatever you need to do in your development environment. The fact that Grunt is written in Javascript saves developers from having to learn another language for task management.</para>
-
     <para>Grunt has its own configuration file (<emphasis>Gruntfile.js</emphasis>) one of which is provided as a model for the project.</para>
-
     <para>As currently written the Grunt file provides the following functionality in the assigned tasks. Please note that the tasks with an asterisk have subtasks to perform specific functions. We will discuss the subtasks as we look at each portion of the file and its purpose.</para>
-
-    <code language="bash"
-      >
+    <code language="bash">
       autoprefixer  Prefix CSS files. *
              clean  Clean files and folders. *
             coffee  Compile CoffeeScript files into JavaScript *
@@ -3511,23 +2945,15 @@ npm install
                     "shell:prince" tasks.
       generate-all  Alias for "shell" task.
 </code>
-
     <para>The first thing we do is declare two variables (module and require) as global for JSLint and JSHint. Otherwise we'll get errors and it's not essential to declare them before they are used.</para>
-
     <para>We then wrap the Gruntfile with a self executing function as a deffensive coding strategy.</para>
-
     <para>When concatenating Javascript files there may be some that use strict Javascript and some that don't; With Javascript <link
         href="http://code.tutsplus.com/tutorials/javascript-hoisting-explained--net-15092"
         label="variable hoisting"
        /> the use stric declaration would be placed at the very top of the concatenated file making all the scripts underneat use the strict declaration.</para>
-
     <para>The function wrap prevents this by making the use strict declaration local to the file where it was written. None of the other templates will be affected and they will still execute from the master stylesheet. It's not essential for Grunt drivers (Gruntfile.js in our case) but it's always a good habit to get into.</para>
-
-
     <h2>Setup</h2>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
 /*global module */
 /*global require */
 (function () {
@@ -3543,13 +2969,9 @@ npm install
     // Yay for laziness
     require('load-grunt-tasks')(grunt);
 </code>
-
     <para>The first two elements that work with our content are <emphasis>time-grunt</emphasis> and <emphasis>load-grunt-tasks</emphasis>.</para>
-
     <para>Time-grunt provides a breakdown of time and percentage of total execution time for each task performed in this particular Grunt run. The example below illustrates the result when running multiple tasks (bars reduced in length for formatting.)</para>
-
-    <code language="bash"
-      >
+    <code language="bash">
 Execution Time (2015-02-01 03:43:57 UTC)
 loading tasks      983ms  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 12%
 scsslint:allFiles   1.1s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 13%
@@ -3559,13 +2981,9 @@ shell:single        1.2s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 14
 shell:prince        2.9s  ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 36%
 Total 8.1s
 </code>
-
     <para>Load-grunt-tasks automates the loading of packages located in the <emphasis>package.json</emphasis> configuration file. It's specially good for forgetful people like me whose main mistake when building Grunt-based tool chains is forgetting to load the plugins to use :-).</para>
-
     <h2>Javascript</h2>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
     grunt.initConfig({
 
       // JAVASCRIPT TASKS
@@ -3595,12 +3013,8 @@ Total 8.1s
         }
       },
 </code>
-
-
     <para>JSHint will lint the Gruntfile itself and all files under the js/ directory for errors and potential errors. </para>
-
-    <code language="bash"
-      >
+    <code language="bash">
 [20:58:14] carlos@rivendell xml-workflow 13902$ grunt jshint
 Running "jshint:files" (jshint) task
 
@@ -3614,17 +3028,11 @@ Warning: Task "jshint:files" failed. Use --force to continue.
 
 Aborted due to warnings.
 </code>
-
     <para>Uglify allow us to concatenate our Javascript files and, if we choose to, further reduce the file size by mangling the code (See this [page](http://lisperator.net/uglifyjs/mangle) for an explanation of what mangle is and does). I've chosen not to mangle the code to make it easier to read. May add it as an option for production deployments.</para>
-
     <h2>SASS and CSS</h2>
-
     <para>As mentioned elsewhere I chose to use the SCSS flavor of SASS because it allows me to do some awesome things with CSS that I wouldn't be able to do with CSS alone. </para>
-
     <para>The first task with SASS is convert it to CSS. For this we have two separate tasks. One for development (dev task below) where we pick all the files from the scss directory (the entire files section is equivalent to writing <emphasis>scss/*.scss</emphasis>) and converting them to files with the same name in the css directory.</para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // SASS RELATED TASKS
       // Converts all the files under scss/ ending with .scss
       // into the equivalent css file on the css/ directory
@@ -3655,11 +3063,8 @@ Aborted due to warnings.
         }
       },
 </code>
-
     <para>There are two similar versions of the task. The development version will produce the format below, which is easier to read and easier to troubleshoot (css-lint, discussed below, tells you what line the error or warning happened in.)</para>
-
-    <code language="css"
-      >
+    <code language="css">
 @import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
@@ -3683,11 +3088,8 @@ body {
   padding-right: 10em;
 }
 </code>
-
     <para>The production code compresses the output. It deletes all tabs and carriage returns to produce cod elike the one below. It reduces the file size by eliminating spaces, tabs and carriage returns inside the rules, otherwise both versions are equivalent. </para>
-
-    <code language="css"
-      >
+    <code language="css">
 @import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
@@ -3696,21 +3098,14 @@ html { font-size: 16px; overflow-y: scroll; -ms-text-size-adjust: 100%; -webkit-
 
 body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adelle, Rockwell, Georgia, 'Times New Roman', Times, serif; font-size: 1em; font-weight: 100; line-height: 1.1; padding-left: 10em; padding-right: 10em; }
 </code>
-
     <para>I did consider adding <link
         href="https://github.com/gruntjs/grunt-contrib-cssmin" label="cssmin"
        /> but decided against it for two reasons:</para>
-
     <para>SASS already concatenates all the files when it imports files from the modules and partials directory so we're only working with one file for each version of the project (html and PDF)</para>
-
     <para>The only other file we'd have to add, normalize.css, is a third party library that I'd rather leave along rather than mess with. </para>
-
     <para>The <emphasis>scsslint</emphasis> task is a wrapper for the scss-lint Ruby Gem that must be installed on your system. It warns you of errors and potential errors in your SCSS stylesheets. </para>
-
     <para>We've chosen to force it to run when it finds errors. We want the linting tasks to be used as the developer's discretion, there may  be times when vendor prefixes have to be used or where colors have to be defined multiple times to acommodate older browsers. </para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // I've chosen not to fail on errors or warnings.
       scsslint: {
         allFiles: [
@@ -3726,16 +3121,12 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         }
       },
 </code>
-
     <para>Grunt's <link href="https://github.com/nDmitry/grunt-autoprefixer"
         label="autoprefixer" /> task uses the <link href="http://caniuse.com/"
         label="CanIUse database"
        /> to determine if properties need a vendor prefix and add the prefix if they do.</para>
-
     <para>This becomes important for older browsers or when vendors drop their prefix for a given property. Rather than having to keep up to date on all vendor prefixed properties you can tell autoprefixer what browsers to test for (last 2 versions in this case) and let it worry about what needs to be prefixed or not. </para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       autoprefixer: {
         options: {
           browsers: ['last 2']
@@ -3749,13 +3140,10 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         }
       },
 </code>
-
     <para>The last css task is the most complicated one. <link
         href="https://github.com/addyosmani/grunt-uncss" label="Uncss"
        /> takes out whatever CSS rules are not used in our target HTML files. </para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // CSS TASKS TO RUN AFTER CONVERSION
       // Cleans the CSS based on what's used in the specified files
       // See https://github.com/addyosmani/grunt-uncss for more
@@ -3768,26 +3156,16 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         }
       },
 </code>
-
     <para>This is not a big deal for our workflow as most, if not all, the CSS is designed for the tags and classes we've implemented but it's impossible for the SASS/CSS libraries to grow over time and become bloated.</para>
-
     <para>This will also become and issue when you decide to include third part libraries in projects implemented on top of our workflow. By running Uncss on all our HTML files except the file we'll pass to our PDF generator (docs.html) we can be assured that we'll get the smallest css possible.</para>
-
     <para>We skip out PDF source html file because I'm not 100% certain that Uncss can work with Paged Media CSS extensions. Better safe than sorry. </para>
-
-
     <h2>Optional tasks</h2>
-
     <para>I've also created a set of optional tasks that are commented in the Grunt file but have been uncommented here for readability. </para>
-
     <para>The first optional task is a Coffeescript compiler. <link
         href="http://coffeescript.org/" label="Coffeescript"
        /> is a scripting language that provides a set of useful features and that compiles directly to Javascript. </para>
-
     <para>I some times use Coffeescript to create scripts and other interactive content so it's important to have the compilation option available.</para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // OPTIONAL TASKS
       // Tasks below have been set up but are currently not used.
       // If you want them, uncomment the corresponding block below
@@ -3806,17 +3184,12 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
           ext: '.js'
       },
 </code>
-
     <para>The following two tasks are for managing file transfers and uploads to different targets.</para>
-
     <para>One of the things I love from working on Github is that your project automatically gets an ssl-enabled site for free. <link
         href="https://pages.github.com/" label="Github Pages"
        /> work with any kind of static website; Github even offers an automatic site generator as part of our your project site.</para>
-
     <para>For the puposes of our workflow validation we'll make a package of our content in a build directory and push it to the gh-pages branch of our repository. We'll look at building our app directory when we look at copying files.</para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // GH-PAGES TASK
       // Push the specified content into the repository's gh-pages branch
       'gh-pages': {
@@ -3831,11 +3204,8 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         src: ['**/*']
       },
 </code>
-
     <para>There are times when we are not working with Github or pages. In this case we need to FTP or SFTP (encrypted version of FTP) to push files to remote servers. We use an external json file to store our account information. Ideally we'd encrypt the information but until then using the external file is the first option.</para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       //SFTP TASK
       //Using grunt-ssh (https://www.npmjs.com/package/grunt-ssh)
       //to store files in a remote SFTP server. Alternative to gh-pages
@@ -3855,22 +3225,15 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         }
       },
 </code>
-
     <h2>File Management</h2>
-
     <para>We've taken a few file management tasks into Grunt to make our lifes easier. The functions are for:</para>
-
     <ulist>
       <item>Creating directories</item>
       <item>Copying files</item>
       <item>Deleting files and directories</item>
     </ulist>
-
     <para>We will use the mkdir and copy tasks to create a build directory and copy all css, js and html files to the build directory. We will then use the gh-pages task (described earlier) to push the content to the repository's gh-pages branches</para>
-
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // FILE MANAGEMENT
       // Can't seem to make the copy task create the directory
       // if it doesn't exist so we go to another task to create
@@ -3899,19 +3262,12 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         production: ['build/']
       },
 </code>
-
     <h2>Watch task</h2>
-
     <para>Rather than type a command over and over again we can set up watchers so that, any time a file of the indicated type changes, we perform specific tasks.</para>
-
     <para>AS currentlly configured we track Javascript and SASS files.</para>
-
     <para>For Javascript files anytime that the Gruntfile or any file under the Javascript directorie we run the JSHint task to make sure we haven't made any mistakes. </para>
-
     <para>For our SASS/SCSS files, any files under the scss directory, we run the sass:dev task to translate the files to CSS. </para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // WATCH TASK
       // Watch for changes on the js and scss files and perform
       // the specified task
@@ -3930,23 +3286,16 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
         }
       },
 </code>
-
     <h2>Compile and Execute</h2>
-
     <para>Rather than using Ant, I've settled on Grunt's shell task to run the compilation steps to create HTML and PDF. This reduces teh number of dependecies for our project and makes it easier to consolidate all the work.</para>
-
     <para>We have three different commands:</para>
-
     <ulist>
       <item>html will create multiple html files using Saxon, a Java XSLT processor</item>
       <item>single will create a single html file using Saxon</item>
       <item>prince will create a PDF based on the single html file using PrinceXML</item>
     </ulist>
-
     <para>We make sure that we don't continue if there is an error. Want to make sure that we troubleshoot before we get all the resulting files.</para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
       // COMPILE AND EXECUTE TASKS
       shell: {
         options: {
@@ -3967,15 +3316,10 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
 
     }); // closes initConfig
 </code>
-
     <h2>Custom Tasks</h2>
-
     <para>The custom task uses one or more of the tasks defined above to accomplish a sequence of tasks.</para>
-
     <para>Look at specific tasks defined above for specific definitions.</para>
-
-    <code language="javascript"
-      >
+    <code language="javascript">
     // CUSTOM TASKS
     // Usually a combination of one or more tasks defined above
     grunt.task.registerTask(
@@ -4040,60 +3384,41 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
   }; // closes module.exports
 }()); // closes the use strict function
 </code>
-
   </section>
   <section type="appendix">
     <title>Ideas and outstanding items</title>
-
     <para>These are the things I want to look at after finishing mvp.</para>
-
     <h2>Deep Linking using Emphasis</h2>
-
-    <para>The NYT developed a deep linking library called Emphasis (<link label="code" href="https://github.com/NYTimes/Emphasis"/> - <link label="writeup" href="http://open.blogs.nytimes.com/2011/01/11/emphasis-update-and-source/"/>) that would allow us to create links to specific areas of our content.</para>
-
+    <para>The NYT developed a deep linking library called Emphasis (<link
+        href="https://github.com/NYTimes/Emphasis" label="code" /> - <link
+        href="http://open.blogs.nytimes.com/2011/01/11/emphasis-update-and-source/"
+        label="writeup"
+       />) that would allow us to create links to specific areas of our content.</para>
     <para>Downside is that it uses jQuery and I'm not certain I want to go through the pain in the ass process of converting it to plain JS or ES6 (and if it's even possible)</para>
-
     <para>Still, if we use jQuery for something else (video manipulation?) it may be worth exploring both as a sharing tool and as a technology.</para>
-
-    <para>One thing it doesn't do is handle mobile well, if at all. How do we make this tool work everywhere? <link label="Pointer Events" href="http://www.w3.org/TR/pointerevents/"/>?</para>
-
+    <para>One thing it doesn't do is handle mobile well, if at all. How do we make this tool work everywhere? <link
+        href="http://www.w3.org/TR/pointerevents/" label="Pointer Events"
+       />?</para>
     <h2>Explore how to add other parts of a book structure</h2>
-
     <para>Right now we're working with chapters and chapter-like structures. What would it take to add parts? Do we need to add them to the schema and let them trickle from there? Do we really need them?</para>
-
     <h2>Build Media Queries</h2>
-
     <para>Particularly if we want to use the same XSLT and CSS for mutliple projects we need to be able to tailor the display for different devices and viewports.</para>
-
     <para>Media Queries are the best solution (or are they?)</para>
-
     <h2>Using XSLT to build navigation</h2>
-
     <para>The same way we build the table of content should allow us to build navigation within the pages of a publication using preceeding-sibling and following-sibling logic</para>
-
     <h2>Create a better way to generate filenames</h2>
-
     <para>The current way to create filenames doesn't take into account that different <emphasis>section/@type</emphasis> elements have different starting values. Can I make it start from 1 for every @type in the document?</para>
-
     <h2>Expand the use cases for this project</h2>
-
     <para>The original idea was for text and code-heavy content. Is there a case to be made for a more expressive vocabulary? I'm thinking of additional elements for navigation and content display such as asides and blockquotes</para>
-
     <h2>Explore implementing a serviceworker solution</h2>
-
-    <video width="560" height="315"
-      poster="http://img.youtube.com/vi/Rr2vXDIVerI/0.jpg">
-      <source src="//www.youtube.com/embed/Rr2vXDIVerI" type="video/mp4"/>
+    <video height="315" poster="http://img.youtube.com/vi/Rr2vXDIVerI/0.jpg"
+      width="560">
+      <source src="//www.youtube.com/embed/Rr2vXDIVerI" type="video/mp4" />
     </video>
-
     <para>The core of the proposed offline capabilities is a scoped service worker that will initially handle the caching of the publication's content. We take advantage of the multiple cache capabilitity available with service workers to create caches for individual unitts of content (like magazine issues) and to expire them within a certain time period (by removing and deleting the cache).</para>
-
     <para>For publications needing to pull data from specific URLs we can special case the requests based on different pieces of the URL allowing to create different caches based on edition (assuming each edition is stored in its own directory), resource type or even the URL we are requesting.</para>
-
     <para>Serviceworkers have another benefit not directly related with offline connections. They will give all access to our content a speed boost by eliminating the network roundtrip after the content is installed. If the content is in the cache, the resource's time to load is only limited by the Hard Drive's speed.</para>
-
     <para>This is what the ServiceWorker code looks like in the demo application:</para>
-
     <code language="javascript">
 // ATHENA DEMO SERVICE WORKER
 //
@@ -4183,19 +3508,16 @@ self.onfetch = function(event) {
   );
 };
     </code>
-
     <h3>Limitations</h3>
-
-    <para>As powerful as service workers are they also have some drawbacks. They can only be served through HTTPS (you cannot install a service worker in a non secure server) to prevent <link label="man-in-the-middle attacks" href="http://www.wikiwand.com/en/Man-in-the-middle_attack"/>.</para>
-
+    <para>As powerful as service workers are they also have some drawbacks. They can only be served through HTTPS (you cannot install a service worker in a non secure server) to prevent <link
+        href="http://www.wikiwand.com/en/Man-in-the-middle_attack"
+        label="man-in-the-middle attacks" />.</para>
     <para>There is limited support for the API (only Chrome Canary and  Firefox Nightly builds behind a flag will work.) This will change as the API matures and becomes finalized in the WHATWG and/or a recommendation with the W3C. </para>
-
     <para>Even in browsers that support the API the support is not complete. Chrome uses a polyfill for elements of the cache API that it does not support natively. This should be fixed in upcoming versions of Chrome and Chromium (the open source project Chrome is based on.)</para>
-
     <para>We need to be careful with how much data we choose to store in the caches. From what I understand the ammount of storage given to offline applications is divided between all offline storage types: IndexedDB, Session Storage, Web Workers and ServiceWorkers and this amount is not consistent across all browsers.</para>
-
-    <para>Furthermore I am not aware of any way to increase this total amount or to specifically increase the storage assigned to ServiceWorkers; Jake Archibald mentions this in the offline cookbook section on <link label="cache persistence" href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence"/>.</para>
-
+    <para>Furthermore I am not aware of any way to increase this total amount or to specifically increase the storage assigned to ServiceWorkers; Jake Archibald mentions this in the offline cookbook section on <link
+        href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence"
+        label="cache persistence" />.</para>
   </section>
   <section type="bibliography">
     <title>Annotated Bibliography of links and resources</title>
