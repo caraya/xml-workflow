@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns="http://www.w3.org/1999/xhtml"
   xmlns:epub="http://www.idpf.org/2007/ops"
   xmlns:m="http://www.w3.org/1998/Math/MathML"
   xmlns:pls="http://www.w3.org/2005/01/pronunciation-lexicon"
@@ -13,7 +12,7 @@
   xmlns:ncx="http://www.daisy.org/z3986/2005/ncx/"
   xmlns:file="http://expath.org/ns/file"
 
-  exclude-result-prefixes="#all"
+  exclude-result-prefixes="xs xsl epub m pls ssml svg opf dc dcterms ncx file"
   version="2.0">
   <!-- Waiting to see what namespaces we need to remove -->
   <!-- First import the base stylesheet -->
@@ -39,7 +38,7 @@
   <xsl:param name="epub.include.ncx" select="0"/>
   <!-- NAME OF PACKAGE.OPF File -->
   <xsl:param name="epub.package.filename" select="'package.opf'"/>
-  <xsl:param name="epub.full.package.path" select="concat($epub.oebps.dir, $epub.package.filename)" />
+  <xsl:param name="epub.full.package.path" select="concat($epub.oebps.dir, '/', $epub.package.filename)" />
   <xsl:param name="epub.cover.filename" select="'cover.xhtml'"/>
   <!-- names of id attributes used in package files -->
   <xsl:param name="epub.meta.identifier.id">meta-identifier</xsl:param>
@@ -68,23 +67,23 @@
   <xsl:param name="toc.entry.default.text">&#xA0;</xsl:param>
 
   <xsl:template name="generate.cover">
-    <xsl:result-document href='cover.xhtml' format="xhtml-out">
+    <xsl:result-document href='OEBPS/cover.xhtml' format="xhtml-out">
       <xsl:message terminate="no">
-        <xsl:text>Generate cover template is not complete. eBook will not pass validation</xsl:text>
+        <xsl:text>generate.cover.template is not complete. eBook will not pass validation</xsl:text>
       </xsl:message>
     </xsl:result-document>
   </xsl:template>
 
   <!-- When called this will generate the mimetype file. I hope in the right format :-) -->
   <xsl:template name="generate.mime">
-    <xsl:result-document href='concat("$oebps.package.dir/", "$epub.oebps.dir/", "mimetype")' format="text-out">
+    <xsl:result-document href="mimetype" format="text-out">
       <xsl:text>application/epub+zip</xsl:text>
     </xsl:result-document>
   </xsl:template>
 
   <!-- When called this will generate the container.xml and the containing directory -->
   <xsl:template name="generate.meta-inf">
-    <xsl:result-document href="META-INF/container.xml" format="xml-out">
+    <xsl:result-document href="../content/META-INF/container.xml" format="xml-out">
       <xsl:element name="container" namespace="urn:oasis:names:tc:opendocument:xmlns:container">
         <xsl:attribute name="version" select="'1.0'"/>
         <xsl:element name="rootfiles">
@@ -104,8 +103,8 @@
   <!-- USE THE MODEL ABOVE TO CREATE THE OTHER FILES IN THE META-INF DIRECTORY IF NEEDED-->
 
   <xsl:template name="generate.package.opf">
-    <xsl:result-document href="{$epub.full.package.path}">
-      <xsl:element name="package" xml:lang="en" namespace="http://www.idpf.org/2007/opf">
+    <xsl:result-document href="OEBPS/package.opf">
+      <xsl:element name="package" xml:lang="en">
         <xsl:attribute name="version" select="3.0"/>
         <xsl:attribute name="unique-identifier" select="$epub.dc.identifier.id"/>
 
@@ -144,146 +143,24 @@
               <xsl:attribute name="id">
                 <xsl:value-of select="concat($epub.dc.creator.id, generate-id())"/>
                </xsl:attribute>
-              <xsl:value-of select="concat(author/first-name, author/surname)"/>
+              <xsl:value-of select="concat(author/first-name, ' ', author/surname)"/>
             </xsl:element>
           </xsl:for-each>
 
           <xsl:for-each select="editors | otherRoles">
             <xsl:element name="dc:collaborator">
-              <xsl:value-of select="concat(first-name, surname)"/>
+              <xsl:value-of select="concat(first-name, ' ', surname)"/>
             </xsl:element>
           </xsl:for-each>
         </xsl:element>
-
-        <manifet>
-          <xsl:for-each select="file:list('OEBPS', recursive='true')">
-            <item>
-              <xsl:attribute name="href" select="."/>
-            </item>
-          </xsl:for-each>
-          <xsl:choose>
-            <!-- If the file ends with .html or .xhtml we treat it as xhtml -->
-            <xsl:when test="ends-with(item/@href,'.xhtml') or ends-with(item/@href,'.html')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'application/xhtml+xml'"/>
-            </xsl:when>
-
-            <!-- CSS style sheets -->
-            <xsl:when test="ends-with(item/@href,'.css') or ends-with(item/@href,'.CSS')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'text/css'"/>
-            </xsl:when>
-
-            <!-- JavaScript files-->
-            <xsl:when test="ends-with(item/@href,'.js') or ends-with(item/@href,'.JS')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'text/javascript'"/>
-            </xsl:when>
-
-            <!-- Images -->
-            <xsl:when test="ends-with(item/@href,'.jpg') or ends-with(item/@href,'.JPG')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'image/jpeg'"/>
-            </xsl:when>
-            <xsl:when test="ends-with(item/@href,'.png') or ends-with(item/@href,'.PNG')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'image/png'"/>
-            </xsl:when>
-            <xsl:when test="ends-with(item/@href, '.gif') or ends-with(item/@href, '.GIF')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'image/gif'"/>
-            </xsl:when>
-            <!-- SVG is considered an image type for epub-->
-            <xsl:when test="ends-with(item/@href,'.svg') or ends-with(item/@href, '.SVG')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'image/svg+xml'"/>
-            </xsl:when>
-
-            <!-- NCX -->
-            <xsl:when test="ends-with(item/@href,'.ncx')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'application/x-dtbncx+xml'"/>
-            </xsl:when>
-
-            <!-- SMIL -->
-            <xsl:when test="ends-with(item/@href, '.smil')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'application/smil+xml'"/>
-            </xsl:when>
-
-            <!-- PLS -->
-            <xsl:when test="ends-with(item/@href, '.pls')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'application/pls+xml'"/>
-            </xsl:when>
-
-            <!-- FONTS -->
-            <xsl:when test="ends-with(item/@href, '.woff')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-font-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'application/font-woff'"/>
-            </xsl:when>
-            <!--
-          The official mimetype for otf fonts is application/x-font-otf but the epub spec says otherwise
-
-          Will stick with IDPF's definition for now
-        -->
-            <xsl:when test="ends-with(item/@href, '.otf')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-font-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'application/vnd.ms-opentype'"/>
-            </xsl:when>
-            <xsl:when test="ends-with(item/@href, '.otf')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-font-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'application/vnd.ms-opentype'"/>
-            </xsl:when>
-
-            <!-- AUDIO FORMATS -->
-            <xsl:when test="ends-with(item/@href, '.mp3')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'audio/mpeg'"/>
-            </xsl:when>
-            <xsl:when test="ends-with(item/@href, '.m4a')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'audio/mp4'"/>
-            </xsl:when>
-
-            <!-- VIDEO, MP4 ONLY FOR NOW -->
-            <!-- DON'T FORGET THAT IF YOU USE VIDEO YOU MUST USE A POSTER IMAGE -->
-            <xsl:when test="ends-with(item/@href,'.mp4') or ends-with(item/@href,'.MP4')
-              or ends-with(item/@href,'.m4v') or ends-with(item/@href,'.M4V')">
-              <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
-              <xsl:attribute name="media-type" select="'video/mp4'"/>
-            </xsl:when>
-
-            <xsl:otherwise>
-              <xsl:message terminate="yes">
-                No matching value for <xsl:value-of select="."/>
-                File type either not supported or not yet added to the system
-              </xsl:message>
-            </xsl:otherwise>
-          </xsl:choose>
-        </manifet>
-
-        <xsl:if test="$epub.include.ncx">
-          <spine>
-            <xsl:for-each select="manifest/item">
-              <xsl:if test="ends-with(self, '.xhtml')">
-                <xs:element name="itemref">
-                  <xsl:value-of select="@id"/>
-                </xs:element>
-              </xsl:if>
-            </xsl:for-each>
-          </spine>
-        </xsl:if>
       </xsl:element> <!-- CLOSES PACKAGE DEFINITION -->
 
 
     </xsl:result-document>
   </xsl:template>
 
-
-
-  <xsl:template match="toc">
-    <xsl:result-document href='toc.xhtml' format="xhtml-out">
+  <xsl:template name="generate.toc">
+    <xsl:result-document href='OEBPS/toc.xhtml' format="xhtml-out">
     <html>
       <head>
         <link rel="stylesheet" href="css/style.css" />
@@ -299,7 +176,7 @@
                 <xsl:element name="li">
                   <xsl:element name="a">
                     <xsl:attribute name="href">
-                      <xsl:value-of select="concat(@type, position(),'.xhtml')"/>
+                      <xsl:value-of select="concat(@type, position()-1,'.xhtml')"/>
                     </xsl:attribute>
                     <xsl:value-of select="title"/>
                   </xsl:element>
@@ -315,12 +192,27 @@
 
   <!-- Metadata -->
   <xsl:template match="metadata">
-    <xsl:call-template name="generate.package.opf"/>
+    <xsl:call-template name="generate.mime"/>
+    <xsl:call-template name="generate.meta-inf"/>
+    <xsl:call-template name="generate.cover"/>
+    <xsl:call-template name="generate.toc"/>
 
-    <xsl:element name="section">
-      <xsl:attribute name="epub:type" select="'titlepage'"/>
-      <xsl:apply-templates/>
-    </xsl:element>
+    <xsl:result-document href="OEBPS/titlepage.xhtml">
+      <html class="no-js" lang="en">
+        <head>
+          <link rel="stylesheet" href="css/style.css" />
+          <!-- Load Normalize library -->
+          <link rel="stylesheet" href="css/normalize.css"/>
+        </head>
+        <body>
+          <xsl:element name="section">
+            <xsl:attribute name="epub:type" select="'titlepage'"/>
+            <xsl:apply-templates/>
+          </xsl:element>
+        </body>
+      </html>
+    </xsl:result-document>
+
   </xsl:template>
 
   <!-- Section -->
@@ -328,7 +220,7 @@
     <!-- Variable to create section file names -->
     <xsl:variable name="fileName" select="concat(@type, (position()-1),'.xhtml')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
-    <xsl:result-document href='{$fileName}' format="xhtml-out">
+    <xsl:result-document href='OEBPS/{$fileName}' format="xhtml-out">
       <html class="no-js" lang="en">
         <head>
           <meta charset="utf-8"/>
@@ -354,7 +246,7 @@
         <body>
           <section>
             <xsl:if test="string(@type)">
-              <xsl:attribute name="data-type">
+              <xsl:attribute name="epub:type">
                 <xsl:value-of select="@type"/>
               </xsl:attribute>
             </xsl:if>

@@ -59,7 +59,7 @@
   </xsl:template>
 
   <xsl:template match="/" mode="toc">
-    <xsl:result-document href='toc.html' format="xhtml-out">
+    <xsl:result-document href='toc.xhtml' format="xhtml-out">
       <html>
         <head>
           <link rel="stylesheet" href="css/style.css" />
