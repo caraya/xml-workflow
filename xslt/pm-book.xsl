@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<?xml version="1.1" encoding="UTF-8"?>
+<xsl:stylesheet
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  exclude-result-prefixes="xs"
-  xml:lang="en"
+  xmlns:epub="http://www.idpf.org/2007/ops"
+
+  exclude-result-prefixes="epub xs xsl #default"
   version="2.0">
 
   <xsl:import href="book.xsl"/>
@@ -73,6 +76,9 @@
       <xsl:choose>
         <xsl:when test="string(@type)">
           <xsl:attribute name="data-type">
+            <xsl:value-of select="@type"/>
+          </xsl:attribute>
+          <xsl:attribute name="epub:type">
             <xsl:value-of select="@type"/>
           </xsl:attribute>
         </xsl:when>

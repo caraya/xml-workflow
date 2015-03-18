@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<?xml version="1.1" encoding="UTF-8"?>
+<xsl:stylesheet
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:epub="http://www.idpf.org/2007/ops"
   xmlns:m="http://www.w3.org/1998/Math/MathML"
@@ -12,20 +13,25 @@
   xmlns:ncx="http://www.daisy.org/z3986/2005/ncx/"
   xmlns:file="http://expath.org/ns/file"
 
-  exclude-result-prefixes="xs xsl epub m pls ssml svg opf dc dcterms ncx file"
+exclude-result-prefixes=" xsl xs m pls ssml svg opf ncx file"
   version="2.0">
   <!-- Waiting to see what namespaces we need to remove -->
   <!-- First import the base stylesheet -->
   <xsl:import href="book.xsl"/>
 
   <!-- Define the output children document -->
-  <xsl:output name="xhtml-out" method="xhtml" indent="yes" encoding="UTF-8" omit-xml-declaration="yes"/>
+  <xsl:output name="xhtml-out"
+    method="xhtml"
+    indent="yes"
+    encoding="UTF-8"
+    omit-xml-declaration="yes"
+  />
 
   <!-- Define text output for text files -->
   <xsl:output name="text-out" method="text" media-type="application/epub+zip" indent='no' />
 
   <!-- Define XML output for XML docs other than xhtml -->
-  <xsl:output name="xml-out" method="xml" indent="yes" omit-xml-declaration="no" />
+  <xsl:output name="xml-out" method="xml" indent="yes" omit-xml-declaration="no"/>
 
   <!-- VARIABLES-->
 
@@ -68,9 +74,36 @@
 
   <xsl:template name="generate.cover">
     <xsl:result-document href='OEBPS/cover.xhtml' format="xhtml-out">
-      <xsl:message terminate="no">
-        <xsl:text>generate.cover.template is not complete. eBook will not pass validation</xsl:text>
-      </xsl:message>
+      <html class="no-js" lang="en"
+        xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <meta charset="utf-8"/>
+          <link rel="stylesheet" href="css/epub-styles.css" />
+          <!-- Load Normalize library -->
+          <link rel="stylesheet" href="css/normalize.css"/>
+          <xsl:if test="(code)">
+            <!--
+              Use highlight.js and github style
+            -->
+            <link rel="stylesheet" href="css/styles/railscasts.css" />
+            <!-- Load highlight.js -->
+            <script src="lib/highlight.pack.js"></script>
+            <script>
+              hljs.initHighlightingOnLoad();
+            </script>
+          </xsl:if>
+          <!--
+            Comment this out for now. It'll become relevant when we add video
+            <script src="js/script.js"></script>
+          -->
+        </head>
+        <body>
+          <section>
+            <xsl:attribute name="epub:type" select="'cover'"/>
+            <xsl:apply-templates/>
+          </section>
+        </body>
+      </html>
     </xsl:result-document>
   </xsl:template>
 
@@ -100,11 +133,25 @@
     </xsl:result-document>
   </xsl:template>
 
+  <xsl:template name="epub.generate.opf.spine">
+    <spine>
+      <xsl:for-each select="manifest/item">
+        <xsl:if test="ends-with(self, '.xhtml')">
+          <xs:element name="itemref">
+            <xsl:value-of select="@id"/>
+          </xs:element>
+        </xsl:if>
+      </xsl:for-each>
+    </spine>
+  </xsl:template>
+
+
   <!-- USE THE MODEL ABOVE TO CREATE THE OTHER FILES IN THE META-INF DIRECTORY IF NEEDED-->
 
   <xsl:template name="generate.package.opf">
+    <xsl:variable name="full.path" select="file:resolve-path('/Users/carlos/code/xml-workflow/content/OEBPS')"/>
     <xsl:result-document href="OEBPS/package.opf">
-      <xsl:element name="package" xml:lang="en">
+      <xsl:element name="package" xml:lang="en" namespace="http://www.idpf.org/2007/opf">
         <xsl:attribute name="version" select="3.0"/>
         <xsl:attribute name="unique-identifier" select="$epub.dc.identifier.id"/>
 
@@ -114,7 +161,7 @@
             <xsl:attribute name='id'>
               <xsl:value-of select="$epub.dc.identifier.id"/>
             </xsl:attribute>
-            <xsl:value-of select="isbn"/>
+            <xsl:value-of select="metadata/isbn"/>
           </xsl:element>
 
           <xsl:element name="dc:title">
@@ -153,17 +200,28 @@
             </xsl:element>
           </xsl:for-each>
         </xsl:element>
-      </xsl:element> <!-- CLOSES PACKAGE DEFINITION -->
 
+        <manifet>
+          <xsl:for-each select="file:list($full.path)">
+            <item>
+              <xsl:attribute name="href" select="."/>
+            </item>
+          </xsl:for-each>
 
+        </manifet>
+
+        <!-- DO we need to call generate spine from here? -->
+        <xsl:call-template name="epub.generate.opf.spine"/>
+      </xsl:element>
     </xsl:result-document>
   </xsl:template>
 
   <xsl:template name="generate.toc">
     <xsl:result-document href='OEBPS/toc.xhtml' format="xhtml-out">
-    <html>
+    <html class="no-js" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
       <head>
-        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/epub-styles.css" />
         <!-- Load Normalize library -->
         <link rel="stylesheet" href="css/normalize.css"/>
       </head>
@@ -176,7 +234,7 @@
                 <xsl:element name="li">
                   <xsl:element name="a">
                     <xsl:attribute name="href">
-                      <xsl:value-of select="concat(@type, position()-1,'.xhtml')"/>
+                      <xsl:value-of select="concat(@type, position(),'.xhtml')"/>
                     </xsl:attribute>
                     <xsl:value-of select="title"/>
                   </xsl:element>
@@ -190,48 +248,26 @@
   </xsl:result-document>
   </xsl:template>
 
-  <!-- Metadata -->
-  <xsl:template match="metadata">
-    <xsl:call-template name="generate.mime"/>
-    <xsl:call-template name="generate.meta-inf"/>
-    <xsl:call-template name="generate.cover"/>
-    <xsl:call-template name="generate.toc"/>
 
-    <xsl:result-document href="OEBPS/titlepage.xhtml">
-      <html class="no-js" lang="en">
-        <head>
-          <link rel="stylesheet" href="css/style.css" />
-          <!-- Load Normalize library -->
-          <link rel="stylesheet" href="css/normalize.css"/>
-        </head>
-        <body>
-          <xsl:element name="section">
-            <xsl:attribute name="epub:type" select="'titlepage'"/>
-            <xsl:apply-templates/>
-          </xsl:element>
-        </body>
-      </html>
-    </xsl:result-document>
-
-  </xsl:template>
 
   <!-- Section -->
   <xsl:template match="section">
     <!-- Variable to create section file names -->
-    <xsl:variable name="fileName" select="concat(@type, (position()-1),'.xhtml')"/>
+    <xsl:variable name="fileName" select="concat(@type, position()-2,'.xhtml')"/>
     <!-- An example result of the variable above would be introduction1.xhtml -->
     <xsl:result-document href='OEBPS/{$fileName}' format="xhtml-out">
-      <html class="no-js" lang="en">
+      <html class="no-js" lang="en"
+        xmlns="http://www.w3.org/1999/xhtml">
         <head>
           <meta charset="utf-8"/>
-          <link rel="stylesheet" href="css/style.css" />
+          <link rel="stylesheet" href="css/epub-styles.css"/>
           <!-- Load Normalize library -->
           <link rel="stylesheet" href="css/normalize.css"/>
           <xsl:if test="(code)">
             <!--
               Use highlight.js and github style
             -->
-            <link rel="stylesheet" href="css/styles/railscasts.css" />
+            <link rel="stylesheet" href="css/styles/github.css" />
             <!-- Load highlight.js -->
             <script src="lib/highlight.pack.js"></script>
             <script>
@@ -266,4 +302,36 @@
       </html>
     </xsl:result-document>
   </xsl:template>
+
+  <xsl:template match="toc">
+    <!-- We want this template to remain blank so it overrides the toc template in the book stylesheet-->
+  </xsl:template>
+
+
+  <!-- Metadata -->
+  <xsl:template match="metadata">
+    <xsl:call-template name="generate.mime"/>
+    <xsl:call-template name="generate.meta-inf"/>
+    <xsl:call-template name="generate.cover"/>
+    <xsl:call-template name="generate.toc"/>
+    <xsl:call-template name="generate.package.opf"/>
+
+    <xsl:result-document href="OEBPS/titlepage.xhtml">
+      <html class="no-js" lang="en">
+        <head>
+          <link rel="stylesheet" href="css/epub-styles.css"/>
+          <!-- Load Normalize library -->
+          <link rel="stylesheet" href="css/normalize.css"/>
+        </head>
+        <body>
+          <xsl:element name="section">
+            <xsl:attribute name="epub:type" select="'titlepage'"/>
+            <xsl:apply-templates/>
+          </xsl:element>
+        </body>
+      </html>
+    </xsl:result-document>
+
+  </xsl:template>
+
 </xsl:stylesheet>

@@ -1,0 +1,4 @@
+# Add path to xrepo to your shell's path
+tools/bin/xrepo create tools-repo
+tools/bin/xrepo --repo tools-repo install http://cxan.org/file/expath/file-saxon/expath-file-saxon-0.5.0.xar
+java -cp "jlib/saxon.jar" --repo tools-repo net.sf.saxon.Transform

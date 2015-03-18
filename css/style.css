@@ -13,7 +13,7 @@ body {
   background-color: #fff;
   color: #554c4d;
   color: #554c4d;
-  font-family: 'Roboto', Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Montserrat','Helvetica Neue', Helvetica, sans-serif;
   font-size: 1em;
   font-weight: 200;
   line-height: 1.45;
@@ -262,6 +262,14 @@ video {
   width: 100%;
 }
 
+section[data-type='preface'] {
+  page-break-after: always;
+  page-break-before: always;
+}
+
+section[data-type='titlepage'] {
+  page-break-after: always;
+}
 section[data-type='titlepage'] h1,
 section[data-type='titlepage'] h2 {
   text-align: center;

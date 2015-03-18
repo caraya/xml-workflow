@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified">
     
@@ -672,9 +671,8 @@
         </xs:documentation>
       </xs:annotation>
       <xs:complexType>
-        <xs:attribute name="src" type='xs:string' use="required"/>
+        <xs:attribute name="src" type='xs:anyURI' use="required"/>
         <xs:attribute name="type" type='xs:string'/>
-        <xs:anyAttribute/><!-- There's got to be more attributes -->
       </xs:complexType>
     </xs:element>
     
@@ -685,11 +683,10 @@
         </xs:documentation>
       </xs:annotation>
       <xs:complexType>
-        <xs:attribute name="src" type='xs:string' use="required"/>
+        <xs:attribute name="src" type='xs:anyURI' use="required"/>
         <xs:attribute name="label" type='xs:string' use="required"/>
         <xs:attribute name="kind" type='xs:string'/>
         <xs:attribute name="srclang" type='xs:string' default='en'/>
-        <xs:anyAttribute/> <!-- Not sure hot to handle the deafult attribute -->
       </xs:complexType>
     </xs:element>
   

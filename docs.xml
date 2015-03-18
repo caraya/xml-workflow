@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 <book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
   <metadata>
@@ -17,7 +17,7 @@
     <para>Thanks to Laura Brady for getting this particular idea started :)
     </para>
   </section>
-  <section type="preface">
+  <section type="chapter">
     <title>Background: HTML is the final format</title>
     <para>In researching the technologies and tools that I use when developing digital content I've come across multiple discussions about what's the best way to create HTML for X application (ebooks, web, transforming into other formats and any number of ideas. Some people think that HTML is perfect for everyone to write, regardless of experience and comfort with the technology. We forget that HTML now is very different to HTML as it was originally created.</para>
     <blockquote>
@@ -166,6 +166,27 @@
     <para>The best way to see how can these text-based tools can be incorporated is to ask yourself how much work you want to do in the backend versus how much work do you want you authors to do when creating the content. This is where the value of specialists in digital formats and publishing becomes essential, we can work with clients in providing the best solution to meet their needs.</para>
     <para>Keep in mind who your audience and what the target vocabulary you're working towards, it will dictate what your best strategy is. Are these all the solutions; definitely not. Other solutions may appear that fit your needs better than those presented here; I would love to hear if that is the case.</para>
     <para>Striking the balance between author and publisher is a delicate one. I tend to fall on the side of making things easier for authors... The tools can be made to translate basic markup into the desired result with minimal requirements for authors to mark up the content; the same can't necessarily be said about the publisher-first strategy</para>
+  </section>
+  <section type="chapter">
+    <title>Platforming books from a single source</title>
+
+    <para>The formats chosen for this project (HTML, PDF and ePub) were not selected at random. I'm following Craig Mod's model as outlined in <link href="http://craigmod.com/journal/platforming_books/" label="Platforming Books"/> with my own ideas of what we need to produce.</para>
+
+    <para>The three formats are:</para>
+
+    <ulist>
+      <item>(X)HTML</item>
+      <item>PDF</item>
+      <item>ePub3</item>
+    </ulist>
+
+    <para>We'll discuss the rationale for each format, what this project is not, and what we can do moving forward.</para>
+
+    <h2>(X)HTML</h2>
+
+    <h2>PDF</h2>
+
+    <h2>ePub3</h2>
   </section>
   <section type="chapter">
     <title>Introduction</title>
@@ -3411,9 +3432,10 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
     <h2>Expand the use cases for this project</h2>
     <para>The original idea was for text and code-heavy content. Is there a case to be made for a more expressive vocabulary? I'm thinking of additional elements for navigation and content display such as asides and blockquotes</para>
     <h2>Explore implementing a serviceworker solution</h2>
-    <video height="315" poster="http://img.youtube.com/vi/Rr2vXDIVerI/0.jpg"
-      width="560">
-      <source src="//www.youtube.com/embed/Rr2vXDIVerI" type="video/mp4" />
+    <video height="315" width="560"
+      controls="controls"
+      poster="./images/video1-poster.jpg">
+      <source src="./video/serviceworker.mp4" type="video/mp4" />
     </video>
     <para>The core of the proposed offline capabilities is a scoped service worker that will initially handle the caching of the publication's content. We take advantage of the multiple cache capabilitity available with service workers to create caches for individual unitts of content (like magazine issues) and to expire them within a certain time period (by removing and deleting the cache).</para>
     <para>For publications needing to pull data from specific URLs we can special case the requests based on different pieces of the URL allowing to create different caches based on edition (assuming each edition is stored in its own directory), resource type or even the URL we are requesting.</para>

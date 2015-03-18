@@ -1,0 +1,303 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
+html {
+  overflow-y: scroll;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #fff;
+  color: #554c4d;
+  color: #554c4d;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 1em;
+  font-weight: 100;
+  line-height: 1.1;
+  orphans: 4;
+  padding-left: 0;
+  padding-right: 0;
+  widows: 2;
+}
+
+em {
+  font-style: italic;
+  font-weight: 300;
+}
+
+small,
+.font-small {
+  font-size: .833em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Roboto Slab', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 1.414em .5em;
+}
+
+h1 {
+  font-size: 2.074em;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.728em;
+}
+
+h3 {
+  font-size: 1.44em;
+}
+
+h4 {
+  font-size: 1.2em;
+  text-transform: uppercase;
+}
+
+aside {
+  border-bottom: 3px double #222023;
+  border-top: 3px double #222023;
+  color: #403f4e;
+  line-height: 1.5em;
+  padding-bottom: .5em;
+  padding-top: .5em;
+  width: 100%;
+}
+aside h3 {
+  text-align: center;
+}
+aside .pull {
+  margin-bottom: .5em;
+  margin-left: -20%;
+  margin-top: .2em;
+}
+aside .lowlight {
+  opacity: .3;
+}
+aside .lowlight :hover {
+  opacity: 1;
+}
+
+.opening {
+  border-bottom: 3px double #000;
+  border-top: 3px double #000;
+  font-size: 2em;
+  margin-bottom: 10em;
+  padding-bottom: 2em;
+  padding-top: 2em;
+  text-align: center;
+}
+
+blockquote {
+  border-left: 5px solid #ccc;
+  color: #222023;
+  font-weight: 100;
+  margin-bottom: 1.2em;
+  margin-left: 4em;
+  margin-right: 4em;
+  margin-top: 2em;
+}
+blockquote p {
+  padding-left: 1em;
+}
+
+.pullquote {
+  border-bottom: 18px solid #000;
+  border-top: 18px solid #000;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 38px;
+  margin-right: 100px;
+  padding: 20px 0;
+  position: relative;
+  width: 200px;
+}
+.pullquote p {
+  color: #00298a;
+  font-weight: 700;
+  position: relative;
+  text-transform: uppercase;
+  z-index: 1;
+}
+.pullquote p:last-child {
+  line-height: 20px;
+  padding-top: 2px;
+}
+.pullquote cite {
+  color: #333;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.margin-notes,
+.content-left {
+  clear: both;
+  display: block;
+  float: left;
+  font-size: .75em;
+  margin: 1em;
+  width: 40%;
+}
+.margin-notes h3,
+.content-left h3 {
+  text-align: center;
+}
+
+.margin-notes-right,
+.content-right {
+  clear: both;
+  display: block;
+  float: right;
+  font-size: .75em;
+  margin: 1em;
+  width: 40%;
+}
+.margin-notes-right h3,
+.content-right h3 {
+  text-align: center;
+}
+
+.margin-notes-right > p:last-of-type,
+.content-right > p:last-of-type {
+  clear: both;
+  float: right;
+}
+
+.margin-notes-left > p:last-of-type,
+.content-left > p:last-of-type {
+  clear: both;
+  float: left;
+}
+
+.content-right ul,
+.content-left ul {
+  list-style: none;
+}
+
+p {
+  font-size: 1em;
+  margin-bottom: 1.3em;
+}
+p + p {
+  text-indent: 2em;
+}
+
+.first-line {
+  font-size: 1.1em;
+  text-indent: 0;
+  text-transform: uppercase;
+}
+
+.first-letter {
+  float: left;
+  font-size: 7em;
+  line-height: .8em;
+  margin-bottom: -.1em;
+  padding-right: .1em;
+}
+
+ul li {
+  list-style: square;
+}
+
+ol li {
+  list-style: decimal;
+}
+
+figure {
+  counter-increment: figure_count;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+figure figcaption {
+  font-weight: 700;
+  padding-bottom: 1em;
+  padding-top: .2em;
+}
+figure figcaption::before {
+  content: "Figure " counter(figure_count) ": ";
+}
+
+section[data-type='bibliography'] p {
+  text-align: left;
+}
+section[data-type='bibliography'] p + p {
+  text-indent: 0 !important;
+}
+
+section[data-type='titlepage'] h1,
+section[data-type='titlepage'] h2 {
+  text-align: center;
+}
+section[data-type='titlepage'] p {
+  text-align: center;
+}
+
+section[data-type='dedication'] h1,
+section[data-type='dedication'] h2 {
+  text-align: center;
+}
+section[data-type='dedication'] p {
+  text-align: left;
+}
+section[data-type='dedication'] p + p {
+  text-indent: 0 !important;
+}
+
+pre {
+  overflow-wrap: break-word;
+  white-space: pre-line !important;
+  word-wrap: break-word;
+}
+pre code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 1em;
+  line-height: 1.2em;
+}
+
+.justified {
+  text-align: justify;
+}
+
+.columns2 {
+  column-count: 2;
+  column-gap: 3em;
+  column-fill: balance;
+  column-span: none;
+  line-height: 1.25em;
+  width: 100%;
+}
+.columns2 p:first-of-type {
+  margin-top: 0;
+}
+.columns2 p + p {
+  text-indent: 2em;
+}
+.columns2 p:last-of-type {
+  margin-bottom: 1.25em;
+}
+
+.columns3 {
+  column-count: 3;
+  column-gap: 10px;
+  column-fill: balance;
+  column-span: none;
+  width: 100%;
+}
+.columns3 p:first-of-type {
+  margin-top: 0;
+}
+.columns3 p:not:first-of-type {
+  text-indent: 2em;
+}
+.columns3 p:last-of-type {
+  margin-bottom: 1.25em;
+}
+
+/*# sourceMappingURL=pm-style.css.map */

@@ -14,7 +14,7 @@ body {
   background-color: #fff;
   color: #554c4d;
   color: #554c4d;
-  font-family: 'Roboto', Georgia, 'Times New Roman', Times, serif;
+  font-family: 'Montserrat','Helvetica Neue', Helvetica, sans-serif;
   font-size: 1em;
   font-weight: 200;
   line-height: 1.45;
@@ -215,19 +215,19 @@ figure {
     figure figcaption::before {
       content: 'Figure ' counter(figure_count) ': '; }
 
-/* line 77, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 84, /Users/carlos/code/xml-workflow/scss/style.scss */
 .justified {
   text-align: justify; }
 
-/* line 82, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 89, /Users/carlos/code/xml-workflow/scss/style.scss */
 small, .font-small {
   font-size: .833em; }
 
-/* line 86, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 93, /Users/carlos/code/xml-workflow/scss/style.scss */
 video {
   border: 1px solid #c5c5d0; }
 
-/* line 94, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 101, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns2 {
   column-count: 2;
   column-gap: 3em;
@@ -235,15 +235,15 @@ video {
   column-span: none;
   line-height: 1em;
   width: 100%; }
-  /* line 99, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 106, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p:first-of-type {
     border-top: 0;
     margin-top: 0; }
-  /* line 104, /Users/carlos/code/xml-workflow/scss/style.scss */
+  /* line 111, /Users/carlos/code/xml-workflow/scss/style.scss */
   .columns2 p + p {
     text-indent: 2em; }
 
-/* line 109, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 116, /Users/carlos/code/xml-workflow/scss/style.scss */
 .columns3 {
   column-count: 3;
   column-gap: 10px;
@@ -251,17 +251,25 @@ video {
   column-span: none;
   width: 100%; }
 
-/* line 118, /Users/carlos/code/xml-workflow/scss/style.scss */
-section[data-type='titlepage'] h1, section[data-type='titlepage'] h2 {
-  text-align: center; }
-/* line 122, /Users/carlos/code/xml-workflow/scss/style.scss */
-section[data-type='titlepage'] p {
-  text-indent: 0 !important; }
+/* line 124, /Users/carlos/code/xml-workflow/scss/style.scss */
+section[data-type='preface'] {
+  page-break-after: always;
+  page-break-before: always; }
 
 /* line 129, /Users/carlos/code/xml-workflow/scss/style.scss */
+section[data-type='titlepage'] {
+  page-break-after: always; }
+  /* line 133, /Users/carlos/code/xml-workflow/scss/style.scss */
+  section[data-type='titlepage'] h1, section[data-type='titlepage'] h2 {
+    text-align: center; }
+  /* line 137, /Users/carlos/code/xml-workflow/scss/style.scss */
+  section[data-type='titlepage'] p {
+    text-indent: 0 !important; }
+
+/* line 144, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] h1, section[data-type='dedication'] h2 {
   text-align: center; }
-/* line 133, /Users/carlos/code/xml-workflow/scss/style.scss */
+/* line 148, /Users/carlos/code/xml-workflow/scss/style.scss */
 section[data-type='dedication'] p {
   text-indent: 0 !important; }
 

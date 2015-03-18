@@ -1,12 +1,14 @@
-<?xml version="1.0" ?>
+<?xml version="1.1"?>
 <!--
   Define stylesheet root and namespaces we'll work with
 -->
 <xsl:stylesheet
+  xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:dc="http://purl.org/dc/elements/1.1/"
   xmlns:epub="http://www.idpf.org/2007/opf"
   xml:lang="en-US"
+  exclude-result-prefixes="#all"
   version="2.0">
   <!-- Define the output for this and all document children -->
   <xsl:output name="xhtml-out" method="xhtml" indent="no" encoding="UTF-8" omit-xml-declaration="yes" />
@@ -59,7 +61,7 @@
   </xsl:template>
 
   <xsl:template match="/" mode="toc">
-    <xsl:result-document href='toc.xhtml' format="xhtml-out">
+    <xsl:result-document href='toc.html' format="xhtml-out">
       <html>
         <head>
           <link rel="stylesheet" href="css/style.css" />
@@ -550,10 +552,10 @@
       <!-- Poster, Height and Width are required -->
       <xsl:attribute name="height" select="@height"/>
       <xsl:attribute name="width" select="@width"/>
-      <!-- All other attributes are optional -->
       <xsl:if test="string(@poster)">
         <xsl:attribute name="poster" select="@poster"/>
       </xsl:if>
+      <!-- All other attributes are optional -->
       <xsl:if test="string(@src)">
         <xsl:attribute name="src" select="@src"/>
       </xsl:if>
@@ -565,9 +567,6 @@
       </xsl:if>
       <xsl:if test="string(@preload)">
         <xsl:attribute name="preload">preload</xsl:attribute>
-      </xsl:if>
-      <xsl:if test="string(@loop)">
-        <xsl:attribute name="poster">loop</xsl:attribute>
       </xsl:if>
       <xsl:if test="string(@looped)">
         <xsl:attribute name="looped">looped</xsl:attribute>

@@ -50,15 +50,22 @@ body {
   color: rgb(85, 76, 77);
   // hex equivalent provided as fallback for browsers that don't do rgb colors
   color: #554c4d;
-  // font-family: 'Montserrat','Helvetica Neue', Helvetica, sans-serif;
+  font-family: 'Montserrat','Helvetica Neue', Helvetica, sans-serif;
   // font-family: 'Roboto Thin', 'Helvetica Neue', Helvetica, sans-serif;
-  font-family: 'Roboto', Georgia, 'Times New Roman', Times, serif;
+  // font-family: 'Roboto', Georgia, 'Times New Roman', Times, serif;
   font-size: 1em;
   font-weight: 200;
   line-height: 1.45;
   // Unless otherwise noted we pad the left and right margin
   // to prevent the text from being too close to the browser's borders
   // and to give plent of whitespace to the reader.
+  //
+  // We may want to migrate to using a CSS grid rather than just using padding.
+  // Haven't decided yet if it's a good option or it's too much work for too
+  // little return
+  //
+  // See issue 21 (https://github.com/caraya/xml-workflow/issues/21) for
+  // tracking of this issue
   padding-left: 10em;
   padding-right: 10em;
 }
@@ -113,7 +120,15 @@ video {
 }
 
 // Section specific content
+
+section[data-type='preface'] {
+  page-break-after: always;
+  page-break-before: always;
+}
+
 section[data-type='titlepage'] {
+  page-break-after: always;
+
   h1,
   h2 {
     text-align: center;
