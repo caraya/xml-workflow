@@ -168,25 +168,30 @@
     <para>Striking the balance between author and publisher is a delicate one. I tend to fall on the side of making things easier for authors... The tools can be made to translate basic markup into the desired result with minimal requirements for authors to mark up the content; the same can't necessarily be said about the publisher-first strategy</para>
   </section>
   <section type="chapter">
-    <title>Platforming books from a single source</title>
-
-    <para>The formats chosen for this project (HTML, PDF and ePub) were not selected at random. I'm following Craig Mod's model as outlined in <link href="http://craigmod.com/journal/platforming_books/" label="Platforming Books"/> with my own ideas of what we need to produce.</para>
-
+    <title>Multi platform books from a single source</title>
+    <para>The formats chosen for this project (HTML, PDF and ePub) were not selected at random. I'm following Craig Mod's model as outlined in <link
+        href="http://craigmod.com/journal/platforming_books/"
+        label="Platforming Books"
+       /> with my own ideas of what we need to produce.</para>
     <para>The three formats are:</para>
-
     <ulist>
       <item>(X)HTML</item>
       <item>PDF</item>
       <item>ePub3</item>
     </ulist>
-
     <para>We'll discuss the rationale for each format, what this project is not, and what we can do moving forward.</para>
 
     <h2>(X)HTML</h2>
 
+    <para>All e-books should have a public space beyond the 'gated communities' offered by iBooks and Kindle. We should not depend on these devices to create the rich annotation corpus</para>
+
     <h2>PDF</h2>
 
     <h2>ePub3</h2>
+
+    <h2>What the project is not</h2>
+
+    <h2>Future directions</h2>
   </section>
   <section type="chapter">
     <title>Introduction</title>
@@ -3432,9 +3437,8 @@ body { background-color: #fff; color: #554c4d; color: #554c4d; font-family: Adel
     <h2>Expand the use cases for this project</h2>
     <para>The original idea was for text and code-heavy content. Is there a case to be made for a more expressive vocabulary? I'm thinking of additional elements for navigation and content display such as asides and blockquotes</para>
     <h2>Explore implementing a serviceworker solution</h2>
-    <video height="315" width="560"
-      controls="controls"
-      poster="./images/video1-poster.jpg">
+    <video controls="controls" height="315" poster="./images/video1-poster.jpg"
+      width="560">
       <source src="./video/serviceworker.mp4" type="video/mp4" />
     </video>
     <para>The core of the proposed offline capabilities is a scoped service worker that will initially handle the caching of the publication's content. We take advantage of the multiple cache capabilitity available with service workers to create caches for individual unitts of content (like magazine issues) and to expire them within a certain time period (by removing and deleting the cache).</para>
