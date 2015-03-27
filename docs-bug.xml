@@ -1,0 +1,610 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<book xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="xsd/book-schema-draft.xsd">
+  <metadata>
+    <title>XML workflow documentation</title>
+
+    <authors>
+      <author>
+        <first-name>Carlos</first-name>
+        <surname>Araya</surname>
+      </author>
+    </authors>
+  </metadata>
+  <toc />
+  <section type="dedication">
+    <title>Thank You</title>
+    <para>Thanks to Laura Brady for getting this particular idea started :)
+    </para>
+  </section>
+  <section type="chapter">
+    <title>Background: HTML is the final format</title>
+    <para>In researching the technologies and tools that I use when developing digital content I've come across multiple discussions about what's the best way to create HTML for X application (ebooks, web, transforming into other formats and any number of ideas. Some people think that HTML is perfect for everyone to write, regardless of experience and comfort with the technology. We forget that HTML now is very different to HTML as it was originally created.</para>
+    <blockquote>
+      <para>HTML —which is short for HyperText Markup Language— is the official language of the World Wide Web and was first conceived in 1990. HTML is a product of SGML (Standard Generalized Markup Language) which is a complex, technical specification describing markup languages, especially those used in electronic document exchange, document management, and document publishing. HTML was originally created to allow those who were not specialized in SGML to publish and exchange scientific and other technical documents. HTML especially facilitated this exchange by incorporating the ability to link documents electronically using hyperlinks.
+      </para>
+      <attribution>
+        <para>From:
+          <link
+            href="http://www.ironspider.ca/webdesign101/htmlhistory.htm"
+            label="http://www.ironspider.ca/webdesign101/htmlhistory.htm" />
+        </para>
+      </attribution>
+    </blockquote>
+    <para>The biggest issue, in my opinion, is that HTML has become a lot more complicated than the initial design. Creating HTML content (particularly when used in conjunction with CSS frameworks like Bootstrap or Zurb or with applications that use additional semantic elements like ePub) takes a lot more than just knowing markup to code them correctly. It takes knowledge of the document structure, the semantics needed for the content or the applications we are creating and the restrictions and schemas that we need to use so that the content will pass validation.</para>
+    <para>This article presents 4 different approaches to creating HTML. Two of them use HTML directly but target it as the final output for transformations and templating engines; the other two use markup like HTML without requiring strict HTML conformance. I've made these selections for two reasons:</para>
+    <ulist>
+      <item>People who are not profesionals should not have to learn all the details of creating an ePub3 table of content or know the classes to add to elements to create a Bootsrap or Foundation layout grid</item>
+      <item>It makes it easier for developers and designers to build the layout for the content without having to worry about the content itself; we can play with layout and content organization in parallel with content creation and, if we need to make any further changes, we just run our compilation process again</item>
+    </ulist>
+    <h2>Markdown</h2>
+    <para>Perhaps the simplest solution when moving content from text to HTML is Markdown.
+    </para>
+    <para>
+      <link href="http://daringfireball.net/projects/markdown/" label="Markdown"
+       />is a text to (X)HTML conversion tool designed for writers. It refers both to the syntax used in the Markdown text files and the applications used to perform the conversion.</para>
+    <para>Markdown language was created in 2004 by John Gruber with the goal of allowing people "to write using an easy-to-read, easy-to-write plain text format, and optionally convert it to structurally valid XHTML (or HTML)" (
+      <link
+        href="http://daringfireball.net/projects/markdown/"
+        label="http://daringfireball.net/projects/markdown/" />)</para>
+    <para>The language was designed to be readable as-is, without all the additional tags and attributes that makes it possible to covert markdown to languages like SGML, XML and HTML. Markdown is a formatting syntax for text that can be read by humans and can be easily converted to HTML.
+    </para>
+    <para>The original implementation of Markdown is
+      <link
+        href="http://search.cpan.org/~sekimura/Text-Markdown-Discount-0.11/xt/MarkdownXS.pl"
+        label="markdown.pl"
+       />and has been implemented in several other languages as applications (Ruby Gems, NodeJS modules and Python packages). All versions of Markdown are distributed under open source licenses and are included or available as a plugin for, several content-management systems and text editors.</para>
+    <para>Sites such as GitHub, Reddit, Diaspora, Stack Overflow, OpenStreetMap, and SourceForge use variants of Markdown to facilitate content creation and discussion between users.</para>
+    <para>The biggest weakness of Markdown is the lack of a unified standard. The original Markdown language hasn't been really supported since it was released in 2004 and all new version of Markdown, both parser and language specification have introduced not wholy compatible changes to Markdown. The lack of standard is also Markdown’s biggest strength. It means you can, like Github did, implement your own extensions to the Markdown syntax to acommodate your needs.</para>
+    <para>Markdown is not easy to learn but once your fingers get used to the way we type the different elements it becomes much easier to work with as it is nothing more than inserting specific characters in a specific order to obtain the desired effect. Once you train yourself, it is also easy to read without having to convert it to HTML or any other language.</para>
+    <para>Most modern text editors have support for Markdown either as part of the default installation or through plugins.</para>
+    <h3>Example Markdown document</h3>
+    <ulist>
+      <item>
+        <link href="http://daringfireball.net/projects/markdown/index.text"
+          label="Markdown example form daringfireball" />
+      </item>
+    </ulist>
+    <h2>Asciidoctor</h2>
+    <para>I only discovered Asciidoctor recently, while researching O'Reilly Media's publishing toolchains. It caught my attention because of it's structure, the expresiveness of the markup without being HTML like HTMLbook and the extensibility of the templating system that it uses behind the scenes.</para>
+    <para>Asciidoctor has both a command line interface (CLI) and an API. The CLI is a drop-in replacement for the
+      <emphasis>asciidoc</emphasis> command from the Standard python distribution. This means that you have a command line tool
+      <emphasis>asciidoctor</emphasis> that will allow you to convert your marked documents without having to resort to a full blown application.
+    </para>
+    <para>Syntax-wise, Asciidoctor is progressively more complex as you implement more advanced features. In the first example below no tables are used, for example. Tables are used in the second and thirs examples both as data tables and for layout.</para>
+    <para>The
+      <link href="documentation"
+        label="http://asciidoctor.org/docs/"
+       /> provides more detailed instructions for the desired markup.</para>
+    <h3>Example Asciidoc documents</h3>
+    <ulist>
+      <item>
+        <link
+          href="https://raw.githubusercontent.com/asciidoctor/asciidoctor-documentation/master/infrastructure-goals-planning.adoc"
+          label="Asciidoctor planning document" />
+      </item>
+      <item>
+        <link
+          href="https://raw.githubusercontent.com/asciidoctor/asciidoctor-documentation/master/infrastructure-goals-planning.adoc"
+          label="Comparison of Asciidoctor and AsciiDoc Features" />
+      </item>
+      <item>
+        <link
+          href="https://raw.githubusercontent.com/asciidoctor/asciidoctor.org/master/docs/_includes/apply-theme.adoc"
+          label="Applying Custom Themes" />
+      </item>
+    </ulist>
+    <h2>HTMLBook</h2>
+    <para>O'Reilly Media has developed several new tools to get content from authors to readers. Atlas is their authoring tool, a web based application that allows you to create content they developed HTMLbook, a subset of HTML geared towards authoring and multi format publishing.</para>
+    <para>Given O'Reilly's history and association with open source publishing tools (they were an early adopter and promoter of Docbook and still use it for some of their publications) I found HTMLbook intriguing but not something to look at right away, as with many things you leave for later it fell off my radar.</para>
+    <para>It wasn't until I saw Sanders Kleinfeld's (O'Reilly Media Director of Publishing Technologies)
+      <link
+        href="http://www.slideshare.net/sanderskleinfeld/open-source-forpubsslideshare"
+        label="presentation at IDPF Book World conference"
+       /> that I decided to take a second look at HTMLbook and its ecosystem.</para>
+    <para>Conceptually HTMLbook is very simple; it combines a subset of HTML5, the semantic structure of ePub documents and other IDPF specifications to create a flavor of HTML 5 that is designed specifically for publishing. There are also stylesheets that will allow you to convert Markdown and other text formats into HTMLbook (see
+      <link
+        href="https://github.com/oreillymedia/htmlbook.js"
+        label="Markdown to HTMLBook" /> and
+      <link
+        href="https://github.com/oreillymedia/asciidoctor-htmlbook/"
+        label="AsciiDoc to HTMLBook (via AsciiDoctor)" />)</para>
+    <para>If you use Atlas (O'Reilly's authoring and publishing platform) you don't have to worry about markup as the content is created visually. The challenges begin when implementing this vocabulary outside the Atlas environment.
+    </para>
+    <para>The project comes with a set of stylesheets to convert HTMLbook content to ePub, MOBI and PDF. The intriguing thing about the stylesheets is that they use CSS Paged Media stylesheets in conjunction with third party tools such as
+      <link
+        href="http://www.antennahouse.com" label="AntennaHouse"
+         /> or
+      <link href="http://www.princexml.com/" label="PrinceXML"
+       />.</para>
+    <para>The open source solutions offer permisive licenses that allow modification and integration into other products without requiring you to release your project under the same license like GPL and LGPL.</para>
+    <para>As with any solution that advocates creating HTML directly I have my reservations. In HTML formating in general and specialized formats like HTMLbooks in particular, the learning curve may be too steep for independent authors to use for creating content.</para>
+    <para>The user must learn not only the required HTML5 syntax but also the details regarding ePub semantic structure attributes and the other standards needed to create ePub books. While I understand that technologies such as this are not meant for independent authors or for poeple who are not comfortable or familiar with HTML but the learning curve may still be too steep for most users.</para>
+    <h3>Example HTMLbook document</h3>
+    <ulist>
+      <item>
+        <link
+          href="https://github.com/oreillymedia/HTMLBook/blob/master/samples/alices_adventures_in_wonderland.html"
+          label="Alice Adventures in Wonderland marked as HTMLbook" />
+      </item>
+    </ulist>
+    <h2>XML / XSLT</h2>
+    <para>Perhaps the oldest solutions in the book to create HTML without actually creating HTML are XML-based. Docbook, TEI and DITA all have stylesheets that will take the XML content and convert it to HTML, PDF, ePub and other more esoteric formats.</para>
+    <para>In addition to stylesheets already available developers can create their own to adress specific needs.</para>
+    <para>Furthermore, tools like OxygenXML Author (and I would assume other tools in the same category have a visual mode that allow users to write XML content, validated against a schema in a way that is more familiar to people not used to creating content with raw XML tools.</para>
+    <para>The issues with xml are similar to those involved in creating HTML. The markup vocabulary requires brackets, attributes have to be enclosed in quotation marks and generall the syntax is as complicated as you make it. However, tools like Oxygen and smilar help alleviate this problem but don't resolve it completely.</para>
+    <para>The screenshot below shows OxygenXML Author working in a Docbook 5 document using visual mode.</para>
+    <figure>
+      <image alt="Visual Editing Using OxygenXML Author" height="177"
+        src="images/visual-editing-mode-small.png" width="280" />
+      <figcaption>
+        <para>OxygenXML Visual Editor for XML</para>
+      </figcaption>
+    </figure>
+    <para>The positive side is that using XSLT there is no limit to what we can do with our XML content.</para>
+    <h3>XML examples</h3>
+    <ulist>
+      <item>
+        <link
+          href="https://github.com/oreillymedia/docbook_samples/blob/master/ch01.xml"
+          label="Sample Chapter marked as Docbook" />
+      </item>
+      <item>
+        <link href="http://docsouth.unc.edu/southlit/poe/poe.xml"
+          label="Tales by Edgar Allan Poe, marked as TEI" />
+      </item>
+      <item>
+        <link
+          href="http://sourceforge.net/p/dita2indesign/code/HEAD/tree/trunk/dita_gutenberg_samples/dita_src/20000_leagues/chapters/d2e10630.xml"
+          label="Chapter from 20000 Leagues Under the Sea, marked as DITA" />
+      </item>
+    </ulist>
+    <h2>Conclusion</h2>
+    <para>After exploring a selection of HTML conversion options the question becomes <strong><emphasis>which one is best?</emphasis></strong>
+    </para>
+    <para>The answer is <strong><emphasis>it depends</emphasis></strong>.</para>
+    <para>The best way to see how can these text-based tools can be incorporated is to ask yourself how much work you want to do in the backend versus how much work do you want you authors to do when creating the content. This is where the value of specialists in digital formats and publishing becomes essential, we can work with clients in providing the best solution to meet their needs.</para>
+    <para>Keep in mind who your audience and what the target vocabulary you're working towards, it will dictate what your best strategy is. Are these all the solutions; definitely not. Other solutions may appear that fit your needs better than those presented here; I would love to hear if that is the case.</para>
+    <para>Striking the balance between author and publisher is a delicate one. I tend to fall on the side of making things easier for authors... The tools can be made to translate basic markup into the desired result with minimal requirements for authors to mark up the content; the same can't necessarily be said about the publisher-first strategy</para>
+  </section>
+  <section type="chapter">
+    <title>Multi platform books from a single source</title>
+    <para>The formats chosen for this project (HTML, PDF and ePub) were not selected at random. I'm following Craig Mod's model as outlined in
+      <link
+        href="http://craigmod.com/journal/platforming_books/"
+        label="Platforming Books"
+       /> with my own ideas of what we need to produce.</para>
+    <para>The formats are:</para>
+    <ulist>
+      <item>(X)HTML Apps</item>
+      <item>PDF</item>
+      <item>ePub3</item>
+      <item>iBooks</item>
+      <item>Kindle</item>
+    </ulist>
+    <para>We'll discuss the rationale for each format, what this project is not, and what we can do moving forward and answer the most important question:
+      <emphasis>Why should I buy the book if I can get it for free?</emphasis>
+    </para>
+    <h2>(X)HTML</h2>
+    <para>All e-books should have a public space beyond the 'gated communities' offered by iBooks, ePub and Kindle. I don't have anything against publisher pages for their books but, as a reader, think they are not enough. They provide information about the book, marketing tools (discounted bundles in Amazon and related books in both Amazon and iBookstore) and samples of the content. I know that, as a reader, I want more than 30 pages of the book (not necessarily 30 pages of content, most of the time the samples include cover, metadata and table of contents.)</para>
+    <para>We should not depend on devices to create the rich annotation corpus like the one Amazon makes public on their
+      <link
+        href="https://kindle.amazon.com/" label="Kindle Website"
+       />. While the alternative suggested here is a partial solution (and its implementation is currently under development) it works everywhere there is a web browser and an internet connection.</para>
+    <para>Perhaps the greatest bennefit of an open web publishing solution is its flexibility. Solutions like Emphasis, Annotator and Highlight.Js work with HTML, CSS and Javascript/jQuery just like any other websites. There is no reason why we can continue to play and expand our XHTML playground with technologies like
+      <link
+        href="http://www.wikiwand.com/en/WebGL" label="WebGL" />/
+      <link
+        href="http://webvr.info/" label="WebVR" />,
+      <link
+        href="http://d3js.org/" label="D3" />,
+      <link
+        href="https://robots.thoughtbot.com/css-animation-for-beginners"
+        label="CSS animations"
+       /> and just about any other web technology. Once we know they work on the web we can try them inn ePub books and see how well they work on what devices.</para>
+    <h3>Technologies implemented</h3>
+    <para>These are the technologies currently configured to work with the XHTML format.</para>
+    <h4>Emphasis</h4>
+    <para>
+      <link
+        href="http://open.blogs.nytimes.com/2011/01/11/emphasis-update-and-source/"
+        label="Emphasis"
+       /> is a deep linking library first developed and released by the New York Times in 2011. What attracted me to it was the ability to share (deep) links to an article among people at different computers. The algorythm always returns the same result so the links will always work the same.</para>
+    <para>The one thing that pushed me away from Emphasis was its dependency on jQuery. Don't get me wrong; I love jQuery but I need a good reason to use it beyond the cool factor since most, if not all, of the things you can do with jQuery you can do with vanilla Javascript in modern browsers.</para>
+    <para>I decided the bennefits of link sharng far outweigh the jQuery dependency but, when I went to update the code I discovered that the library no longer requires jQuery :-)</para>
+    <para>The idea behind Emphasis is that when you highlight a paragrap or portion thereof, it will generate a unique string and append it to the page's URL. You can then send the URL to a friend or colleague who can paste the URL and open the page with the highlighted text. In combination with something like Annotator.js we can build a more complex system to create shareable links .</para>
+    <h4>Annotator.js</h4>
+    <para>Some times the deel links from emphasis are not enough. Tool
+      <link
+        href="http://annotatorjs.org/" label="Annotator.js"
+       /> provide one open web answer to Kindle community annotations. While we can't do this from an ePub or Kindle we can use in in an open web application.</para>
+    <para>I've said it before: I love the way Amazon shares the annotations I make in my Kindle but there's one down side, it only gives you the quotation, not the context in which it happens or provide a way for public sharing of the annotations with people who don't own the Kindle edition of the book.</para>
+    <para>Annotator makes all annotations public so other people can read them and further comment on the same text or other comments. It uses a third party backend (
+      <link
+        href="http://annotateit.org/" label="annotateit.org"
+       />) to provide a consistent experience for all our users regardless of browser version or operating system.</para>
+    <para>Annotator.js requires jQuery to run and
+      <link
+        href="https://github.com/showdownjs/showdown" label="Showdown.js"
+       /> to support Markdown in the annotations.</para>
+    <para>Once jQuery and Showdown are installed, installing the annotator is as simple as the following code:</para>
+    <code language="javascript">
+jQuery(function ($) {
+  $('section').annotator() //section is the root of our content
+  .annotator('setupPlugins');
+});
+// Fully worked authentication example to follow
+    </code>
+    <h4>Highlight.js</h4>
+    <para>A lot of what I write is technical material with lots of code examples. Rather than highlight code or lines by hand (possible but really complicated), I've always used code highlighters. For Wordpress posts I use the Syntax Highlighter plugin and for open web and PDF I use
+      <link
+        href="https://highlightjs.org/" label="highlight.js" />.</para>
+    <para>Highlight.js supports a lot of languages and styles out of the box (I use one style for XHTML and a different one for PDF that should make it easier to print) but the idea remains the same: to make the code easier to understand by highlighting different areas of the code with different colors based on structure.</para>
+    <para>Perhaps the only downside of Highlight.js is the fact that the Javascript portion of the utility must crawl through every code block in the application; the more code blocks in a page the bigger the potential for slowness. This has to be part of any testing done to measure application performance and functionality.</para>
+    <para>Running highlight.js is simple. Run the following on your page:</para>
+    <code language="javascript">
+&lt;script src="js/object-key-polyfill.js"/>
+&lt;script src="lib/highlight.pack.js"/>
+&lt;script>
+  hljs.initHighlighting();
+&lt;/script>
+    </code>
+    <para>
+      <emphasis>object-key-polyfill.js</emphasis> polyfills a feature to make sure it works with older browsers (and PrinceXML.)</para>
+    <h4>Modernizr</h4>
+    <para>Not all browser vendors support the same technology or support it the same way. Modernizr takes a two prong approach to testing for feature support:</para>
+    <ulist>
+      <item>It creates a JavaScript global object (named Modernizr) that contains the results of these tests as boolean properties</item>
+      <item>It adds classes to the html element that explain what features are and are not natively supported</item>
+      <item>It provides a script loader so you can pull in polyfills to backfill functionality in old browsers</item>
+    </ulist>
+    <para>The classes added to the HTML element in Chrome 41:</para>
+    <code language="html">&lt;html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths no-display-runin display-table pointerevents cssfilters supports" lang="en"></code>
+    <para>The supported elements in Firefox 38.0a2:</para>
+    <code language="html">&lt;html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths no-display-runin display-table pointerevents cssfilters supports" lang="en"></code>
+    <para>The classes added to the HTML element look like this in Chrome 16:</para>
+    <code language="html">&lt;html class="js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"></code>
+    <para>And the support for IE9 looks like this:</para>
+    <code language="html">&lt;html class="js no-flexbox canvas canvastext no-webgl no-touch geolocation postmessage no-websqldatabase no-indexeddb hashchange no-history draganddrop no-websockets rgba hsla multiplebgs backgroundsize no-borderimage borderradius boxshadow no-textshadow opacity no-cssanimations no-csscolumns no-cssgradients no-cssreflections csstransforms no-csstransforms3d no-csstransitions fontface generatedcontent video audio localstorage sessionstorage no-webworkers no-applicationcache svg inlinesvg smil svgclippaths"></code>
+    <para>The CSS feature detection uses the classes defined in the HTML element to match whether a feature is supported or not. For example we can use the following selectors to test if audio is supported:</para>
+    <code language="css">
+/* In your CSS: */
+.no-audio #music {
+   display: none; /* Don't show Audio options */
+}
+.audio #music button {
+   /* Style the Play and Pause buttons nicely */
+}
+    </code>
+    <para>The Javascript detection strategy takes advantage of the Modernizr object created when the page was loaded to test if a feature is available or not. We can test for audio using Javascript with code like below:</para>
+    <code language="javascript">
+if (Modernizr.audio) {
+     /* properties for browsers that
+     support audio */
+}else{
+     /* properties for browsers that
+     does not support audio */
+}
+    </code>
+    <para><strong>Modernizr.load()</strong> uses Modernizr's Javascript test to load resources only if the tested feature is supported. In the example below we test if audio is supported: If the audio element is supported then we load
+      <emphasis>audio.js</emphasis> with all our awesome HTML5 audio functions and tools. Otherwise we write a message to the #notice element already in the page.</para>
+    <code language="javascript">
+Modernizr.load({
+  test: Modernizr.audio,
+  yep : 'audio.js',
+  nope: 'audio-polyfill.js'
+});
+    </code>
+    <para>For a more detailed tutorial check: This
+      <link
+        href="http://www.tutorialspoint.com/html5/html5_modernizr.htm"
+        label="tutorial" />.</para>
+    <h4>Stay in Web App</h4>
+    <para>A trick for iOS,
+      <link
+        href="https://github.com/mrmoses/jQuery.stayInWebApp"
+        label="jQuery.stayInWebApp"
+       /> keeps local, relative URLs from braking out the iOS full screen, no toolbar, web application.</para>
+    <para>Once the plugin is loaded (normally at the bottom of the document, right before the closing body tag) initializing it is very simple</para>
+    <code language="jquery">
+$(function() {
+    $.stayInWebApp();
+});
+    </code>
+    <para>We can also choose to only keep some links (for example, links with a certain class) local. To keep links witha class of local from breaking the app we can use something like this:</para>
+    <code language="javascript">
+$(function() {
+  $.stayInWebApp('a.stay');
+});
+
+    </code>
+    <para>Links starting with http will always open in Safari.</para>
+    <h4>iOS icons and splash screens</h4>
+    <para>When iOS was first introduced one of the features that first caught my attention was the ability to save web sites to the home screen and use them as an online-only web application. I always thought that it was something only full applications or apps from larger companies could do. It wasn't until I read the
+      <link
+        href="https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html"
+        label="Configuring Web Applications"
+       /> section of the Safari Web Content Guide that I realized that it was hard work but it was doable by anyone.</para>
+    <para>We add the following elements to the head of our content page (not 100% sure if this is for every page or only for the index). The first set of resources deal with fixing the width of the device to a 1 to 1 scale window, full screen and no app bar at the top of the application.</para>
+    <code language="html">
+  &lt;meta name="viewport" content="user-scalable=no, initial-scale=1.0" />
+  &lt;meta name="apple-mobile-web-app-capable" content="yes" />
+  &lt;meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    </code>
+    <para>The second block adds the application icons that will appear in the home screen when we add the site/app. We have to add multiple icons to account for different screen size/resolution/DPI combinations available to different devices.</para>
+    <code language="html">
+  &lt;!-- iOS ICONS AND START SCREENS -->
+  &lt;link rel="apple-touch-icon" href="/images/misc/apple-touch-icon-57x57.png" />
+  &lt;link rel="apple-touch-icon" sizes="72x72" href="/images/misc/apple-touch-icon-72x72.png" />
+  &lt;link rel="apple-touch-icon" sizes="114x114" href="/images/misc/apple-touch-icon-114x114.png" />
+    </code>
+    <para>The final step is to add the spalsh screen s that will appear while the site is loading. As with the icons, we have to account for different size/resolution/DPI combinations for different devices.</para>
+    <code language="html">
+  &lt;!-- iPhone/iPod Touch Portrait – 320 x 460 (standard resolution) -->
+  &lt;!-- These are not all available resolutions, do your homework -->
+  &lt;link rel="apple-touch-startup-image" href="/images/misc/splash-screen-320x460.png" media="screen and (max-device-width: 320px)" />
+
+  &lt;!-- For iPad Landscape 1024x748 -->
+  &lt;link rel="apple-touch-startup-image" sizes="1024x748" href="/images/misc/splash-screen-1024x748.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" />
+
+  &lt;!-- For iPad Portrait 768x1004 (high-resolution) -->
+  &lt;link rel="apple-touch-startup-image" sizes="1536x2008" href="/images/misc/splash-screen-1536x2008.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) and (-webkit-min-device-pixel-ratio: 2)"/>
+    </code>
+    <h4>Windows8 application tiles</h4>
+    <para>Windows 8 (in tablets and phones) allows applications to be tiled on the start screen. We can take advantage of this feature by going to
+      <link
+        href="http://www.buildmypinnedsite.com/en" label="buildmypinnedsite.com"
+       /> completing the form and download the resulting kit. We can the paste the code below on the head of our pages and upload the associated images to the server.</para>
+    <code language="html">
+ &lt;-- Windows 8+ tile stuff -- Assumes all content is uploaded to server -->
+    &lt;meta name="application-name" content="My Awesome Site"/>
+    &lt;meta name="msapplication-TileColor" content="#e809e8"/>
+    &lt;meta name="msapplication-square70x70logo" content="tiny.png"/>
+    &lt;meta name="msapplication-square150x150logo" content="square.png"/>
+    &lt;meta name="msapplication-wide310x150logo" content="wide.png"/>
+    &lt;meta name="msapplication-square310x310logo" content="large.png"/>
+    </code>
+    <h2>PDF</h2>
+    <para>As explained elsewhere I've decided to create the PDF version of the file uing CSS paged media using XMLPrince rather than the more traditional (and cumbrsome) XSL-Formatting Objects tool chain. There are a variety of reasons why I chose to do this: chief among them are ease of use (I already know how to create HTML and CSS content and can leverage that knowledge to create as advanced a publication as I need</para>
+    <h3>Technologies implemented</h3>
+    <para>Out of necessity the PDF output is a lot simpler in terms of technologies and interactivity than the open web or ebook. There are
+      <link
+        href="http://www.pdfscripting.com/" label="Sites and tutorials"
+       /> on how to script PDF files but the emphasis and the functionality is geared towards business automation rather than full interactivity.</para>
+    <h4>PDF Bookmarks</h4>
+    <para>I've chosen to let the CSS Paged Media transformation step generate the PDF bookmarks instead of trying to create them manually. Both PrinceXML and
+      <link
+        href="http://www.antennahouse.com/" label="AntennaHouse"
+       /> provide prefixed selectors for PDF bookmark generation.</para>
+    <para>We can tell the processor the level of the bookmark (using the same level as he headings), whether the bookmark is open or closed (if open they will show their children underneath) and what to use as the label (in this case we use the label of the associated heading elements).</para>
+    <para>The code looks like this:</para>
+    <code language="css">
+/* PDF BOOKMARKS */
+section[data-type='chapter'] h1 {
+  -ah-bookmark-level: 1;
+  -ah-bookmark-state: open;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 1;
+  prince-bookmark-state: open;
+  prince-bookmark-label: content();
+}
+
+section[data-type='chapter'] h2 {
+  -ah-bookmark-level: 2;
+  -ah-bookmark-state: open;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 2;
+  prince-bookmark-state: open;
+  prince-bookmark-label: content();
+}
+
+section[data-type='chapter'] h3 {
+  -ah-bookmark-level: 3;
+  -ah-bookmark-state: open;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 3;
+  prince-bookmark-state: open;
+  prince-bookmark-label: content();
+}
+
+section[data-type='chapter'] h4 {
+  -ah-bookmark-level: 4;
+  prince-bookmark-level: 4;
+}
+    </code>
+    <h4>Highlight.js</h4>
+    <para>I use the same highlight.js library that I used in the XHTML files with the PDF content. The only difference is that we add an object-key polyfill to work around a lack of direct support of the feature in PrinceXML and will be removed at the time the feature is supported natively.</para>
+    <para>Other than the object.key polyfill there are no additional changes to make the highlighter work in PDF.</para>
+    <h2>ePub3</h2>
+    <para>ePub is a tricky proposition. While some readers like iBooks will support many multimedia features available in the open web others, particularly older, readers will not even support scripting or SVG. So the question becomes how much do we want to push the envelope in such an uncertain environment? How many levels of fallbacks fo we provide for a given technology?</para>
+    <h3>Modernizr</h3>
+    <para>Modernizr is one of the best solutions to tame the complexity conundrum. We can selectively (using either CSS or javascript) work around limited capabilities by testing for the presence of given elements or lack thereof. Using Javascript we can conditionally create DOM elements based on support (or lack thereof) for a given feature:</para>
+    <code language="javascript">
+if (Modernizr.video) {
+  var myVideo = document.createElement("video");
+  // add the source attributes and their children (src and type)
+} else {
+  // Provide a fallback, possibly creating the object video programmatically
+  var myVideo = document.createElement("object");
+}
+    </code>
+    <para>Using CSS we can choose whether we want to show or hide the element in question. This is still dependent on Javasacript but it will work in more devices than just iBooks and will provide better alternatives where Javascript is available. The code looks something like this:</para>
+    <code language="css">
+.no-video video {
+  display:none
+}
+
+.video video {
+  border: 1px solid #$red;
+}
+    </code>
+    <h4>Highlight.js</h4>
+    <para>Even though our highlighter suffers from spotty Javascript support we can still enjoy some formatting even in browsers that don't support Javascript</para>
+    <h2>Why would I buy the book if I can get it for free?</h2>
+    <para>So now we come back to what, for me, is the central question:
+      <emphasis>Why would I buy the book if I can get it for free?</emphasis>
+    </para>
+  </section>
+  <section type="chapter">
+    <title>Books as apps: What's next?</title>
+    <h2>What is an app?</h2>
+    <h2>Open Web versus Native Apps</h2>
+    <h2>The DRM monster rears its ugly head</h2>
+    <h2>Font licensing for multiple delivery channels</h2>
+    <h2>Online versus offline</h2>
+    <h2>Examples and Inspiration</h2>
+    <h3>Actual Books</h3>
+    <ulist>
+      <item>
+        <link href="http://read.artspacetokyo.com/" label="Artspace Tokyo" />
+      </item>
+      <item>
+        <link href="http://read.shapeofdesignbook.com/"
+          label="The shape of design" />
+      </item>
+    </ulist>
+    <h3>Other Online</h3>
+    <ulist>
+      <item>
+        <link href="http://bobulate.com/tagged/words" label="Liz Danzico" />
+      </item>
+    </ulist>
+  </section>
+  <section type="chapter">
+    <title>Introduction</title>
+    <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like [Docbook](http://docbook.org) are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</para>
+    <para>By creating our own markup vocabulary we can be as expressive as we need to be without adding additional complexity for writers and users and without adding unecessary complexity for the developers building the tools to interact with the markup.</para>
+    <para>It has been suggested that
+      <link
+        href="http://johnmacfarlane.net/pandoc/" label="Pandoc"/> may be a better alternative than rolling your own markup and style sheet sets. While Pandoc is a very powerful tool it tries to do too much for too many. According to the website, Pandoc supports:</para>
+
+    <ulist>
+      <item>HTML formats: XHTML, HTML5, and HTML slide shows using
+        <link
+          href="http://www.w3.org/Talks/Tools/Slidy" label="Slidy"
+           />,
+        <link href="http://lab.hakim.se/reveal-js/"
+          label="reveal.js" />,
+        <link
+          href="http://goessner.net/articles/slideous/" label="Slideous"
+           />,
+        <link href="http://meyerweb.com/eric/tools/s5/"
+          label="S5" />, or
+        <link href="http://paulrouget.com/dzslides/"
+          label="DZSlides" />
+      </item>
+      <item>Word processor formats: Microsoft Word
+        <link
+          href="http://www.microsoft.com/interop/openup/openxml/default.aspx"
+          label="docx" />, OpenOffice/LibreOffice
+        <link
+          href="http://en.wikipedia.org/wiki/OpenDocument" label="ODT"
+           />,
+        <link href="http://opendocument.xml.org/"
+          label="OpenDocument XML" />
+      </item>
+      <item>Ebooks:
+        <link href="http://en.wikipedia.org/wiki/EPUB"
+          label="EPUB" /> version 2 or 3,
+        <link
+          href="http://www.fictionbook.org/index.php/Eng:XML_Schema_Fictionbook_2.1"
+          label="FictionBook2" />
+      </item>
+      <item>Documentation formats:
+        <link href="http://www.docbook.org/"
+          label="DocBook" />,
+        <link
+          href="http://www.gnu.org/software/texinfo/" label="GNU TexInfo"
+           />,
+        <link href="http://www.gnu.org/software/groff/groff.html"
+          label="Groff man pages" /> ,
+        <link
+          href="http://www.haskell.org/haddock/doc/html/ch03s08.html"
+          label="Haddock markup" />
+      </item>
+      <item>Page layout formats:
+        <link
+          href="https://www.adobe.com/content/dam/Adobe/en/devnet/indesign/cs55-docs/IDML/idml-specification.pdf"
+          label="InDesign ICML" />
+      </item>
+      <item>Outline formats:
+        <link href="http://dev.opml.org/spec2.html"
+          label="OPML" />
+      </item>
+      <item>TeX formats:
+        <link href="http://www.latex-project.org/"
+          label="LaTeX" />,
+        <link href="http://www.pragma-ade.nl/"
+          label="ConTeXt" />, LaTeX Beamer slides</item>
+      <item>
+        <link href="http://en.wikipedia.org/wiki/Portable_Document_Format"
+          label="PDF" /> via LaTeX</item>
+      <item>Lightweight markup formats:
+        <link
+          href="http://daringfireball.net/projects/markdown/" label="Markdown"
+           />,
+        <link
+          href="http://docutils.sourceforge.net/docs/ref/rst/introduction.html"
+          label="reStructuredText" />,
+        <link
+          href="http://www.methods.co.nz/asciidoc/" label="AsciiDoc"
+           />,
+        <link
+          href="http://www.mediawiki.org/wiki/Help:Formatting"
+          label="MediaWiki markup" />,
+        <link
+          href="https://www.dokuwiki.org/wiki:syntax" label="DokuWiki markup"
+           />, Emacs
+        <link href="http://orgmode.org" label="Org-Mode"
+           />,
+        <link href="http://redcloth.org/textile" label="Textile"
+         />
+      </item>
+      <item>Custom formats: custom writers can be written in
+        <link
+          href="http://www.lua.org" label="lua" />
+      </item>
+    </ulist>
+
+    <para>My problems with Pandoc are:</para>
+
+    <ulist>
+      <item>You can only convert your content to PDF if you have LaTex installed. Even a minimal LaTex library requires a fairly large install</item>
+      <item>LaTex installs are different for Macintosh, Windows and Linux. This makes a uniform support system impossible</item>
+      <item>If you want to add custom formats you have to do so in Lua. I'd rather not learn another programming language just for one project</item>
+    </ulist>
+
+    <h2>Why create our own markup</h2>
+    <para>Rather than figure out how to use someone else tool for this proof of concept I've decided to build my own markup vocabulary and explore XML, XSL and CSS as the tools to create HTML and print-ready content.</para>
+    <para>Using XSL and CSS to manipulate XML content reduces the number of external dependencies. As it stands right now, the project depends on
+      <link
+        href="http://www.saxonica.com/welcome/welcome.xml" label="Saxon"
+         /> to convert XML to HTML and
+      <link
+        href="http://www.princexml.com/" label="PrinceXML" />
+    </para>
+    <para>In creating your own xml-based markup you enforce separation of content and style. The XML document provides the basic content of the document and the hints to use elsewhere. XSLT stylesheets allow you to structure the base document and associated hints into any number of formats (for the purposes of this document we'll concentrate on XHTML, PDF created through Paged Media CSS and PDF created using XSL formatting Objects)</para>
+    <para>It reduces the ammount of external code that we have to adapt in order to acomplish a given task.</para>
+    <para>Creating a domain specific markup vocabulary allows you think about structure and complexity for yourself as the editor/typesetter and for your authors. It makes you think about elements and attributes and which one is better for the given experience you want and what, if any, restrictions you want to impose on your makeup.</para>
+    <para>By creating our own vocabulary we make it easier for authors to write clean and simple content. XML provides a host of validation tools to enforce the structure and format of the XML document.</para>
+    <h2>Options for defining the markup</h2>
+    <para>For the purpose of this project we'll define a set of resources that work with a book structure like the one below:</para>
+    <code language="xml">&lt;book&gt;
+  &lt;metadata&gt;
+    &lt;title&gt;The adventures of SHerlock Holmes&lt;/title&gt;
+
+    &lt;author&gt;
+      &lt;first-name&gt;Arthur&lt;/first-name&gt;
+      &lt;surname&gt;Connan Doyle&lt;/surname&gt;
+    &lt;/author&gt;
+  &lt;/metadata&gt;
+
+  &lt;section type="chapter"&gt;
+    &lt;para&gt;Lorem Ipsum&lt;/para&gt;
+    &lt;para&gt;Lorem Ipsum&lt;/para&gt;
+  &lt;/section&gt;
+&lt;/book&gt;
+    </code>
+    <para>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</para>
+  </section>
+</book>

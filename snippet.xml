@@ -1,0 +1,12 @@
+        <manifest>
+          <xsl:for-each select="file:list($full.path)">
+            <item>
+              <xsl:attribute name="href" select="."/>
+            </item>
+ <xsl:choose>
+        <!-- If the file ends with .html or .xhtml we treat it as xhtml -->
+        <xsl:when test="ends-with(item/@href,'.xhtml') or ends-with(item/@href,'.html')">
+          <xsl:attribute name="id" select="concat($epub.package.id.prefix, '-', generate-id(.))"/>
+          <xsl:attribute name="media-type" select="'application/xhtml+xml'"/>
+        </xsl:when>
+        </xsl:choose>

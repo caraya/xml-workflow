@@ -373,10 +373,7 @@ $(function() {
        /> on how to script PDF files but the emphasis and the functionality is geared towards business automation rather than full interactivity.</para>
 
     <h4>PDF Bookmarks</h4>
-    <para></para>
-    <para></para>
-    <para></para>
-    <para></para>
+
     <para>I've chosen to let the CSS Paged Media transformation step generate the PDF bookmarks instead of trying to create them manually. Both PrinceXML and
       <link
         href="http://www.antennahouse.com/" label="AntennaHouse"
@@ -420,6 +417,11 @@ section[data-type='chapter'] h4 {
     <h4>Highlight.js</h4>
     <para>I use the same highlight.js library that I used in the XHTML files with the PDF content. The only difference is that we add an object-key polyfill to work around a lack of direct support of the feature in PrinceXML and will be removed at the time the feature is supported natively.</para>
     <para>Other than the object.key polyfill there are no additional changes to make the highlighter work in PDF.</para>
+
+    <blockquote>
+      <para>Note that highlight.js for PDF is currently not coloring the syntax. There seems to be an issue with the object.key polyfill that causes problems in longer files.</para>
+    </blockquote>
+
     <h2>ePub3</h2>
     <para>ePub is a tricky proposition. While some readers like iBooks will support many multimedia features available in the open web others, particularly older, readers will not even support scripting or SVG. So the question becomes how much do we want to push the envelope in such an uncertain environment? How many levels of fallbacks fo we provide for a given technology?</para>
     <h3>Modernizr</h3>
@@ -451,7 +453,7 @@ if (Modernizr.video) {
 
     <para>The open web version (package of XHTML files</para>
   </section>
-  <section type="chapter">
+<section type="chapter">
     <title>Books as apps: What's next?</title>
     <h2>What is an app?</h2>
     <h2>Open Web versus Native Apps</h2>
@@ -474,8 +476,15 @@ if (Modernizr.video) {
       <item>
         <link href="http://bobulate.com/tagged/words" label="Liz Danzico" />
       </item>
+      <item>
+        <link href="" label=""/>
+      </item>
+      <item>
+        <link href="http://www.unnumberedsparks.com/" label="Unnumbered Sparks"/>
+      </item>
     </ulist>
-  </section>
+</section>
+
   <section type="chapter">
     <title>Introduction</title>
     <para>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like [Docbook](http://docbook.org) are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</para>
@@ -3232,6 +3241,7 @@ pre code {
 }
 </code>
   </section>
+
   <section type="chapter">
     <title>Converting to ePub</title>
     <blockquote>
@@ -3239,10 +3249,12 @@ pre code {
     </blockquote>
     <para>Perhaps the most ambitious part of the proof of concept is to convert the XML content to an ePub book that would pass epubcheck validation. To accomplish this we'll create another customization layer to acommodate the special syntax and additional content needed to create the ePub 3 package.</para>
     <para>This is more complicated than the creation of the single file for generating PDF. The epub specification is more complex and requires a lot more auxiliary files and directories with very specific formatting. I wonder if some of them need to be XML files at all.</para>
-    <para>Take the
-      <emphasis>package.opf</emphasis>, for example. As portable as XML is and as many XML parsers are there in the wild, it would work much better if we do the same code in JSON, YAML, or other similar formats.</para>
-    <para />
+    <para>Take the<emphasis>package.opf</emphasis>, for example. As portable as XML is and as many XML parsers are there in the wild, it would work much better if we do the same code in JSON, YAML, or other similar formats.</para>
+    <para>I will walk through the process and document the current difficulties and proposed solutions.</para>
+
+    <h2></h2>
   </section>
+
   <section type="chapter">
     <title>Tools and dependencies</title>
     <para>Because we use XML we can't just dump our code in the browser or the PDF viewer and expect it to appear just like HTML content.</para>
@@ -3934,7 +3946,7 @@ self.onfetch = function(event) {
         href="http://jakearchibald.com/2014/offline-cookbook/#cache-persistence"
         label="cache persistence" />.</para>
   </section>
-  <section type="bibliography">
+ <!-- <section type="bibliography">
     <title>Annotated Bibliography of links and resources</title>
-  </section>
+  </section>-->
 </book>

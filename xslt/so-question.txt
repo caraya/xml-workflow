@@ -1,0 +1,34 @@
+I'm using the file EXPath file extension with Saxon PE 9.0.5 
+
+I have the following element templlate that generates a list of all the files in a directory and adds attributes to each generated item element. It fails with an XPTY0020 error.  
+
+Reading [http://stackoverflow.com/questions/17643244/xslt-2-pick-item-from-tokenized-list-by-index](http://stackoverflow.com/questions/17643244/xslt-2-pick-item-from-tokenized-list-by-index) I understand that the issue has to do with needing to work with nodes and not strings. 
+
+How do I change the test or the file:list elements so that they'll both produce nodes that I can further process them?
+
+    <xsl:variable name="files" select="file:list($full.path)" />
+    <manifest>
+    <xsl:for-each select="$files">
+      <item>
+        <xsl:attribute name="href" select="." />
+      </item>
+    </xsl:for-each>
+    </manifest>
+    <xsl:choose>
+    <!-- If the file ends with .html or .xhtml we treat it as xhtml -->
+    <xsl:when test="ends-with(item/@href,'.xhtml') 
+    or ends-with(item/@href,'.html')">
+        <xsl:attribute name="id" select="
+            concat($epub.package.id.prefix, '-', generate-id())" />
+        <xsl:attribute name="media-type" select="'application/xhtml+xml'" />
+    </xsl:when>
+    <xsl:otherwise>
+       <xsl:message terminate="yes">
+           No matching value for <xsl:value-of select="name()" /> 
+           File type either not supported or 
+           not yet added to the system
+       </xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+
+ 
