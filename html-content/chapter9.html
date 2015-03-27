@@ -1,287 +1,185 @@
-<html xmlns="http://www.w3.org/1999/xhtml" class="no-js" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta charset="utf-8" /><link rel="stylesheet" href="css/style.css" /><link rel="stylesheet" href="css/normalize.css" /><link rel="stylesheet" href="css/styles/github.css" /><script src="lib/highlight.pack.js"></script><script>
+<html xmlns="http://www.w3.org/1999/xhtml" class="no-js" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta charset="utf-8" /><link rel="stylesheet" href="css/style.css" /><link rel="stylesheet" href="css/normalize.css" /><link rel="stylesheet" href="css/styles/github.css" /><script src="lib/modernizr.custom.js"></script><script src="lib/highlight.pack.js"></script><script>
               hljs.initHighlightingOnLoad();
-            </script></head><body><section data-type="chapter"><h1>From XML to PDF Part 3: CSS Styles for Paged Media</h1><p>This is the generated CSS from the SCSS style sheets (see the scss/ directory for the source material.) I've chosen to document the resulting stylesheet here and document the SCSS source in another document to make life simpler for people who don't want to deal with SASS or who want to see what the style sheets look like.</p><p>Typography derived from work done at this URL: <a href="http://bit.ly/16N6Y2Q" label="http://bit.ly/16N6Y2Q">http://bit.ly/16N6Y2Q</a></p><p>The following scale (also using minor third progression) may also help: <a href="http://bit.ly/1DdVbqK" label="http://bit.ly/1DdVbqK">http://bit.ly/1DdVbqK</a></p><p>Feel free to play with these and use them as starting point for your own work :)</p><p>The project currently uses these fonts:</p><ul><li>Roboto Slab for headings</li><li>Roboto for body copy</li><li>Source Code Pro for code blocks and preformated text</li></ul><h2>Font Imports</h2><p>Even though SCSS Lint throws a fit when I put font imports in a stylesheet because they stop asynchronous operations, I'm doing it to keep the HTML files clean and because we are not loading the CSS on the page, we're just using it to process the PDF file.</p><p>Eventually I'll switch to locally hosted fonts using bulletproof font syntax (<a href="http://www.paulirish.com/2009/bulletproof-font-face-implementation-syntax/" label="discussed in this post by Paul Irish">discussed in this post by Paul Irish</a> and available for use at <a href="http://www.fontsquirrel.com/tools/webfont-generator" label="Font Squirrel">Font Squirrel</a>.</p><p>At this point we are not dealing with <a href="http://bit.ly/1ul3XBx" label="font subsetting">font subsetting</a> but we may in case we need to depending on the font licensing or file size.</p><pre><code class="css hljs">
-@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
-</code></pre><h2>Defaults</h2><p>Now that we've loaded the fonts we can create our defaults for the document.  The `html` element defines vertical overflow and text size adjustment for Safari and Windows browsers.</p><pre><code class="css hljs">
-html {
-  overflow-y: scroll;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-}
-</code></pre><p>The <em>body</em> selector will handle most of the base formatting for the the document.</p><p>The selector sets up the following aspects of the page:</p><ul><li>background and font color</li><li>font family, size and weight</li><li>line height</li><li>left and right padding (overrides the base document's padding)</li><li>orphans and widows</li></ul><pre><code class="css hljs">
-body {
-  background-color: #fff;
-  color: #554c4d;
-  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 1em;
-  font-weight: 100;
-  line-height: 1.1;
-  orphans: 4;
-  padding-left: 0;
-  padding-right: 0;
-  widows: 2;
-}
-</code></pre><h2>Blockquotes, Pullquotes and Marginalia</h2><p>It's fairly easy to create sidebars in HTML so I've played a lot with pull quotes, blockquotes and asides as a way to move the content around with basic CSS. We can do further work by tuning the CSS</p><pre><code class="css hljs">
-aside {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
-  color: #666;
-  line-height: 1.4em;
-  padding-bottom: .5em;
-  padding-top: .5em;
-  width: 100%;
+            </script></head><body><section data-type="chapter"><h1>From XML to PDF: Part 1: Special Transformation</h1><p>Rather than having to deal with
+      <a href="http://www.w3.org/TR/2006/REC-xsl11-20061205/" label="XSL-FO">XSL-FO</a>, another XML based vocabulary to create PDF content, we'll use XSLT to create another HTML file and process it with
+      <a href="http://dev.w3.org/csswg/css-page-3/" label="CSS Paged Media">CSS Paged Media</a> and the companion
+      <a href="http://www.w3.org/TR/css-gcpm-3/" label="Generated Content for Paged Media">Generated Content for Paged Media</a> specifications to create PDF content.</p><p>I'm not against XSL-FO but the structure of document is not the easiest or most intuitive. An example of XSL-FO looks like this:</p><pre><code class="xml hljs">&lt;?xml version="1.0" encoding="iso-8859-1"?&gt; (1)
+
+  &lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"&gt; (2)
+    &lt;fo:layout-master-set&gt; (3)
+      &lt;fo:simple-page-master master-name="my-page"&gt;
+        &lt;fo:region-body margin="1in"/&gt;
+      &lt;/fo:simple-page-master&gt;
+    &lt;/fo:layout-master-set&gt;
+
+    &lt;fo:page-sequence master-reference="my-page"&gt; (4)
+      &lt;fo:flow flow-name="xsl-region-body"&gt; (5)
+        &lt;fo:block&gt;Hello, world!&lt;/fo:block&gt; (6)
+      &lt;/fo:flow&gt;
+    &lt;/fo:page-sequence&gt;
+  &lt;/fo:root&gt;
+    </code></pre><ol><li>This is an XML declaration. XSL FO (XSLFO) belongs to XML family, so this is obligatory</li><li>Root element. The obligatory namespace attribute declares the XSL Formatting Objects namespace</li><li>Layout master set. This element contains one or more declarations of page masters and page sequence masters — elements that define layouts of single pages and page sequences. In the example, I have defined a rudimentary page master, with only one area in it. The area should have a 1 inch margin from all sides of the page</li><li>Page sequence. Pages in the document are grouped into sequences; each sequence starts from a new page. Master-reference attribute selects an appropriate layout scheme from masters listed inside
+        <em>&lt;fo:layout-master-set&gt;</em>. Setting master-reference to a page master name means that all pages in this sequence will be formatted using this page master</li><li>Flow. This is the container object for all user text in the document. Everything contained in the flow will be formatted into regions on pages generated inside the page sequence. Flow name links the flow to a specific region on the page (defined in the page master); in our example, it is the body region</li><li>Block. This object roughly corresponds to `&lt;div&gt;` in HTML, and normally includes a paragraph of text. I need it here, because text cannot be placed directly into a flow.</li></ol><p>Rather than define a flow of content and then the content CSS Paged Media uses a combination of new and existing CSS elements to format the content. For example, to define default page size and then add elements to chapter pages looks like this:</p><pre><code class="css hljs">
+@page {
+  size: 8.5in 11in;
+  margin: 0.5in 1in;
+  /* Footnote related attributes */
+  counter-reset: footnote;
+
+ @footnote {
+    counter-increment: footnote;
+    float: bottom;
+    column-span: all;
+    height: auto;
+ }
 }
 
-aside .pull {
-  margin-bottom: .5em;
-  margin-left: -20%;
-  margin-top: .2em;
+@page chapter {
+  @bottom-center {
+    vertical-align: middle;
+    text-align: center;
+    content: element(heading);
+  }
 }
-</code></pre><p>The <em>magin-notes*</em> and <em>content*</em> move the content to the corresponding side of the page without having to create specific CSS to do so. The downside is that, as with many things in CSS, you are stuck with the provided values and will have to modify them to suit your needs.</p><pre><code class="css hljs">
-.margin-notes,
-.content-left {
-  font-size: .75em;
-  margin-left: -230px;
-  margin-right: 20px;
-  text-align: right;
-  width: 230px;
-}
+    </code></pre><p>The only problem with the code above is that there is no native broser support. For our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. In the not so distant future we will be able to do this transformation in the browser and print the PDF directly. Until then it's a two step process: Modifying the HTML we get from the XML file and running the HTML through Prince to get the PDF.</p><h2>Modifying the HTML results</h2><p>I'll use this opportunity to create an xslt customization layer to make changes only to the templates where we need to.</p><p>We create a customization layer by importing the original stylesheet and making any necessary changes in the new stylesheet. Imported stylesheets have a lower precedence order than the local version so the local version will win if there is conflict.</p><p>Only the templates defined in this stilesheet are overriden. If the template we use is not in this customization layer, the transformation engine will use the template in the base style sheet (book.xsl in this case)</p><p>The style sheet is broken by templates and explained below.</p><pre><code class="xml hljs">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;xsl:stylesheet
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0"&gt;
+      &lt;!-- First import the base stylesheet --&gt;
+      &lt;xsl:import href="book.xsl"/&gt;
 
-.margin-notes-right,
-.content-right {
-  font-size: .75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px;
-}
+      &lt;!-- Define the output for this and all document children --&gt;
+      &lt;xsl:output name="xhtml-out" method="xhtml"
+      indent="yes" encoding="UTF-8" omit-xml-declaration="yes" /&gt;
+    </code></pre><p>The first difference in the customization layer is that it imports another style sheet (
+      <em>book.xsl</em>). We do this to avoid having to copy the entire style sheet and, if we make changes, having to make the changes in multiple places.</p><p>We will then override the templates we need in order to get a single file to pass on to Prince or any other CSS Print Processor.</p><pre><code class="xml hljs">
+&lt;xsl:template match="book"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"/&gt;
+    &lt;xsl:element name="title"&gt;
+      &lt;xsl:value-of select="metadata/title"/&gt;
+    &lt;/xsl:element&gt;
+    &lt;xsl:element name="meta"&gt;
+      &lt;xsl:attribute name="generator"&gt;
+        &lt;xsl:value-of select="system-property('xsl:product-name')"/&gt;
+        &lt;xsl:value-of select="system-property('xsl:product-version')"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:element&gt;
 
-.content-right {
-  font-size: .75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px;
-}
+    &lt;!-- Load Typekit Font --&gt;
+    &lt;script src="https://use.typekit.net/qcp8nid.js"&gt;&lt;/script&gt;
+    &lt;script&gt;try{Typekit.load();}catch(e){}&lt;/script&gt;
+    &lt;!-- Paged Media Styles --&gt;
+    &lt;link rel="stylesheet" href="css/pm-style.css" /&gt;
+    &lt;!-- Paged Media Definitions --&gt;
+    &lt;link rel="stylesheet" href="css/paged-media.css"/&gt;
+    &lt;xsl:if test="(code)"&gt;
+      &lt;link rel="stylesheet" href="css/styles/railscasts.css" /&gt;
+      &lt;script src="lib/highlight.pack.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      hljs.initHighlightingOnLoad();
+    &lt;/script&gt;
+    &lt;/xsl:if&gt;
+  &lt;/head&gt;
 
-.content-right ul,
-.content-left ul {
-  list-style: none;
-}
-</code></pre><p>The opening class style creates a large distinguishing block container for opening text. This is useful when you have a summary paragraph at the beginning of your document or some other opening piece of text to go at the top of your document</p><pre><code class="css hljs">
-.opening {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
-  font-size: 2em;
-  margin-bottom: 10em;
-  padding-bottom: 2em;
-  padding-top: 2em;
-  text-align: center;
-}
-</code></pre><p>Blockquotes present the enclosed text in larger italic font with a solid bar to the left of the content.  Because the font is larger I've added a little extra padding to the paragraphs inside the blockquote</p><pre><code class="css hljs">
-blockquote {
-  border-left: 5px solid #ccc;
-  color: #222023;
-  font-size: 1.5em;
-  font-style: italic;
-  font-weight: 100;
-  margin-bottom: 2em;
-  margin-left: 4em;
-  margin-right: 4em;
-  margin-top: 2em;
-}
-blockquote p {
-  padding-left: .5em;
-}
-</code></pre><p>The pullquote classes were modeled after an ESPN article and look something like this:</p><figure width="800px" height="297px"><img src="http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/example-pullquote.png" alt="example pullquote" width="800px" height="297px" /><figcaption><p>Example pullquote</p></figcaption></figure><p>The original was hardcoded to pixels. Where possible I've changed the values to em to provide a more responsive</p><pre><code class="css hljs">
-.pullquote {
-  border-bottom: 18px solid #000;
-  border-top: 18px solid #000;
-  font-size: 2.25em;
-  font-weight: 700;
-  letter-spacing: -.02em;
-  line-height: 2.125em;
-  margin-right: 2.5em;
-  padding: 1.25em 0;
-  position: relative;
-  width: 200px;
-}
-.pullquote p {
-  color: #00298a;
-  font-weight: 700;
-  text-transform: uppercase;
-  z-index: 1;
-}
-.pullquote p:last-child {
-  line-height: 1.25em;
-  padding-top: 2px;
-}
-.pullquote cite {
-  color: #333;
-  font-size: 1.125em;
-  font-weight: 400;
-}
-</code></pre><h2>Paragraphs</h2><p>The paragraph selector creates the default paragraph formatting with a size of 1em (equivalent to 16 pixels) and a line height of 1.3 em (20.8 pixels)</p><pre><code class="css hljs">
-p {
-  font-size: 1em;
-  margin-bottom: 1.3em;
-}
-</code></pre><p>To indent all paragraphs but the first we use the sibling selector we indent all paragraphs that are the next sibling of another paragraph element (that is: the next child of the same parent).</p><p>The first paragraph doesn't have a paragraph sibling so the indent doesn't happen but all other paragraphs are indented</p><pre><code class="css hljs">
-p + p {
-  text-indent: 2em;
-}
-</code></pre><p>Rather than use pseudo elements (<em>:first-line</em> and <em>:first-letter</em>) we use classes to give authors the option to use these elements.</p><pre><code class="css hljs">
-.first-line {
-  font-size: 1.1em;
-  text-indent: 0;
-  text-transform: uppercase;
-}
+  &lt;body&gt;
+    &lt;xsl:attribute name="data-type"&gt;book&lt;/xsl:attribute&gt;
+    &lt;xsl:apply-templates select="/" mode="toc"/&gt;
+    &lt;xsl:apply-templates/&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;/xsl:template&gt;
+    </code></pre><p>Most of the root template deals with undoing some of the changes we made to create multiple pages.</p><p>I've changed the CSS we use to process the content. We use paged-media.css to create the content for our media files, mostly setting up the different pages based on the data-type attribute.</p><p>We use pm-styles.css to control the style of our documents specifically for our printed page application. We have to take into account the fact that Highlight.js is not working properly with Prince's Javascript implementation and that there are places where we don't want our paragraphs to be indented at all.</p><p>We moved elements from the original section templates. We test whether we need to add the Highlight.JS since we dropped the multipage output.</p><h2>Overriding the section template</h2><p>Sections are the element type that got the biggest makeover. What we've done:</p><ol><li>Remove filename variable. It's not needed</li><li>Remove the result document element since we are building a single file with all our content</li><li>Change way we check for the type attribute in sections. It will now terminate with an error if the attribute is not found</li><li>Add the element that will build our running footer (p class="rh") and assign the value of the secion's title to it</li></ol><pre><code class="xml hljs">
+&lt;!-- Override of the section template.--&gt;
+&lt;xsl:template match="section"&gt;
+  &lt;section&gt;
+    &lt;xsl:choose&gt;
+      &lt;xsl:when test="string(@type)"&gt;
+        &lt;xsl:attribute name="data-type"&gt;
+          &lt;xsl:value-of select="@type"/&gt;
+        &lt;/xsl:attribute&gt;
+      &lt;/xsl:when&gt;
+      &lt;xsl:otherwise&gt;
+        &lt;xsl:message terminate="yes"&gt;
+          Type attribute is required for paged media.
+          Check your section tags for missing type attributes
+        &lt;/xsl:message&gt;
+      &lt;/xsl:otherwise&gt;
+    &lt;/xsl:choose&gt;
 
-.first-letter {
-  float: left;
-  font-size: 7em;
-  line-height: .8em;
-  margin-bottom: -.1em;
-  padding-right: .1em;
-}
-</code></pre><h2>Lists</h2><p>The only thing we do for list and list items is to indicate what type of list we'll use as our default square for unordered list and Arabic decimals for our numbered lists.</p><pre><code class="css hljs">
-ul li {
-  list-style: square;
-}
+    &lt;xsl:if test="string(@class)"&gt;
+      &lt;xsl:attribute name="class"&gt;
+        &lt;xsl:value-of select="@class"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
 
-ol li {
-  list-style: decimal;
-}
-</code></pre><h2>Figures and captions</h2><p>The only interesting aspect of the CSS we use for figures is the counter. The <em>figure figcaption::before</em> selector creates automatic text that is inserted before each caption. This text is the string "Figure", the value of our figure counter and the string ": ".</p><p>This makes it easier to insert figures without having to change the captions for all figures after the one we inserted. The figure counter is reset for every chapter. I'm researching ways to get the figure numbering across chapters.</p><pre><code class="css hljs">
-figure {
-  counter-increment: figure_count;
-  margin-bottom: 1em;
-  margin-top: 1em;
-}
-figure figcaption {
-  font-weight: 700;
-  padding-bottom: 1em;
-  padding-top: .2em;
-}
+    &lt;xsl:if test="string(@id)"&gt;
+      &lt;xsl:attribute name="id"&gt;
+        &lt;xsl:value-of select="@id"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
+    &lt;!--
+    Running header paragraph.
+    --&gt;
+    &lt;xsl:element name="p"&gt;
+      &lt;xsl:attribute name="class"&gt;rh&lt;/xsl:attribute&gt;
+        &lt;xsl:value-of select="title"/&gt;
+    &lt;/xsl:element&gt; &lt;!-- closses rh class --&gt;
 
-figure figcaption::before {
-  content: "Figure " counter(figure_count) ": ";
-}
-</code></pre><h2>Headings</h2><p>Headings are configured in two parts. The first one sets common attributes to all headings: <em>font-family</em>, <em>font-weight</em>, <em>hyphens</em>, <em>line-height</em>, margins and <em>text-transform</em>.</p><p>It's this attribute that needs a little more discussion. Using text-transform we make all headings uppercase without having to write them that way</p><pre><code class="css hljs">
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Roboto Slab', sans-serif;
-  font-weight: 400;
-  hyphens: none;
-  line-height: 1.2;
-  margin: 1.414em 0 .5em;
-  text-transform: uppercase;
-}
-</code></pre><p>In the second part of our heading styles we work on rules that only apply to one heading at a time. Things such as size and specific attributes (like removing the top margin on the h1 elements) need to be handled need to be handled individually</p><pre><code class="css hljs">
-h1 {
-  font-size: 3.157em;
-  margin-top: 0;
-}
+    &lt;xsl:apply-templates/&gt;
+  &lt;/section&gt;
+&lt;/xsl:template&gt;
+    </code></pre><h2>Metadata</h2><p>The Metadata section has been reworked into a new section with the title data-type. We set up the container section and assign title to the data-type attribute. We then apply all children templates.</p><p>It is important to note that we've increased the number of children inside metadata so we'll have to be careful in making sure that we're using only one page for the title and another for the rest of the metadata if needed.</p><pre><code class="xml hljs">
+&lt;!-- Metadata --&gt;
+&lt;xsl:template match="metadata"&gt;
+&lt;xsl:element name="section"&gt;
+&lt;xsl:attribute name="data-type"&gt;titlepage&lt;/xsl:attribute&gt;
+&lt;xsl:apply-templates/&gt;
+&lt;/xsl:element&gt;
+&lt;/xsl:template&gt;
+    </code></pre><h2>Table of contents</h2><p>The table of content creates anchor links (a href='#id') to the title h1 tags we create in the step below. We can do it this way because XSLT guarantees that all calls to generate-id for a given element (in this case the section/title elements) will return the same value for a given execution.</p><p>This code depends on the empty toc placeholder element to place it. If the element is not present then the table of contents will be placed at the end of the document.</p><pre><code class="xml hljs">
+&lt;xsl:template match="toc"&gt;
+  &lt;section data-type="toc"&gt;
+    &lt;h1&gt;Table of Contents&lt;/h1&gt;
+    &lt;nav&gt;
+      &lt;ol&gt;
+        &lt;xsl:for-each select="//section"&gt;
+          &lt;xsl:element name="li"&gt;
+            &lt;xsl:element name="a"&gt;
+              &lt;xsl:attribute name="href"&gt;
+              &lt;xsl:value-of select="concat('#', generate-id(.))"/&gt;
+              &lt;/xsl:attribute&gt;
+              &lt;xsl:value-of select="title"/&gt;
+            &lt;/xsl:element&gt;
+          &lt;/xsl:element&gt;
+        &lt;/xsl:for-each&gt;
+      &lt;/ol&gt;
+    &lt;/nav&gt;
+  &lt;/section&gt;
+&lt;/xsl:template&gt;
+    </code></pre><h2>Titles</h2><p>The title element has only one addition. We add an ID attribute created using XPath's generate-id function on the parent section element.</p><pre><code class="xml hljs">
+&lt;xsl:template match="title"&gt;
+  &lt;xsl:element name="h1"&gt;
+    &lt;xsl:attribute name="id"&gt;
+      &lt;xsl:value-of select="generate-id(..)"/&gt;
+    &lt;/xsl:attribute&gt;
 
-h2 {
-  font-size: 2.369em;
-}
+    &lt;xsl:if test="string(@align)"&gt;
+      &lt;xsl:attribute name="align"&gt;
+        &lt;xsl:value-of select="@align"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
 
-h3 {
-  font-size: 1.777em;
-}
+    &lt;xsl:if test="string(@class)"&gt;
+      &lt;xsl:attribute name="class"&gt;
+        &lt;xsl:value-of select="@class"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
 
-h4 {
-  font-size: 1.333em;
-}
-
-h4,
-h5,
-h6 {
-  text-align: inherit;
-}
-</code></pre><h2>Different parts of the book</h2><p>There are certains aspects of the book that need different formatting from our defaults.</p><p>We use the element[attribute=name] syntax to identify which section we want to work with and then tell it the element within the section that we want to change.</p><p>For example, in the bibliography (a section with the <em>data-type='bibliography</em> attribute) we want all paragraphs to be left aligned and all paragraphs to have no margin (basicallwe we are undoing the indentation for paragraphs with sibling paragraphs within the bibliography section)</p><pre><code class="css hljs">
-section[data-type='bibliography'] p {
-  text-align: left;
-}
-section[data-type='bibliography'] p + p {
-  text-indent: 0 !important;
-}
-</code></pre><p>The same logic applies to the other sections that we're customizing. We tell it what type of section we are working with and what element inside that sectin we want to change.</p><pre><code class="css hljs">
-section[data-type='titlepage'] h1,
-section[data-type='titlepage'] h2,
-section[data-type='titlepage'] p {
-  text-align: center;
-}
-
-section[data-type='dedication'] h1,
-section[data-type='dedication'] h2 {
-  text-align: center;
-}
-section[data-type='dedication'] p {
-  text-align: left;
-}
-section[data-type='dedication'] p + p {
-  text-indent: 0 !important;
-}
-</code></pre><h2>Preformatted code blocks</h2><p>A lot of what I write is technical and requires code examples. We take a two pronged approach to the fenced code blocks.</p><p>We format some aspects our content (wrap, font-family, size, line height and wether to do page breaks inside the content) locally and hand off syntax highlighting to <a href="https://highlightjs.org/" label="highlight.js">highlight.js</a> with a style to mark the content differently.</p><pre><code class="css hljs">
-pre {
-  overflow-wrap: break-word;
-  white-space: pre-line !important;
-  word-wrap: break-word;
-}
-pre code {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 1em;
-  line-height: 1.2em;
-  page-break-inside: avoid;
-}
-</code></pre><h2>Miscelaneous classes</h2><p>Rather than for people to justify text we provide a class to make it so. I normally justify at the div or section level but it's not always necessary or desirable.</p><p>Code will be used in a future iteration of the code to highlight inline snippets (think of it as an inline version of the &lt;pre&gt;&lt;code&gt; tag combination)</p><pre><code class="css hljs">
-.justified {
-  text-align: justify;
-}
-
-</code></pre><h2>Columns</h2><p>The last portion of the stylesheet deals with columns. I've set up 2 set of rules for 2 and 3 column with similar attributes. In the SCSS source these are created with a column mixin.</p><pre><code class="css hljs">
-.columns2 {
-  column-count: 2;
-  column-gap: 3em;
-  column-fill: balance;
-  column-span: none;
-  line-height: 1.25em;
-  width: 100%;
-}
-.columns2 p:first-of-type {
-  margin-top: 0;
-}
-.columns2 p + p {
-  text-indent: 2em;
-}
-.columns2 p:last-of-type {
-  margin-bottom: 1.25em;
-}
-
-.columns3 {
-  column-count: 3;
-  column-gap: 10px;
-  column-fill: balance;
-  column-span: none;
-  width: 100%;
-}
-.columns3 p:first-of-type {
-  margin-top: 0;
-}
-.columns3 p:not:first-of-type {
-  text-indent: 2em;
-}
-.columns3 p:last-of-type {
-  margin-bottom: 1.25em;
-}
-</code></pre></section></body></html>
+    &lt;xsl:value-of select="."/&gt;
+  &lt;/xsl:element&gt; &lt;!-- closes h1 --&gt;
+&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+    </code></pre><p>With all this in place we can now look to the CSS Paged Media file.</p></section></body></html>

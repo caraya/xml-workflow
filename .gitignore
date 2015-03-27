@@ -6,8 +6,12 @@ node_modules
 bower_components
 *.zip
 .sass-cache/
+# ideas is a repository for things I might include in the project, no need to 
+# save it as the parts that do make it to the project will be moved elsewhere
 ideas/
 scss-lint.log
 jscs-report.txt
 xslt/*.html
 config.codekit
+#epub content is not being saved for now until we fix the file listing issue
+content/

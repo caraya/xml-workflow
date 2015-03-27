@@ -212,7 +212,7 @@
        /> is a deep linking library first developed and released by the New York Times in 2011. What attracted me to it was the ability to share (deep) links to an article among people at different computers. The algorythm always returns the same result so the links will always work the same.</para>
     <para>The one thing that pushed me away from Emphasis was its dependency on jQuery. Don't get me wrong; I love jQuery but I need a good reason to use it beyond the cool factor since most, if not all, of the things you can do with jQuery you can do with vanilla Javascript in modern browsers.</para>
     <para>I decided the bennefits of link sharng far outweigh the jQuery dependency but, when I went to update the code I discovered that the library no longer requires jQuery :-)</para>
-    <para>The idea behind Emphasis is that when you highlight a paragrap or portion thereof, it will generate a unique string and append it to the page's URL. You can then send the URL to a friend or colleague who can paste the URL and open the page with the highlighted text. In combination with something like Annotator.js we can build a more complex system to create shareable links .</para>
+    <para>The idea behind Emphasis is that when you highlight a paragraph or portion thereof, it will generate a unique string and append it to the page's URL. You can then send the URL to a friend or colleague who can paste the URL and open the page with the highlighted text. In combination with something like Annotator.js we can build a more complex system to create shareable links .</para>
     <h4>Annotator.js</h4>
     <para>Some times the deel links from emphasis are not enough. Tool
       <link
@@ -314,7 +314,7 @@ $(function() {
     <para>We can also choose to only keep some links (for example, links with a certain class) local. To keep links witha class of local from breaking the app we can use something like this:</para>
     <code language="javascript">
 $(function() {
-  $.stayInWebApp('a.stay');
+  $.stayInWebApp('a.local');
 });
 
     </code>
@@ -373,7 +373,10 @@ $(function() {
        /> on how to script PDF files but the emphasis and the functionality is geared towards business automation rather than full interactivity.</para>
 
     <h4>PDF Bookmarks</h4>
-
+    <para></para>
+    <para></para>
+    <para></para>
+    <para></para>
     <para>I've chosen to let the CSS Paged Media transformation step generate the PDF bookmarks instead of trying to create them manually. Both PrinceXML and
       <link
         href="http://www.antennahouse.com/" label="AntennaHouse"
@@ -829,17 +832,17 @@ if (Modernizr.video) {
       </para>
     </blockquote>
     <para>Unti I used the value xs:anyURI I wasn't sure what it did and how much work it would actually save me. I thought it was just another name for URLs but they are much more and the amount of work they save is significant.</para>
-    <para></para>
-    <para></para>
-    <para></para>
-    <para></para>
-    <para></para>
-    <para></para>
+    <para />
+    <para />
+    <para />
+    <para />
+    <para />
+    <para />
     <para>URI (uniform resource indicator) are a superset of the web's URL. There are two main types of URIs: absolute and relative.</para>
     <para>Absolute URIs provide the entire context for locating the resources, such as <strong>http://datypic.com/prod.html</strong>.</para>
     <para>Relative URIs are specified as the difference from a base URI, such as <strong>../prod.html</strong>. It is also possible to specify a fragment identifier, using the # character, such as <strong>../prod.html#shirt</strong>. Note that when relative URI references are used as values of xsd:anyURI there is no attempt made to track the base of the URI.</para>
     <para>The three previous examples happen to be HTTP URLs (Uniform Resource Locators), but URIs also encompass URLs of other schemes (e.g., FTP, gopher, telnet), as well as URNs (Uniform Resource Names). URIs doen't have to exist to be valid; there is no need for a resource to live at http://datypic.com/prod.html for the URI pointing to it to validate.</para>
-    <para>URIs require that some characters be escaped with their hexadecimal Unicode code point preceded by the % character. This includes non-ASCII characters and some ASCII characters, namely control characters, spaces, and the following characters (unless they are used as deliimiters in the URI): &lt;>#%{}|\^`. For example, **../édition.html** must be represented instead as **../%C3%A9dition.html**, with the é escaped as %C3%A9. However, the anyURI type will accept these characters either escaped or unescaped. With the exception of the characters % and #, it will assume that unescaped characters are intended to be escaped when used in an actual URI, although the schema processor will do nothing to alter them. It is valid for an anyURI value to contain a space, but this practice is strongly discouraged. Spaces should instead be escaped using %20.</para>
+    <para>URIs require that some characters be escaped with their hexadecimal Unicode code point preceded by the % character. This includes non-ASCII characters and some ASCII characters, namely control characters, spaces, and the following characters (unless they are used as deliimiters in the URI): &lt;>#%{}|\^`. For example, <strong>../édition.html</strong> must be represented instead as <strong>../%C3%A9dition.html</strong>, with the é escaped as %C3%A9. However, the anyURI type will accept these characters either escaped or unescaped. With the exception of the characters % and #, it will assume that unescaped characters are intended to be escaped when used in an actual URI, although the schema processor will do nothing to alter them. It is valid for an anyURI value to contain a space, but this practice is strongly discouraged. Spaces should instead be escaped using %20.</para>
     <para>The schema processor is not required to parse the contents of an xsd:anyURI value to determine whether it is valid according to any particular URI scheme. Since the bare minimum rules for valid URI references are fairly generic, the schema processor will accept most character strings, including an empty value. The only values that are not accepted are ones that make inappropriate use of reserved characters, such as ones that contain multiple # characters or have % characters that are not followed by two hexadecimal digits.</para>
     <para>For more information on URIs, see
       <link

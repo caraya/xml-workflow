@@ -16,7 +16,7 @@
   <!-- Define the output for this and all document children -->
   <xsl:output
     name="xhtml-out"
-    method="xhtml"
+    method="xml"
     indent="yes"
     encoding="UTF-8"
     omit-xml-declaration="yes" />
@@ -39,8 +39,10 @@
         <link rel="stylesheet" href="css/pm-style.css" />
         <link rel="stylesheet" href="css/paged-media.css"/>
         <link rel="stylesheet" href="css/styles/github.css" />
-        <!-- We add object-key-polyfill to fix an issue with PrinceXML -->
-        <script src="js/object-key-polyfill.js"/>
+        <!-- 
+          We add object-key-polyfill to fix an issue with PrinceXML
+        -->
+        <!--<script src="js/object-key-polyfill.js"/>-->
         <!-- Load and initialize highlight.js -->
         <script src="lib/highlight.pack.js"/>
         <script>

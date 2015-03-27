@@ -10,10 +10,12 @@
   xml:lang="en-US"
   exclude-result-prefixes="#all"
   version="2.0">
+  <xsl:strip-space elements="*"/>
+  <xsl:preserve-space elements="pre code"/>
   <!-- Define the output for this and all document children -->
   <xsl:output name="xhtml-out" method="xhtml" indent="no" encoding="UTF-8" omit-xml-declaration="yes" />
   <xsl:strip-space elements="*"/>
-  <xsl:preserve-space elements="pre code"/>
+  <xsl:preserve-space elements="pre code ulist"/>
   <!--
     Default template taken from http://bit.ly/1sXqIL8
 
@@ -45,6 +47,7 @@
       <!-- Load Normalize library -->
       <link rel="stylesheet" href="css/normalize.css"/>
       <link rel="stylesheet" href="css/style.css" />
+      <script src="lib/modernizr.custom.js"></script>
       <xsl:if test="code">
         <script src="js/object-key-polyfill.js"/>
         <script src="lib/highlight.pack.js"/>
@@ -116,6 +119,7 @@
               Use highlight.js and github style
             -->
             <link rel="stylesheet" href="css/styles/github.css" />
+            <script src="lib/modernizr.custom.js"></script>
             <!-- Load highlight.js -->
             <script src="lib/highlight.pack.js"></script>
             <script>

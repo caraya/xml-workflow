@@ -1,18 +1,150 @@
-<html xmlns="http://www.w3.org/1999/xhtml" class="no-js" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta charset="utf-8" /><link rel="stylesheet" href="css/style.css" /><link rel="stylesheet" href="css/normalize.css" /><link rel="stylesheet" href="css/styles/github.css" /><script src="lib/highlight.pack.js"></script><script>
+<html xmlns="http://www.w3.org/1999/xhtml" class="no-js" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta charset="utf-8" /><link rel="stylesheet" href="css/style.css" /><link rel="stylesheet" href="css/normalize.css" /><link rel="stylesheet" href="css/styles/github.css" /><script src="lib/modernizr.custom.js"></script><script src="lib/highlight.pack.js"></script><script>
               hljs.initHighlightingOnLoad();
-            </script></head><body><section data-type="chapter"><h1>Introduction</h1><p>One of the biggest limitations of markup languages, in my opinion, is how confining they are. Even large vocabularies like [Docbook](http://docbook.org) are limited in what they can do out of the box. HTML4 is non-extensible and HTML5 is limited in how you can extend it (web components are the only way to extend HTML5 I'm aware of that doesn't require an update to the HTML specification.)</p><p>By creating our own markup vocabulary we can be as expressive as we need to be without adding additional complexity for writers and users and without adding unecessary complexity for the developers building the tools to interact with the markup.</p><p>It has been suggested that <a href="http://johnmacfarlane.net/pandoc/" label="Pandoc">Pandoc</a> may be a better alternative than rolling your own markup and style sheet sets. While Pandoc is a very powerful tool it tries to do too much for too many. According to the website, Pandoc supports:</p><ul><li>HTML formats: XHTML, HTML5, and HTML slide shows using <a href="http://www.w3.org/Talks/Tools/Slidy" label="Slidy">Slidy</a>, <a href="http://lab.hakim.se/reveal-js/" label="reveal.js">reveal.js</a>, <a href="http://goessner.net/articles/slideous/" label="Slideous">Slideous</a>, <a href="http://meyerweb.com/eric/tools/s5/" label="S5">S5</a>, or <a href="http://paulrouget.com/dzslides/" label="DZSlides">DZSlides</a>.</li><li>Word processor formats: Microsoft Word <a href="http://www.microsoft.com/interop/openup/openxml/default.aspx" label="docx">docx</a>, OpenOffice/LibreOffice <a href="http://en.wikipedia.org/wiki/OpenDocument" label="ODT">ODT</a>, <a href="http://opendocument.xml.org/" label="OpenDocument XML">OpenDocument XML</a></li><li>Ebooks: <a href="http://en.wikipedia.org/wiki/EPUB" label="EPUB">EPUB</a> version 2 or 3, <a href="http://www.fictionbook.org/index.php/Eng:XML_Schema_Fictionbook_2.1" label="FictionBook2">FictionBook2</a></li><li>Documentation formats: <a href="http://www.docbook.org/" label="DocBook">DocBook</a>, <a href="http://www.gnu.org/software/texinfo/" label="GNU TexInfo">GNU TexInfo</a>, <a href="http://www.gnu.org/software/groff/groff.html" label="Groff man">Groff man</a> pages, <a href="http://www.haskell.org/haddock/doc/html/ch03s08.html" label="Haddock markup">Haddock markup</a></li><li>Page layout formats: <a href="https://www.adobe.com/content/dam/Adobe/en/devnet/indesign/cs55-docs/IDML/idml-specification.pdf" label="InDesign ICML">InDesign ICML</a></li><li>Outline formats: <a href="http://dev.opml.org/spec2.html" label="OPML">OPML</a></li><li>TeX formats: <a href="http://www.latex-project.org/" label="LaTeX">LaTeX</a>, <a href="http://www.pragma-ade.nl/" label="ConTeXt">ConTeXt</a>, LaTeX Beamer slides</li><li><a href="http://en.wikipedia.org/wiki/Portable_Document_Format" label="PDF">PDF</a> via LaTeX</li><li>Lightweight markup formats: <a href="http://daringfireball.net/projects/markdown/" label="Markdown">Markdown</a>, <a href="http://docutils.sourceforge.net/docs/ref/rst/introduction.html" label="reStructuredText">reStructuredText</a>, <a href="http://www.methods.co.nz/asciidoc/" label="AsciiDoc">AsciiDoc</a>, <a href="http://www.mediawiki.org/wiki/Help:Formatting" label="MediaWiki markup">MediaWiki markup</a>, <a href="https://www.dokuwiki.org/wiki:syntax" label="DokuWiki markup">DokuWiki markup</a>, Emacs <a href="http://orgmode.org" label="Org-Mode">Org-Mode</a>, <a href="http://redcloth.org/textile" label="Textile">Textile</a></li><li>Custom formats: custom writers can be written in <a href="http://www.lua.org" label="lua">lua</a>.</li></ul><p>My problems with Pandoc are:</p><ul><li>You can only convert your content to PDF if you have LaTex installed. Even a minimal LaTex library requires a fairly large install</li><li>LaTex installs are different for Macintosh, Windows and Linux. This makes a uniform support system impossible</li><li>If you want to add custom formats you have to do so in Lua. I'd rather not learn another programming language just for one project</li></ul><h2>Why create our own markup</h2><p>Rather than figure out how to use someone else tool for this proof of concept I've decided to build my own markup vocabulary and explore XML, XSL and CSS as the tools to create HTML and print-ready content.</p><p>Using XSL and CSS to manipulate XML content reduces the number of external dependencies. As it stands right now, the project depends on <a href="http://www.saxonica.com/welcome/welcome.xml" label="Saxon">Saxon</a> to convert XML to HTML and <a href="http://www.princexml.com/" label="PrinceXML">PrinceXML</a></p><p>In creating your own xml-based markup you enforce separation of content and style. The XML document provides the basic content of the document and the hints to use elsewhere. XSLT stylesheets allow you to structure the base document and associated hints into any number of formats (for the purposes of this document we'll concentrate on XHTML, PDF created through Paged Media CSS and PDF created using XSL formatting Objects)</p><p>It reduces the ammount of external code that we have to adapt in order to acomplish a given task.</p><p>Creating a domain specific markup vocabulary allows you think about structure and complexity for yourself as the editor/typesetter and for your authors. It makes you think about elements and attributes and which one is better for the given experience you want and what, if any, restrictions you want to impose on your makeup.</p><p>By creating our own vocabulary we make it easier for authors to write clean and simple content. XML provides a host of validation tools to enforce the structure and format of the XML document.</p><h2>Options for defining the markup</h2><p>For the purpose of this project we'll define a set of resources that work with a book structure like the one below:</p><pre><code class="xml hljs">&lt;book&gt;
-  &lt;metadata&gt;
-    &lt;title&gt;The adventures of SHerlock Holmes&lt;/title&gt;
+            </script></head><body><section data-type="chapter"><h1>Multi platform books from a single source</h1><p>The formats chosen for this project (HTML, PDF and ePub) were not selected at random. I'm following Craig Mod's model as outlined in
+      <a href="http://craigmod.com/journal/platforming_books/" label="Platforming Books">Platforming Books</a> with my own ideas of what we need to produce.</p><p>The formats are:</p><ul>
+      <li>(X)HTML Apps</li>
+      <li>PDF</li>
+      <li>ePub3</li>
+      <li>iBooks</li>
+      <li>Kindle</li>
+    </ul><p>We'll discuss the rationale for each format, what this project is not, and what we can do moving forward and answer the most important question:
+      <em>Why should I buy the book if I can get it for free?</em></p><h2>(X)HTML</h2><p>All e-books should have a public space beyond the 'gated communities' offered by iBooks, ePub and Kindle. I don't have anything against publisher pages for their books but, as a reader, think they are not enough. They provide information about the book, marketing tools (discounted bundles in Amazon and related books in both Amazon and iBookstore) and samples of the content. I know that, as a reader, I want more than 30 pages of the book (not necessarily 30 pages of content, most of the time the samples include cover, metadata and table of contents.)</p><p>We should not depend on devices to create the rich annotation corpus like the one Amazon makes public on their
+      <a href="https://kindle.amazon.com/" label="Kindle Website">Kindle Website</a>. While the alternative suggested here is a partial solution (and its implementation is currently under development) it works everywhere there is a web browser and an internet connection.</p><p>Perhaps the greatest bennefit of an open web publishing solution is its flexibility. Solutions like Emphasis, Annotator and Highlight.Js work with HTML, CSS and Javascript/jQuery just like any other websites. There is no reason why we can continue to play and expand our XHTML playground with technologies like
+      <a href="http://www.wikiwand.com/en/WebGL" label="WebGL">WebGL</a>/
+      <a href="http://webvr.info/" label="WebVR">WebVR</a>,
+      <a href="http://d3js.org/" label="D3">D3</a>,
+      <a href="https://robots.thoughtbot.com/css-animation-for-beginners" label="CSS animations">CSS animations</a> and just about any other web technology. Once we know they work on the web we can try them inn ePub books and see how well they work on what devices.</p><h3>Technologies implemented</h3><p>These are the technologies currently configured to work with the XHTML format.</p><h4>Emphasis</h4><p><a href="http://open.blogs.nytimes.com/2011/01/11/emphasis-update-and-source/" label="Emphasis">Emphasis</a> is a deep linking library first developed and released by the New York Times in 2011. What attracted me to it was the ability to share (deep) links to an article among people at different computers. The algorythm always returns the same result so the links will always work the same.</p><p>The one thing that pushed me away from Emphasis was its dependency on jQuery. Don't get me wrong; I love jQuery but I need a good reason to use it beyond the cool factor since most, if not all, of the things you can do with jQuery you can do with vanilla Javascript in modern browsers.</p><p>I decided the bennefits of link sharng far outweigh the jQuery dependency but, when I went to update the code I discovered that the library no longer requires jQuery :-)</p><p>The idea behind Emphasis is that when you highlight a paragrap or portion thereof, it will generate a unique string and append it to the page's URL. You can then send the URL to a friend or colleague who can paste the URL and open the page with the highlighted text. In combination with something like Annotator.js we can build a more complex system to create shareable links .</p><h4>Annotator.js</h4><p>Some times the deel links from emphasis are not enough. Tool
+      <a href="http://annotatorjs.org/" label="Annotator.js">Annotator.js</a> provide one open web answer to Kindle community annotations. While we can't do this from an ePub or Kindle we can use in in an open web application.</p><p>I've said it before: I love the way Amazon shares the annotations I make in my Kindle but there's one down side, it only gives you the quotation, not the context in which it happens or provide a way for public sharing of the annotations with people who don't own the Kindle edition of the book.</p><p>Annotator makes all annotations public so other people can read them and further comment on the same text or other comments. It uses a third party backend (
+      <a href="http://annotateit.org/" label="annotateit.org">annotateit.org</a>) to provide a consistent experience for all our users regardless of browser version or operating system.</p><p>Annotator.js requires jQuery to run and
+      <a href="https://github.com/showdownjs/showdown" label="Showdown.js">Showdown.js</a> to support Markdown in the annotations.</p><p>Once jQuery and Showdown are installed, installing the annotator is as simple as the following code:</p><pre><code class="javascript hljs">
+jQuery(function ($) {
+  $('section').annotator() //section is the root of our content
+  .annotator('setupPlugins');
+});
+// Fully worked authentication example to follow
+    </code></pre><h4>Highlight.js</h4><p>A lot of what I write is technical material with lots of code examples. Rather than highlight code or lines by hand (possible but really complicated), I've always used code highlighters. For Wordpress posts I use the Syntax Highlighter plugin and for open web and PDF I use
+      <a href="https://highlightjs.org/" label="highlight.js">highlight.js</a>.</p><p>Highlight.js supports a lot of languages and styles out of the box (I use one style for XHTML and a different one for PDF that should make it easier to print) but the idea remains the same: to make the code easier to understand by highlighting different areas of the code with different colors based on structure.</p><p>Perhaps the only downside of Highlight.js is the fact that the Javascript portion of the utility must crawl through every code block in the application; the more code blocks in a page the bigger the potential for slowness. This has to be part of any testing done to measure application performance and functionality.</p><p>Running highlight.js is simple. Run the following on your page:</p><pre><code class="javascript hljs">
+&lt;script src="js/object-key-polyfill.js"/&gt;
+&lt;script src="lib/highlight.pack.js"/&gt;
+&lt;script&gt;
+  hljs.initHighlighting();
+&lt;/script&gt;
+    </code></pre><p><em>object-key-polyfill.js</em> polyfills a feature to make sure it works with older browsers (and PrinceXML.)</p><h4>Modernizr</h4><p>Not all browser vendors support the same technology or support it the same way. Modernizr takes a two prong approach to testing for feature support:</p><ul>
+      <li>It creates a JavaScript global object (named Modernizr) that contains the results of these tests as boolean properties</li>
+      <li>It adds classes to the html element that explain what features are and are not natively supported</li>
+      <li>It provides a script loader so you can pull in polyfills to backfill functionality in old browsers</li>
+    </ul><p>The classes added to the HTML element in Chrome 41:</p><pre><code class="html hljs">&lt;html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths no-display-runin display-table pointerevents cssfilters supports" lang="en"&gt;</code></pre><p>The supported elements in Firefox 38.0a2:</p><pre><code class="html hljs">&lt;html class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths no-display-runin display-table pointerevents cssfilters supports" lang="en"&gt;</code></pre><p>The classes added to the HTML element look like this in Chrome 16:</p><pre><code class="html hljs">&lt;html class="js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"&gt;</code></pre><p>And the support for IE9 looks like this:</p><pre><code class="html hljs">&lt;html class="js no-flexbox canvas canvastext no-webgl no-touch geolocation postmessage no-websqldatabase no-indexeddb hashchange no-history draganddrop no-websockets rgba hsla multiplebgs backgroundsize no-borderimage borderradius boxshadow no-textshadow opacity no-cssanimations no-csscolumns no-cssgradients no-cssreflections csstransforms no-csstransforms3d no-csstransitions fontface generatedcontent video audio localstorage sessionstorage no-webworkers no-applicationcache svg inlinesvg smil svgclippaths"&gt;</code></pre><p>The CSS feature detection uses the classes defined in the HTML element to match whether a feature is supported or not. For example we can use the following selectors to test if audio is supported:</p><pre><code class="css hljs">
+/* In your CSS: */
+.no-audio #music {
+   display: none; /* Don't show Audio options */
+}
+.audio #music button {
+   /* Style the Play and Pause buttons nicely */
+}
+    </code></pre><p>The Javascript detection strategy takes advantage of the Modernizr object created when the page was loaded to test if a feature is available or not. We can test for audio using Javascript with code like below:</p><pre><code class="javascript hljs">
+if (Modernizr.audio) {
+     /* properties for browsers that
+     support audio */
+}else{
+     /* properties for browsers that
+     does not support audio */
+}
+    </code></pre><p><strong>Modernizr.load()</strong> uses Modernizr's Javascript test to load resources only if the tested feature is supported. In the example below we test if audio is supported: If the audio element is supported then we load
+      <em>audio.js</em> with all our awesome HTML5 audio functions and tools. Otherwise we write a message to the #notice element already in the page.</p><pre><code class="javascript hljs">
+Modernizr.load({
+  test: Modernizr.audio,
+  yep : 'audio.js',
+  nope: 'audio-polyfill.js'
+});
+    </code></pre><p>For a more detailed tutorial check: This
+      <a href="http://www.tutorialspoint.com/html5/html5_modernizr.htm" label="tutorial">tutorial</a>.</p><h4>Stay in Web App</h4><p>A trick for iOS,
+      <a href="https://github.com/mrmoses/jQuery.stayInWebApp" label="jQuery.stayInWebApp">jQuery.stayInWebApp</a> keeps local, relative URLs from braking out the iOS full screen, no toolbar, web application.</p><p>Once the plugin is loaded (normally at the bottom of the document, right before the closing body tag) initializing it is very simple</p><pre><code class="jquery hljs">
+$(function() {
+    $.stayInWebApp();
+});
+    </code></pre><p>We can also choose to only keep some links (for example, links with a certain class) local. To keep links witha class of local from breaking the app we can use something like this:</p><pre><code class="javascript hljs">
+$(function() {
+  $.stayInWebApp('a.stay');
+});
 
-    &lt;author&gt;
-      &lt;first-name&gt;Arthur&lt;/first-name&gt;
-      &lt;surname&gt;Connan Doyle&lt;/surname&gt;
-    &lt;/author&gt;
-  &lt;/metadata&gt;
+    </code></pre><p>Links starting with http will always open in Safari.</p><h4>iOS icons and splash screens</h4><p>When iOS was first introduced one of the features that first caught my attention was the ability to save web sites to the home screen and use them as an online-only web application. I always thought that it was something only full applications or apps from larger companies could do. It wasn't until I read the
+      <a href="https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html" label="Configuring Web Applications">Configuring Web Applications</a> section of the Safari Web Content Guide that I realized that it was hard work but it was doable by anyone.</p><p>We add the following elements to the head of our content page (not 100% sure if this is for every page or only for the index). The first set of resources deal with fixing the width of the device to a 1 to 1 scale window, full screen and no app bar at the top of the application.</p><pre><code class="html hljs">
+  &lt;meta name="viewport" content="user-scalable=no, initial-scale=1.0" /&gt;
+  &lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+  &lt;meta name="apple-mobile-web-app-status-bar-style" content="black" /&gt;
+    </code></pre><p>The second block adds the application icons that will appear in the home screen when we add the site/app. We have to add multiple icons to account for different screen size/resolution/DPI combinations available to different devices.</p><pre><code class="html hljs">
+  &lt;!-- iOS ICONS AND START SCREENS --&gt;
+  &lt;link rel="apple-touch-icon" href="/images/misc/apple-touch-icon-57x57.png" /&gt;
+  &lt;link rel="apple-touch-icon" sizes="72x72" href="/images/misc/apple-touch-icon-72x72.png" /&gt;
+  &lt;link rel="apple-touch-icon" sizes="114x114" href="/images/misc/apple-touch-icon-114x114.png" /&gt;
+    </code></pre><p>The final step is to add the spalsh screen s that will appear while the site is loading. As with the icons, we have to account for different size/resolution/DPI combinations for different devices.</p><pre><code class="html hljs">
+  &lt;!-- iPhone/iPod Touch Portrait – 320 x 460 (standard resolution) --&gt;
+  &lt;!-- These are not all available resolutions, do your homework --&gt;
+  &lt;link rel="apple-touch-startup-image" href="/images/misc/splash-screen-320x460.png" media="screen and (max-device-width: 320px)" /&gt;
 
-  &lt;section type="chapter"&gt;
-    &lt;para&gt;Lorem Ipsum&lt;/para&gt;
-    &lt;para&gt;Lorem Ipsum&lt;/para&gt;
-  &lt;/section&gt;
-&lt;/book&gt;
-    </code></pre><p>It is not a complete structure. We will continue adding elements afte we reach the MVP (Minimum Viable Product) stage. As usual, feedback is always appreciated.</p></section></body></html>
+  &lt;!-- For iPad Landscape 1024x748 --&gt;
+  &lt;link rel="apple-touch-startup-image" sizes="1024x748" href="/images/misc/splash-screen-1024x748.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" /&gt;
+
+  &lt;!-- For iPad Portrait 768x1004 (high-resolution) --&gt;
+  &lt;link rel="apple-touch-startup-image" sizes="1536x2008" href="/images/misc/splash-screen-1536x2008.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) and (-webkit-min-device-pixel-ratio: 2)"/&gt;
+    </code></pre><h4>Windows8 application tiles</h4><p>Windows 8 (in tablets and phones) allows applications to be tiled on the start screen. We can take advantage of this feature by going to
+      <a href="http://www.buildmypinnedsite.com/en" label="buildmypinnedsite.com">buildmypinnedsite.com</a> completing the form and download the resulting kit. We can the paste the code below on the head of our pages and upload the associated images to the server.</p><pre><code class="html hljs">
+ &lt;-- Windows 8+ tile stuff -- Assumes all content is uploaded to server --&gt;
+    &lt;meta name="application-name" content="My Awesome Site"/&gt;
+    &lt;meta name="msapplication-TileColor" content="#e809e8"/&gt;
+    &lt;meta name="msapplication-square70x70logo" content="tiny.png"/&gt;
+    &lt;meta name="msapplication-square150x150logo" content="square.png"/&gt;
+    &lt;meta name="msapplication-wide310x150logo" content="wide.png"/&gt;
+    &lt;meta name="msapplication-square310x310logo" content="large.png"/&gt;
+    </code></pre><h2>PDF</h2><p>As explained elsewhere I've decided to create the PDF version of the file uing CSS paged media using XMLPrince rather than the more traditional (and cumbrsome) XSL-Formatting Objects tool chain. There are a variety of reasons why I chose to do this: chief among them are ease of use (I already know how to create HTML and CSS content and can leverage that knowledge to create as advanced a publication as I need</p><h3>Technologies implemented</h3><p>Out of necessity the PDF output is a lot simpler in terms of technologies and interactivity than the open web or ebook. There are
+      <a href="http://www.pdfscripting.com/" label="Sites and tutorials">Sites and tutorials</a> on how to script PDF files but the emphasis and the functionality is geared towards business automation rather than full interactivity.</p><h4>PDF Bookmarks</h4><p>I've chosen to let the CSS Paged Media transformation step generate the PDF bookmarks instead of trying to create them manually. Both PrinceXML and
+      <a href="http://www.antennahouse.com/" label="AntennaHouse">AntennaHouse</a> provide prefixed selectors for PDF bookmark generation.</p><p>We can tell the processor the level of the bookmark (using the same level as he headings), whether the bookmark is open or closed (if open they will show their children underneath) and what to use as the label (in this case we use the label of the associated heading elements).</p><p>The code looks like this:</p><pre><code class="css hljs">
+/* PDF BOOKMARKS */
+section[data-type='chapter'] h1 {
+  -ah-bookmark-level: 1;
+  -ah-bookmark-state: open;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 1;
+  prince-bookmark-state: open;
+  prince-bookmark-label: content();
+}
+
+section[data-type='chapter'] h2 {
+  -ah-bookmark-level: 2;
+  -ah-bookmark-state: open;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 2;
+  prince-bookmark-state: open;
+  prince-bookmark-label: content();
+}
+
+section[data-type='chapter'] h3 {
+  -ah-bookmark-level: 3;
+  -ah-bookmark-state: open;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 3;
+  prince-bookmark-state: open;
+  prince-bookmark-label: content();
+}
+
+section[data-type='chapter'] h4 {
+  -ah-bookmark-level: 4;
+  prince-bookmark-level: 4;
+}
+    </code></pre><h4>Highlight.js</h4><p>I use the same highlight.js library that I used in the XHTML files with the PDF content. The only difference is that we add an object-key polyfill to work around a lack of direct support of the feature in PrinceXML and will be removed at the time the feature is supported natively.</p><p>Other than the object.key polyfill there are no additional changes to make the highlighter work in PDF.</p><h2>ePub3</h2><p>ePub is a tricky proposition. While some readers like iBooks will support many multimedia features available in the open web others, particularly older, readers will not even support scripting or SVG. So the question becomes how much do we want to push the envelope in such an uncertain environment? How many levels of fallbacks fo we provide for a given technology?</p><h3>Modernizr</h3><p>Modernizr is one of the best solutions to tame the complexity conundrum. We can selectively (using either CSS or javascript) work around limited capabilities by testing for the presence of given elements or lack thereof. Using Javascript we can conditionally create DOM elements based on support (or lack thereof) for a given feature:</p><pre><code class="javascript hljs">
+if (Modernizr.video) {
+  var myVideo = document.createElement("video");
+  // add the source attributes and their children (src and type)
+} else {
+  // Provide a fallback, possibly creating the object video programmatically
+  var myVideo = document.createElement("object");
+}
+    </code></pre><p>Using CSS we can choose whether we want to show or hide the element in question. This is still dependent on Javasacript but it will work in more devices than just iBooks and will provide better alternatives where Javascript is available. The code looks something like this:</p><pre><code class="css hljs">
+.no-video video {
+  display:none
+}
+
+.video video {
+  border: 1px solid $red;
+}
+    </code></pre><h4>Highlight.js</h4><p>Even though our highlighter suffers from spotty Javascript support we can still enjoy some formatting even in browsers that don't support Javascript</p><h2>Why would I buy the book if I can get it for free?</h2><p>So now we come back to what, for me, is the central question: <em>Why would I buy the book if I can get it for free?</em></p><p>The open web version (package of XHTML files</p></section></body></html>

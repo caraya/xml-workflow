@@ -9,181 +9,69 @@
             </script></head>
    <body>
       <section epub:type="chapter">
-         <h1>From XML to PDF Part 2: CSS Paged Media</h1>
-         <p>With the HTML ready, we can no look at the CSS stylesheet to process it into PDF.</p>
-         <p>The extensions, pseudo elements and attributes we use are all part of the CSS Paged
-            Media or Generated Content for Paged Media specifications. Where appropriate I've
-            translated them to work on both PDF and HTML.
+         <h1>From XML to PDF: Part 1: Special Transformation</h1>
+         <p>Rather than having to deal with <a href="http://www.w3.org/TR/2006/REC-xsl11-20061205/" label="XSL-FO">XSL-FO</a>, another XML based vocabulary to create PDF content, we'll use XSLT to create another
+            HTML file and process it with <a href="http://dev.w3.org/csswg/css-page-3/" label="CSS Paged Media">CSS Paged Media</a> and the companion <a href="http://www.w3.org/TR/css-gcpm-3/" label="Generated Content for Paged Media">Generated Content for Paged Media</a> specifications to create PDF content.
          </p>
-         <h2>Book defaults</h2>
-         <p>The first step in creating the default structure for the book using <em>@page</em> at-element.
-         </p>
-         <p>Our base definition does the following:</p>
-         <ol>
-            <li>Size the page to letter (8.5 by 11 inches), width first</li>
-            <li>Use CSS notation for margins. In this case the top and bottom margin are 0.5 inches
-               and left and right are 1 inch
+         <p>I'm not against XSL-FO but the structure of document is not the easiest or most intuitive.
+            An example of XSL-FO looks like this:
+         </p><pre><code class="xml hljs">&lt;?xml version="1.0" encoding="iso-8859-1"?&gt; (1)
+
+  &lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"&gt; (2)
+    &lt;fo:layout-master-set&gt; (3)
+      &lt;fo:simple-page-master master-name="my-page"&gt;
+        &lt;fo:region-body margin="1in"/&gt;
+      &lt;/fo:simple-page-master&gt;
+    &lt;/fo:layout-master-set&gt;
+
+    &lt;fo:page-sequence master-reference="my-page"&gt; (4)
+      &lt;fo:flow flow-name="xsl-region-body"&gt; (5)
+        &lt;fo:block&gt;Hello, world!&lt;/fo:block&gt; (6)
+      &lt;/fo:flow&gt;
+    &lt;/fo:page-sequence&gt;
+  &lt;/fo:root&gt;
+    </code></pre><ol>
+            <li>This is an XML declaration. XSL FO (XSLFO) belongs to XML family, so this is obligatory</li>
+            <li>Root element. The obligatory namespace attribute declares the XSL Formatting Objects
+               namespace
             </li>
-            <li>Reset the footnote counter</li>
-            <li>Using the @footnote attribute do the following</li>
-            <ol>
-               <li>Increment the footnote counter</li>
-               <li>Place footnote at the bottom using another value for the float attribute</li>
-               <li>Span all columns</li>
-               <li>Make the height as tall as necessary</li>
-            </ol>
-         </ol><pre><code class="css hljs">
-/* STEP 1: DEFINE THE DEFAULT PAGE */
+            <li>Layout master set. This element contains one or more declarations of page masters
+               and page sequence masters — elements that define layouts of single pages and page
+               sequences. In the example, I have defined a rudimentary page master, with only one
+               area in it. The area should have a 1 inch margin from all sides of the page
+            </li>
+            <li>Page sequence. Pages in the document are grouped into sequences; each sequence starts
+               from a new page. Master-reference attribute selects an appropriate layout scheme from
+               masters listed inside <em>&lt;fo:layout-master-set&gt;</em>. Setting master-reference to a page master name means that all pages in this sequence
+               will be formatted using this page master
+            </li>
+            <li>Flow. This is the container object for all user text in the document. Everything contained
+               in the flow will be formatted into regions on pages generated inside the page sequence.
+               Flow name links the flow to a specific region on the page (defined in the page master);
+               in our example, it is the body region
+            </li>
+            <li>Block. This object roughly corresponds to `&lt;div&gt;` in HTML, and normally includes a
+               paragraph of text. I need it here, because text cannot be placed directly into a flow.
+            </li>
+         </ol>
+         <p>Rather than define a flow of content and then the content CSS Paged Media uses a combination
+            of new and existing CSS elements to format the content. For example, to define default
+            page size and then add elements to chapter pages looks like this:
+         </p><pre><code class="css hljs">
 @page {
-  size: 8.5in 11in; (1)
-  margin: 0.5in 1in; (2)
+  size: 8.5in 11in;
+  margin: 0.5in 1in;
   /* Footnote related attributes */
-  counter-reset: footnote; (3)
-  @footnote {
-    counter-increment: footnote; (4.1)
-    float: bottom; (4.2)
-    column-span: all; (4.3)
-    height: auto; (4.4)
-    }
-  }
-</code></pre><p>In later sections we'll create named page templates and associate them to different
-            portions of our written content.
-         </p>
-         <h2>Page counters</h2>
-         <p>We define two conditions under which we reset the page counter: When we have a book
-            followed by a part and when we have a book followed by the a first chapter.
-         </p>
-         <p>We do <strong>not</strong> reset the content when the path if from book to chapter to part.
-         </p><pre><code class="css hljs">
-body[data-type='book'] &gt; div[data-type='part']:first-of-type,
-body[data-type='book'] &gt; section[data-type='chapter']:first-of-type { counter-reset: page; }
-body[data-type='book'] &gt; section[data-type='chapter']+div[data-type='part'] { counter-reset: none }
-</code></pre><h2>Matching content sections to page types</h2>
-         <p>The next section of the style sheet is to match the content on our book to pages in
-            our style sheet.
-         </p>
-         <p>The book is broken into sections with data-type attributes to indicate the type of
-            content; we match the section[data-type] element to a page type along with some basic
-            style definitions.
-         </p>
-         <p>We will further define the types of pages later in the style sheet.</p><pre><code class="css hljs">
-/* Title Page*/
-section[data-type='titlepage'] { page: titlepage }
+  counter-reset: footnote;
 
-/* Copyright page */
-section[data-type='copyright'] { page: copyright }
-
-/* Dedication */
-section[data-type='dedication'] {
-  page: dedication;
-  page-break-before: always;
+ @footnote {
+    counter-increment: footnote;
+    float: bottom;
+    column-span: all;
+    height: auto;
+ }
 }
 
-/* TOC */
-section[data-type='toc'] {
-  page: toc;
-  page-break-before: always;
-}
-/* Leader for toc page */
-section[data-type='toc'] nav ol li a:after {
-  content: leader(dotted) ' ' target-counter(attr(href, url), page);
-}
-
-/* Foreword  */
-section[data-type='foreword'] { page: foreword }
-
-/* Preface*/
-section[data-type='preface'] { page: preface }
-
-/* Part */
-div[data-type='part'] { page: part }
-
-/* Chapter */
-section[data-type='chapter'] {
-  page: chapter;
-  page-break-before: always;
-}
-
-/* Appendix */
-section[data-type='appendix'] {
-  page: appendix;
-  page-break-before: always;
-}
-
-/* Glossary*/
-section[data-type='glossary'] { page: glossary }
-
-/* Bibliography */
-section[data-type='bibliography'] { page: bibliography }
-
-/* Index */
-section[data-type='index'] { page: index }
-
-/* Colophon */
-section[data-type='colophon'] { page: colophon }
-</code></pre><h2>Front matter formatting</h2>
-         <p>For each page of front matter contnt (toc, foreword and preface) we define two pages:
-            left and right. We do it this way to acommodate facing pages with numbers on ooposite
-            sides (for two sided printout)
-         </p>
-         <p>For the front matter we chose to use Roman numerals on the bottom of the page</p><pre><code class="css hljs">
-/* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
-@page toc:right {
-  @bottom-right-corner { content: counter(page, lower-roman) }
-  @bottom-left-corner { content: normal }
-}
-
-@page toc:left  {
-  @bottom-left-corner { content: counter(page, lower-roman) }
-  @bottom-right-corner { content: normal }
-}
-
-
-@page foreword:right {
-  @bottom-center { content: counter(page, lower-roman) }
-  @bottom-left-corner { content: normal }
-}
-
-@page foreword:left  {
-  @bottom-left-corner { content: counter(page, lower-roman) }
-  @bottom-right-corner { content: normal }
-}
-
-
-@page preface:right {
-  @bottom-center {content: counter(page, lower-roman)}
-  @bottom-right-corner { content: normal }
-  @bottom-left-corner { content: normal }
-}
-
-@page preface:left  {
-  @bottom-center {content: counter(page, lower-roman)}
-  @bottom-right-corner { content: normal }
-  @bottom-left-corner { content: normal }
-}
-</code></pre><h2>Pages formatting</h2>
-         <p>We use the same system we used in the front matter to do a few things with our content.</p>
-         <p>We first remove page numbering from the title page and dedication by setting the numbering
-            on both bottom corners to normal.
-         </p><pre><code class="css hljs">
-/* Common Content Page Numbering  in Arabic numerals 1... 199 */
-@page titlepage{ /* Need this to clean up page numbers in titlepage in Prince*/
-  margin-top: 18em;
-  @bottom-right-corner { content: normal }
-  @bottom-left-corner { content: normal }
-}
-
-@page dedication { /* Need this to clean up page numbers in titlepage in Prince*/
-  page-break-before: always;
-  margin-top: 18em;
-  @bottom-right-corner { content: normal }
-  @bottom-left-corner { content: normal }
-
-}
-</code></pre><p>Now we start working on our chapter pages. The first thing we do is to place our running
-            header content in the bottom middle of the page, regardless of whether it's left or
-            right.
-         </p><pre><code class="css hljs">
 @page chapter {
   @bottom-center {
     vertical-align: middle;
@@ -191,175 +79,218 @@ section[data-type='colophon'] { page: colophon }
     content: element(heading);
   }
 }
-</code></pre><p>We next setup a blank page for our chapters and tell the reader that the page was
-            intentionally left blank to prevent confusion
-         </p><pre><code class="css hljs">
-@page chapter:blank { /* Need this to clean up page numbers in titlepage in Prince*/
-  @top-center { content: "This page is intentionally left blank" }
-  @bottom-left-corner { content: normal;}
-  @bottom-right-corner {content:normal;}
-}
-</code></pre><p>Then we number the pages the same way that we did for our front matter except that
-            we use narabic numerals instead of Roman.
-         </p><pre><code class="css hljs">
-@page chapter:right  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-@page chapter:left {
-  @bottom-left-corner { content: counter(page) }
-  @bottom-right-corner { content: normal }
-}
-
-@page appendix:right  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-@page appendix:left {
-  @bottom-left-corner { content: counter(page) }
-  @bottom-right-corner { content: normal }
-}
-
-@page glossary:right,  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-@page glossary:left, {
-  @bottom-left-corner { content: counter(page) }
-  @bottom-right-corner { content: normal }
-}
-
-@page bibliography:right  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-@page bibliography:left {
-  @bottom-left-corner { content: counter(page) }
-  @bottom-right-corner { content: normal }
-}
-
-@page index:right  {
-  @bottom-right-corner { content: counter(page) }
-  @bottom-left-corner { content: normal }
-}
-
-@page index:left {
-  @bottom-left-corner { content: counter(page) }
-  @bottom-right-corner { content: normal }
-}
-</code></pre><h2>Running footer</h2>
-         <p>We now style the running footer. This is the same footer that we creataed when converting
-            the XML to HTML.
-         </p><pre><code class="css hljs">
-p.rh {
-  position: running(heading);
-  text-align: center;
-  font-style: italic;
-}
-</code></pre><h2>Footnotes and cross references</h2>
-         <p>Footnotes are tricky, they consist of two parts, the footnote-call and the footnote
-            content itself. I'm still trying to figure out what the correct markup should be for
-            marking up footnotes.
+    </code></pre><p>The only problem with the code above is that there is no native broser support. For
+            our demonstration we'll use Prince XML to tanslate our HTML/CSS file to PDF. In the
+            not so distant future we will be able to do this transformation in the browser and
+            print the PDF directly. Until then it's a two step process: Modifying the HTML we
+            get from the XML file and running the HTML through Prince to get the PDF.
          </p>
-         <p>We've also defined a special class of links that appends a string and the  the destination's
-            page number.
-         </p><pre><code class="css hljs">
-/* Footnotes */
-span.footnote {
-  float: footnote;
-}
-
-::footnote-marker {
-  content: counter(footnote);
-  list-style-position: inside;
-}
-
-::footnote-marker::after {
-  content: '. ';
-}
-
-::footnote-call {
-  content: counter(footnote);
-  vertical-align: super;
-  font-size: 65%;
-}
-
-/* XReferences */
-a.xref[href]::after {
-    content: ' [See page ' target-counter(attr(href), page) ']'
-}
-</code></pre><h2>PDF Bookmarks</h2>
-         <p>PDF bookmarks allow you to navigate your content form the left side bookmark menu
-            as show in the image below
+         <h2>Modifying the HTML results</h2>
+         <p>I'll use this opportunity to create an xslt customization layer to make changes only
+            to the templates where we need to.
          </p>
-         <figure width="244px" height="352px"><img src="http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/pdf-bookmarks.png" alt="PDF Bookmarks" width="244px" height="352px" /><figcaption>
-               <p>Exam ple of PDF Bookmarks</p>
-            </figcaption>
-         </figure>
-         <p>For each heading level we do the following things for both Antenna House and PrinceXML:</p>
-         <ul>
-            <li>Set up the bookmark level</li>
-            <li>Set up whether it's open or closed</li>
-            <li>Set up the label for the bookmark</li>
-         </ul>
-         <p>Only heading 1, 2 and 3 are set up, level 4, 5 and 6 are only set up as bookmarks
-            only.
-         </p><pre><code class="css hljs">
-section[data-type='chapter'] h1 {
-  -ah-bookmark-level: 1;
-  -ah-bookmark-state: open;
-  -ah-bookmark-label: content();
-  prince-bookmark-level: 1;
-  prince-bookmark-state: closed;
-  prince-bookmark-label: content();
-}
-
-section[data-type='chapter'] h2 {
-  -ah-bookmark-level: 2;
-  -ah-bookmark-state: closed;
-  -ah-bookmark-label: content();
-  prince-bookmark-level: 2;
-  prince-bookmark-state: closed;
-  prince-bookmark-label: content();
-}
-
-section[data-type='chapter'] h3 {
-  -ah-bookmark-level: 3;
-  -ah-bookmark-state: closed;
-  -ah-bookmark-label: content();
-  prince-bookmark-level: 3;
-  prince-bookmark-state: closed;
-  prince-bookmark-label: content();
-}
-
-section[data-type='chapter'] h4 {
-  -ah-bookmark-level: 4;
-  prince-bookmark-level: 4;
-}
-
-section[data-type='chapter'] h5 {
-  -ah-bookmark-level: 5;
-  prince-bookmark-level: 5;
-}
-
-section[data-type='chapter'] h6 {
-  -ah-bookmark-level: 6;
-  prince-bookmark-level: 6;
-}
-</code></pre><h2>Running PrinceXML</h2>
-         <p>Once we have the HTML file ready we can run it through PrinceXML to get our PDF using
-            CSS stylesheet for Paged Media we discussed above. The command to run the conversion
-            for a book.html file is:
-         </p><pre><code class="bash hljs">
-$ prince --verbose book.html test-book.pdf
-</code></pre><p>Because we added the stylesheet link directly to the HTML document we can skip declaring
-            it in the conversion itself. This is always a cause of errors and frustratoins for
-            me so I thought I'd save everyone else the hassle.
+         <p>We create a customization layer by importing the original stylesheet and making any
+            necessary changes in the new stylesheet. Imported stylesheets have a lower precedence
+            order than the local version so the local version will win if there is conflict.
          </p>
+         <p>Only the templates defined in this stilesheet are overriden. If the template we use
+            is not in this customization layer, the transformation engine will use the template
+            in the base style sheet (book.xsl in this case)
+         </p>
+         <p>The style sheet is broken by templates and explained below.</p><pre><code class="xml hljs">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+  &lt;xsl:stylesheet
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0"&gt;
+      &lt;!-- First import the base stylesheet --&gt;
+      &lt;xsl:import href="book.xsl"/&gt;
+
+      &lt;!-- Define the output for this and all document children --&gt;
+      &lt;xsl:output name="xhtml-out" method="xhtml"
+      indent="yes" encoding="UTF-8" omit-xml-declaration="yes" /&gt;
+    </code></pre><p>The first difference in the customization layer is that it imports another style sheet
+            (<em>book.xsl</em>). We do this to avoid having to copy the entire style sheet and, if we make changes,
+            having to make the changes in multiple places.
+         </p>
+         <p>We will then override the templates we need in order to get a single file to pass
+            on to Prince or any other CSS Print Processor.
+         </p><pre><code class="xml hljs">
+&lt;xsl:template match="book"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"/&gt;
+    &lt;xsl:element name="title"&gt;
+      &lt;xsl:value-of select="metadata/title"/&gt;
+    &lt;/xsl:element&gt;
+    &lt;xsl:element name="meta"&gt;
+      &lt;xsl:attribute name="generator"&gt;
+        &lt;xsl:value-of select="system-property('xsl:product-name')"/&gt;
+        &lt;xsl:value-of select="system-property('xsl:product-version')"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:element&gt;
+
+    &lt;!-- Load Typekit Font --&gt;
+    &lt;script src="https://use.typekit.net/qcp8nid.js"&gt;&lt;/script&gt;
+    &lt;script&gt;try{Typekit.load();}catch(e){}&lt;/script&gt;
+    &lt;!-- Paged Media Styles --&gt;
+    &lt;link rel="stylesheet" href="css/pm-style.css" /&gt;
+    &lt;!-- Paged Media Definitions --&gt;
+    &lt;link rel="stylesheet" href="css/paged-media.css"/&gt;
+    &lt;xsl:if test="(code)"&gt;
+      &lt;link rel="stylesheet" href="css/styles/railscasts.css" /&gt;
+      &lt;script src="lib/highlight.pack.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      hljs.initHighlightingOnLoad();
+    &lt;/script&gt;
+    &lt;/xsl:if&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;xsl:attribute name="data-type"&gt;book&lt;/xsl:attribute&gt;
+    &lt;xsl:apply-templates select="/" mode="toc"/&gt;
+    &lt;xsl:apply-templates/&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;/xsl:template&gt;
+    </code></pre><p>Most of the root template deals with undoing some of the changes we made to create
+            multiple pages.
+         </p>
+         <p>I've changed the CSS we use to process the content. We use paged-media.css to create
+            the content for our media files, mostly  setting up the different pages based on the
+            data-type attribute.
+         </p>
+         <p>We use pm-styles.css to control the style of our documents specifically for our printed
+            page application. We have to take into account the fact that Highlight.js is not working
+            properly with Prince's Javascript implementation and that there are places where we
+            don't want our paragraphs to be indented at all.
+         </p>
+         <p>We moved elements from the original section templates. We test whether we need to
+            add the Highlight.JS since we dropped the multipage output.
+         </p>
+         <h2>Overriding the section template</h2>
+         <p>Sections are the element type that got the biggest makeover. What we've done:</p>
+         <ol>
+            <li>Remove filename variable. It's not needed</li>
+            <li>Remove the result document element since we are building a single file with all our
+               content
+            </li>
+            <li>Change way we check for the type attribute in sections. It will now terminate with
+               an error if the attribute is not found
+            </li>
+            <li>Add the element that will build our running footer (p class="rh") and assign the value
+               of the secion's title to it
+            </li>
+         </ol><pre><code class="xml hljs">
+&lt;!-- Override of the section template.--&gt;
+&lt;xsl:template match="section"&gt;
+  &lt;section&gt;
+    &lt;xsl:choose&gt;
+      &lt;xsl:when test="string(@type)"&gt;
+        &lt;xsl:attribute name="data-type"&gt;
+          &lt;xsl:value-of select="@type"/&gt;
+        &lt;/xsl:attribute&gt;
+      &lt;/xsl:when&gt;
+      &lt;xsl:otherwise&gt;
+        &lt;xsl:message terminate="yes"&gt;
+          Type attribute is required for paged media.
+          Check your section tags for missing type attributes
+        &lt;/xsl:message&gt;
+      &lt;/xsl:otherwise&gt;
+    &lt;/xsl:choose&gt;
+
+    &lt;xsl:if test="string(@class)"&gt;
+      &lt;xsl:attribute name="class"&gt;
+        &lt;xsl:value-of select="@class"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
+
+    &lt;xsl:if test="string(@id)"&gt;
+      &lt;xsl:attribute name="id"&gt;
+        &lt;xsl:value-of select="@id"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
+    &lt;!--
+    Running header paragraph.
+    --&gt;
+    &lt;xsl:element name="p"&gt;
+      &lt;xsl:attribute name="class"&gt;rh&lt;/xsl:attribute&gt;
+        &lt;xsl:value-of select="title"/&gt;
+    &lt;/xsl:element&gt; &lt;!-- closses rh class --&gt;
+
+    &lt;xsl:apply-templates/&gt;
+  &lt;/section&gt;
+&lt;/xsl:template&gt;
+    </code></pre><h2>Metadata</h2>
+         <p>The Metadata section has been reworked into a new section with the title data-type.
+            We set up the container section and assign title to the data-type attribute. We then
+            apply all children templates.
+         </p>
+         <p>It is important to note that we've increased the number of children inside metadata
+            so we'll have to be careful in making sure that we're using only one page for the
+            title and another for the rest of the metadata if needed.
+         </p><pre><code class="xml hljs">
+&lt;!-- Metadata --&gt;
+&lt;xsl:template match="metadata"&gt;
+&lt;xsl:element name="section"&gt;
+&lt;xsl:attribute name="data-type"&gt;titlepage&lt;/xsl:attribute&gt;
+&lt;xsl:apply-templates/&gt;
+&lt;/xsl:element&gt;
+&lt;/xsl:template&gt;
+    </code></pre><h2>Table of contents</h2>
+         <p>The table of content creates anchor links (a href='#id') to the title h1 tags we create
+            in the step below. We can do it this way because XSLT guarantees that all calls to
+            generate-id for a given element (in this case the section/title elements) will return
+            the same value for a given execution.
+         </p>
+         <p>This code depends on the empty toc placeholder element to place it. If the element
+            is not present then the table of contents will be placed at the end of the document.
+         </p><pre><code class="xml hljs">
+&lt;xsl:template match="toc"&gt;
+  &lt;section data-type="toc"&gt;
+    &lt;h1&gt;Table of Contents&lt;/h1&gt;
+    &lt;nav&gt;
+      &lt;ol&gt;
+        &lt;xsl:for-each select="//section"&gt;
+          &lt;xsl:element name="li"&gt;
+            &lt;xsl:element name="a"&gt;
+              &lt;xsl:attribute name="href"&gt;
+              &lt;xsl:value-of select="concat('#', generate-id(.))"/&gt;
+              &lt;/xsl:attribute&gt;
+              &lt;xsl:value-of select="title"/&gt;
+            &lt;/xsl:element&gt;
+          &lt;/xsl:element&gt;
+        &lt;/xsl:for-each&gt;
+      &lt;/ol&gt;
+    &lt;/nav&gt;
+  &lt;/section&gt;
+&lt;/xsl:template&gt;
+    </code></pre><h2>Titles</h2>
+         <p>The title element has only one addition. We add an ID attribute created using XPath's
+            generate-id function on the parent section element.
+         </p><pre><code class="xml hljs">
+&lt;xsl:template match="title"&gt;
+  &lt;xsl:element name="h1"&gt;
+    &lt;xsl:attribute name="id"&gt;
+      &lt;xsl:value-of select="generate-id(..)"/&gt;
+    &lt;/xsl:attribute&gt;
+
+    &lt;xsl:if test="string(@align)"&gt;
+      &lt;xsl:attribute name="align"&gt;
+        &lt;xsl:value-of select="@align"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
+
+    &lt;xsl:if test="string(@class)"&gt;
+      &lt;xsl:attribute name="class"&gt;
+        &lt;xsl:value-of select="@class"/&gt;
+      &lt;/xsl:attribute&gt;
+    &lt;/xsl:if&gt;
+
+    &lt;xsl:value-of select="."/&gt;
+  &lt;/xsl:element&gt; &lt;!-- closes h1 --&gt;
+&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+    </code></pre><p>With all this in place we can now look to the CSS Paged Media file.</p>
       </section>
    </body>
 </html>

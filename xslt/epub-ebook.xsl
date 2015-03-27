@@ -150,6 +150,9 @@ exclude-result-prefixes=" xsl xs m pls ssml svg opf ncx file"
 
   <xsl:template name="generate.package.opf">
     <xsl:variable name="full.path" select="file:resolve-path('/Users/carlos/code/xml-workflow/content/OEBPS')"/>
+    <xsl:variable name="files" select="file:list($full.path)" />
+    <xsl:variable name="this" select="."/>
+
     <xsl:result-document href="OEBPS/package.opf">
       <xsl:element name="package" xml:lang="en" namespace="http://www.idpf.org/2007/opf">
         <xsl:attribute name="version" select="3.0"/>
@@ -207,7 +210,6 @@ exclude-result-prefixes=" xsl xs m pls ssml svg opf ncx file"
               <xsl:attribute name="href" select="."/>
             </item>
           </xsl:for-each>
-
         </manifet>
 
         <!-- DO we need to call generate spine from here? -->
@@ -247,8 +249,6 @@ exclude-result-prefixes=" xsl xs m pls ssml svg opf ncx file"
     </html>
   </xsl:result-document>
   </xsl:template>
-
-
 
   <!-- Section -->
   <xsl:template match="section">
@@ -306,7 +306,6 @@ exclude-result-prefixes=" xsl xs m pls ssml svg opf ncx file"
   <xsl:template match="toc">
     <!-- We want this template to remain blank so it overrides the toc template in the book stylesheet-->
   </xsl:template>
-
 
   <!-- Metadata -->
   <xsl:template match="metadata">

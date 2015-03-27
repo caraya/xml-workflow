@@ -9,404 +9,357 @@
             </script></head>
    <body>
       <section epub:type="chapter">
-         <h1>From XML to PDF Part 3: CSS Styles for Paged Media</h1>
-         <p>This is the generated CSS from the SCSS style sheets (see the scss/ directory for
-            the source material.) I've chosen to document the resulting stylesheet here and document
-            the SCSS source in another document to make life simpler for people who don't want
-            to deal with SASS or who want to see what the style sheets look like.
+         <h1>From XML to PDF Part 2: CSS Paged Media</h1>
+         <p>With the HTML ready, we can no look at the CSS stylesheet to process it into PDF.</p>
+         <p>The extensions, pseudo elements and attributes we use are all part of the CSS Paged
+            Media or Generated Content for Paged Media specifications. Where appropriate I've
+            translated them to work on both PDF and HTML.
          </p>
-         <p>Typography derived from work done at this URL: <a href="http://bit.ly/16N6Y2Q" label="http://bit.ly/16N6Y2Q">http://bit.ly/16N6Y2Q</a></p>
-         <p>The following scale (also using minor third progression) may also help: <a href="http://bit.ly/1DdVbqK" label="http://bit.ly/1DdVbqK">http://bit.ly/1DdVbqK</a></p>
-         <p>Feel free to play with these and use them as starting point for your own work :)</p>
-         <p>The project currently uses these fonts:</p>
-         <ul>
-            <li>Roboto Slab for headings</li>
-            <li>Roboto for body copy</li>
-            <li>Source Code Pro for code blocks and preformated text</li>
-         </ul>
-         <h2>Font Imports</h2>
-         <p>Even though SCSS Lint throws a fit when I put font imports in a stylesheet because
-            they stop asynchronous operations, I'm doing it to keep the HTML files clean and because
-            we are not loading the CSS on the page, we're just using it to process the PDF file.
+         <h2>Book defaults</h2>
+         <p>The first step in creating the default structure for the book using <em>@page</em> at-element.
          </p>
-         <p>Eventually I'll switch to locally hosted fonts using bulletproof font syntax (<a href="http://www.paulirish.com/2009/bulletproof-font-face-implementation-syntax/" label="discussed in this post by Paul Irish">discussed in this post by Paul Irish</a> and available for use at <a href="http://www.fontsquirrel.com/tools/webfont-generator" label="Font Squirrel">Font Squirrel</a>.
+         <p>Our base definition does the following:</p>
+         <ol>
+            <li>Size the page to letter (8.5 by 11 inches), width first</li>
+            <li>Use CSS notation for margins. In this case the top and bottom margin are 0.5 inches
+               and left and right are 1 inch
+            </li>
+            <li>Reset the footnote counter</li>
+            <li>Using the @footnote attribute do the following</li>
+            <ol>
+               <li>Increment the footnote counter</li>
+               <li>Place footnote at the bottom using another value for the float attribute</li>
+               <li>Span all columns</li>
+               <li>Make the height as tall as necessary</li>
+            </ol>
+         </ol><pre><code class="css hljs">
+/* STEP 1: DEFINE THE DEFAULT PAGE */
+@page {
+  size: 8.5in 11in; (1)
+  margin: 0.5in 1in; (2)
+  /* Footnote related attributes */
+  counter-reset: footnote; (3)
+  @footnote {
+    counter-increment: footnote; (4.1)
+    float: bottom; (4.2)
+    column-span: all; (4.3)
+    height: auto; (4.4)
+    }
+  }
+</code></pre><p>In later sections we'll create named page templates and associate them to different
+            portions of our written content.
          </p>
-         <p>At this point we are not dealing with <a href="http://bit.ly/1ul3XBx" label="font subsetting">font subsetting</a> but we may in case we need to depending on the font licensing or file size.
+         <h2>Page counters</h2>
+         <p>We define two conditions under which we reset the page counter: When we have a book
+            followed by a part and when we have a book followed by the a first chapter.
+         </p>
+         <p>We do <strong>not</strong> reset the content when the path if from book to chapter to part.
          </p><pre><code class="css hljs">
-@import url(http://fonts.googleapis.com/css?family=Roboto:100italic,100,400italic,700italic,300,700,300italic,400);
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700);
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,400);
-</code></pre><h2>Defaults</h2>
-         <p>Now that we've loaded the fonts we can create our defaults for the document.  The
-            `html` element defines vertical overflow and text size adjustment for Safari and Windows
-            browsers.
-         </p><pre><code class="css hljs">
-html {
-  overflow-y: scroll;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-}
-</code></pre><p>The <em>body</em> selector will handle most of the base formatting for the the document.
+body[data-type='book'] &gt; div[data-type='part']:first-of-type,
+body[data-type='book'] &gt; section[data-type='chapter']:first-of-type { counter-reset: page; }
+body[data-type='book'] &gt; section[data-type='chapter']+div[data-type='part'] { counter-reset: none }
+</code></pre><h2>Matching content sections to page types</h2>
+         <p>The next section of the style sheet is to match the content on our book to pages in
+            our style sheet.
          </p>
-         <p>The selector sets up the following aspects of the page:</p>
-         <ul>
-            <li>background and font color</li>
-            <li>font family, size and weight</li>
-            <li>line height</li>
-            <li>left and right padding (overrides the base document's padding)</li>
-            <li>orphans and widows</li>
-         </ul><pre><code class="css hljs">
-body {
-  background-color: #fff;
-  color: #554c4d;
-  font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 1em;
-  font-weight: 100;
-  line-height: 1.1;
-  orphans: 4;
-  padding-left: 0;
-  padding-right: 0;
-  widows: 2;
-}
-</code></pre><h2>Blockquotes, Pullquotes and Marginalia</h2>
-         <p>It's fairly easy to create sidebars in HTML so I've played a lot with pull quotes,
-            blockquotes and asides as a way to move the content around with basic CSS. We can
-            do further work by tuning the CSS
-         </p><pre><code class="css hljs">
-aside {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
-  color: #666;
-  line-height: 1.4em;
-  padding-bottom: .5em;
-  padding-top: .5em;
-  width: 100%;
+         <p>The book is broken into sections with data-type attributes to indicate the type of
+            content; we match the section[data-type] element to a page type along with some basic
+            style definitions.
+         </p>
+         <p>We will further define the types of pages later in the style sheet.</p><pre><code class="css hljs">
+/* Title Page*/
+section[data-type='titlepage'] { page: titlepage }
+
+/* Copyright page */
+section[data-type='copyright'] { page: copyright }
+
+/* Dedication */
+section[data-type='dedication'] {
+  page: dedication;
+  page-break-before: always;
 }
 
-aside .pull {
-  margin-bottom: .5em;
-  margin-left: -20%;
-  margin-top: .2em;
+/* TOC */
+section[data-type='toc'] {
+  page: toc;
+  page-break-before: always;
 }
-</code></pre><p>The <em>magin-notes*</em> and <em>content*</em> move the content to the corresponding side of the page without having to create specific
-            CSS to do so. The downside is that, as with many things in CSS, you are stuck with
-            the provided values and will have to modify them to suit your needs.
+/* Leader for toc page */
+section[data-type='toc'] nav ol li a:after {
+  content: leader(dotted) ' ' target-counter(attr(href, url), page);
+}
+
+/* Foreword  */
+section[data-type='foreword'] { page: foreword }
+
+/* Preface*/
+section[data-type='preface'] { page: preface }
+
+/* Part */
+div[data-type='part'] { page: part }
+
+/* Chapter */
+section[data-type='chapter'] {
+  page: chapter;
+  page-break-before: always;
+}
+
+/* Appendix */
+section[data-type='appendix'] {
+  page: appendix;
+  page-break-before: always;
+}
+
+/* Glossary*/
+section[data-type='glossary'] { page: glossary }
+
+/* Bibliography */
+section[data-type='bibliography'] { page: bibliography }
+
+/* Index */
+section[data-type='index'] { page: index }
+
+/* Colophon */
+section[data-type='colophon'] { page: colophon }
+</code></pre><h2>Front matter formatting</h2>
+         <p>For each page of front matter contnt (toc, foreword and preface) we define two pages:
+            left and right. We do it this way to acommodate facing pages with numbers on ooposite
+            sides (for two sided printout)
+         </p>
+         <p>For the front matter we chose to use Roman numerals on the bottom of the page</p><pre><code class="css hljs">
+/* Comon Front Mater Page Numbering in lowercase ROMAN numerals*/
+@page toc:right {
+  @bottom-right-corner { content: counter(page, lower-roman) }
+  @bottom-left-corner { content: normal }
+}
+
+@page toc:left  {
+  @bottom-left-corner { content: counter(page, lower-roman) }
+  @bottom-right-corner { content: normal }
+}
+
+
+@page foreword:right {
+  @bottom-center { content: counter(page, lower-roman) }
+  @bottom-left-corner { content: normal }
+}
+
+@page foreword:left  {
+  @bottom-left-corner { content: counter(page, lower-roman) }
+  @bottom-right-corner { content: normal }
+}
+
+
+@page preface:right {
+  @bottom-center {content: counter(page, lower-roman)}
+  @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
+}
+
+@page preface:left  {
+  @bottom-center {content: counter(page, lower-roman)}
+  @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
+}
+</code></pre><h2>Pages formatting</h2>
+         <p>We use the same system we used in the front matter to do a few things with our content.</p>
+         <p>We first remove page numbering from the title page and dedication by setting the numbering
+            on both bottom corners to normal.
          </p><pre><code class="css hljs">
-.margin-notes,
-.content-left {
-  font-size: .75em;
-  margin-left: -230px;
-  margin-right: 20px;
-  text-align: right;
-  width: 230px;
+/* Common Content Page Numbering  in Arabic numerals 1... 199 */
+@page titlepage{ /* Need this to clean up page numbers in titlepage in Prince*/
+  margin-top: 18em;
+  @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
 }
 
-.margin-notes-right,
-.content-right {
-  font-size: .75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px;
-}
+@page dedication { /* Need this to clean up page numbers in titlepage in Prince*/
+  page-break-before: always;
+  margin-top: 18em;
+  @bottom-right-corner { content: normal }
+  @bottom-left-corner { content: normal }
 
-.content-right {
-  font-size: .75em;
-  margin-left: 760px;
-  margin-right: -20px;
-  position: absolute;
-  text-align: left;
-  width: 230px;
 }
-
-.content-right ul,
-.content-left ul {
-  list-style: none;
-}
-</code></pre><p>The opening class style creates a large distinguishing block container for opening
-            text. This is useful when you have a summary paragraph at the beginning of your document
-            or some other opening piece of text to go at the top of your document
+</code></pre><p>Now we start working on our chapter pages. The first thing we do is to place our running
+            header content in the bottom middle of the page, regardless of whether it's left or
+            right.
          </p><pre><code class="css hljs">
-.opening {
-  border-bottom: 3px double #ddd;
-  border-top: 3px double #ddd;
-  font-size: 2em;
-  margin-bottom: 10em;
-  padding-bottom: 2em;
-  padding-top: 2em;
+@page chapter {
+  @bottom-center {
+    vertical-align: middle;
+    text-align: center;
+    content: element(heading);
+  }
+}
+</code></pre><p>We next setup a blank page for our chapters and tell the reader that the page was
+            intentionally left blank to prevent confusion
+         </p><pre><code class="css hljs">
+@page chapter:blank { /* Need this to clean up page numbers in titlepage in Prince*/
+  @top-center { content: "This page is intentionally left blank" }
+  @bottom-left-corner { content: normal;}
+  @bottom-right-corner {content:normal;}
+}
+</code></pre><p>Then we number the pages the same way that we did for our front matter except that
+            we use narabic numerals instead of Roman.
+         </p><pre><code class="css hljs">
+@page chapter:right  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
+}
+
+@page chapter:left {
+  @bottom-left-corner { content: counter(page) }
+  @bottom-right-corner { content: normal }
+}
+
+@page appendix:right  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
+}
+
+@page appendix:left {
+  @bottom-left-corner { content: counter(page) }
+  @bottom-right-corner { content: normal }
+}
+
+@page glossary:right,  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
+}
+
+@page glossary:left, {
+  @bottom-left-corner { content: counter(page) }
+  @bottom-right-corner { content: normal }
+}
+
+@page bibliography:right  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
+}
+
+@page bibliography:left {
+  @bottom-left-corner { content: counter(page) }
+  @bottom-right-corner { content: normal }
+}
+
+@page index:right  {
+  @bottom-right-corner { content: counter(page) }
+  @bottom-left-corner { content: normal }
+}
+
+@page index:left {
+  @bottom-left-corner { content: counter(page) }
+  @bottom-right-corner { content: normal }
+}
+</code></pre><h2>Running footer</h2>
+         <p>We now style the running footer. This is the same footer that we creataed when converting
+            the XML to HTML.
+         </p><pre><code class="css hljs">
+p.rh {
+  position: running(heading);
   text-align: center;
-}
-</code></pre><p>Blockquotes present the enclosed text in larger italic font with a solid bar to the
-            left of the content.  Because the font is larger I've added a little extra padding
-            to the paragraphs inside the blockquote
-         </p><pre><code class="css hljs">
-blockquote {
-  border-left: 5px solid #ccc;
-  color: #222023;
-  font-size: 1.5em;
   font-style: italic;
-  font-weight: 100;
-  margin-bottom: 2em;
-  margin-left: 4em;
-  margin-right: 4em;
-  margin-top: 2em;
 }
-blockquote p {
-  padding-left: .5em;
+</code></pre><h2>Footnotes and cross references</h2>
+         <p>Footnotes are tricky, they consist of two parts, the footnote-call and the footnote
+            content itself. I'm still trying to figure out what the correct markup should be for
+            marking up footnotes.
+         </p>
+         <p>We've also defined a special class of links that appends a string and the  the destination's
+            page number.
+         </p><pre><code class="css hljs">
+/* Footnotes */
+span.footnote {
+  float: footnote;
 }
-</code></pre><p>The pullquote classes were modeled after an ESPN article and look something like this:</p>
-         <figure width="800px" height="297px"><img src="http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/example-pullquote.png" alt="example pullquote" width="800px" height="297px" /><figcaption>
-               <p>Example pullquote</p>
+
+::footnote-marker {
+  content: counter(footnote);
+  list-style-position: inside;
+}
+
+::footnote-marker::after {
+  content: '. ';
+}
+
+::footnote-call {
+  content: counter(footnote);
+  vertical-align: super;
+  font-size: 65%;
+}
+
+/* XReferences */
+a.xref[href]::after {
+    content: ' [See page ' target-counter(attr(href), page) ']'
+}
+</code></pre><h2>PDF Bookmarks</h2>
+         <p>PDF bookmarks allow you to navigate your content form the left side bookmark menu
+            as show in the image below
+         </p>
+         <figure width="244px" height="352px"><img src="http://publishing-project.rivendellweb.net/wp-content/uploads/2015/02/pdf-bookmarks.png" alt="PDF Bookmarks" width="244px" height="352px" /><figcaption>
+               <p>Exam ple of PDF Bookmarks</p>
             </figcaption>
          </figure>
-         <p>The original was hardcoded to pixels. Where possible I've changed the values to em
-            to provide a more responsive
+         <p>For each heading level we do the following things for both Antenna House and PrinceXML:</p>
+         <ul>
+            <li>Set up the bookmark level</li>
+            <li>Set up whether it's open or closed</li>
+            <li>Set up the label for the bookmark</li>
+         </ul>
+         <p>Only heading 1, 2 and 3 are set up, level 4, 5 and 6 are only set up as bookmarks
+            only.
          </p><pre><code class="css hljs">
-.pullquote {
-  border-bottom: 18px solid #000;
-  border-top: 18px solid #000;
-  font-size: 2.25em;
-  font-weight: 700;
-  letter-spacing: -.02em;
-  line-height: 2.125em;
-  margin-right: 2.5em;
-  padding: 1.25em 0;
-  position: relative;
-  width: 200px;
+section[data-type='chapter'] h1 {
+  -ah-bookmark-level: 1;
+  -ah-bookmark-state: open;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 1;
+  prince-bookmark-state: closed;
+  prince-bookmark-label: content();
 }
-.pullquote p {
-  color: #00298a;
-  font-weight: 700;
-  text-transform: uppercase;
-  z-index: 1;
+
+section[data-type='chapter'] h2 {
+  -ah-bookmark-level: 2;
+  -ah-bookmark-state: closed;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 2;
+  prince-bookmark-state: closed;
+  prince-bookmark-label: content();
 }
-.pullquote p:last-child {
-  line-height: 1.25em;
-  padding-top: 2px;
+
+section[data-type='chapter'] h3 {
+  -ah-bookmark-level: 3;
+  -ah-bookmark-state: closed;
+  -ah-bookmark-label: content();
+  prince-bookmark-level: 3;
+  prince-bookmark-state: closed;
+  prince-bookmark-label: content();
 }
-.pullquote cite {
-  color: #333;
-  font-size: 1.125em;
-  font-weight: 400;
+
+section[data-type='chapter'] h4 {
+  -ah-bookmark-level: 4;
+  prince-bookmark-level: 4;
 }
-</code></pre><h2>Paragraphs</h2>
-         <p>The paragraph selector creates the default paragraph formatting with a size of 1em
-            (equivalent to 16 pixels) and a line height of 1.3 em (20.8 pixels)
-         </p><pre><code class="css hljs">
-p {
-  font-size: 1em;
-  margin-bottom: 1.3em;
+
+section[data-type='chapter'] h5 {
+  -ah-bookmark-level: 5;
+  prince-bookmark-level: 5;
 }
-</code></pre><p>To indent all paragraphs but the first we use the sibling selector we indent all paragraphs
-            that are the next sibling of another paragraph element (that is: the next child of
-            the same parent).
+
+section[data-type='chapter'] h6 {
+  -ah-bookmark-level: 6;
+  prince-bookmark-level: 6;
+}
+</code></pre><h2>Running PrinceXML</h2>
+         <p>Once we have the HTML file ready we can run it through PrinceXML to get our PDF using
+            CSS stylesheet for Paged Media we discussed above. The command to run the conversion
+            for a book.html file is:
+         </p><pre><code class="bash hljs">
+$ prince --verbose book.html test-book.pdf
+</code></pre><p>Because we added the stylesheet link directly to the HTML document we can skip declaring
+            it in the conversion itself. This is always a cause of errors and frustratoins for
+            me so I thought I'd save everyone else the hassle.
          </p>
-         <p>The first paragraph doesn't have a paragraph sibling so the indent doesn't happen
-            but all other paragraphs are indented
-         </p><pre><code class="css hljs">
-p + p {
-  text-indent: 2em;
-}
-</code></pre><p>Rather than use pseudo elements (<em>:first-line</em> and <em>:first-letter</em>) we use classes to give authors the option to use these elements.
-         </p><pre><code class="css hljs">
-.first-line {
-  font-size: 1.1em;
-  text-indent: 0;
-  text-transform: uppercase;
-}
-
-.first-letter {
-  float: left;
-  font-size: 7em;
-  line-height: .8em;
-  margin-bottom: -.1em;
-  padding-right: .1em;
-}
-</code></pre><h2>Lists</h2>
-         <p>The only thing we do for list and list items is to indicate what type of list we'll
-            use as our default square for unordered list and Arabic decimals for our numbered
-            lists.
-         </p><pre><code class="css hljs">
-ul li {
-  list-style: square;
-}
-
-ol li {
-  list-style: decimal;
-}
-</code></pre><h2>Figures and captions</h2>
-         <p>The only interesting aspect of the CSS we use for figures is the counter. The <em>figure figcaption::before</em> selector creates automatic text that is inserted before each caption. This text is
-            the string "Figure", the value of our figure counter and the string ": ".
-         </p>
-         <p>This makes it easier to insert figures without having to change the captions for all
-            figures after the one we inserted. The figure counter is reset for every chapter.
-            I'm researching ways to get the figure numbering across chapters.
-         </p><pre><code class="css hljs">
-figure {
-  counter-increment: figure_count;
-  margin-bottom: 1em;
-  margin-top: 1em;
-}
-figure figcaption {
-  font-weight: 700;
-  padding-bottom: 1em;
-  padding-top: .2em;
-}
-
-figure figcaption::before {
-  content: "Figure " counter(figure_count) ": ";
-}
-</code></pre><h2>Headings</h2>
-         <p>Headings are configured in two parts. The first one sets common attributes to all
-            headings: <em>font-family</em>, <em>font-weight</em>, <em>hyphens</em>, <em>line-height</em>, margins and <em>text-transform</em>.
-         </p>
-         <p>It's this attribute that needs a little more discussion. Using text-transform we make
-            all headings uppercase without having to write them that way
-         </p><pre><code class="css hljs">
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Roboto Slab', sans-serif;
-  font-weight: 400;
-  hyphens: none;
-  line-height: 1.2;
-  margin: 1.414em 0 .5em;
-  text-transform: uppercase;
-}
-</code></pre><p>In the second part of our heading styles we work on rules that only apply to one heading
-            at a time. Things such as size and specific attributes (like removing the top margin
-            on the h1 elements) need to be handled need to be handled individually
-         </p><pre><code class="css hljs">
-h1 {
-  font-size: 3.157em;
-  margin-top: 0;
-}
-
-h2 {
-  font-size: 2.369em;
-}
-
-h3 {
-  font-size: 1.777em;
-}
-
-h4 {
-  font-size: 1.333em;
-}
-
-h4,
-h5,
-h6 {
-  text-align: inherit;
-}
-</code></pre><h2>Different parts of the book</h2>
-         <p>There are certains aspects of the book that need different formatting from our defaults.</p>
-         <p>We use the element[attribute=name] syntax to identify which section we want to work
-            with and then tell it the element within the section that we want to change.
-         </p>
-         <p>For example, in the bibliography (a section with the <em>data-type='bibliography</em> attribute) we want all paragraphs to be left aligned and all paragraphs to have no
-            margin (basicallwe we are undoing the indentation for paragraphs with sibling paragraphs
-            within the bibliography section)
-         </p><pre><code class="css hljs">
-section[data-type='bibliography'] p {
-  text-align: left;
-}
-section[data-type='bibliography'] p + p {
-  text-indent: 0 !important;
-}
-</code></pre><p>The same logic applies to the other sections that we're customizing. We tell it what
-            type of section we are working with and what element inside that sectin we want to
-            change.
-         </p><pre><code class="css hljs">
-section[data-type='titlepage'] h1,
-section[data-type='titlepage'] h2,
-section[data-type='titlepage'] p {
-  text-align: center;
-}
-
-section[data-type='dedication'] h1,
-section[data-type='dedication'] h2 {
-  text-align: center;
-}
-section[data-type='dedication'] p {
-  text-align: left;
-}
-section[data-type='dedication'] p + p {
-  text-indent: 0 !important;
-}
-</code></pre><h2>Preformatted code blocks</h2>
-         <p>A lot of what I write is technical and requires code examples. We take a two pronged
-            approach to the fenced code blocks.
-         </p>
-         <p>We format some aspects our content (wrap, font-family, size, line height and wether
-            to do page breaks inside the content) locally and hand off syntax highlighting to
-            <a href="https://highlightjs.org/" label="highlight.js">highlight.js</a> with a style to mark the content differently.
-         </p><pre><code class="css hljs">
-pre {
-  overflow-wrap: break-word;
-  white-space: pre-line !important;
-  word-wrap: break-word;
-}
-pre code {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 1em;
-  line-height: 1.2em;
-  page-break-inside: avoid;
-}
-</code></pre><h2>Miscelaneous classes</h2>
-         <p>Rather than for people to justify text we provide a class to make it so. I normally
-            justify at the div or section level but it's not always necessary or desirable.
-         </p>
-         <p>Code will be used in a future iteration of the code to highlight inline snippets (think
-            of it as an inline version of the &lt;pre&gt;&lt;code&gt; tag combination)
-         </p><pre><code class="css hljs">
-.justified {
-  text-align: justify;
-}
-
-</code></pre><h2>Columns</h2>
-         <p>The last portion of the stylesheet deals with columns. I've set up 2 set of rules
-            for 2 and 3 column with similar attributes. In the SCSS source these are created with
-            a column mixin.
-         </p><pre><code class="css hljs">
-.columns2 {
-  column-count: 2;
-  column-gap: 3em;
-  column-fill: balance;
-  column-span: none;
-  line-height: 1.25em;
-  width: 100%;
-}
-.columns2 p:first-of-type {
-  margin-top: 0;
-}
-.columns2 p + p {
-  text-indent: 2em;
-}
-.columns2 p:last-of-type {
-  margin-bottom: 1.25em;
-}
-
-.columns3 {
-  column-count: 3;
-  column-gap: 10px;
-  column-fill: balance;
-  column-span: none;
-  width: 100%;
-}
-.columns3 p:first-of-type {
-  margin-top: 0;
-}
-.columns3 p:not:first-of-type {
-  text-indent: 2em;
-}
-.columns3 p:last-of-type {
-  margin-bottom: 1.25em;
-}
-</code></pre></section>
+      </section>
    </body>
 </html>
