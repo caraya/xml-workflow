@@ -92,7 +92,19 @@
 
       autoprefixer: {
         options: {
-          browsers: [ 'last 2' ]
+          // For autoprefixer we're using the same rules as the
+          // Polymer Starter Kit
+          browsers: [
+            'ie >= 10',
+            'ie_mob >= 10',
+            'ff >= 30',
+            'chrome >= 34',
+            'safari >= 7',
+            'opera >= 23',
+            'ios >= 7',
+            'android >= 4.4',
+            'bb >= 10'
+          ]
         },
 
         files: {
@@ -115,21 +127,16 @@
         }
       },
 
-      // OPTIONAL TASKS
-      // Tasks below have been set up but are currently not used.
-      // If you want them, uncomment the corresponding block below
-
       // COFFEESCRIPT
       // If you want to use coffeescript (http://coffeescript.org/)
-      // instead of vanilla JS, uncoment the block below and change
-      // the cwd value to the locations of your coffee files
+      // and note where the coffee files should be stored
       coffee: {
         target1: {
           expand: true,
           flatten: true,
-          cwd: 'src/',
+          cwd: 'src/coffee',
           src: ['*.coffee'],
-          dest: 'build/',
+          dest: 'app/js',
           ext: '.js'
         }
       },
@@ -202,8 +209,8 @@
               'css/**/*',
               'lib/**/*',
               'js/**/*',
-              'images/**/*',
-              '**/*.html'],
+              'images/**/*'
+            ],
             dest: 'content/OEBPS'
           }]
         }
@@ -211,7 +218,8 @@
 
       // Clean the build directory
       clean: {
-        all: [ 'app/']
+        all: [ 'app/' ],
+        epub: [ 'content/*.xhtml', 'content/*.html', 'content/css' ]
       },
 
       // WATCH TASK
@@ -237,15 +245,8 @@
       // task to run the compilation steps to create content files.
       // This reduces the number of dependecies for our project
       //
-      // Since we're using an EXpath extension function for Saxon
-      // we need to set up a classpath to generate epub. Trying to
-      // figure out if another task is needed or if I want to
-      // add the classpath direction to the shell command (which
-      // makes the shell task brittle and breaks the 'do one thing
-      // well principle)
-      //
-      // This will also change the way we call saxon as we can't
-      // just use the jar file with classpath
+      // Rather than use an extension function written in Java
+      // I decided to go old school and use Perl
       //
       // Also see issue #20 on waffle/Github for discussion on
       // parameterizing this so we don't have to make manual changes
@@ -292,6 +293,10 @@
     grunt.task.registerTask(
       'prep-js',
       [ 'jshint', 'uglify' ]
+    );
+
+    grunt.task.registerTask(
+
     );
 
     grunt.task.registerTask(

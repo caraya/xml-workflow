@@ -1,8 +1,0 @@
-<package xmlns="http://saxon.sf.net/ns/expath-pkg">
-
-   <jar>file-java.jar</jar>
-   <jar>file-saxon.jar</jar>
-
-   <library>org.expath.file.saxon.EXPathFileLibrary</library>
-
-</package>
